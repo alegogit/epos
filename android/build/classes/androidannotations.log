@@ -1,0 +1,143 @@
+20:01:10.394 [main] INFO  o.a.AndroidAnnotationProcessor:85 - Initialize AndroidAnnotations 3.0.1 with options {}
+20:01:10.493 [main] INFO  o.a.AndroidAnnotationProcessor:109 - Start processing for 4 annotations on 8 elements
+20:01:10.506 [main] DEBUG o.a.h.AndroidManifestFinder:137 - AndroidManifest.xml file found in parent folder /home/user/Documents/project/android/POS/android: /home/user/Documents/project/android/POS/android/AndroidManifest.xml
+20:01:10.760 [main] WARN  o.a.h.AndroidManifestFinder:252 - A class activity declared in the AndroidManifest.xml cannot be found in the compile path: [.MainActivity_]
+20:01:10.762 [main] INFO  o.a.AndroidAnnotationProcessor:172 - AndroidManifest.xml found: AndroidManifest [applicationPackage=com.dantepariwara.taxichecker, componentQualifiedNames=[], permissionQualifiedNames=[android.permission.WRITE_EXTERNAL_STORAGE, android.permission.INTERNET, android.permission.ACCESS_NETWORK_STATE], applicationClassName=null, libraryProject=false, debugabble=false, minSdkVersion=11, maxSdkVersion=-1, targetSdkVersion=21]
+20:01:10.763 [main] INFO  o.a.r.ProjectRClassFinder:50 - Found project R class: com.dantepariwara.taxichecker.R
+20:01:10.779 [main] INFO  o.a.r.AndroidRClassFinder:44 - Found Android class: android.R
+20:01:10.808 [main] INFO  o.a.p.ModelValidator:42 - Validating elements
+20:01:10.809 [main] DEBUG o.a.p.ModelValidator:62 - Validating with EActivityHandler: [com.dewantrie.apps.MainActivity]
+20:01:11.123 [main] ERROR o.a.AndroidAnnotationProcessor:269 - Something went wront : Unexpected error in AndroidAnnotations 3.0.1!
+You should check if there is already an issue about it on https://github.com/excilys/androidannotations/search?q=java.lang.RuntimeException&type=Issues
+If none exists, please open a new one with the following content and tell us if you can reproduce it or not. Don't forget to give us as much information as you can (like parts of your code in failure).
+Java version: javac 1.8.0_05
+Javac processors options: 
+Stacktrace: java.lang.RuntimeException: java.lang.reflect.InvocationTargetException
+	at org.androidannotations.helper.AnnotationHelper.extractAnnotationParameter(AnnotationHelper.java:317)
+	at org.androidannotations.helper.AnnotationHelper.extractAnnotationResIdValueParameter(AnnotationHelper.java:282)
+	at org.androidannotations.helper.IdValidatorHelper.resIdsExist(IdValidatorHelper.java:44)
+	at org.androidannotations.handler.EActivityHandler.validate(EActivityHandler.java:55)
+	at org.androidannotations.handler.BaseAnnotationHandler.validate(BaseAnnotationHandler.java:109)
+	at org.androidannotations.process.ModelValidator.validateThrowing(ModelValidator.java:79)
+	at org.androidannotations.process.ModelValidator.validate(ModelValidator.java:66)
+	at org.androidannotations.AndroidAnnotationProcessor.validateAnnotations(AndroidAnnotationProcessor.java:235)
+	at org.androidannotations.AndroidAnnotationProcessor.processThrowing(AndroidAnnotationProcessor.java:184)
+	at org.androidannotations.AndroidAnnotationProcessor.process(AndroidAnnotationProcessor.java:114)
+	at com.sun.tools.javac.processing.JavacProcessingEnvironment.callProcessor(JavacProcessingEnvironment.java:794)
+	at com.sun.tools.javac.processing.JavacProcessingEnvironment.discoverAndRunProcs(JavacProcessingEnvironment.java:705)
+	at com.sun.tools.javac.processing.JavacProcessingEnvironment.access$1800(JavacProcessingEnvironment.java:91)
+	at com.sun.tools.javac.processing.JavacProcessingEnvironment$Round.run(JavacProcessingEnvironment.java:1035)
+	at com.sun.tools.javac.processing.JavacProcessingEnvironment.doProcessing(JavacProcessingEnvironment.java:1176)
+	at com.sun.tools.javac.main.JavaCompiler.processAnnotations(JavaCompiler.java:1173)
+	at com.sun.tools.javac.main.JavaCompiler.compile(JavaCompiler.java:859)
+	at com.sun.tools.javac.main.Main.compile(Main.java:523)
+	at com.sun.tools.javac.api.JavacTaskImpl.doCall(JavacTaskImpl.java:129)
+	at com.sun.tools.javac.api.JavacTaskImpl.call(JavacTaskImpl.java:138)
+	at org.gradle.api.internal.tasks.compile.jdk6.Jdk6JavaCompiler.execute(Jdk6JavaCompiler.java:45)
+	at org.gradle.api.internal.tasks.compile.jdk6.Jdk6JavaCompiler.execute(Jdk6JavaCompiler.java:38)
+	at org.gradle.api.internal.tasks.compile.NormalizingJavaCompiler.delegateAndHandleErrors(NormalizingJavaCompiler.java:96)
+	at org.gradle.api.internal.tasks.compile.NormalizingJavaCompiler.execute(NormalizingJavaCompiler.java:49)
+	at org.gradle.api.internal.tasks.compile.NormalizingJavaCompiler.execute(NormalizingJavaCompiler.java:35)
+	at org.gradle.api.internal.tasks.compile.DelegatingJavaCompiler.execute(DelegatingJavaCompiler.java:29)
+	at org.gradle.api.internal.tasks.compile.DelegatingJavaCompiler.execute(DelegatingJavaCompiler.java:20)
+	at org.gradle.api.internal.tasks.compile.IncrementalJavaCompilerSupport.execute(IncrementalJavaCompilerSupport.java:33)
+	at org.gradle.api.internal.tasks.compile.IncrementalJavaCompilerSupport.execute(IncrementalJavaCompilerSupport.java:24)
+	at org.gradle.api.tasks.compile.Compile.compile(Compile.java:67)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:483)
+	at org.gradle.internal.reflect.JavaMethod.invoke(JavaMethod.java:63)
+	at org.gradle.api.internal.project.taskfactory.AnnotationProcessingTaskFactory$StandardTaskAction.doExecute(AnnotationProcessingTaskFactory.java:219)
+	at org.gradle.api.internal.project.taskfactory.AnnotationProcessingTaskFactory$StandardTaskAction.execute(AnnotationProcessingTaskFactory.java:212)
+	at org.gradle.api.internal.project.taskfactory.AnnotationProcessingTaskFactory$StandardTaskAction.execute(AnnotationProcessingTaskFactory.java:201)
+	at org.gradle.api.internal.AbstractTask$TaskActionWrapper.execute(AbstractTask.java:530)
+	at org.gradle.api.internal.AbstractTask$TaskActionWrapper.execute(AbstractTask.java:513)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeAction(ExecuteActionsTaskExecuter.java:80)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeActions(ExecuteActionsTaskExecuter.java:61)
+	at org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.execute(ExecuteActionsTaskExecuter.java:46)
+	at org.gradle.api.internal.tasks.execution.PostExecutionAnalysisTaskExecuter.execute(PostExecutionAnalysisTaskExecuter.java:35)
+	at org.gradle.api.internal.tasks.execution.SkipUpToDateTaskExecuter.execute(SkipUpToDateTaskExecuter.java:64)
+	at org.gradle.api.internal.tasks.execution.ValidatingTaskExecuter.execute(ValidatingTaskExecuter.java:58)
+	at org.gradle.api.internal.tasks.execution.SkipEmptySourceFilesTaskExecuter.execute(SkipEmptySourceFilesTaskExecuter.java:42)
+	at org.gradle.api.internal.tasks.execution.SkipTaskWithNoActionsExecuter.execute(SkipTaskWithNoActionsExecuter.java:52)
+	at org.gradle.api.internal.tasks.execution.SkipOnlyIfTaskExecuter.execute(SkipOnlyIfTaskExecuter.java:53)
+	at org.gradle.api.internal.tasks.execution.ExecuteAtMostOnceTaskExecuter.execute(ExecuteAtMostOnceTaskExecuter.java:43)
+	at org.gradle.api.internal.AbstractTask.executeWithoutThrowingTaskFailure(AbstractTask.java:286)
+	at org.gradle.execution.taskgraph.AbstractTaskPlanExecutor$TaskExecutorWorker.executeTask(AbstractTaskPlanExecutor.java:79)
+	at org.gradle.execution.taskgraph.AbstractTaskPlanExecutor$TaskExecutorWorker.processTask(AbstractTaskPlanExecutor.java:63)
+	at org.gradle.execution.taskgraph.AbstractTaskPlanExecutor$TaskExecutorWorker.run(AbstractTaskPlanExecutor.java:51)
+	at org.gradle.execution.taskgraph.DefaultTaskPlanExecutor$1.run(DefaultTaskPlanExecutor.java:33)
+	at org.gradle.internal.Factories$1.create(Factories.java:22)
+	at org.gradle.cache.internal.DefaultCacheAccess.longRunningOperation(DefaultCacheAccess.java:198)
+	at org.gradle.cache.internal.DefaultCacheAccess.longRunningOperation(DefaultCacheAccess.java:266)
+	at org.gradle.cache.internal.DefaultPersistentDirectoryStore.longRunningOperation(DefaultPersistentDirectoryStore.java:135)
+	at org.gradle.api.internal.changedetection.state.DefaultTaskArtifactStateCacheAccess.longRunningOperation(DefaultTaskArtifactStateCacheAccess.java:93)
+	at org.gradle.execution.taskgraph.DefaultTaskPlanExecutor.process(DefaultTaskPlanExecutor.java:31)
+	at org.gradle.execution.taskgraph.DefaultTaskGraphExecuter.execute(DefaultTaskGraphExecuter.java:86)
+	at org.gradle.execution.SelectedTaskExecutionAction.execute(SelectedTaskExecutionAction.java:29)
+	at org.gradle.execution.DefaultBuildExecuter.execute(DefaultBuildExecuter.java:61)
+	at org.gradle.execution.DefaultBuildExecuter.access$200(DefaultBuildExecuter.java:23)
+	at org.gradle.execution.DefaultBuildExecuter$2.proceed(DefaultBuildExecuter.java:67)
+	at org.gradle.execution.DryRunBuildExecutionAction.execute(DryRunBuildExecutionAction.java:32)
+	at org.gradle.execution.DefaultBuildExecuter.execute(DefaultBuildExecuter.java:61)
+	at org.gradle.execution.DefaultBuildExecuter.execute(DefaultBuildExecuter.java:54)
+	at org.gradle.initialization.DefaultGradleLauncher.doBuildStages(DefaultGradleLauncher.java:166)
+	at org.gradle.initialization.DefaultGradleLauncher.doBuild(DefaultGradleLauncher.java:113)
+	at org.gradle.initialization.DefaultGradleLauncher.run(DefaultGradleLauncher.java:81)
+	at org.gradle.launcher.exec.InProcessBuildActionExecuter$DefaultBuildController.run(InProcessBuildActionExecuter.java:64)
+	at org.gradle.launcher.cli.ExecuteBuildAction.run(ExecuteBuildAction.java:33)
+	at org.gradle.launcher.cli.ExecuteBuildAction.run(ExecuteBuildAction.java:24)
+	at org.gradle.launcher.exec.InProcessBuildActionExecuter.execute(InProcessBuildActionExecuter.java:35)
+	at org.gradle.launcher.exec.InProcessBuildActionExecuter.execute(InProcessBuildActionExecuter.java:26)
+	at org.gradle.launcher.cli.RunBuildAction.run(RunBuildAction.java:50)
+	at org.gradle.api.internal.Actions$RunnableActionAdapter.execute(Actions.java:171)
+	at org.gradle.launcher.cli.CommandLineActionFactory$ParseAndBuildAction.execute(CommandLineActionFactory.java:201)
+	at org.gradle.launcher.cli.CommandLineActionFactory$ParseAndBuildAction.execute(CommandLineActionFactory.java:174)
+	at org.gradle.launcher.cli.CommandLineActionFactory$WithLogging.execute(CommandLineActionFactory.java:170)
+	at org.gradle.launcher.cli.CommandLineActionFactory$WithLogging.execute(CommandLineActionFactory.java:139)
+	at org.gradle.launcher.cli.ExceptionReportingAction.execute(ExceptionReportingAction.java:33)
+	at org.gradle.launcher.cli.ExceptionReportingAction.execute(ExceptionReportingAction.java:22)
+	at org.gradle.launcher.Main.doAction(Main.java:46)
+	at org.gradle.launcher.bootstrap.EntryPoint.run(EntryPoint.java:45)
+	at org.gradle.launcher.Main.main(Main.java:37)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:483)
+	at org.gradle.launcher.bootstrap.ProcessBootstrap.runNoExit(ProcessBootstrap.java:50)
+	at org.gradle.launcher.bootstrap.ProcessBootstrap.run(ProcessBootstrap.java:32)
+	at org.gradle.launcher.GradleMain.main(GradleMain.java:23)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:483)
+	at org.gradle.wrapper.BootstrapMainStarter.start(BootstrapMainStarter.java:30)
+	at org.gradle.wrapper.WrapperExecutor.execute(WrapperExecutor.java:127)
+	at org.gradle.wrapper.GradleWrapperMain.main(GradleWrapperMain.java:58)
+Caused by: java.lang.reflect.InvocationTargetException
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:483)
+	at org.androidannotations.helper.AnnotationHelper.extractAnnotationParameter(AnnotationHelper.java:311)
+	... 101 more
+Caused by: java.lang.annotation.AnnotationTypeMismatchException: Incorrectly typed data found for annotation element public abstract int org.androidannotations.annotations.EActivity.value() (Found data of type R.layout)
+	at com.sun.tools.javac.model.AnnotationProxyMaker$ValueVisitor$1AnnotationTypeMismatchExceptionProxy.generateException(AnnotationProxyMaker.java:269)
+	at sun.reflect.annotation.AnnotationInvocationHandler.invoke(AnnotationInvocationHandler.java:75)
+	at com.sun.proxy.$Proxy43.value(Unknown Source)
+	... 106 more
+Thrown from: com.dewantrie.apps
+Element (ClassSymbol): package com.dewantrie.apps;
+
+@org.androidannotations.annotations.EActivity(<error>)
+public class MainActivity extends android.app.Activity {
+
+  public MainActivity();
+  @org.androidannotations.annotations.rest.RestService
+  com.dewantrie.apps.service.LoginService mLoginService;
+}
+
+
+20:01:11.124 [main] INFO  o.a.p.TimeStats:81 - Time measurements: [Whole Processing = 631 ms], [Extract Manifest = 258 ms], [Find R Classes = 33 ms], [Extract Annotations = 10 ms], 
+20:01:11.125 [main] INFO  o.a.AndroidAnnotationProcessor:123 - Finish processing

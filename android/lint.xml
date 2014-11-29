@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="ButtonStyle">
+        <ignore path="res/layout/custom_dialog.xml" />
+        <ignore path="res/layout/fragment_listview.xml" />
+    </issue>
+    <issue id="ContentDescription">
+        <ignore path="res/layout/activity_reports.xml" />
+        <ignore path="res/layout/custom_dialog.xml" />
+        <ignore path="res/layout/custom_header_actionbar.xml" />
+        <ignore path="res/layout/fragment_archive.xml" />
+        <ignore path="res/layout/fragment_brith_fragment.xml" />
+        <ignore path="res/layout/fragment_bulletins_listview.xml" />
+        <ignore path="res/layout/fragment_ceremony_detail_listview.xml" />
+        <ignore path="res/layout/fragment_ceremony_listview.xml" />
+        <ignore path="res/layout/fragment_detail_reflection.xml" />
+        <ignore path="res/layout/fragment_detail_workship.xml" />
+        <ignore path="res/layout/fragment_devotions.xml" />
+        <ignore path="res/layout/fragment_home.xml" />
+        <ignore path="res/layout/fragment_home_galleryimage.xml" />
+        <ignore path="res/layout/fragment_home_listview.xml" />
+        <ignore path="res/layout/fragment_illness.xml" />
+        <ignore path="res/layout/fragment_jadwal_klinik_listview.xml" />
+        <ignore path="res/layout/fragment_jadwal_konseling_listview.xml" />
+        <ignore path="res/layout/fragment_jadwal_listview.xml" />
+        <ignore path="res/layout/fragment_jadwal_paduan_listview.xml" />
+        <ignore path="res/layout/fragment_jadwal_rapat_listview.xml" />
+        <ignore path="res/layout/fragment_kebaktian.xml" />
+        <ignore path="res/layout/fragment_kegiatan_listview.xml" />
+        <ignore path="res/layout/fragment_listview.xml" />
+        <ignore path="res/layout/fragment_news_listview.xml" />
+        <ignore path="res/layout/fragment_newsdistrict_listview.xml" />
+        <ignore path="res/layout/fragment_notnetwork.xml" />
+        <ignore path="res/layout/fragment_passing.xml" />
+        <ignore path="res/layout/fragment_reflection_listview.xml" />
+        <ignore path="res/layout/fragment_renungan_listview.xml" />
+        <ignore path="res/layout/fragment_sch_choir_listview.xml" />
+        <ignore path="res/layout/fragment_sch_clinic_listview.xml" />
+        <ignore path="res/layout/fragment_sch_conseling_listview.xml" />
+        <ignore path="res/layout/fragment_sch_listview.xml" />
+        <ignore path="res/layout/fragment_sch_meeting_listview.xml" />
+        <ignore path="res/layout/fragment_wedding_fragment.xml" />
+        <ignore path="res/layout/fragment_workship_listview.xml" />
+        <ignore path="res/layout/layout_splash.xml" />
+        <ignore path="res/layout/spektra_contact_fragment_layout.xml" />
+        <ignore path="res/layout/spektra_invoice_detail_fragment_layout.xml" />
+        <ignore path="res/layout/spektra_ktp_fragment_layout.xml" />
+        <ignore path="res/layout/spektra_login_layout.xml" />
+        <ignore path="res/layout/spektra_menu_layout.xml" />
+        <ignore path="res/layout/spektra_summary_fragment_layout.xml" />
+        <ignore path="res/layout/tab.xml" />
+        <ignore path="res/layout/widget_pin.xml" />
+    </issue>
+    <issue id="DefaultLocale" severity="ignore" />
+    <issue id="DisableBaselineAlignment">
+        <ignore path="res/layout/activity_reports.xml" />
+        <ignore path="res/layout/fragment_home_listview.xml" />
+        <ignore path="res/layout/spektra_invoice_detail_fragment_layout.xml" />
+        <ignore path="res/layout/spektra_menu_layout.xml" />
+        <ignore path="res/layout/spektra_summary_fragment_layout.xml" />
+    </issue>
+    <issue id="DuplicateIds">
+        <ignore path="res/layout/fragment_devotions.xml" />
+        <ignore path="res/layout/fragment_devotions_service.xml" />
+        <ignore path="res/layout/fragment_district_save.xml" />
+        <ignore path="res/layout/fragment_illness.xml" />
+        <ignore path="res/layout/fragment_newsdistrict_listview.xml" />
+        <ignore path="res/layout/fragment_passing.xml" />
+        <ignore path="res/layout/fragment_wedding_fragment.xml" />
+        <ignore path="res/layout/spektra_contact_fragment_layout.xml" />
+        <ignore path="res/layout/spektra_ktp_fragment_layout.xml" />
+    </issue>
+    <issue id="HardcodedText">
+        <ignore path="res/layout/custom_dialog.xml" />
+        <ignore path="res/layout/fragment_ceremony_detail_listview.xml" />
+        <ignore path="res/layout/fragment_devotions.xml" />
+        <ignore path="res/layout/fragment_devotions_service.xml" />
+        <ignore path="res/layout/fragment_district_save.xml" />
+        <ignore path="res/layout/fragment_kegiatan_listview.xml" />
+        <ignore path="res/layout/fragment_listview.xml" />
+        <ignore path="res/layout/fragment_newsdistrict_listview.xml" />
+        <ignore path="res/layout/fragment_passing.xml" />
+        <ignore path="res/layout/spektra_contact_fragment_layout.xml" />
+        <ignore path="res/layout/spektra_invoice_detail_fragment_layout.xml" />
+        <ignore path="res/layout/spektra_summary_fragment_layout.xml" />
+        <ignore path="res/layout/tab.xml" />
+    </issue>
+    <issue id="InefficientWeight">
+        <ignore path="res/layout/spektra_invoice_detail_fragment_layout.xml" />
+    </issue>
+    <issue id="NestedScrolling">
+        <ignore path="res/layout/spektra_invoice_detail_fragment_layout.xml" />
+    </issue>
+    <issue id="NestedWeights">
+        <ignore path="res/layout/activity_reports.xml" />
+        <ignore path="res/layout/spektra_invoice_detail_fragment_layout.xml" />
+    </issue>
+    <issue id="NewApi" severity="ignore" />
+    <issue id="ObsoleteLayoutParam">
+        <ignore path="res/layout/activity_mainapps.xml" />
+        <ignore path="res/layout/activity_replace.xml" />
+        <ignore path="res/layout/activity_sch_replace.xml" />
+        <ignore path="res/layout/activity_wf_replace.xml" />
+        <ignore path="res/layout/fragment_archive.xml" />
+        <ignore path="res/layout/fragment_detail_reflection.xml" />
+        <ignore path="res/layout/fragment_devotions.xml" />
+        <ignore path="res/layout/fragment_home_listview.xml" />
+        <ignore path="res/layout/fragment_renungan_listview.xml" />
+        <ignore path="res/layout/spektra_contact_fragment_layout.xml" />
+        <ignore path="res/layout/spektra_invoice_detail_fragment_layout.xml" />
+        <ignore path="res/layout/spektra_menu_layout.xml" />
+        <ignore path="res/layout/spektra_summary_fragment_layout.xml" />
+    </issue>
+    <issue id="SetJavaScriptEnabled" severity="ignore" />
+    <issue id="SmallSp">
+        <ignore path="res/layout/fragment_archive.xml" />
+    </issue>
+    <issue id="SpUsage">
+        <ignore path="res/layout/tab.xml" />
+        <ignore path="res/layout/tab.xml" />
+    </issue>
+    <issue id="TooDeepLayout">
+        <ignore path="res/layout/spektra_contact_fragment_layout.xml" />
+        <ignore path="res/layout/spektra_summary_fragment_layout.xml" />
+    </issue>
+    <issue id="TooManyViews">
+        <ignore path="res/layout/spektra_summary_fragment_layout.xml" />
+    </issue>
+    <issue id="UnknownIdInLayout">
+        <ignore path="res/layout/fragment_newsdistrict_listview.xml" />
+        <ignore path="res/layout/fragment_reflection.xml" />
+    </issue>
+    <issue id="UseCompoundDrawables">
+        <ignore path="res/layout/fragment_sch_listview.xml" />
+        <ignore path="res/layout/tab.xml" />
+    </issue>
+    <issue id="UselessParent">
+        <ignore path="res/layout/activity_wf_replace.xml" />
+        <ignore path="res/layout/custom_dialog.xml" />
+        <ignore path="res/layout/fragment_archive.xml" />
+        <ignore path="res/layout/fragment_ceremony_listview.xml" />
+        <ignore path="res/layout/fragment_devotions_service.xml" />
+        <ignore path="res/layout/fragment_home.xml" />
+        <ignore path="res/layout/fragment_home_galleryimage.xml" />
+        <ignore path="res/layout/fragment_home_listview.xml" />
+        <ignore path="res/layout/fragment_jadwal_klinik_listview.xml" />
+        <ignore path="res/layout/fragment_jadwal_listview.xml" />
+        <ignore path="res/layout/fragment_kegiatan_listview.xml" />
+        <ignore path="res/layout/fragment_news_listview.xml" />
+        <ignore path="res/layout/fragment_reflection_listview.xml" />
+        <ignore path="res/layout/fragment_renungan_listview.xml" />
+        <ignore path="res/layout/fragment_workship_listview.xml" />
+        <ignore path="res/layout/spektra_contact_fragment_layout.xml" />
+        <ignore path="res/layout/spektra_invoice_detail_fragment_layout.xml" />
+        <ignore path="res/layout/spektra_ktp_fragment_layout.xml" />
+        <ignore path="res/layout/spektra_login_layout.xml" />
+        <ignore path="res/layout/spektra_menu_layout.xml" />
+        <ignore path="res/layout/spektra_summary_fragment_layout.xml" />
+    </issue>
+    <issue id="WebViewLayout">
+        <ignore path="res/layout/custom_dialog_cancelorder.xml" />
+        <ignore path="res/layout/custom_dialog_condition.xml" />
+    </issue>
+</lint>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<style name="AppTheme" parent="AppTheme.Base"/>
+
+    <style name="AppTheme.Base" parent="Theme.AppCompat">
+		<item name="horizontalDivider">@style/Widget.AppTheme.Divider.Horizontal</item>
+        <item name="verticalDivider">@style/Widget.AppTheme.Divider.Vertical</item>
+
+		<item name="android:windowBackground">@color/windowBackgroundColor</item>
+		<item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+ 	</style>
+
+	<style name="dialog_animation">
+        <item name="android:windowEnterAnimation">@+anim/popup_show</item>
+        <item name="android:windowExitAnimation">@+anim/popup_hide</item>
+    </style>
+
+	<style name="Widget.AppTheme.Divider" parent="android:Widget">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:layout_margin">4dp</item>
+        <item name="android:background">?android:dividerVertical</item>
+    </style>
+
+	<style name="Widget.AppTheme.Divider.Horizontal" />
+    <style name="Widget.AppTheme.Divider.Vertical">
+        <item name="android:layout_width">1dp</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>	
+</resources>

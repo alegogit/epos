@@ -1,0 +1,68 @@
+buildscript {
+	repositories { mavenCentral() }
+	dependencies { classpath 'com.android.tools.build:gradle:0.7.+' }
+}
+
+allprojects {
+	apply plugin: 'idea'
+
+	version = "1.0"
+	ext.appName = "POS"
+
+	repositories {
+		maven {
+			url "$System.env.ANDROID_HOME/extras/android/m2repository"
+			url "$System.env.ANDROID_HOME/extras/google/m2repository"
+			url "https://oss.sonatype.org/content/repositories/snapshots/" 
+		}
+		mavenLocal()
+		mavenCentral()
+	}
+}
+
+subprojects {
+	apply plugin: "eclipse"
+}
+
+project(":android") {
+	apply plugin: "android"
+
+	configurations {
+    	provided
+    	apt
+	}
+
+	dependencies {
+		compile 'com.android.support:appcompat-v7:21.0.+'
+		compile 'com.android.support:cardview-v7:21.0.+'
+    	compile 'com.android.support:gridlayout-v7:21.0.+'
+    	compile 'com.android.support:palette-v7:21.0.+'
+    	compile 'com.android.support:recyclerview-v7:21.0.+'
+	
+		apt 'org.androidannotations:androidannotations:3.0.+'
+    	compile 'org.androidannotations:androidannotations-api:3.0.+'
+    	
+		apt 'org.projectlombok:lombok:1.12.4'
+		provided project(':libraries:constructorproperties')
+
+		compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
+		compile 'org.springframework.android:spring-android-core:1.0.1.RELEASE'
+    	compile 'com.google.code.gson:gson:2.2.4'
+    	compile 'com.j256.ormlite:ormlite-core:4.48'
+		compile 'com.j256.ormlite:ormlite-android:4.48'
+		compile fileTree(dir: 'libs', include: '*.jar')
+	}
+	
+	android.applicationVariants.all { variant ->
+		// compile-time-only libraries
+	
+		variant.javaCompile.classpath += configurations.provided
+		variant.javaCompile.classpath += configurations.apt
+	
+		// annotation processors
+		aptOutput = file("${project.buildDir}/source/apt_generated/${variant.dirName}")
+	
+	}
+		  
+	
+}

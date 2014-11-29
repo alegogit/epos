@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">POS</string>
+	<string name="action_language">Language</string>
+	<string name="action_settings">Settings</string>
+
+	<string-array name="language">
+		<item>Indonesia</item>
+		<item>English</item>
+	</string-array>
+</resources>

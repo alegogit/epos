@@ -1,0 +1,5 @@
+<factorypath>
+    <factorypathentry kind="VARJAR" id="androidannoations" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="androidannotations-api" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="WKSPJAR" id="/Spektra-android/libs/codemodel-2.6.jar" enabled="true" runInBatchMode="false"/>
+</factorypath>
