@@ -25,7 +25,8 @@ subprojects {
 }
 
 project(":android") {
-	apply plugin: "android"
+	apply plugin: 'android'
+	
 	configurations {
 		provided
 		apt

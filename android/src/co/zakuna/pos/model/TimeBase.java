@@ -9,6 +9,9 @@ public class TimeBase {
 	@DatabaseField(id = true)
 	private Long id;
 
+	@DatabaseField
+	private Restaurants restaurants;
+
 	@DatabaseField(columnName = "created_by")
 	private Integer createdBy;
 

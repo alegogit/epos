@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <style name="AppTheme" parent="AppTheme.Base" />
+	<attr name="horizontalDivider" />
+	<attr name="verticalDivider" />
+	
+	<style name="AppTheme" parent="AppTheme.Base" />
 
     <style name="AppTheme.Base" parent="Theme.AppCompat">
         <item name="horizontalDivider">@style/Widget.AppTheme.Divider.Horizontal</item>
