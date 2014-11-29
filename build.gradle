@@ -26,29 +26,28 @@ subprojects {
 
 project(":android") {
 	apply plugin: "android"
-
 	configurations {
-    	provided
-    	apt
+		provided
+		apt
 	}
 
 	dependencies {
 		compile 'com.android.support:appcompat-v7:21.0.+'
 		compile 'com.android.support:cardview-v7:21.0.+'
-    	compile 'com.android.support:gridlayout-v7:21.0.+'
-    	compile 'com.android.support:palette-v7:21.0.+'
-    	compile 'com.android.support:recyclerview-v7:21.0.+'
+		compile 'com.android.support:gridlayout-v7:21.0.+'
+		compile 'com.android.support:palette-v7:21.0.+'
+		compile 'com.android.support:recyclerview-v7:21.0.+'
 	
 		apt 'org.androidannotations:androidannotations:3.0.+'
-    	compile 'org.androidannotations:androidannotations-api:3.0.+'
-    	
+		compile 'org.androidannotations:androidannotations-api:3.0.+'
+		
 		apt 'org.projectlombok:lombok:1.12.4'
 		provided project(':libraries:constructorproperties')
 
 		compile 'org.springframework.android:spring-android-rest-template:1.0.1.RELEASE'
 		compile 'org.springframework.android:spring-android-core:1.0.1.RELEASE'
-    	compile 'com.google.code.gson:gson:2.2.4'
-    	compile 'com.j256.ormlite:ormlite-core:4.48'
+		compile 'com.google.code.gson:gson:2.2.4'
+		compile 'com.j256.ormlite:ormlite-core:4.48'
 		compile 'com.j256.ormlite:ormlite-android:4.48'
 		compile fileTree(dir: 'libs', include: '*.jar')
 	}
