@@ -33,7 +33,7 @@ public class OrderDetails extends TimeBase {
 	private boolean ordered;
 
 	@DatabaseField(columnName = "order_void")
-	private	boolean orderVoid;
+	private boolean orderVoid;
 
 	@DatabaseField(columnName = "order_void_reason")
 	private String orderVoidReason;

@@ -10,13 +10,13 @@ import com.j256.ormlite.table.DatabaseTable;
 public class Employee extends TimeBase {
 	@DatabaseField
 	private String name;
-	
+
 	@DatabaseField
 	private String username;
-	
+
 	@DatabaseField
 	private String password;
-	
+
 	@DatabaseField
 	private List<Role> roles;
 }

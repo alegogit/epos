@@ -11,13 +11,13 @@ public class TimeBase {
 
 	@DatabaseField(columnName = "created_by")
 	private Integer createdBy;
-	
+
 	@DatabaseField(columnName = "created_date")
 	private Date createdDate;
-	
+
 	@DatabaseField(columnName = "last_updated_by")
 	private Integer lastUpdatedBy;
-	
+
 	@DatabaseField(columnName = "last_update_date")
 	private Date lasUpdatedDate;
 }

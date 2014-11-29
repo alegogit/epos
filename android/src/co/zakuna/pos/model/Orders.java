@@ -29,7 +29,7 @@ public class Orders extends TimeBase {
 
 	@DatabaseField
 	private Double total;
-	
+
 	@DatabaseField(columnName = "paid_amount")
 	private Double paidAmount;
 
@@ -38,7 +38,7 @@ public class Orders extends TimeBase {
 
 	@DatabaseField
 	private Double tip;
-	
+
 	@DatabaseField
 	private Double discount;
 }

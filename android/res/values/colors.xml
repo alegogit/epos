@@ -1,9 +1,9 @@
 <resources>
+
     <color name="colorPrimary">#283593</color>
     <color name="colorPrimaryDark">#3f51b5</color>
-
     <color name="colorSecondary">#9fa8da</color>
     <color name="colorSecondaryDark">#5c6bc0</color>
-
     <color name="windowBackgroundColor">#424242</color>
+
 </resources>
