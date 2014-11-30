@@ -1,7 +1,6 @@
 package co.zakuna.pos.model;
 
 import lombok.*;
-import java.util.List;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -18,5 +17,5 @@ public class Employee extends TimeBase {
 	private String password;
 
 	@DatabaseField
-	private List<Role> roles;
+	private Role role;
 }

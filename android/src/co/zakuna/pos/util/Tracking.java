@@ -15,7 +15,7 @@ public class Tracking {
 		this.context = context;
 	}
 
-	public void setEvent(String kategori, String event, String label, Long value) {
+	public void setEvent(String category, String event, String label, Long value) {
 		EasyTracker easyTracker = EasyTracker.getInstance(context);
 		easyTracker.send(MapBuilder.createEvent(category, // category
 				event, // event

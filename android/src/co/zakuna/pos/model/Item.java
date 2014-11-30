@@ -1,7 +1,6 @@
 package co.zakuna.pos.model;
 
 import lombok.*;
-import java.util.List;
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 
@@ -9,7 +8,7 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "item")
 public class Item extends TimeBase {
 	@DatabaseField
-	private List<Category> category;
+	private Category category;
 
 	@DatabaseField
 	private String name;
