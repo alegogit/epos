@@ -16,7 +16,14 @@ class Home_controller extends CI_Controller {
 		if($this->session->userdata('logged_in'))
 		{
 			$data['menu'] = 'home';
-			//$data['announcements'] = $this->home->get_announcements();
+			$data['trans_today'] = $this->home->num_transactions_today();
+			$data['sales_today'] = $this->home->total_sales_today();
+			$data['percent_today'] = $this->home->percentage_increase_from_yesterday();
+			$data['trans_this_year'] = $this->home->num_transactions_this_year();
+			$data['sales_this_year'] = $this->home->total_sales_this_year();
+			$data['percent_this_year'] = $this->home->percentage_increase_this_year();       
+			$data['percent_this_week'] = $this->home->percentage_increase_from_last_week(); 
+			$data['num_cust_30day'] = $this->home->num_customers_30day();
 			//$data['promotions'] = $this->home->get_latest_promotions();
 			//$data['services'] = $this->home->get_latest_services();
 			
@@ -25,6 +32,7 @@ class Home_controller extends CI_Controller {
 			$this->load->view('contents/home',$data);
 			$this->load->view('shared/footer');
 			//var_dump($this->data);
+			//echo "<pre>" . var_dump($this->data) . "</pre>";
 
 		}
 		else

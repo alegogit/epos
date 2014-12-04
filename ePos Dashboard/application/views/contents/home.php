@@ -11,9 +11,16 @@
       
         <hr />  
         <ul class="list-inline">
-          <li><span style="background-color:#D43F3A;">&nbsp;&nbsp;</span> - Notification</li>
-          <li><span style="background-color:#357EBD;">&nbsp;&nbsp;</span> - Building Management Information</li>
-          <li><span style="background-color:#EEA236;">&nbsp;&nbsp;</span> - Neighborhood News</li>
+          <li><input id="startdate" name="startdate" min="2012-01-01" max="2013-01-01" type="date"></li>
+          <li>
+               <select id = "myRestaurant">
+                    <option value = "0">ALL Restaurants</option>
+                    <?php foreach($restaurants as $row){ ?>
+                    <option value = "<?=$row->ID?>" <?= ($row->DEFAULT_SET==1)?'selected':''?> ><?=$row->NAME?></option>
+                    <?php } ?>
+               </select>
+          </li>
+          <? //echo "<pre>" . var_dump($restaurants) . "</pre>"; ?>
         </ul>
         <!--<div class="row">
           <div class="col-sm-2 col-sm-offset-1"><span style="background-color:#D43F3A;">&nbsp;&nbsp;</span> - Notification</div>
@@ -21,7 +28,7 @@
           <div class="col-sm-4"><span style="background-color:#EEA236;">&nbsp;&nbsp;</span> - Neighborhood News</div>
         </div>-->
 		<hr />
-        <?php foreach($announcements as $row){ ?>
+        <?php foreach($announcements as $row){ ?>     
 			<?php if($row->TYPE == 'BUILD_MANAGE'): ?>
                 <div class="blockquote-box blockquote-primary clearfix">
                   <p><strong><?php echo $row->NAME; ?></strong> - <?php echo $row->DESCRIPTION; ?></p>
@@ -40,61 +47,41 @@
       </div><!-- /.col-sm-9 -->
 
       <div class="col-sm-2" style="padding:0;">
-      
-        <div class="list-group">
-          <span class="list-group-item">
-            <strong>Promotions</strong>
-            <a href="#" class="pull-right">See all</a>
-          </span>
-          <!------------------------------------->
-          <?php foreach($promotions as $row){ ?>
-          	<a href="#" class="list-group-item">
-            <img src="data:image/jpeg;base64,<?php echo base64_encode($row->IMAGE); ?>" alt="title1" class="img-responsive" style="">
-            <h4 class="text-center"><?php echo $row->NAME; ?></h4>
-            <p class="text-center"><?php echo $row->DESCRIPTION; ?></p>
-          </a>
-          <?php } ?>
-          <!------------------------------------->
-          <!--
-          <a href="#" class="list-group-item">
-            <img src="http://placehold.it/250x200" alt="title1" class="img-responsive" style="">
-            <h4 class="text-center">Heading</h4>
-            <p class="text-center">Duis mollis, est non commodo luctus, nisi erat porttitor ligula</p>
-          </a>
-          <a href="#" class="list-group-item">
-            <img src="http://placehold.it/250x200" alt="title1" class="img-responsive" style="">
-            <h4 class="text-center">Heading</h4>
-            <p class="text-center">Duis mollis, est non commodo luctus, nisi erat porttitor ligula</p>
-          </a>
-        -->
+        <div>
+          &nbsp;
         </div>
         
         <div class="list-group">
           <span class="list-group-item">
-            <strong>Local Services</strong>
+            <strong>Sales Today</strong>
             <a href="#" class="pull-right">See all</a>
-          </span>
-          <!------------------------------------->
-          <?php foreach($services as $row){ ?>
-          	<a href="#" class="list-group-item">
-            <img src="http://placehold.it/250x200" alt="title1" class="img-responsive" style="">
-            <h4 class="text-center"><?php echo $row->NAME; ?></h4>
-            <p class="text-center"><?php echo $row->DESCRIPTION; ?></p>
-          </a>
-          <?php } ?>
-          <!------------------------------------->
-          <!--
-          <a href="#" class="list-group-item">
-            <img src="http://placehold.it/250x200" alt="title1" class="img-responsive" style="">
-            <h4 class="text-center">Heading</h4>
-            <p class="text-center">Duis mollis, est non commodo luctus, nisi erat porttitor ligula</p>
-          </a>
-          <a href="#" class="list-group-item">
-            <img src="http://placehold.it/250x200" alt="title1" class="img-responsive" style="">
-            <h4 class="text-center">Heading</h4>
-            <p class="text-center">Duis mollis, est non commodo luctus, nisi erat porttitor ligula</p>
-          </a>
-          -->
+            <br>Rp <?=number_format($sales_today->res, 0, '', '.')?>
+            <br><?=round((float)$percent_today->PERCENTAGE * 100 ) . '%'?> From Yesterday
+          <br><?=$trans_today->res?> Transactions
+          </span> 
+        </div>    
+        
+        <div class="list-group">
+          <span class="list-group-item">
+            <strong>Sales This Year</strong>
+            <a href="#" class="pull-right">See all</a>
+            <br>Rp <?=number_format($sales_this_year->res, 0, '', '.')?>
+            <br><?=round((float)$percent_last_week->PERCENTAGE * 100 ) . '%'?> From Last Week
+            <br><?=round((float)$percent_this_year->PERCENTAGE * 100 ) . '%'?> From Beginning Of The Year
+          <br><?=$trans_this_year->res?> Transactions
+          </span> 
+        </div>        
+                  
+        <div class="list-group">
+          <span class="list-group-item">
+            <strong>Your Customers</strong>
+            <a href="#" class="pull-right">See all</a>
+            <br><?=$num_cust_30day->res?>
+            <br>People
+          <br>Last 30 Days
+          </span>   
+        </div>    
+        
         </div>
         
       </div><!-- /.col-sm-3 -->
