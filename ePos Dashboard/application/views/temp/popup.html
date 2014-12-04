@@ -1,0 +1,86 @@
+    <style>
+    .modals 
+{
+    z-index:333;
+    background-color:rgba(0,0,0,0.6);
+    background-attachment:scroll;
+    position:fixed;
+    width:100%;
+    top:0;
+    right:0;
+    bottom:0;
+    left:0;
+}
+.modals div.pos
+{
+    width:33.33%;
+    position:absolute;
+    top:15%;
+    left:33.33%;    
+}
+
+
+    
+    </style>
+    
+    
+    <!-- POPUP MODALS -->
+    <div class="modals">
+      <div class="pos">
+      
+        <div class="panel panel-primary">
+          <div class="panel-heading">Create Event</div>
+          <div class="panel-body">
+            <form class="form form-horizontal" role="form">
+              <div class="form-group">
+                <label for="text1" class="col-sm-12">Name</label>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="text1" placeholder="Enter First Name.">
+                  <p class="help-block">&nbsp;First Name</p>
+                </div>
+                <div class="col-sm-6">
+                  <input type="text" class="form-control" id="text2" placeholder="Enter First Name.">
+                  <p class="help-block">&nbsp;Last Name</p>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="text3" class="col-sm-12">Email</label>
+                <div class="col-sm-5">
+                  <input type="text" class="form-control" id="text3" placeholder="Enter Email.">
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="text4" class="col-sm-12">Phone</label>
+                <div class="col-sm-5">
+                  <input type="text" class="form-control" id="text4" placeholder="Enter Phone Number.">
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="text5" class="col-sm-12">Subject</label>
+                <div class="col-sm-5">
+                  <input type="text" class="form-control" id="text5" placeholder="Enter Subject.">
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label for="text3" class="col-sm-12">Message</label>
+                <div class="col-sm-12">
+                  <textarea class="form-control" rows="3"></textarea>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <div class="col-sm-12">
+                  <button type="button" class="btn btn-primary btn-block" id="cancel">Cancel</button>
+                  <button type="submit" class="btn btn-primary btn-block">Send</button>
+                </div>
+              </div>
+            </form>    
+          </div><!-- /.panel-body -->
+        </div><!-- /.panel panel-primary -->
+      
+      </div><!-- /.pos -->
+    </div><!-- /.modals -->

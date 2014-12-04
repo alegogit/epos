@@ -1,0 +1,44 @@
+/* CSS Document */
+
+/*Styles*/
+
+.gallery {
+
+}
+
+.gallery a {
+	margin-top:-5px;
+}
+
+/*Left and Right margins to images in the middle column*/
+/*This selects the 2nd, 5th and 8th elements*/
+#gallery a:nth-child(3n+2) {
+}
+
+.gallery a img {
+	width:100px;
+	-webkit-transition: all 0.5s; transition: all 0.5s;
+}
+
+/*Hover effects*/
+.gallery a:hover img {
+	-webkit-filter: none;  filter: none;/*Returns to default state*/
+}
+/*Default state for brightness has to be specified specifically*/
+.gallery a:hover img.brightness {
+	-webkit-filter: brightness(1); filter: brightness(1);
+}
+
+/*Title styles*/
+
+/*Filter styles*/
+.saturate {-webkit-filter: saturate(3); filter: saturate(3);}
+.grayscale {-webkit-filter: grayscale(100%); filter: grayscale(100%);}
+.contrast {-webkit-filter: contrast(160%); filter: contrast(160%);}
+.brightness {-webkit-filter: brightness(10); filter: brightness(10);}
+.blur {-webkit-filter: blur(3px); filter: blur(3px);}
+.invert {-webkit-filter: invert(100%); filter: invert(100%);}
+.sepia {-webkit-filter: sepia(100%); filter: sepia(100%);}
+.huerotate {-webkit-filter: hue-rotate(180deg); filter: hue-rotate(180deg);}
+.opacity {-webkit-filter: opacity(50%); filter: opacity(50%);}
+
