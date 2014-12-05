@@ -8,22 +8,28 @@ class Home_controller extends CI_Controller {
 		$this->load->model('home_model','home',TRUE);
 		$session_data = $this->session->userdata('logged_in');
 		$this->data['user'] = $this->home->get_profile();
-		$this->data['restaurants'] = $this->home->get_restaurant();
+		$this->data['restaurants'] = $this->home->get_restaurant(); 
+			//echo "&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>";
+			//echo "<pre>" . var_dump($this->data['restaurants']) . "</pre>";
 	}
 
 	public function index()
 	{
 		if($this->session->userdata('logged_in'))
 		{
-			$data['menu'] = 'home';
-			$data['trans_today'] = $this->home->num_transactions_today();
-			$data['sales_today'] = $this->home->total_sales_today();
-			$data['percent_today'] = $this->home->percentage_increase_from_yesterday();
-			$data['trans_this_year'] = $this->home->num_transactions_this_year();
-			$data['sales_this_year'] = $this->home->total_sales_this_year();
-			$data['percent_this_year'] = $this->home->percentage_increase_this_year();       
-			$data['percent_this_week'] = $this->home->percentage_increase_from_last_week(); 
-			$data['num_cust_30day'] = $this->home->num_customers_30day();
+			$data['menu'] = 'home';         
+			$session_data = $this->session->userdata('logged_in');
+			$data['def_rest'] = $session_data['def_rest'];
+			$rest_id = (!($this->input->post('rest_id')))?$data['def_rest']:$this->input->post('rest_id'); 
+			$data['rest_id'] = $rest_id;
+			$data['trans_today'] = $this->home->num_transactions_today($rest_id);
+			$data['sales_today'] = $this->home->total_sales_today($rest_id);
+			$data['percent_today'] = $this->home->percentage_increase_from_yesterday($rest_id);
+			$data['trans_this_year'] = $this->home->num_transactions_this_year($rest_id);
+			$data['sales_this_year'] = $this->home->total_sales_this_year($rest_id);
+			$data['percent_this_year'] = $this->home->percentage_increase_this_year($rest_id);       
+			$data['percent_this_week'] = $this->home->percentage_increase_from_last_week($rest_id); 
+			$data['num_cust_30day'] = $this->home->num_customers_30day($rest_id);
 			//$data['promotions'] = $this->home->get_latest_promotions();
 			//$data['services'] = $this->home->get_latest_services();
 			
@@ -31,9 +37,9 @@ class Home_controller extends CI_Controller {
 			$this->load->view('shared/left_menu', $data);
 			$this->load->view('contents/home',$data);
 			$this->load->view('shared/footer');
-			//var_dump($this->data);
-			//echo "<pre>" . var_dump($this->data) . "</pre>";
-
+			//echo "&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>";
+			//echo "<pre>" . var_dump($session_data) . "</pre>";
+               //echo $this->input->get('rest_id');
 		}
 		else
 		{

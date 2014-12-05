@@ -22,7 +22,7 @@
    
     <div class="row">
       <div class="col-sm-4 col-sm-offset-4">
-      <img src="<?php echo base_url(); ?>assets/images/logo.png" style="width:400px;" class="grayscale" />
+      <img src="<?php echo base_url(); ?>assets/images/logo.png" style="width:300px;" class="grayscale" />
       </div>
     </div><!-- /.row -->
      

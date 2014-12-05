@@ -11,9 +11,11 @@ class Login_model extends CI_Model {
         //create query to connect user login database
         //$this->db->select('*');
         //$this->db->from('USERS');
-        $this->db->where('USERNAME', $username);
-        $this->db->where('PASSWORD', $password);
+        $this->db->where('USERS.USERNAME', $username);
+        $this->db->where('USERS.PASSWORD', $password);  
         $this->db->limit(1);
+        $this->db->join('users_restaurants', 'USERS.ID = users_restaurants.USER_ID');   
+        $this->db->where('users_restaurants.DEFAULT_REST', 1);  
          
         //get query and processing
         $query = $this->db->get('USERS');

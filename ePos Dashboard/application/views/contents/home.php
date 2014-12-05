@@ -10,40 +10,61 @@
       <div class="col-sm-10">
       
         <hr />  
+        
+     <form id="selRest" method="POST" role="form">
+     <div class="form-group">
         <ul class="list-inline">
-          <li><input id="startdate" name="startdate" min="2012-01-01" max="2013-01-01" type="date"></li>
           <li>
-               <select id = "myRestaurant">
+               <input id="startdate" name="startdate" type="text" value="<?=date('m/d/Y', time() - 30 * 60 * 60 * 24)?>" class="form-control datepicker" style="display:inline" placeholder="mm/dd/yyyy" title="format : mm/dd/yyyy">
+          </li>
+          <li>
+               <input id="enddate" name="enddate" type="text" value="<?=date('m/d/Y')?>" class="form-control datepicker" style="display:inline" title="format : mm/dd/yyyy">
+          </li>
+          <li>
+               <select id = "myRestaurant" name="rest_id" class="form-control" style="display:inline">
                     <option value = "0">ALL Restaurants</option>
                     <?php foreach($restaurants as $row){ ?>
-                    <option value = "<?=$row->ID?>" <?= ($row->DEFAULT_SET==1)?'selected':''?> ><?=$row->NAME?></option>
+                    <option value = "<?=$row->REST_ID?>" <?= ($row->REST_ID==$rest_id)?'selected':''?> ><?=$row->NAME?></option>
                     <?php } ?>
                </select>
           </li>
+          <li>
+               <button type="submit" class="btn btn-success" style="display:inline">Filter</button>
+          </li>
           <? //echo "<pre>" . var_dump($restaurants) . "</pre>"; ?>
         </ul>
-        <!--<div class="row">
-          <div class="col-sm-2 col-sm-offset-1"><span style="background-color:#D43F3A;">&nbsp;&nbsp;</span> - Notification</div>
-          <div class="col-sm-4"><span style="background-color:#357EBD;">&nbsp;&nbsp;</span> - Building Management Information</div>
-          <div class="col-sm-4"><span style="background-color:#EEA236;">&nbsp;&nbsp;</span> - Neighborhood News</div>
-        </div>-->
+     </div>
+      </form>
+      
 		<hr />
-        <?php foreach($announcements as $row){ ?>     
-			<?php if($row->TYPE == 'BUILD_MANAGE'): ?>
+		
+	<div class="col-md-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">Doughnut Chart</div>
+					<div class="panel-body">
+						<div class="canvas-wrapper">
+							<canvas class="chart" id="doughnut-chart" ></canvas>
+						</div>
+					</div>
+				</div>
+			</div>	
+		
+       <?php //foreach($announcements as $row){ ?>     
+			<?php //if($row->TYPE == 'BUILD_MANAGE'): ?>
                 <div class="blockquote-box blockquote-primary clearfix">
-                  <p><strong><?php echo $row->NAME; ?></strong> - <?php echo $row->DESCRIPTION; ?></p>
+                  <p><strong><?php //echo $row->NAME; ?></strong> - <?php //echo $row->DESCRIPTION; ?></p>
                 </div>
-            <?php elseif($row->TYPE == 'NEIGHBORHOOD'): ?>
+            <?php //elseif($row->TYPE == 'NEIGHBORHOOD'): ?>
                 <div class="blockquote-box blockquote-warning clearfix">
-                  <p><strong><?php echo $row->NAME; ?></strong> - <?php echo $row->DESCRIPTION; ?></p>
+                  <p><strong><?php //echo $row->NAME; ?></strong> - <?php //echo $row->DESCRIPTION; ?></p>
                 </div>
-            <?php else: ?>
+            <?php //else: ?>
                 <div class="blockquote-box blockquote-danger clearfix">
-                  <p><strong><?php echo $row->NAME; ?></strong> - <?php echo $row->DESCRIPTION; ?></p>
+                  <p><strong><?php //echo $row->NAME; ?></strong> - <?php //echo $row->DESCRIPTION; ?></p>
                 </div>
-            <?php endif; ?>
-		<?php } ?>
-                
+            <?php //endif; ?>
+		<?php //} ?>
+               
       </div><!-- /.col-sm-9 -->
 
       <div class="col-sm-2" style="padding:0;">
@@ -100,6 +121,11 @@
   </div><!-- /.container-fluid -->
 </div><!-- /#page-content-wrapper -->
 
+<div id="donut1" data-payment1="<?=270?>"></div>
+
+<script src="<?=base_url()?>assets/js/charts/chart.min.js"></script>
+<script src="<?=base_url()?>assets/js/charts/easypiechart.js"></script>
+<script src="<?=base_url()?>assets/js/charts/easypiechart-data.js"></script>
 <script>
 
 	$('#promoCarousel').carousel({
@@ -110,4 +136,47 @@
 		interval: 5000
 	});
     
+     /*
+     $('#myRestaurant').change(function() {
+            $('#selRest').submit(); 
+     });
+     */
+     
+     $("#startdate").datepicker();
+     $("#enddate").datepicker();
+     
+     var randomScalingFactor = function(){ return Math.round(Math.random()*1000)};
+     var payment1 = $('#donut1').data('payment1');
+     var doughnutData = [
+					{
+						value: payment1,
+						color:"#30a5ff",
+						highlight: "#62b9fb",
+						label: "Blue"
+					},
+					{
+						value: 50,
+						color: "#ffb53e",
+						highlight: "#fac878",
+						label: "Orange"
+					},
+					{
+						value: 100,
+						color: "#1ebfae",
+						highlight: "#3cdfce",
+						label: "Teal"
+					},
+					{
+						value: 120,
+						color: "#f9243f",
+						highlight: "#f6495f",
+						label: "Red"
+					}
+	
+				];
+	var chart3 = document.getElementById("doughnut-chart").getContext("2d");
+	window.myDoughnut = new Chart(chart3).Doughnut(doughnutData, {responsive : true
+	});
+	
+	
 </script>
