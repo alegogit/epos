@@ -5,6 +5,7 @@
 
 <!-- Sidebar -->
 <div id="sidebar-wrapper">
+  <div>
   <ul class="sidebar-nav">
     <li class="<?php if($menu == 'home'){ echo "active";} ?>">
 	  <?php echo anchor('home', 'Dashboard'); ?>
@@ -28,8 +29,9 @@
 	  <?php echo anchor('contact', 'Contact Us'); ?>
     </li>-->
   </ul>
-
-  <div class="copyright">
+  </div>
+  <div class="copyright"> 
+  <div id="calendar" style="background-color:#fff;margin:5px;border-radius:5px;"></div>  
     <p>© 2014 Company, Inc. · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
   </div>
 </div><!-- /#sidebar-wrapper -->
@@ -50,6 +52,16 @@
 			$( "#hand" ).removeClass("glyphicon glyphicon-chevron-right");
 			$( "#hand" ).addClass("glyphicon glyphicon-chevron-left");
 		}  
-	});
+	});   
+	
+	var harini = new Date('dd M yyyy');
+  $("#calendar").datepicker({ 
+    format: 'dd M yyyy', 
+    todayHighlight: true,
+    beforeShowDay: function(date){
+      $(this).children('thead').addClass('defbg');
+    } 
+  });
+  //$("#calendar").datepicker('');
 	
 </script>

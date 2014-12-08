@@ -1,0 +1,83 @@
+.orgbg {
+	background-color: #ffb53e;
+}
+.teabg {
+	background-color: #1ebfae;
+}
+.redbg {
+	background-color: #f9243f;
+}
+.defbg {
+	background-color: #428bca;
+}
+.navdash{     
+     color: #747473;   
+     border: 1px solid #428bca;
+     font-family: arial;
+     font-size: 12px;
+     font-weight: 700;
+     padding: 8px;
+     text-decoration: none;
+     text-align: center;
+     width: 100px;
+     margin-top: 10px;
+     margin-bottom: -10px;
+     cursor: pointer;
+}
+.navdash.active {
+    background-color: #428bca;
+    color: #f8f8f8;
+    cursor: default;
+    font-weight: 700;
+}
+.navdash_alone {      
+    background-color: #428bca;
+    color: #f8f8f8;
+    font-weight: 700;
+     border-radius: 8px; 
+     cursor: pointer;
+}
+.navdash_first {
+     border-bottom-left-radius: 8px;
+     border-top-left-radius: 8px;
+}
+.navdash_last {    
+     border-bottom-right-radius: 8px;
+     border-top-right-radius: 8px;
+}
+.eeebg {
+	background-color: #eee;
+}
+.rightdash{
+     margin 6px;
+     text-align: center;
+     border: 1px solid #eee;
+     border-radius:5px;    
+     box-shadow:  0 1px 1px -1px rgba(0, 0, 0, 0.05), -1px 0 1px -1px rgba(0, 0, 0, 0.05);
+     color: #f8f8f8;
+     font-size: 95%;
+} 
+.rdtitle{   
+     color: #5898D0;
+     padding: 10px; 
+     font-size: 120%;
+     text-align: left;   
+     font-weight: bold;
+} 
+.rdinfo{
+     color: #999;
+     padding: 10px; 
+     font-size: 110%;  
+     font-weight: bold;
+}
+.text270{
+     font-size: 270%; 
+     font-weight: bold;
+}
+.pad30{
+     padding-top: 30px;
+     padding-bottom: 30px;
+}
+.noborder{
+     border: none;
+}

@@ -6243,7 +6243,7 @@ button.close {
     height: 100%;
     margin-left: -200px;
     overflow-y: auto;
-    background: #222222; /*222222 - 428bca */
+    background: #E0E0E0; /*222222 - 428bca */
     -webkit-transition: all 0s ease;
     -moz-transition: all 0s ease;
     -o-transition: all 0s ease;
@@ -6284,17 +6284,18 @@ button.close {
 .sidebar-nav li {
     text-indent: 20px;
     line-height: 40px;
+    border-bottom: 1px solid #ccc;
 }
 
 .sidebar-nav li a {
     display: block;
     text-decoration: none;
-    color: #999;
+    color: #222;
 }
 
 .sidebar-nav li a:hover {
     text-decoration: none;
-    color: #fff;
+    color: #999;
     background-color: transparent;
 }
 
@@ -6302,8 +6303,8 @@ button.close {
 .sidebar-nav > .active > a:hover,
 .sidebar-nav > .active > a:focus {
 	text-decoration: none;
-	color: #fff;
-	/*background-color: #080808;*/
+	color: #428bca;
+	background-color: #f8f8f8;
 }
 
 .sidebar-nav > .sidebar-brand {
@@ -6351,9 +6352,8 @@ button.close {
 
 .menu-toggle {
   position:fixed; 
-  left:auto; 
-  margin-top:1px; 
-  background-color:#222222; 
+  left:auto;  
+  background-color:#E0E0E0; 
   z-index:999; 
   height:100%;
   border-bottom-right-radius:5px;
@@ -6374,7 +6374,7 @@ button.close {
 .menu-toggle a:hover {
     text-decoration: none;
     color: #fff;
-    background-color: #080808;
+    background-color: #E0E0E0;
   -webkit-box-shadow: 5px 0 5px #888888;
 		box-shadow: 5px 0 5px #888888;
 }

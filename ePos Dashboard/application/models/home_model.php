@@ -109,7 +109,7 @@ class Home_model extends CI_Model {
           return $query->row();
 	}
      
-     function num_customers_30day($rest_id)
+  function num_customers_30day($rest_id)
 	{
 	     $query = $this->db->query('SELECT COUNT(C.ID) AS res 
           FROM CUSTOMERS C
@@ -118,6 +118,61 @@ class Home_model extends CI_Model {
 				AND O.ENDED > SUBDATE(SYSDATE(), 30);');
 		//return $query->result();  
           return $query->row();
+	}
+  /*
+  function dash_payment_method($start_date,$end_date,$rest_id)
+	{
+	     $query = $this->db->query('SELECT SUM(PAID_AMOUNT) AMOUNT, PAYMENT_METHOD 
+          FROM ORDERS
+          WHERE ENDED BETWEEN "'.$start_date.'" and "'.$end_date.'"
+          AND REST_ID = '.$rest_id.'
+          GROUP BY PAYMENT_METHOD;');
+		    return $query->result();  
+        //return $query->row();
+	}
+	*/
+	
+	function dash_payment_method($start_date,$end_date,$rest_id)
+	{
+	     $query = $this->db->query('SELECT R.CODE, R.VALUE AS PAYMENT_METHOD, IFNULL(PAYMENT.AMOUNT, 0) AS AMOUNT FROM REF_VALUES R 
+	        LEFT OUTER JOIN  (
+		        SELECT PAYMENT_METHOD, IFNULL(SUM(PAID_AMOUNT),0) AMOUNT FROM ORDERS
+		        WHERE ENDED BETWEEN "'.$start_date.'" AND "'.$end_date.'"
+		        AND REST_ID = '.$rest_id.' AND ACTIVE = 0
+		        GROUP BY PAYMENT_METHOD
+          ) PAYMENT ON PAYMENT.PAYMENT_METHOD = R.CODE
+          WHERE R.LOOKUP_NAME = "PAYMENT_METHOD" AND R.IS_ACTIVE = 1;');
+		    return $query->result();  
+        //return $query->row();
+	}
+	
+	function dash_top_categories($start_date,$end_date,$rest_id)
+	{
+	     $query = $this->db->query('SELECT C.NAME CAT_NAME, IFNULL(SUM(OD.PRICE*OD.QUANTITY),0) AMOUNT FROM ORDER_DETAILS OD
+          INNER JOIN ORDERS O ON OD.ORDER_ID = O.ID
+          AND O.ENDED BETWEEN "'.$start_date.'" AND "'.$end_date.'"
+          AND O.REST_ID = '.$rest_id.' AND O.ACTIVE = 0
+          INNER JOIN MENU M ON M.ID = OD.MENU_ID
+          INNER JOIN CATEGORY C ON C.ID = M.CATEGORY_ID
+          GROUP BY C.NAME
+          ORDER BY AMOUNT DESC
+          LIMIT 5;');
+		    return $query->result();  
+        //return $query->row();
+	}
+	
+	function dash_best_sellers($start_date,$end_date,$rest_id)
+	{
+	     $query = $this->db->query('SELECT M.NAME AS ITEMS, IFNULL(SUM(OD.PRICE*QUANTITY),0) AMOUNT, COUNT(M.NAME) AS QTY FROM ORDER_DETAILS OD 
+	        INNER JOIN ORDERS O ON OD.ORDER_ID = O.ID
+		      AND O.ENDED BETWEEN "'.$start_date.'" AND "'.$end_date.'"
+		      AND O.REST_ID = '.$rest_id.' AND O.ACTIVE = 0
+	        INNER JOIN MENU M ON M.ID = OD.MENU_ID
+          GROUP BY M.NAME
+          ORDER BY SUM(OD.PRICE*QUANTITY) DESC
+          LIMIT 5;');
+		    return $query->result();  
+        //return $query->row();
 	}
 	
 	function get_latest_promotions()

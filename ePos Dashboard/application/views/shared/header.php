@@ -16,16 +16,22 @@
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.dataTables.js"></script>
   
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap.css"/>
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/datepicker.css"/>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.css"/>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.theme.css"/>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery.dataTables.css"/>
 
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/msform.css"/>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/gallery-effect.css"/>
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/custom.css"/>
 
 <!-- Chart -->
-<script type="text/javascript" src="assets/js/highcharts.js"></script>
-<script type="text/javascript" src="assets/js/modules/exporting.js"></script>
+<script src="<?=base_url()?>assets/js/charts/chart.min.js"></script>
+<script src="<?=base_url()?>assets/js/charts/easypiechart.js"></script>
+<script src="<?=base_url()?>assets/js/charts/easypiechart-data.js"></script> 
+
+<!-- Datepicker -->
+<script src="<?=base_url()?>assets/js/bootstrap-datepicker.js"></script>
 
 <!-- Scheduler -->
 <script src='<?php echo base_url(); ?>assets/codebase/dhtmlxscheduler.js' type="text/javascript" charset="utf-8"></script>
@@ -122,10 +128,12 @@ $(function() {
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
+            <!--<li class="glyphicon glyphicon-bell" style="padding:5px 15px;">
+            </li>-->
             <li class="dropdown">
               <a href="#" style="padding:5px 15px;" class="dropdown-toggle" data-toggle="dropdown">
                 <img class="img-circle" src="http://placehold.it/40" />
-                <?php echo $user->USERNAME; ?><span class="caret"></span>
+                <span style="padding-left:6px;padding-right:6px"><?php echo $user->USERNAME; ?></span><span class="caret"></span>
               </a>
               <ul class="dropdown-menu" role="menu">
                 <li><a href="<?php echo site_url(); ?>/profile"><span style="margin-right:10px;" class="glyphicon glyphicon-user"></span>My Profile</a></li>
