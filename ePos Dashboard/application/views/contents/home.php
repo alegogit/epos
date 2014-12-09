@@ -173,7 +173,8 @@
           <div class="rdtitle">Sales This Year</div>
           <!--<a href="#" class="pull-right">See all</a>-->
           <span class="list-group-item teabg noborder pad30">
-            <span class="text270">Rp <?=number_format($sales_this_year->res, 0, '', '.')?></span>
+            <span class="text270">Rp <?=number_format($sales_this_year->res, 0, '', '.')?></span>  
+            <span class="numAnim" value="<?=$sales_this_year->res?>"></span>
             <br><span class="glyphicon glyphicon-info-sign"></span>&nbsp;<?=round((float)$percent_last_week->PERCENTAGE * 100 ) . '%'?> From Last Week
             <br><span class="glyphicon glyphicon-info-sign"></span>&nbsp;<?=round((float)$percent_this_year->PERCENTAGE * 100 ) . '%'?> From Beginning Of The Year
           </span>   
@@ -259,7 +260,26 @@
      });
      */
      
+     //datepickers
      $("#startdate").datepicker({format: 'dd M yyyy'});
      $("#enddate").datepicker({format: 'dd M yyyy'});
+                     
+     num = $('.numAnim').attr("value");
+      $({someValue: 0}).animate({someValue: num}, {
+        duration: 3000,
+        easing:'swing', 
+        step: function() { 
+          // Update the element's text with rounded-up value:
+          $('.numAnim').text(dotSeparateNumber(Math.round(this.someValue)));
+        }
+      });
+     
+    //number format
+    function dotSeparateNumber(val){
+      while (/(\d+)(\d{3})/.test(val.toString())){
+        val = val.toString().replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+      }
+    return val;
+    }
      	
 </script>

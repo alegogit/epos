@@ -23,7 +23,8 @@
 
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/msform.css"/>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/gallery-effect.css"/>
-<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/custom.css"/>
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/custom.css"/>    
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap-table.css"/>
 
 <!-- Chart -->
 <script src="<?=base_url()?>assets/js/charts/chart.min.js"></script>
@@ -32,6 +33,8 @@
 
 <!-- Datepicker -->
 <script src="<?=base_url()?>assets/js/bootstrap-datepicker.js"></script>
+<!-- Table -->
+<script src="<?=base_url()?>assets/js/bootstrap-table.js"></script>
 
 <!-- Scheduler -->
 <script src='<?php echo base_url(); ?>assets/codebase/dhtmlxscheduler.js' type="text/javascript" charset="utf-8"></script>
