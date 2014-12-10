@@ -8,7 +8,7 @@ class Setting_controller extends CI_Controller {
 		$this->load->model('setting_model','setting',TRUE);
 		$session_data = $this->session->userdata('logged_in');
 		$this->data['user'] = $this->setting->get_profile();
-		//$this->data['restaurants'] = $this->home->get_restaurant(); 
+		$this->data['restaurants'] = $this->setting->get_restaurant(); 
 			//echo "&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>";
 			//echo "<pre>" . var_dump($this->data['restaurants']) . "</pre>";
 	}
@@ -27,7 +27,9 @@ class Setting_controller extends CI_Controller {
 			$end_date = (!($this->input->post('startdate')))?$data['def_end_date']:$this->input->post('enddate'); 
 			$data['rest_id'] = $rest_id;
 			$data['startdate'] = $start_date;
-			$data['enddate'] = $end_date;
+			$data['enddate'] = $end_date;        
+			$data['printer_conf'] = $this->setting->get_printer();
+		  $data['connectivity'] = $this->setting->get_all_connectivity(); 
 			
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);

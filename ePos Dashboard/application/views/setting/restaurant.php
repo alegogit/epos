@@ -7,7 +7,7 @@
       <a role="button" class="btn btn-default" href="?p=tableorder">Table Order</a>               
       <a role="button" class="btn btn-default" href="?p=category">Category</a>               
       <a role="button" class="btn btn-default" href="?p=menu">Menu</a>                 
-      <a role="button" class="btn btn-primary" href="?p=printer">Printer</a>               
+      <a role="button" class="btn btn-default" href="?p=printer">Printer</a>               
       <a role="button" class="btn btn-default" href="?p=users">Users</a>           
       <a role="button" class="btn btn-default" href="?p=tax">Tax</a>               
       <a role="button" class="btn btn-default" href="?p=discounts">Discounts</a>               

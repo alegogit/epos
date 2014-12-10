@@ -3,16 +3,15 @@
   <div class="container-fluid" style="font-size:90%;">
   
     <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
-      <button type="button" class="btn btn-default">Tax</button>
-      <button type="button" class="btn btn-default">Discount</button>               
-      <button type="button" class="btn btn-default">Currency</button>               
-      <button type="button" class="btn btn-default">Location</button>               
-      <button type="button" class="btn btn-default">Categories</button>               
-      <button type="button" class="btn btn-default">Menu</button>               
-      <button type="button" class="btn btn-default">Table</button>               
-      <button type="button" class="btn btn-primary">Master</button>               
-      <button type="button" class="btn btn-default">Users</button>               
-      <a role="button" class="btn btn-default" href="?p=printer">Printer</a>         
+      <a role="button" class="btn btn-primary" href="?p=restaurant">Restaurant</a>
+      <a role="button" class="btn btn-default" href="?p=tableorder">Table Order</a>               
+      <a role="button" class="btn btn-default" href="?p=category">Category</a>               
+      <a role="button" class="btn btn-default" href="?p=menu">Menu</a>                 
+      <a role="button" class="btn btn-default" href="?p=printer">Printer</a>               
+      <a role="button" class="btn btn-default" href="?p=users">Users</a>           
+      <a role="button" class="btn btn-default" href="?p=tax">Tax</a>               
+      <a role="button" class="btn btn-default" href="?p=discounts">Discounts</a>               
+      <a role="button" class="btn btn-default" href="?p=currency">Currency</a>         
     </div>                                                                              
     <hr style="margin-bottom:10px" />
     <?php //$this->load->view('contents/setting',$data);?>

@@ -3,50 +3,80 @@
   <div class="container-fluid" style="font-size:90%;">
   
     <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
-      <a role="button" class="btn btn-default" href="?p=tax">Tax</a>
-      <a role="button" class="btn btn-default" href="?p=discount">Discount</a>               
-      <a role="button" class="btn btn-default" href="?p=currency">Currency</a>               
-      <a role="button" class="btn btn-default" href="?p=location">Location</a>               
-      <a role="button" class="btn btn-default" href="?p=categories">Categories</a>               
-      <a role="button" class="btn btn-default" href="?p=menu">Menu</a>               
-      <a role="button" class="btn btn-default" href="?p=table">Table</a>               
-      <a role="button" class="btn btn-default" href="?p=master">Master</a>               
-      <a role="button" class="btn btn-default" href="?p=users">Users</a>               
-      <a role="button" class="btn btn-primary" href="?p=printer">Printer</a>         
+      <a role="button" class="btn btn-default" href="?p=restaurant">Restaurant</a>
+      <a role="button" class="btn btn-default" href="?p=tableorder">Table Order</a>               
+      <a role="button" class="btn btn-default" href="?p=category">Category</a>               
+      <a role="button" class="btn btn-default" href="?p=menu">Menu</a>                 
+      <a role="button" class="btn btn-primary" href="?p=printer">Printer</a>               
+      <a role="button" class="btn btn-default" href="?p=users">Users</a>           
+      <a role="button" class="btn btn-default" href="?p=tax">Tax</a>               
+      <a role="button" class="btn btn-default" href="?p=discounts">Discounts</a>               
+      <a role="button" class="btn btn-default" href="?p=currency">Currency</a>         
     </div>                                                                              
     <hr style="margin-bottom:10px" />
-    <?php //$this->load->view('contents/setting',$data);?>
+    <?php //echo "<pre>" . var_dump($this->setting->get_username(1)) . "</pre>";?>
     <div class="row">
 			<div class="col-lg-12">
+			  <button style="margin-top:-5px;" type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#bookModal">
+          <span class="glyphicon glyphicon-plus"></span> Add New Printer  
+        </button>                                                                    
+        <hr style="margin-top:5px;margin-bottom:10px" />
 				<div class="panel panel-default">
-					<div class="panel-heading">Advanced Table</div>
+					<div class="panel-heading">
+            <b>Printer Setting</b>
+            <!--<button class="btn btn-primary pull-right" style="display:inline-block">Add New Record</button>-->
+          </div>
 					<div class="panel-body">
-						<table data-toggle="table" data-url="tables/data1.json"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+						<table data-toggle="table" data-url=""  data-show-refresh="false" data-show-toggle="false" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
 						    <thead>
 						    <tr>
-						        <th data-field="state" data-checkbox="true" >Item ID</th>
-						        <th data-field="id" data-sortable="true">Item ID</th>
-						        <th data-field="name"  data-sortable="true">Item Name</th>
-						        <th data-field="price" data-sortable="true">Item Price</th>
+						        <th data-field="state" data-checkbox="true" >Printer ID</th>
+						        <th data-field="name" data-sortable="true">Printer Name</th>
+						        <th data-field="rest"  data-sortable="true">Restaurant</th>
+						        <th data-field="conn" data-sortable="true">Connectivity</th>
+						        <th data-field="ip" data-sortable="true">IP Address</th>
+						        <th data-field="port"  data-sortable="true">Port</th>
+						        <th data-field="crby" data-sortable="true">Created By</th>
+						        <th data-field="crdt" data-sortable="true">Created Date</th>
+						        <th data-field="upby"  data-sortable="true">Updated By</th>
+						        <th data-field="updt" data-sortable="true">Updated Date</th>
 						    </tr>
 						    </thead>
-						    <tbody>
-                <tr data-index="0">
+						    <tbody>                    
+						    <?php $i = 0;  foreach ($printer_conf as $row){ ?>
+                <tr data-index="<?=$row->ID?>">
                   <td class="bs-checkbox">
-                    <input type="checkbox" name="toolbar1" data-index="0">
+                    <input type="checkbox" name="toolbar<?=$i?>" data-index="<?=$row->ID?>">
                   </td>
-                  <td style="">9</td>
-                  <td style="">Item 9</td>
-                  <td style="">$9</td>
-                </tr>
-                <tr data-index="0">
-                  <td class="bs-checkbox">
-                    <input type="checkbox" name="toolbar1" data-index="1">
+                  <td style="">
+                    <input type="text" style="border:none" class="textedit" value="<?=$row->NAME?>">
                   </td>
-                  <td style="">19</td>
-                  <td style="">Item 9</td>
-                  <td style="">$901</td>
+                  <td style="">
+                    <span class="rest_name" ><?//$this->setting->get_restaurant_name($row->REST_ID)->REST_NAME?></span>
+                    <span class="rest_selc"></span>
+                    <select id = "myRestaurant" name="rest_id" class="form-control" style="display:inline;border:none">
+                      <?php foreach($restaurants as $rows){ ?>
+                      <option value = "<?=$rows->REST_ID?>" <?= ($rows->REST_ID==$row->REST_ID)?'selected':''?> ><?=$rows->NAME?></option>
+                      <?php } ?>
+                    </select> 
+                  </td>
+                  <td style="">
+                    <select id = "myConnectivity" name="conn_code" class="form-control" style="display:inline;border:none">
+                      <?php foreach($connectivity as $rowc){ ?>
+                      <option value = "<?=$rowc->CODE?>" <?= ($rowc->CODE==$row->PRINTER_CONNECTION)?'selected':''?> ><?=$rowc->VALUE?></option>
+                      <?php } ?>
+                    </select>
+                  </td>
+                  <td style=""><?=$row->PRINTER_IP_ADDRESS?></td>
+                  <td style="">
+                    <input type="text" style="border:none;width:35px" class="textedit" value="<?=$row->PRINTER_PORT?>">
+                  </td>
+                  <td style=""><?=$this->setting->get_username($row->CREATED_BY)->USERNAME?></td>
+                  <td style=""><?=$row->CREATED_DATE?></td>
+                  <td style=""><?=$this->setting->get_username($row->LAST_UPDATED_BY)->USERNAME?></td>
+                  <td style=""><?=$row->LAST_UPDATED_DATE?></td>
                 </tr>
+                <?php $i++; } ?>
 						    </tbody>
 						</table>
 					</div>
@@ -71,7 +101,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Book a Facility</h4>
+        <h4 class="modal-title" id="myModalLabel">Add New Printer</h4>
       </div><!-- /.modal-header -->
       <div class="modal-body">
         <form role="form">
@@ -80,31 +110,37 @@
           </div>
 
           <div class="form-group">
-            <label for="inputCaption">Caption</label>
-            <input type="text" class="form-control" id="inputCaption" placeholder="">
+            <label for="inputCaption">Printer Name</label>
+            <input type="text" class="form-control" id="inputCaption" placeholder="" name="printer_name">
           </div>
           <div class="form-group">
-            <label for="inputDate">Date</label>
-            <input type="text" class="form-control datepicker" id="inputDate" placeholder="">
-          </div>
-          <div class="form-group">
-            <label for="inputDate">Time</label><br />
+            <label for="inputDate">Restaurant</label><br />                                       
             <div class="col-sm-6">
             <select name="timeFrom" class="btn btn-default">
-              <option>08:00</option>
-              <option>08:30</option>
-              <option>09:00</option>
-              <option>09:30</option>
+              <option>TEST1</option>
+              <option>TEST1</option>
+              <option>TEST1</option>
             </select> 
-            -
-            <select name="timeTo" class="btn btn-default">
-              <option>08:00</option>
-              <option>08:30</option>
-              <option>09:00</option>
-              <option>09:30</option>
-            </select>
             </div>
           </div><br />
+          <div class="form-group">
+            <label for="inputDate">Connectivity</label><br />                                       
+            <div class="col-sm-6">
+            <select name="timeFrom" class="btn btn-default">
+              <option>WIFI</option>
+              <option>WIFI</option>
+              <option>WIFI</option>
+            </select> 
+            </div>
+          </div><br />  
+          <div class="form-group">
+            <label for="inputCaption">IP Address</label>
+            <input type="text" class="form-control" id="inputCaption" placeholder="" name="IP1">
+          </div>
+          <div class="form-group">
+            <label for="inputCaption">Port</label>
+            <input type="text" class="form-control" id="inputCaption" placeholder="" name="Port">
+          </div>
           <div class="form-group text-right">
             <button type="submit" class="btn btn-success">Submit</button>
             <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
@@ -116,113 +152,50 @@
 </div><!-- /.modal fade -->
 
 <script>
-  $('#table').bootstrapTable({
-    data: [
-    {
-        "id": 0,
-        "name": "Item 0",
-        "price": "$0"
-    },
-    {
-        "id": 1,
-        "name": "Item 1",
-        "price": "$1"
-    },
-    {
-        "id": 2,
-        "name": "Item 2",
-        "price": "$2"
-    },
-    {
-        "id": 3,
-        "name": "Item 3",
-        "price": "$3"
-    },
-    {
-        "id": 4,
-        "name": "Item 4",
-        "price": "$4"
-    },
-    {
-        "id": 5,
-        "name": "Item 5",
-        "price": "$5"
-    },
-    {
-        "id": 6,
-        "name": "Item 6",
-        "price": "$6"
-    },
-    {
-        "id": 7,
-        "name": "Item 7",
-        "price": "$7"
-    },
-    {
-        "id": 8,
-        "name": "Item 8",
-        "price": "$8"
-    },
-    {
-        "id": 9,
-        "name": "Item 9",
-        "price": "$9"
-    },
-    {
-        "id": 10,
-        "name": "Item 10",
-        "price": "$10"
-    },
-    {
-        "id": 11,
-        "name": "Item 11",
-        "price": "$11"
-    },
-    {
-        "id": 12,
-        "name": "Item 12",
-        "price": "$12"
-    },
-    {
-        "id": 13,
-        "name": "Item 13",
-        "price": "$13"
-    },
-    {
-        "id": 14,
-        "name": "Item 14",
-        "price": "$14"
-    },
-    {
-        "id": 15,
-        "name": "Item 15",
-        "price": "$15"
-    },
-    {
-        "id": 16,
-        "name": "Item 16",
-        "price": "$16"
-    },
-    {
-        "id": 17,
-        "name": "Item 17",
-        "price": "$17"
-    },
-    {
-        "id": 18,
-        "name": "Item 18",
-        "price": "$18"
-    },
-    {
-        "id": 19,
-        "name": "Item 19",
-        "price": "$19"
-    },
-    {
-        "id": 20,
-        "name": "Item 20",
-        "price": "$20"
-    }
-]
+$(document).ready(function()
+{
+  $(".thedata").click(function(){
+    $(this).hide();
+    var te = $(".thedata").attr('rec');
+    $(te).show();
+  });
 });
+  
+  $(".edit_tr").click(function(){
+    var ID=$(this).attr('id');
+    $("#first_"+ID).hide();
+    $("#last_"+ID).hide();
+    $("#first_input_"+ID).show();
+    $("#last_input_"+ID).show();
+  }).change(function(){
+    var ID=$(this).attr('id');
+    var first=$("#first_input_"+ID).val();
+    var last=$("#last_input_"+ID).val();
+    var dataString = 'id='+ ID +'&firstname='+first+'&lastname='+last;
+    $("#first_"+ID).html('<img src="load.gif" />'); // Loading image
+
+    if(first.length>0&& last.length>0){
+      $.ajax({
+        type: "POST",
+        url: "table_edit_ajax.php",
+        data: dataString,
+        cache: false,
+        success: function(html){
+          $("#first_"+ID).html(first);
+          $("#last_"+ID).html(last);
+        }
+      });
+    } else {
+      alert('Enter something.');
+    }
+  });
+  // Edit input box click action
+  $(".editbox").mouseup(function(){
+    return false
+  });
+  // Outside click action
+  $(document).mouseup(function(){
+    $(".editbox").hide();
+    $(".text").show();
+  });
 </script>

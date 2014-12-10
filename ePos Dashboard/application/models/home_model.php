@@ -26,12 +26,12 @@ class Home_model extends CI_Model {
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id'];
 		$this->db->where('users_restaurants.USER_ID',$id);
-          //$query = $this->db->get('restaurants');
-          $query = $this->db->select('*')
-                              ->from('restaurants')
-                              ->join('users_restaurants', 'restaurants.ID = users_restaurants.REST_ID')
-                              ->get('');
-          return $query->result();
+    //$query = $this->db->get('restaurants');
+    $query = $this->db->select('*')
+                      ->from('restaurants')
+                      ->join('users_restaurants', 'restaurants.ID = users_restaurants.REST_ID')
+                      ->get('');
+    return $query->result();
     }
 
 	function num_transactions_today($rest_id)
