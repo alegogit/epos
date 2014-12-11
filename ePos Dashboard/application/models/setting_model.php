@@ -79,6 +79,14 @@ class Setting_model extends CI_Model {
                       ->join('users_restaurants', 'printer.REST_ID = users_restaurants.REST_ID')
                       ->get('');
     return $query->result();
-  }
-    
+  }               
+   
+	function update_printer(){  
+	  $data = array(
+               'title' => $title,
+               'name' => $name,
+               'date' => $date
+            );
+    $query = $this->db->update('printer',$data,'id=3');
+	}
 }

@@ -48,6 +48,8 @@ $route['profile'] = "Home_controller/profile";
 $route['notifications'] = "Home_controller/notif";
 
 $route['setting'] = "Setting_controller";
+$route['process'] = "Process_controller";
+$route['report'] = "Report_controller";
 
 $route['facilities'] = "Facilities_controller";
 $route['events'] = "Events_controller";

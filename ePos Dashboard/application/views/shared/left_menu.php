@@ -19,8 +19,8 @@
     <li class="<?php if($menu == 'setting'){ echo "active";} ?>">
 	  <?php echo anchor('setting', 'Setting'); ?>
     </li>
-    <li class="<?php if($menu == 'events'){ echo "active";} ?>">
-	  <?php echo anchor('events', 'Reports'); ?>
+    <li class="<?php if($menu == 'report'){ echo "active";} ?>">
+	  <?php echo anchor('report', 'Reports'); ?>
     </li>
     <!--<li class="<?php if($menu == 'about'){ echo "active";} ?>">
 	  <?php echo anchor('about', 'About Us'); ?>

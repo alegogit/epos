@@ -33,8 +33,12 @@
 
 <!-- Datepicker -->
 <script src="<?=base_url()?>assets/js/bootstrap-datepicker.js"></script>
+
 <!-- Table -->
-<script src="<?=base_url()?>assets/js/bootstrap-table.js"></script>
+<script src="<?=base_url()?>assets/js/bootstrap-table.js"></script> 
+ 
+<!-- IP Input -->
+<script src="<?=base_url()?>assets/js/jquery.input-ip-address-control-1.0.min.js"></script>
 
 <!-- Scheduler -->
 <script src='<?php echo base_url(); ?>assets/codebase/dhtmlxscheduler.js' type="text/javascript" charset="utf-8"></script>
@@ -57,6 +61,9 @@ $(function() {
         }
       }
     });
+    
+    $('.ipv4').ipAddress();
+    $('.ipv6').ipAddress({v:6});
 });
 </script>
 

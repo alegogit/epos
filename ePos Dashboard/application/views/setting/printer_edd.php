@@ -17,25 +17,16 @@
     <?php //echo "<pre>" . var_dump($this->setting->get_username(1)) . "</pre>";?>
     <div class="row">
 			<div class="col-lg-12">
-			  <!--<button style="margin-top:-5px;" type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#bookModal">
+			  <button style="margin-top:-5px;" type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#bookModal">
           <span class="glyphicon glyphicon-plus"></span> Add New Printer  
         </button>                                                                    
-        <hr style="margin-top:5px;margin-bottom:10px" />-->
+        <hr style="margin-top:5px;margin-bottom:10px" />
 				<div class="panel panel-default">
 					<div class="panel-heading">
-            <b>Printer Setting</b>  
+            <b>Printer Setting</b>
             <!--<button class="btn btn-primary pull-right" style="display:inline-block">Add New Record</button>-->
           </div>
-					<div class="panel-body">                   
-			      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#bookModal">
-              <span class="glyphicon glyphicon-plus"></span> Add New Printer  
-            </button>             
-            <button type="button" class="btn btn-danger">
-              <span class="glyphicon glyphicon-remove"></span> Delete Selected Printer  
-            </button>        
-            <button type="button" class="btn btn-warning subch" style="display:none">
-              <span class="glyphicon glyphicon-edit"></span> Submit Changes  
-            </button>       
+					<div class="panel-body">
 						<table data-toggle="table" data-url=""  data-show-refresh="false" data-show-toggle="false" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
 						    <thead>
 						    <tr>
@@ -57,43 +48,38 @@
                   <td class="bs-checkbox">
                     <input type="checkbox" name="toolbar<?=$i?>" data-index="<?=$row->ID?>">
                   </td>
-                  <td style="">
+                  <td style="">   <a href="#" id="username" data-type="text" data-placement="right" data-title="Enter username">superuser</a>
                     <span class="thedata<?=$row->ID?>"><?=$row->NAME?></span>
-                    <input id="name<?=$row->ID?>" type="text" style="display:none;border:none" class="form-control theedit<?=$row->ID?>" placeholder="<?=$row->NAME?>">
+                    <input type="text" style="display:none;border:none" class="theedit<?=$row->ID?>" placeholder="<?=$row->NAME?>">
                   </td>
                   <td style="">
                     <span class="thedata<?=$row->ID?>"><?=$this->setting->get_restaurant_name($row->REST_ID)->REST_NAME?></span>
-                    <select id="rest<?=$row->ID?>" name="rest_id" class="form-control theedit<?=$row->ID?>" style="display:none;border:none">
+                    <select id = "myRestaurant" name="rest_id" class="form-control theedit<?=$row->ID?>" style="display:none;border:none">
                       <?php foreach($restaurants as $rows){ ?>
                       <option value = "<?=$rows->REST_ID?>" <?= ($rows->REST_ID==$row->REST_ID)?'selected':''?> ><?=$rows->NAME?></option>
                       <?php } ?>
                     </select> 
                   </td>
-                  <td style="">  
-                    <span class="thedata<?=$row->ID?>"><?=$this->setting->get_connectivity($row->PRINTER_CONNECTION)->VALUE?></span>
-                    <select id="conn<?=$row->ID?>" name="conn_code" class="form-control theedit<?=$row->ID?>" style="display:none;border:none">
+                  <td style="">
+                    <select id = "myConnectivity" name="conn_code" class="form-control" style="display:inline;border:none">
                       <?php foreach($connectivity as $rowc){ ?>
                       <option value = "<?=$rowc->CODE?>" <?= ($rowc->CODE==$row->PRINTER_CONNECTION)?'selected':''?> ><?=$rowc->VALUE?></option>
                       <?php } ?>
                     </select>
                   </td>
+                  <td style=""><?=$row->PRINTER_IP_ADDRESS?></td>
                   <td style="">
-                    <span class="thedata<?=$row->ID?>"><?=$row->PRINTER_IP_ADDRESS?></span>   
-                    <input type="text" id="ip<?=$row->ID?>" name="ip" class="ipv4 form-control theedit<?=$row->ID?>" style="display:none;border:none" placeholder="<?=$row->PRINTER_IP_ADDRESS?>" value="<?=$row->PRINTER_IP_ADDRESS?>">
+                    <input type="text" style="border:none;width:35px" class="textedit" value="<?=$row->PRINTER_PORT?>">
                   </td>
-                  <td style="">       
-                    <span class="thedata<?=$row->ID?>"><?=$row->PRINTER_PORT?></span> 
-                    <input type="text" id="port<?=$row->ID?>" style="display:none;border:none;width:63px" class="form-control theedit<?=$row->ID?>" value="<?=$row->PRINTER_PORT?>">
-                  </td>
-                  <td style=""><span id="crby<?=$row->ID?>"><?=$this->setting->get_username($row->CREATED_BY)->USERNAME?></span></td>
-                  <td style=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
-                  <td style=""><span id="upby<?=$row->ID?>"><?=$this->setting->get_username($row->LAST_UPDATED_BY)->USERNAME?></span></td>
-                  <td style=""><span id="updt<?=$row->ID?>"><?=$row->LAST_UPDATED_DATE?></span></td>
+                  <td style=""><?=$this->setting->get_username($row->CREATED_BY)->USERNAME?></td>
+                  <td style=""><?=$row->CREATED_DATE?></td>
+                  <td style=""><?=$this->setting->get_username($row->LAST_UPDATED_BY)->USERNAME?></td>
+                  <td style=""><?=$row->LAST_UPDATED_DATE?></td>
                 </tr>
                 <?php $i++; } ?>
 						    </tbody>
 						</table>
-					</div> 
+					</div>
 				</div>
 			</div>
 		</div><!--/.row-->
@@ -166,39 +152,31 @@
 </div><!-- /.modal fade -->
 
 <script>
-$(document).ready(function()
-{ 
-  $(".datarow").click(function(){
-    var idr = $(this).attr("id");
-    $(".thedata"+idr).hide();
-    $(".theedit"+idr).show();
-  }).change(function(){ 
-    var idr = $(this).attr("id"); 
-    var name = $("#name"+idr).val(); 
-    var rest = $("#rest"+idr).val();
-    var conn = $("#conn"+idr).val();
-    var ip = $("#ip"+idr).val();
-    var port = $("#port"+idr).val();
-    var upby = $("#upby"+idr).val();
-    var updt = $("#updt"+idr).val();    
-    var todt = new Date();
-    var passvars = "{ name : "+name+", rest : "+rest+", conn : "+conn+", ip : "+ip+", port : "+port+" }"; 
-    $(".subch").show();
-    $(".subch").click(function(){  
-      //alert(passvars);      
-      $.ajax({
-        type: "POST",
-        url: "process.html",
-        data: passvars,
-        cache: false,
-        success: function(result){
-          $("#updt"+idr).html(todt);
-        }
-      }); 
+$(document).ready(function() {
+    //toggle `popup` / `inline` mode
+    $.fn.editable.defaults.mode = 'inline';     
+    
+    //make username editable
+    $('#username').editable();
+    
+    //make status editable
+    $('#status').editable({
+        type: 'select',
+        title: 'Select status',
+        placement: 'right',
+        value: 2,
+        source: [
+            {value: 1, text: 'status 1'},
+            {value: 2, text: 'status 2'},
+            {value: 3, text: 'status 3'}
+        ]
+        /*
+        //uncomment these lines to send data on server
+        ,pk: 1
+        ,url: '/post'
+        */
     });
-  }); 
 });
-
   
   $(".edit_tr").click(function(){
     var ID=$(this).attr('id');
