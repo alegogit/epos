@@ -8,9 +8,6 @@ class Process_controller extends CI_Controller {
 		$this->load->model('Process_model','process',TRUE);
 		$session_data = $this->session->userdata('logged_in');
 		$this->data['user'] = $this->process->get_profile();
-		//$this->data['restaurants'] = $this->process->get_restaurant(); 
-			//echo "&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>";
-			//echo "<pre>" . var_dump($this->data['restaurants']) . "</pre>";
 	}
 
 	public function index()
@@ -19,8 +16,9 @@ class Process_controller extends CI_Controller {
 		{
 			$data['menu'] = 'process';         
 			$session_data = $this->session->userdata('logged_in'); 
-      $data['name'] = $this->input->post('name'); 
-      $this->load->view('setting/process',$data);
+      $data['varP'] = $this->input->post('varP'); 
+      $data['funP'] = $this->input->post('funP'); 
+      $this->load->view('shared/process',$data);
 		}
 		else
 		{

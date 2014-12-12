@@ -44,32 +44,81 @@ class Report_model extends CI_Model {
 	function get_sales_report($start_date,$end_date,$rest_id)
 	{
 	     $query = $this->db->query('SELECT O.ID, O.ORDER_NUMBER ORDER_NUMBER, 
-          T.TABLE_NUMBER TABLE_NUMBER,
-          C.NAME CUSTOMER_NAME,
-          O.STARTED, O.ENDED, O.NO_OF_GUEST, O.TOTAL, O.TIP, (O.DISCOUNT*O.TOTAL)/100 DISCOUNT, O.PAID_AMOUNT
+            T.TABLE_NUMBER TABLE_NUMBER,
+            C.NAME CUSTOMER_NAME,
+            O.STARTED, O.ENDED, O.NO_OF_GUEST, O.TOTAL, O.TIP, (O.DISCOUNT*O.TOTAL)/100 DISCOUNT, O.PAID_AMOUNT
           FROM ORDERS O
-          LEFT OUTER JOIN TABLES T ON T.ID = O.TABLE_NUMBER
-          LEFT OUTER JOIN CUSTOMERS C ON C.ID = O.CUSTOMER_ID
-          LEFT OUTER JOIN RESTAURANTS R ON R.ID = O.REST_ID
+            LEFT OUTER JOIN TABLES T ON T.ID = O.TABLE_NUMBER
+            LEFT OUTER JOIN CUSTOMERS C ON C.ID = O.CUSTOMER_ID
+            LEFT OUTER JOIN RESTAURANTS R ON R.ID = O.REST_ID
           WHERE O.ACTIVE = 0
-          AND O.ENDED BETWEEN "'.$start_date.'" AND "'.$end_date.'"
-          AND R.ID = '.$rest_id.';');
+            AND O.ENDED BETWEEN "'.$start_date.'" AND "'.$end_date.'"
+            AND R.ID = '.$rest_id.';');
 		    return $query->result();
-        //return $query->row();
 	}
-	
-	function dash_best_sellers($start_date,$end_date,$rest_id)
+  
+  function get_order_details($order_id)
 	{
-	     $query = $this->db->query('SELECT M.NAME AS ITEMS, IFNULL(SUM(OD.PRICE*QUANTITY),0) AMOUNT, COUNT(M.NAME) AS QTY FROM ORDER_DETAILS OD 
-	        INNER JOIN ORDERS O ON OD.ORDER_ID = O.ID
-		      AND O.ENDED BETWEEN "'.$start_date.'" AND "'.$end_date.'"
-		      AND O.REST_ID = '.$rest_id.' AND O.ACTIVE = 0
-	        INNER JOIN MENU M ON M.ID = OD.MENU_ID
-          GROUP BY M.NAME
-          ORDER BY SUM(OD.PRICE*QUANTITY) DESC
-          LIMIT 5;');
-		    return $query->result();  
-        //return $query->row();
+	     $query = $this->db->query('SELECT M.NAME, 
+		          OD.QUANTITY, OD.KITCHEN_NOTE, OD.PRICE, OD.VOID, OD.VOID_REASON 
+	         FROM ORDER_DETAILS OD
+	         LEFT OUTER JOIN MENU M	ON M.ID = OD.MENU_ID
+           WHERE ORDER_ID = '.$order_id.';');
+		    return $query->result();
 	}
 	
+	function get_void_items($start_date,$end_date,$rest_id)
+	{
+	     $query = $this->db->query('SELECT M.NAME, 
+		      OD.VOID_REASON, 
+		      O.ORDER_NUMBER,	O.STARTED, O.ENDED
+	      FROM ORDER_DETAILS OD
+	        LEFT OUTER JOIN ORDERS O ON O.ID = OD.ORDER_ID
+	        LEFT OUTER JOIN MENU M ON M.ID = OD.MENU_ID
+        WHERE OD.VOID = 1
+	        AND O.ACTIVE = 0
+          AND O.ENDED BETWEEN "'.$start_date.'" AND "'.$end_date.'"
+          AND O.REST_ID = '.$rest_id.';');
+		    return $query->result();
+	}
+	
+	function get_inventory()
+	{
+	     $query = $this->db->query('SELECT I.NAME,  
+		      CONCAT(I.QUANTITY," ",I.METRIC) AS QUANTITY,
+		        CASE WHEN I.QUANTITY = 0 THEN "NONE"
+			         WHEN I.QUANTITY < MIN_QUANTITY THEN "LOW"
+               WHEN I.LAST_UPDATED_DATE <SUBDATE(SYSDATE(),7) THEN "Not Moving"
+            ELSE "OK"
+            END AS STATUS
+          FROM INVENTORY I;');
+		    return $query->result();
+	}
+	
+	function inv_status_color($status){
+    if ($status=="NONE"){
+      $color = "#d9534f";
+    } elseif ($status=="LOW"){ 
+      $color = "#f0ad4e";
+    } elseif ($status=="Not Moving"){ 
+      $color = "#777";
+    } else {
+      $color = "#333";
+    }
+    return $color;
+  }
+  
+	function inv_status_class($status){
+    if ($status=="NONE"){
+      $class = "danger";
+    } elseif ($status=="LOW"){ 
+      $class = "warning";
+    } elseif ($status=="Not Moving"){ 
+      $class = "active";
+    } else {
+      $class = "";
+    }
+    return $class;
+  }
+		
 }

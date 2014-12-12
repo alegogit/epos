@@ -59,7 +59,7 @@
                   </td>
                   <td style="">
                     <span class="thedata<?=$row->ID?>"><?=$row->NAME?></span>
-                    <input id="name<?=$row->ID?>" type="text" style="display:none;border:none" class="form-control theedit<?=$row->ID?>" placeholder="<?=$row->NAME?>">
+                    <input id="name<?=$row->ID?>" type="text" style="display:none;border:none" class="form-control theedit<?=$row->ID?>" placeholder="<?=$row->NAME?>" value="<?=$row->NAME?>">
                   </td>
                   <td style="">
                     <span class="thedata<?=$row->ID?>"><?=$this->setting->get_restaurant_name($row->REST_ID)->REST_NAME?></span>
@@ -179,20 +179,19 @@ $(document).ready(function()
     var conn = $("#conn"+idr).val();
     var ip = $("#ip"+idr).val();
     var port = $("#port"+idr).val();
-    var upby = $("#upby"+idr).val();
-    var updt = $("#updt"+idr).val();    
+    var upby = $("#upby"+idr);
+    var updt = $("#updt"+idr);    
     var todt = new Date();
-    var passvars = "{ name : "+name+", rest : "+rest+", conn : "+conn+", ip : "+ip+", port : "+port+" }"; 
+    var dataP = "varP="+idr+","+name+","+rest+","+conn+","+ip+","+port+"&funP=update_printer"; 
     $(".subch").show();
-    $(".subch").click(function(){  
-      //alert(passvars);      
+    $(".subch").click(function(){ 
       $.ajax({
         type: "POST",
         url: "process.html",
-        data: passvars,
+        data: dataP,
         cache: false,
         success: function(result){
-          $("#updt"+idr).html(todt);
+          $("#updt"+idr).html(result);
         }
       }); 
     });

@@ -20,7 +20,7 @@ class Report_controller extends CI_Controller {
 			$data['menu'] = 'report';         
 			$session_data = $this->session->userdata('logged_in');
 			$data['def_rest'] = $session_data['def_rest'];
-			$data['def_report_name'] = 'sales';
+			$data['def_report_name'] = 'Sales';
 			$data['def_start_date'] = date('d M Y', time() - 7 * 60 * 60 * 24);
 			$data['def_end_date'] = date('d M Y', time());     
 			$rest_id = (!($this->input->post('rest_id')))?$data['def_rest']:$this->input->post('rest_id');
@@ -32,6 +32,8 @@ class Report_controller extends CI_Controller {
 			$data['startdate'] = $start_date;
 			$data['enddate'] = $end_date;        
 			$data['sales_report'] = $this->report->get_sales_report(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id); 
+			$data['void_items'] = $this->report->get_void_items(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id); 
+			$data['inventory'] = $this->report->get_inventory(); 
 			
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);

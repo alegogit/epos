@@ -81,12 +81,4 @@ class Setting_model extends CI_Model {
     return $query->result();
   }               
    
-	function update_printer(){  
-	  $data = array(
-               'title' => $title,
-               'name' => $name,
-               'date' => $date
-            );
-    $query = $this->db->update('printer',$data,'id=3');
-	}
 }
