@@ -98,7 +98,7 @@
                 foreach ($dtopcats as $row){
                   $chart_legend .= "<span class='glyphicon glyphicon-tint' style='color:".$donut_color[$i]."'></span>";  
                   $chart_legend .= " <b>".ucwords(strtolower($row->CAT_NAME))."</b>\t";
-                  $chart_legend .= " <b>".number_format($row->AMOUNT, 0, '', '.')."</b>\t";
+                  //$chart_legend .= " <b>".number_format($row->AMOUNT, 0, '', '.')."</b>\t";
                   $chart_legend .= " ".round(($row->AMOUNT/$total)*100)."% <br>";
                   $i++;  
                 }
@@ -153,7 +153,34 @@
 					  </div>
 				  </div>
 				  
+				  
+				  
 			  </div>	
+			  
+		    <div class="row">
+      			<div class="col-lg-12">
+      				<div class="panel panel-default">
+      					<div class="panel-heading">
+      					  <b>
+                    <span id="motit">Monthly Revenue</span>
+                    <span id="wktit" style="display:none">Weekly Revenue</span>
+                  </b>
+                  <div class="btn-group pull-right" role="group" aria-label="...">
+                    <a role="button" class="btn btn-primary" id="mobutt" href="#monthly-line-chart">Monthly</a> 
+                    <a role="button" class="btn btn-default" id="wkbutt" href="#weekly-line-chart">Weekly</a>        
+                  </div>
+                </div>
+      					<div class="panel-body">
+      						<div class="canvas-wrapper">
+      							<canvas class="main-chart" id="monthly-line-chart" height="200" width="600"></canvas>
+      						</div>
+      						<div class="canvas-wrapper">
+      							<canvas class="main-chart" id="weekly-line-chart" height="200" width="600" style="display:none"></canvas>
+      						</div>
+      					</div>
+      				</div>
+      			</div>
+      	</div><!--/.row-->
                
       </div><!-- /.col-sm-9 -->
 
@@ -210,7 +237,7 @@
 </div><!-- /#page-content-wrapper -->
 
 <?php 
-  //chart script
+  //donut chart script
   $i = 0;
   $n = count($dtopcats);
   $chart_script = "<script>"; 
@@ -218,6 +245,8 @@
   foreach ($dtopcats as $row){
     $chart_script .= "{";  
     $chart_script .= "value: ".$row->AMOUNT.",";
+    //$chart_script .= "value: ".round(($row->AMOUNT/$total)*100).",";
+    //$chart_script .= "template: '#= category #: \n #= value#%',";
     $chart_script .= "color: '".$donut_color[$i]."',";
     $chart_script .= "highlight: '".$donut_highl[$i]."',";
     $chart_script .= "label: '".$row->CAT_NAME."',";
@@ -229,10 +258,10 @@
   $chart_script .= "window.myDoughnut = new Chart(chart1).Doughnut(doughnutData, {responsive : true});";  
 	$chart_script .= '</script>';
   echo $chart_script;
-?>                       
-
+?>  
+ 
 <?php 
-  //chart script
+  //donut chart script
   $i = 0;
   $n = count($dpayment);
   $chart_script = "<script>"; 
@@ -247,11 +276,83 @@
     $i++;  
   }
   $chart_script .= "];";
-  $chart_script .= "var chart3 = document.getElementById('payment_donut').getContext('2d');";
-  $chart_script .= "window.myDoughnut = new Chart(chart3).Doughnut(doughnutData, {responsive : true});";  
+  $chart_script .= "var chart2 = document.getElementById('payment_donut').getContext('2d');";
+  $chart_script .= "window.myDoughnut = new Chart(chart2).Doughnut(doughnutData, {responsive : true});";  
 	$chart_script .= '</script>';
   echo $chart_script;
-?>                       
+?>  
+
+                    
+<?php
+  //line chart script  
+  $i = 0;
+  $n = count($dmorevenue);  
+  $labels = "";
+  $data = "";
+  foreach ($dmorevenue as $row){  
+    $labels .= ($i==($n-1))?"'".date('M', strtotime($row->REC_MONTH))."'":"'".date('M', strtotime($row->REC_MONTH))."',"; 
+    $data .=  ($i==($n-1))?$row->REVENUE:$row->REVENUE.","; 
+    $i++;
+  }
+  $chart_script = "<script>"; 
+  $chart_script .= "var lineChartData = {";
+	$chart_script .= "		labels : [".$labels."],";
+	$chart_script .= "		datasets : [";
+	$chart_script .= "			{ ";
+	$chart_script .= "				label: 'Monthly Revenue',";
+	$chart_script .= "				fillColor : 'rgba(48, 164, 255, 0.2)', ";
+	$chart_script .= "				strokeColor : 'rgba(48, 164, 255, 1)', ";
+	$chart_script .= "				pointColor : 'rgba(48, 164, 255, 1)', ";
+	$chart_script .= "				pointStrokeColor : '#fff', ";
+	$chart_script .= "				pointHighlightFill : '#fff', ";
+	$chart_script .= "				pointHighlightStroke : 'rgba(48, 164, 255, 1)', ";
+	$chart_script .= "				data : [".$data."]";
+	$chart_script .= "			}";
+	$chart_script .= "		]";
+  $chart_script .= "	};";
+	$chart_script .= "var chart3 = document.getElementById('monthly-line-chart').getContext('2d');";
+	$chart_script .= "window.myLine = new Chart(chart3).Line(lineChartData, { ";
+	$chart_script .= "	responsive: true ";
+	$chart_script .= "});  ";
+	$chart_script .= '</script>';
+  echo $chart_script;
+?> 
+
+                   
+<?php
+  //line chart script  
+  $i = 0;
+  $n = count($dwkrevenue);  
+  $labels = "";
+  $data = "";
+  foreach ($dwkrevenue as $rowk){  
+    $labels .= ($i==($n-1))?"'".$rowk->REC_WEEK."'":"'".$rowk->REC_WEEK."',"; 
+    $data .=  ($i==($n-1))?$rowk->REVENUE:$rowk->REVENUE.","; 
+    $i++;
+  }
+  $chart_script = "<script>"; 
+  $chart_script .= "var lineChartData = {";
+	$chart_script .= "		labels : [".$labels."],";
+	$chart_script .= "		datasets : [";
+	$chart_script .= "			{ ";
+	$chart_script .= "				label: 'Monthly Revenue',";
+	$chart_script .= "				fillColor : 'rgba(48, 164, 255, 0.2)', ";
+	$chart_script .= "				strokeColor : 'rgba(48, 164, 255, 1)', ";
+	$chart_script .= "				pointColor : 'rgba(48, 164, 255, 1)', ";
+	$chart_script .= "				pointStrokeColor : '#fff', ";
+	$chart_script .= "				pointHighlightFill : '#fff', ";
+	$chart_script .= "				pointHighlightStroke : 'rgba(48, 164, 255, 1)', ";
+	$chart_script .= "				data : [".$data."]";
+	$chart_script .= "			}";
+	$chart_script .= "		]";
+  $chart_script .= "	};";
+	$chart_script .= "var chart5 = document.getElementById('weekly-line-chart').getContext('2d');";
+	$chart_script .= "window.myLine = new Chart(chart5).Line(lineChartData, { ";
+	$chart_script .= "	responsive: true ";
+	$chart_script .= "});  ";
+	$chart_script .= '</script>';
+  echo $chart_script;
+?>                  
 
 <script>
      /*
@@ -263,6 +364,20 @@
      //datepickers
      $("#startdate").datepicker({format: 'dd M yyyy'});
      $("#enddate").datepicker({format: 'dd M yyyy'});
+     
+     //switch chart
+     $("#mobutt").click(function(){      
+        $("#monthly-line-chart,#motit").show(); 
+        $("#weekly-line-chart,#wktit").hide();  
+        $("#mobutt").addClass("btn-primary"); 
+        $("#wkbutt").removeClass("btn-primary").addClass("btn-default");
+     });  
+     $("#wkbutt").click(function(){
+        $("#monthly-line-chart,#motit").hide(); 
+        $("#weekly-line-chart,#wktit").show();  
+        $("#mobutt").removeClass("btn-primary").addClass("btn-default"); 
+        $("#wkbutt").addClass("btn-primary");   
+     });
                      
      num = $('.numAnim').attr("value");
       $({someValue: 0}).animate({someValue: num}, {

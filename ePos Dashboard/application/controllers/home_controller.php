@@ -39,7 +39,9 @@ class Home_controller extends CI_Controller {
 			$data['dpayment'] = $this->home->dash_payment_method(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id);
 			$data['dtopcats'] = $this->home->dash_top_categories(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id);
 			$data['dbestsells'] = $this->home->dash_best_sellers(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id);
-			//$data['promotions'] = $this->home->get_latest_promotions();
+			$data['dmorevenue'] = $this->home->dash_monthly_revenue($rest_id);
+		  $data['dwkrevenue'] = $this->home->dash_weekly_revenue($rest_id);
+		  //$data['promotions'] = $this->home->get_latest_promotions();
 			//$data['services'] = $this->home->get_latest_services();
 			
 			$this->load->view('shared/header',$this->data);

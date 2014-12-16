@@ -79,6 +79,16 @@ class Setting_model extends CI_Model {
                       ->join('users_restaurants', 'printer.REST_ID = users_restaurants.REST_ID')
                       ->get('');
     return $query->result();
+  }       
+    
+	function new_printer($NAME,$REST_ID,$PRINTER_CONNECTION,$PRINTER_IP_ADDRESS,$PRINTER_PORT){       
+		$session_data = $this->session->userdata('logged_in');
+		$id = $session_data['id'];
+    $query = $this->db->query('INSERT INTO printer 
+      (NAME,REST_ID,PRINTER_CONNECTION,PRINTER_IP_ADDRESS,PRINTER_PORT,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
+      VALUES 
+      ("'.$NAME.'",'.$REST_ID.',"'.$PRINTER_CONNECTION.'","'.$PRINTER_IP_ADDRESS.'","'.$PRINTER_PORT.'",'.$id.',NOW(),'.$id.',NOW());');
+		//return $query->row();
   }               
    
 }

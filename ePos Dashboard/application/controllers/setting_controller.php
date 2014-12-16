@@ -29,7 +29,10 @@ class Setting_controller extends CI_Controller {
 			$data['startdate'] = $start_date;
 			$data['enddate'] = $end_date;        
 			$data['printer_conf'] = $this->setting->get_printer();
-		  $data['connectivity'] = $this->setting->get_all_connectivity(); 
+		  $data['connectivity'] = $this->setting->get_all_connectivity();
+      if($this->input->post('printer_name')){               
+		    $this->setting->new_printer($this->input->post('printer_name'),$this->input->post('rest_id'),$this->input->post('conn_code'),$this->input->post('IP_address'),$this->input->post('Port'));
+      } 
 			
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);

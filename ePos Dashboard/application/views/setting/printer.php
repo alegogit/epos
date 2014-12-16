@@ -118,11 +118,7 @@
         <h4 class="modal-title" id="myModalLabel">Add New Printer</h4>
       </div><!-- /.modal-header -->
       <div class="modal-body">
-        <form role="form">
-          <div class="form-group">
-            <label for="bookId">Booking ID -</label> <span class="text-disabled">A108</span>
-          </div>
-
+        <form role="form" method="post" action="">
           <div class="form-group">
             <label for="inputCaption">Printer Name</label>
             <input type="text" class="form-control" id="inputCaption" placeholder="" name="printer_name">
@@ -130,26 +126,26 @@
           <div class="form-group">
             <label for="inputDate">Restaurant</label><br />                                       
             <div class="col-sm-6">
-            <select name="timeFrom" class="btn btn-default">
-              <option>TEST1</option>
-              <option>TEST1</option>
-              <option>TEST1</option>
+            <select name="rest_id" class="form-control">
+            <?php foreach($restaurants as $rows){ ?>
+              <option value = "<?=$rows->REST_ID?>" <?= ($rows->REST_ID==$rest_id)?'selected':''?> ><?=$rows->NAME?></option>
+            <?php } ?>
             </select> 
             </div>
           </div><br />
           <div class="form-group">
             <label for="inputDate">Connectivity</label><br />                                       
             <div class="col-sm-6">
-            <select name="timeFrom" class="btn btn-default">
-              <option>WIFI</option>
-              <option>WIFI</option>
-              <option>WIFI</option>
-            </select> 
+            <select name="conn_code" class="form-control">
+            <?php foreach($connectivity as $rowc){ ?>
+              <option value="<?=$rowc->CODE?>"><?=$rowc->VALUE?></option>
+            <?php } ?>
+            </select>
             </div>
           </div><br />  
           <div class="form-group">
             <label for="inputCaption">IP Address</label>
-            <input type="text" class="form-control" id="inputCaption" placeholder="" name="IP1">
+            <input type="text" class="form-control ipv4" id="inputCaption" placeholder="" name="IP_address">
           </div>
           <div class="form-group">
             <label for="inputCaption">Port</label>
@@ -192,6 +188,8 @@ $(document).ready(function()
         cache: false,
         success: function(result){
           $("#updt"+idr).html(result);
+          $(".thedata"+idr).toggle();
+          $(".theedit"+idr).toggle();
         }
       }); 
     });
