@@ -22,6 +22,9 @@
     <li class="<?php if($menu == 'report'){ echo "active";} ?>">
 	  <?php echo anchor('report', 'Reports'); ?>
     </li>
+    <li class="<?php if($menu == 'extracts'){ echo "active";} ?>">
+	  <?php echo anchor('extracts', 'Extracts'); ?>
+    </li>
     <!--<li class="<?php if($menu == 'about'){ echo "active";} ?>">
 	  <?php echo anchor('about', 'About Us'); ?>
     </li>
