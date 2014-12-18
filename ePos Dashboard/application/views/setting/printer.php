@@ -58,11 +58,11 @@
                     <input type="checkbox" name="toolbar<?=$i?>" data-index="<?=$row->ID?>">
                   </td>
                   <td style="">
-                    <span class="thedata<?=$row->ID?>"><?=$row->NAME?></span>
+                    <span id="ename<?=$row->ID?>" class="thedata<?=$row->ID?>"><?=$row->NAME?></span>
                     <input id="name<?=$row->ID?>" type="text" style="display:none;border:none" class="form-control theedit<?=$row->ID?>" placeholder="<?=$row->NAME?>" value="<?=$row->NAME?>">
                   </td>
                   <td style="">
-                    <span class="thedata<?=$row->ID?>"><?=$this->setting->get_restaurant_name($row->REST_ID)->REST_NAME?></span>
+                    <span id="erest<?=$row->ID?>" class="thedata<?=$row->ID?>"><?=$this->setting->get_restaurant_name($row->REST_ID)->REST_NAME?></span>
                     <select id="rest<?=$row->ID?>" name="rest_id" class="form-control theedit<?=$row->ID?>" style="display:none;border:none">
                       <?php foreach($restaurants as $rows){ ?>
                       <option value = "<?=$rows->REST_ID?>" <?= ($rows->REST_ID==$row->REST_ID)?'selected':''?> ><?=$rows->NAME?></option>
@@ -70,7 +70,7 @@
                     </select> 
                   </td>
                   <td style="">  
-                    <span class="thedata<?=$row->ID?>"><?=$this->setting->get_connectivity($row->PRINTER_CONNECTION)->VALUE?></span>
+                    <span id="econn<?=$row->ID?>" class="thedata<?=$row->ID?>"><?=$this->setting->get_connectivity($row->PRINTER_CONNECTION)->VALUE?></span>
                     <select id="conn<?=$row->ID?>" name="conn_code" class="form-control theedit<?=$row->ID?>" style="display:none;border:none">
                       <?php foreach($connectivity as $rowc){ ?>
                       <option value = "<?=$rowc->CODE?>" <?= ($rowc->CODE==$row->PRINTER_CONNECTION)?'selected':''?> ><?=$rowc->VALUE?></option>
@@ -78,11 +78,11 @@
                     </select>
                   </td>
                   <td style="">
-                    <span class="thedata<?=$row->ID?>"><?=$row->PRINTER_IP_ADDRESS?></span>   
+                    <span id="eip<?=$row->ID?>" class="thedata<?=$row->ID?>"><?=$row->PRINTER_IP_ADDRESS?></span>   
                     <input type="text" id="ip<?=$row->ID?>" name="ip" class="ipv4 form-control theedit<?=$row->ID?>" style="display:none;border:none" placeholder="<?=$row->PRINTER_IP_ADDRESS?>" value="<?=$row->PRINTER_IP_ADDRESS?>">
                   </td>
                   <td style="">       
-                    <span class="thedata<?=$row->ID?>"><?=$row->PRINTER_PORT?></span> 
+                    <span id="eport<?=$row->ID?>" class="thedata<?=$row->ID?>"><?=$row->PRINTER_PORT?></span> 
                     <input type="text" id="port<?=$row->ID?>" style="display:none;border:none;width:63px" class="form-control theedit<?=$row->ID?>" value="<?=$row->PRINTER_PORT?>">
                   </td>
                   <td style=""><span id="crby<?=$row->ID?>"><?=$this->setting->get_username($row->CREATED_BY)->USERNAME?></span></td>
@@ -186,10 +186,17 @@ $(document).ready(function()
         url: "process.html",
         data: dataP,
         cache: false,
-        success: function(result){
-          $("#updt"+idr).html(result);
+        success: function(result){    
           $(".thedata"+idr).toggle();
           $(".theedit"+idr).toggle();
+          var data = result.split(',');
+          $("#ename"+idr).html(data[1]);
+          $("#erest"+idr).html(data[2]);
+          $("#econn"+idr).html(data[3]);
+          $("#eip"+idr).html(data[4]);
+          $("#eport"+idr).html(data[5]);
+          $("#upby"+idr).html(data[6]);
+          $("#updt"+idr).html(data[7]);
         }
       }); 
     });

@@ -40,6 +40,53 @@ class Process_model extends CI_Model {
             ); 
 		$this->db->where('ID',$arrin[0]);
     $query = $this->db->update('printer',$data);
-    return $dt;
+    $output[0] = $this->process->get_printer($arrin[0])->ID;
+    $output[1] = $this->process->get_printer($arrin[0])->NAME; 
+    $output[2] = $this->process->get_restaurant_name($this->process->get_printer($arrin[0])->REST_ID); 
+    $output[3] = $this->process->get_connectivity($this->process->get_printer($arrin[0])->PRINTER_CONNECTION);
+    $output[4] = $this->process->get_printer($arrin[0])->PRINTER_IP_ADDRESS;
+    $output[5] = $this->process->get_printer($arrin[0])->PRINTER_PORT;
+    $output[6] = $this->process->get_username($this->process->get_printer($arrin[0])->LAST_UPDATED_BY);
+    $output[7] = $this->process->get_printer($arrin[0])->LAST_UPDATED_DATE;
+    $outputs = implode(",",$output);   
+    return $outputs;
 	}
+	
+	function get_printer($pid){    
+		$session_data = $this->session->userdata('logged_in');
+		$id = $session_data['id'];
+		$this->db->where('users_restaurants.USER_ID',$id);
+    $query = $this->db->select('printer.*')
+                      ->from('printer')
+                      ->join('users_restaurants', 'printer.REST_ID = users_restaurants.REST_ID')  
+                      ->where('printer.ID',$pid)
+                      ->limit(1)
+                      ->get('');
+    return $query->row();
+  }      
+  
+	function get_restaurant_name($id){
+    $query = $this->db->select('NAME AS REST_NAME')
+                      ->from('restaurants')
+                      ->where('ID',$id)
+                      ->get('');
+    return $query->row()->REST_NAME;
+  }
+  
+  function get_username($id){
+    $query = $this->db->select('USERNAME')
+                      ->from('users')
+                      ->where('ID',$id)
+                      ->get('');
+    return $query->row()->USERNAME;
+  }
+         
+  function get_connectivity($code){
+    $query = $this->db->select('VALUE')
+                      ->from('ref_values')
+                      ->where('CODE',$code)
+                      ->get('');
+    return $query->row()->VALUE;
+  }
+  
 }

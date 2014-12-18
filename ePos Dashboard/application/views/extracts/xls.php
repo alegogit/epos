@@ -1,6 +1,8 @@
 <?php                                                        
-    $filename = date("Y-m-d")."_".$rest_id."_data.xls";
-    header("Content-type: application/octet-stream");
+    $filename = date("Y-m-d")."_".trim($this->extracts->get_restaurant_name($rest_id))."_data.xls";
+    $this->load->library('excel');
+    //header("Content-type: application/octet-stream");
+    header("Content-type: application/vnd.ms-excel");
     header("Content-Disposition: attachment; filename=".$filename);
     header("Pragma: no-cache");
     header("Expires: 0");

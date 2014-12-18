@@ -5,8 +5,9 @@ class Extracts_controller extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();	
-		$this->load->model('extracts_model','extracts',TRUE);
-		$session_data = $this->session->userdata('logged_in');
+		$this->load->model('extracts_model','extracts',TRUE);   
+    $this->load->library('excel');
+    $session_data = $this->session->userdata('logged_in');
 		$this->data['user'] = $this->extracts->get_profile();
 		$this->data['restaurants'] = $this->extracts->get_restaurant(); 
 			//echo "&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>";
@@ -30,7 +31,8 @@ class Extracts_controller extends CI_Controller {
 			$data['rest_id'] = $rest_id;
 			$data['data_name'] = $data_name;
 			$data['startdate'] = $start_date;
-			$data['enddate'] = $end_date;        
+			$data['enddate'] = $end_date;
+      $data['rest_name'] = $this->extracts->get_restaurant_name($rest_id);       
 			$data['orders_data'] = $this->extracts->get_orders_data(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id); 
 			//$data['void_items'] = $this->extracts->get_void_items(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id); 
 			//$data['inventory'] = $this->extracts->get_inventory(); 

@@ -38,7 +38,7 @@ class Extracts_model extends CI_Model {
                       ->from('restaurants')
                       ->where('ID',$id)
                       ->get('');
-    return $query->row();
+    return $query->row()->REST_NAME;
   }
   
   function get_orders_data($start_date,$end_date,$rest_id)
@@ -65,6 +65,7 @@ class Extracts_model extends CI_Model {
        $header = "";     
        foreach ($query->list_fields() as $field){
           $header .= $field."\t";
+          //$header .= $field."|";
        }    
        $data = '';  
        $line = ''; 
