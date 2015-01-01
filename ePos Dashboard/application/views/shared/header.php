@@ -7,15 +7,19 @@
 
 <title>ePOS</title>
 
-<link rel="shortcut icon" href="<?php echo base_url(); ?>assets/images/icon2.ico" />
+<link rel="shortcut icon" href="<?php echo base_url(); ?>assets/images/icon.ico" />
 
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery-ui.js"></script>
 
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.dataTables.js"></script>
-  
+<?php if($menu == 'setting') { ?>
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap-editable.min.js"></script> 
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap-editable.css"/>
+<?php } ?>  
+
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap.css"/>
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/print.css" media="print"/>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/datepicker.css"/>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.css"/>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.theme.css"/>
@@ -28,9 +32,7 @@
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/font-awesome.min.css"/>
 
 <!-- Chart -->
-<script src="<?=base_url()?>assets/js/charts/chart.min.js"></script>
-<script src="<?=base_url()?>assets/js/charts/easypiechart.js"></script>
-<script src="<?=base_url()?>assets/js/charts/easypiechart-data.js"></script> 
+<script src="<?=base_url()?>assets/js/charts/chart.min.js"></script> 
 
 <!-- Datepicker -->
 <script src="<?=base_url()?>assets/js/bootstrap-datepicker.js"></script>
@@ -66,20 +68,21 @@ $(function() {
     $('.ipv4').ipAddress();
     $('.ipv6').ipAddress({v:6});
 });
+
 </script>
 
 <style>
   .ui-tooltip, .arrow:after {
     background: black;
-    border: 2px solid white;
+    border: 1px solid black;
   }
   .ui-tooltip {
     padding: 4px 8px;
     color: white;
-    border-radius: 20px;
+    border-radius: 6px;
     font: bold 10px "Helvetica Neue", Sans-Serif;
     text-transform: uppercase;
-    box-shadow: 0 0 7px black;
+    box-shadow: 0 0 2px black;
   }
   .arrow {
     width: 35px;
@@ -112,6 +115,19 @@ $(function() {
   .arrow.top:after {
     bottom: -10px;
     top: auto;
+  }
+  
+  .canvas-donut{
+    width: 100% !important;
+    max-width: 150px;
+    height: auto !important;
+  }
+  
+  .fitin {
+    max-width: 150px;  
+    height: 150px;
+    overflow: hidden;
+    font-size: 1em;
   }
   </style>
 
@@ -147,11 +163,11 @@ $(function() {
                 <span style="padding-left:6px;padding-right:6px"><?php echo $user->USERNAME; ?></span><span class="caret"></span>
               </a>
               <ul class="dropdown-menu" role="menu">
-                <li><a href="<?php echo site_url(); ?>/profile"><span style="margin-right:10px;" class="glyphicon glyphicon-user"></span>My Profile</a></li>
-                <li><a href="<?php echo site_url(); ?>/notifications"><span style="margin-right:10px;" class="glyphicon glyphicon-bullhorn"></span>Notifications <small class="badge">42</small></a></li>
+                <li><a href="<?php echo site_url(); ?>profile"><span style="margin-right:10px;" class="glyphicon glyphicon-user"></span>My Profile</a></li>
+                <li><a href="<?php echo site_url(); ?>notifications"><span style="margin-right:10px;" class="glyphicon glyphicon-bullhorn"></span>Notifications <small class="badge">42</small></a></li>
                 <li><a href="#"><span style="margin-right:10px;" class="glyphicon glyphicon-cog"></span>Setting</a></li>
                 <li class="divider"></li>
-                <li><a href="<?php echo site_url(); ?>/logout"><span style="margin-right:10px;" class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
+                <li><a href="<?php echo site_url(); ?>logout"><span style="margin-right:10px;" class="glyphicon glyphicon-log-out"></span>Log Out</a></li>
               </ul>
             </li>
           </ul>

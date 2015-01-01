@@ -41,24 +41,38 @@
 $route['default_controller'] = "Login_controller";
 
 $route['login'] = "Login_controller";
-$route['logout'] = "Home_controller/logout";
+$route['loginauth'] = "Loginauth_controller";
+$route['logout'] = "dashboard/sales_controller/logout";
 
-$route['home'] = "Home_controller";
-$route['profile'] = "Home_controller/profile";
-$route['notifications'] = "Home_controller/notif";
+$route['dashboard'] = "dashboard/sales_controller";
+$route['dashboard/sales'] = "dashboard/sales_controller";
+$route['dashboard/inventory'] = "dashboard/inventory_controller";
 
-$route['setting'] = "Setting_controller";
-$route['process'] = "Process_controller";
-$route['report'] = "Report_controller";
-$route['extracts'] = "Extracts_controller";
+$route['inventory'] = "inventory/inventory_controller";
 
-$route['facilities'] = "Facilities_controller";
-$route['events'] = "Events_controller";
-$route['services'] = "Services_controller";
-$route['about'] = "About_controller";
-$route['contact'] = "Contact_controller";
+$route['customers'] = "customers/customers_controller";
 
-$route['404_override'] = '';
+$route['setting'] = "setting/restaurant_controller";
+$route['setting/restaurant'] = "setting/restaurant_controller";
+$route['setting/tableorder'] = "setting/tableorder_controller";
+$route['setting/category'] = "setting/category_controller";   
+$route['setting/menu'] = "setting/menu_controller"; 
+$route['setting/printer'] = "setting/printer_controller";
+$route['setting/users'] = "setting/users_controller";
+$route['setting/tax'] = "setting/tax_controller"; 
+$route['setting/discounts'] = "setting/discounts_controller";
+$route['setting/currency'] = "setting/currency_controller";    
+
+$route['reports'] = "reports/sales_controller";
+$route['reports/sales'] = "reports/sales_controller";
+$route['reports/inventory'] = "reports/inventory_controller";   
+
+$route['extracts'] = "extracts/ordersdata_controller";
+
+$route['process/orders'] = "process/orderdetails_controller";
+$route['process/printer'] = "process/printersetting_controller";
+
+$route['404_override'] = 'P404';
 
 
 /* End of file routes.php */

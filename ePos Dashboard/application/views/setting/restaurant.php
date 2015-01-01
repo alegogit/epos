@@ -3,15 +3,15 @@
   <div class="container-fluid" style="font-size:90%;">
   
     <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
-      <a role="button" class="btn btn-primary" href="?p=restaurant">Restaurant</a>
-      <a role="button" class="btn btn-default" href="?p=tableorder">Table Order</a>               
-      <a role="button" class="btn btn-default" href="?p=category">Category</a>               
-      <a role="button" class="btn btn-default" href="?p=menu">Menu</a>                 
-      <a role="button" class="btn btn-default" href="?p=printer">Printer</a>               
-      <a role="button" class="btn btn-default" href="?p=users">Users</a>           
-      <a role="button" class="btn btn-default" href="?p=tax">Tax</a>               
-      <a role="button" class="btn btn-default" href="?p=discounts">Discounts</a>               
-      <a role="button" class="btn btn-default" href="?p=currency">Currency</a>           
+      <a role="button" class="btn btn-primary" href="/setting/restaurant">Restaurant</a>
+      <a role="button" class="btn btn-default" href="/setting/tableorder">Table Order</a>               
+      <a role="button" class="btn btn-default" href="/setting/category">Category</a>               
+      <a role="button" class="btn btn-default" href="/setting/menu">Menu</a>                 
+      <a role="button" class="btn btn-default" href="/setting/printer">Printer</a>               
+      <a role="button" class="btn btn-default" href="/setting/users">Users</a>           
+      <a role="button" class="btn btn-default" href="/setting/tax">Tax</a>               
+      <a role="button" class="btn btn-default" href="/setting/discounts">Discounts</a>               
+      <a role="button" class="btn btn-default" href="/setting/currency">Currency</a>           
     </div>                                                                              
     <hr style="margin-bottom:10px" />
     <?php //$this->load->view('contents/setting',$data);?>
@@ -20,7 +20,7 @@
 				<div class="panel panel-default">
 					<div class="panel-heading">Advanced Table</div>
 					<div class="panel-body">
-						<table data-toggle="table" data-url="tables/data1.json"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+						<table data-toggle="table" data-url=""  data-show-refresh="false" data-show-toggle="false" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
 						    <thead>
 						    <tr>
 						        <th data-field="state" data-checkbox="true" >Item ID</th>

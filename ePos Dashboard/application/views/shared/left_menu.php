@@ -7,30 +7,24 @@
 <div id="sidebar-wrapper">
   <div>
   <ul class="sidebar-nav">
-    <li class="<?php if($menu == 'home'){ echo "active";} ?>">
-	  <?php echo anchor('home', 'Dashboard'); ?>
+    <li class="<?php if($menu == 'dashboard'){ echo "active";} ?>">
+	  <?php echo anchor('dashboard', 'Dashboard'); ?>
     </li>
-    <li class="<?php if($menu == 'services'){ echo "active";} ?>">
-	  <?php echo anchor('services', 'Inventory'); ?>
+    <li class="<?php if($menu == 'inventory'){ echo "active";} ?>">
+	  <?php echo anchor('inventory', 'Inventory'); ?>
     </li>
-    <li class="<?php if($menu == 'facilities'){ echo "active";} ?>">
-	  <?php echo anchor('facilities', 'Customers'); ?>
+    <li class="<?php if($menu == 'customers'){ echo "active";} ?>">
+	  <?php echo anchor('customers', 'Customers'); ?>
     </li>
     <li class="<?php if($menu == 'setting'){ echo "active";} ?>">
 	  <?php echo anchor('setting', 'Setting'); ?>
     </li>
-    <li class="<?php if($menu == 'report'){ echo "active";} ?>">
-	  <?php echo anchor('report', 'Reports'); ?>
+    <li class="<?php if($menu == 'reports'){ echo "active";} ?>">
+	  <?php echo anchor('reports', 'Reports'); ?>
     </li>
     <li class="<?php if($menu == 'extracts'){ echo "active";} ?>">
 	  <?php echo anchor('extracts', 'Extracts'); ?>
     </li>
-    <!--<li class="<?php if($menu == 'about'){ echo "active";} ?>">
-	  <?php echo anchor('about', 'About Us'); ?>
-    </li>
-    <li class="<?php if($menu == 'contact'){ echo "active";} ?>">
-	  <?php echo anchor('contact', 'Contact Us'); ?>
-    </li>-->
   </ul>
   </div>
   <div class="copyright"> 

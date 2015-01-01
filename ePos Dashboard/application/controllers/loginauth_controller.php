@@ -16,7 +16,7 @@ class Loginauth_controller extends CI_Controller {
  
         if($this->form_validation->run() == FALSE) 
 		{
-            $this->load->view('login');
+            $this->load->view('login');   
         } 
 		else 
 		{
@@ -26,7 +26,7 @@ class Loginauth_controller extends CI_Controller {
 			//);
 			//$this->session->set_userdata('logged_in', $sess_array);
             //Go to private area
-            redirect('home', 'refresh');
+            redirect('dashboard', 'refresh');
         }   
 			    
      }

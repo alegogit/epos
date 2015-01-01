@@ -1,4 +1,6 @@
-<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed'); 
+
+date_default_timezone_set('Asia/Jakarta');
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +28,8 @@ $config['base_url']	= 'http://localhost/';
 | variable so that it is blank.
 |
 */
-$config['index_page'] = 'index.php';
+$config['index_page'] = '';
+//$config['index_page'] = 'index.php';
 
 /*
 |--------------------------------------------------------------------------
@@ -43,8 +46,9 @@ $config['index_page'] = 'index.php';
 | 'REQUEST_URI'		Uses the REQUEST_URI
 | 'ORIG_PATH_INFO'	Uses the ORIG_PATH_INFO
 |
-*/
-$config['uri_protocol']	= 'AUTO';
+*/                  
+$config['uri_protocol'] = 'REQUEST_URI';  
+//$config['uri_protocol']	= 'AUTO';
 
 /*
 |--------------------------------------------------------------------------
@@ -57,7 +61,8 @@ $config['uri_protocol']	= 'AUTO';
 | http://codeigniter.com/user_guide/general/urls.html
 */
 
-$config['url_suffix'] = '.html';
+$config['url_suffix'] = '';
+//$config['url_suffix'] = '.html';
 
 /*
 |--------------------------------------------------------------------------
@@ -127,6 +132,7 @@ $config['subclass_prefix'] = 'MY_';
 |
 */
 $config['permitted_uri_chars'] = 'a-z 0-9~%.:_\-';
+//$config['permitted_uri_chars'] = 'a-z 0-9~%.:?=_\-';
 
 
 /*

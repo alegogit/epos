@@ -10,6 +10,9 @@
 .defbg {
 	background-color: #428bca;
 }
+.grdbg{
+  background-image: linear-gradient(#ffffff, #f5f5f5);
+}
 .navdash{     
      color: #747473;   
      border-top: 1px solid #428bca;

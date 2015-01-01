@@ -2,7 +2,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Landing Page</title>
+<title>ePOS</title>   
+<link rel="shortcut icon" href="<?php echo base_url(); ?>assets/images/icon.ico" />
  
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap.js"></script>
@@ -32,7 +33,7 @@
       <?php 
 	  	echo validation_errors(); 
 	  	$attributes = array('class' => 'form-login form-inline', 'id' => 'myform', 'role' => 'form');
-	  	echo form_open('loginauth_controller', $attributes); 
+	  	echo form_open('loginauth', $attributes); 
 	  ?>
         <!--<form class="form-login form-inline" role="form">-->
         
