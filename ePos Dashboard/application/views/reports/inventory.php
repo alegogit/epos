@@ -3,7 +3,7 @@
   <div class="container-fluid" style="font-size:90%;">
   
     <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
-      <a role="button" class="btn btn-default" href="/reports/sales">Sales</a>
+      <a role="button" class="btn btn-default" href="/reports/sales">&nbsp;&nbsp;Sales&nbsp;&nbsp;</a>
       <a role="button" class="btn btn-primary" href="/reports/inventory">Inventory</a>         
     </div>    
                                                                             

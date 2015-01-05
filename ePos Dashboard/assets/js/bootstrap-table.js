@@ -803,6 +803,7 @@
         } else {
             this.initBody();
         }
+        
     };
 
     BootstrapTable.prototype.onPageListChange = function (event) {

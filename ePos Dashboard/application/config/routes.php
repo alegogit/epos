@@ -38,7 +38,9 @@
 |
 */
 
-$route['default_controller'] = "Login_controller";
+$route['default_controller'] = "Login_controller"; 
+ 
+$route['forgot'] = "Forgot_controller";
 
 $route['login'] = "Login_controller";
 $route['loginauth'] = "Loginauth_controller";

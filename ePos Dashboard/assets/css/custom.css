@@ -13,6 +13,9 @@
 .grdbg{
   background-image: linear-gradient(#ffffff, #f5f5f5);
 }
+.mw90{
+  max-width: 90px;
+}
 .navdash{     
      color: #747473;   
      border-top: 1px solid #428bca;

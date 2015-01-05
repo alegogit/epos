@@ -199,11 +199,9 @@
   
   $(document).ready(function(){
     gOrdDet();  
-    $('#report').bootstrapTable({ 
-      url: '/reports/sales',
-      method: 'get',
+    $('#report').bootstrapTable({
       onAll: function (name, args) {
-        if (typeof gOrdDet == 'function') {  
+        if (typeof gOrdDet == 'function') { 
           gOrdDet(); 
           console.log('inside fired');
         }

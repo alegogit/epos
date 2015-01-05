@@ -62,7 +62,7 @@
         </div>
 	      <div class="panel-body table-responsive">
 	       <?php if($report_name!="Sales"){?>   
-	        <table id="report" class="table table-striped" data-toggle="table" data-url="" data-show-refresh="false" data-show-toggle="false" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+	        <table class="table table-striped" data-toggle="table" data-url=""  data-show-refresh="false" data-show-toggle="false" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
 					  <thead>
 						  <tr>
 						    <th data-field="state" data-checkbox="true" >Void ID</th>
@@ -87,7 +87,7 @@
 						</tbody>
 					</table>
 				<?php } else {?>  
-	         <table id="report" class="table table-striped" data-toggle="table" data-url="" data-show-refresh="false" data-show-toggle="false" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+	         <table class="table table-striped" data-toggle="table" data-url="" data-show-refresh="false" data-show-toggle="false" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
 					   <thead>
 						  <tr>
 						    <th data-field="state" data-checkbox="true">Order ID</th>
@@ -108,7 +108,7 @@
 						  <tr>
 						    <td data-field="state" data-checkbox="true" ><?=$row->ID?></td>
 						    <td data-field="name" data-sortable="true" data-valign="center">
-                  <a href="#" style="font-size:90%" class="label label-lg label-success modalTrigger" data-toggle="modal" data-target="#bookModal" data-id="<?=$row->ID?>" data-odn="<?=$row->ORDER_NUMBER?>">
+                  <a id="o<?=$row->ID?>" href="#" style="font-size:90%" class="label label-lg label-success modalTrigger" data-toggle="modal" data-target="#bookModal" data-id="<?=$row->ID?>" data-odn="<?=$row->ORDER_NUMBER?>">
                     <?=$row->ORDER_NUMBER?>
                   </a>  
                 </td>
@@ -173,13 +173,25 @@
 </div><!-- /.modal fade -->
 <?php } ?>
 
+<?php
+  $scr = "";
+  $scr .= "<script>
+            $(document).ready(function(){";
+  foreach ($sales_report as $row){
+    $scr .= "getOrderDetails('#o".$row->ID."');";
+  }
+  $scr .= " });
+          </script>";
+  echo $scr;
+?>
+
 <script type="text/javascript">      
-  //datepickers    
-  $("#startdate").datepicker({format: 'dd M yyyy'});
-  $("#enddate").datepicker({format: 'dd M yyyy'});
-  
-  var gOrdDet = function gOrdDet(){
-       $(".modalTrigger").click(function () { 
+     //datepickers    
+     $("#startdate").datepicker({format: 'dd M yyyy'});
+     $("#enddate").datepicker({format: 'dd M yyyy'});
+     
+     function getOrderDetails(ale){
+       $(ale).click(function () { 
         var odnP = $(this).data('odn');   
         $(".modal-title #ordnumb").html(odnP);
         var varP = $(this).data('id');  
@@ -190,34 +202,9 @@
           data: dataP,
           cache: false,
           success: function(result){
-            $(".modal-body #datarow").html(result); 
-            return false; 
+            $(".modal-body #datarow").html(result);
           }
-        }); 
-       });
-    }; 
-  
-  $(document).ready(function(){
-    gOrdDet();  
-    $('#report').bootstrapTable({ 
-      url: '/reports/sales',
-      method: 'get',
-      onAll: function (name, args) {
-        if (typeof gOrdDet == 'function') {  
-          gOrdDet(); 
-          console.log('inside fired');
-        }
-      }
-    }).on('all.bs.table', function (e, name, args) { 
-        if (typeof gOrdDet == 'function') { 
-          gOrdDet();     
-          console.log('triggered');
-        }
-      console.log('Event:', name, ', data:', args);
-    }).trigger( "gOrdDet" ); 
-  });
-  
-  $(function () { 
-  });
-  
+        });                    
+      });
+    }     
 </script>

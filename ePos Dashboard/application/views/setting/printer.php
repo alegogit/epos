@@ -29,9 +29,10 @@
             </button>        
             <button type="button" class="btn btn-warning subch" style="display:none">
               <span class="glyphicon glyphicon-edit"></span> Submit Changes  
-            </button>    
+            </button>   
+            <div style="margin-bottom:15px"></div> 
 					  <div class="table-responsive">     
-						  <table id="dtable" class="table table-condensed" data-toggle="table" data-url="" data-show-refresh="false" data-show-toggle="false" data-show-columns="true" data-search="true" data-pagination="true" data-sort-name="updt" data-sort-order="desc">
+						  <table id="dtable" class="table table-condensed" data-toggle="table" data-url="" data-show-refresh="false" data-show-toggle="false" data-show-columns="false" data-search="false" data-pagination="true" data-sort-name="updt" data-sort-order="desc">
 						    <thead>
 						    <tr>
 						        <th data-field="state" data-checkbox="true"></th>
@@ -70,7 +71,7 @@
                     <a id="PRINTER_IP_ADDRESS-<?=$row->ID?>" data-inputclass="ipv4" data-type="text"><?=$row->PRINTER_IP_ADDRESS?></a>   
                   </td>
                   <td style="">       
-                    <a id="PRINTER_PORT-<?=$row->ID?>" class=""><?=$row->PRINTER_PORT?></a> 
+                    <a id="PRINTER_PORT-<?=$row->ID?>" data-inputclass="mw90"><?=$row->PRINTER_PORT?></a> 
                   </td>
                   <td style=""><span id="crby<?=$row->ID?>"><?=$this->printer->get_username($row->CREATED_BY)->USERNAME?></span></td>
                   <td style=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
@@ -170,7 +171,10 @@
   foreach ($printer_conf as $row){
   $edit_script .= "  $('#NAME-".$row->ID."').editable({
                         url: '/process/printer?p=update',
-                        pk: ".$row->ID.",
+                        pk: ".$row->ID.", 
+                        validate: function(v) {
+                          if (!v) return 'don\'t leave it blank!';
+                        },
                         success: function(result){  
                           var data = result.split(',');
                           $('#upby".$row->ID."').html(data[0]);
@@ -217,21 +221,27 @@
                           $('#updt".$row->ID."').html(data[1]); 
                         }  
                       });";
+  $edit_script .= "   $('#PRINTER_IP_ADDRESS-".$row->ID."').on('shown', function(e, editable) { 
+                        $('.ipv4').ipAddress();
+                      });";
   $edit_script .= "  $('#PRINTER_IP_ADDRESS-".$row->ID."').editable({
-                        display: function() {
-                          $('ipv4').ipAddress();
-                        },
                         url: '/process/printer?p=update',
-                        pk: ".$row->ID.",
+                        pk: ".$row->ID.",    
+                        validate: function(v) { 
+                          if (!v) return 'don\'t leave it blank!';
+                        },
                         success: function(result){  
                           var data = result.split(',');
                           $('#upby".$row->ID."').html(data[0]);
                           $('#updt".$row->ID."').html(data[1]); 
                         }  
-                      }).addClass('ipv4');";
+                      });";
   $edit_script .= "  $('#PRINTER_PORT-".$row->ID."').editable({
                         url: '/process/printer?p=update',
-                        pk: ".$row->ID.",
+                        pk: ".$row->ID.",       
+                        validate: function(v) {  
+                          if (!v) return 'don\'t leave it blank!';
+                        },
                         success: function(result){  
                           var data = result.split(',');
                           $('#upby".$row->ID."').html(data[0]);

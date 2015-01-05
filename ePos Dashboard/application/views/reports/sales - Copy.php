@@ -62,7 +62,7 @@
         </div>
 	      <div class="panel-body table-responsive">
 	       <?php if($report_name!="Sales"){?>   
-	        <table id="report" class="table table-striped" data-toggle="table" data-url="" data-show-refresh="false" data-show-toggle="false" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+	        <table class="table table-striped" data-toggle="table" data-url=""  data-show-refresh="false" data-show-toggle="false" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
 					  <thead>
 						  <tr>
 						    <th data-field="state" data-checkbox="true" >Void ID</th>
@@ -87,7 +87,7 @@
 						</tbody>
 					</table>
 				<?php } else {?>  
-	         <table id="report" class="table table-striped" data-toggle="table" data-url="" data-show-refresh="false" data-show-toggle="false" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+	         <table class="table table-striped" data-toggle="table" data-url="" data-show-refresh="false" data-show-toggle="false" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
 					   <thead>
 						  <tr>
 						    <th data-field="state" data-checkbox="true">Order ID</th>
@@ -151,7 +151,7 @@
         <h4 class="modal-title" id="myModalLabel"><span id="ordnumb"></span> Order Detail List</h4>
       </div><!-- /.modal-header -->
       <div class="modal-body">    	 	 	 	 	
-        <table data-toggle="table" data-url="" data-show-refresh="false" data-show-toggle="false" data-show-columns="false" data-search="false" data-select-item-name="toolbar1" data-pagination="false" data-sort-name="name" data-sort-order="desc">
+        <table data-toggle="table" data-url=""  data-show-refresh="false" data-show-toggle="false" data-show-columns="false" data-search="false" data-select-item-name="toolbar1" data-pagination="false" data-sort-name="name" data-sort-order="desc">
 					  <thead>
 						  <tr>
 						    <th data-field="numb" data-checkbox="false">No</th>
@@ -174,50 +174,25 @@
 <?php } ?>
 
 <script type="text/javascript">      
-  //datepickers    
-  $("#startdate").datepicker({format: 'dd M yyyy'});
-  $("#enddate").datepicker({format: 'dd M yyyy'});
-  
-  var gOrdDet = function gOrdDet(){
-       $(".modalTrigger").click(function () { 
-        var odnP = $(this).data('odn');   
-        $(".modal-title #ordnumb").html(odnP);
-        var varP = $(this).data('id');  
-        var dataP = "varP="+varP;  
-        $.ajax({
-          type: "POST",
-          url: "/process/orders",
-          data: dataP,
-          cache: false,
-          success: function(result){
-            $(".modal-body #datarow").html(result); 
-            return false; 
-          }
-        }); 
-       });
-    }; 
-  
+     //datepickers    
+     $("#startdate").datepicker({format: 'dd M yyyy'});
+     $("#enddate").datepicker({format: 'dd M yyyy'});
   $(document).ready(function(){
-    gOrdDet();  
-    $('#report').bootstrapTable({ 
-      url: '/reports/sales',
-      method: 'get',
-      onAll: function (name, args) {
-        if (typeof gOrdDet == 'function') {  
-          gOrdDet(); 
-          console.log('inside fired');
+     $(".modalTrigger").click(function () { 
+      var odnP = $(this).data('odn');   
+      $(".modal-title #ordnumb").html(odnP);
+      var varP = $(this).data('id');  
+      var dataP = "varP="+varP;  
+      $.ajax({
+        type: "POST",
+        url: "/process/orders",
+        data: dataP,
+        cache: false,
+        success: function(result){
+          $(".modal-body #datarow").html(result);
         }
-      }
-    }).on('all.bs.table', function (e, name, args) { 
-        if (typeof gOrdDet == 'function') { 
-          gOrdDet();     
-          console.log('triggered');
-        }
-      console.log('Event:', name, ', data:', args);
-    }).trigger( "gOrdDet" ); 
+      }); 
+      //$(".modal-body #bookId").val( val.ID );
+     });
   });
-  
-  $(function () { 
-  });
-  
 </script>

@@ -7,71 +7,153 @@
  
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap.js"></script>
+<script>
+window.setTimeout(function() {
+  $("#output").fadeTo(500, 0).slideUp(500, function(){
+      $(this).remove();
+  });
+}, 3000);
+</script>
  
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap.css"/>
-<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/gallery-effect.css"/>
+<style>
+body{background: #eee url('/assets/images/resto.png');}
+html,body{
+    position: relative;
+    height: 100%;
+}
+
+.login-container{
+    position: relative;
+    width: 300px;
+    margin: 80px auto;
+    padding: 20px 40px 40px;
+    text-align: center;
+    border: 1px solid #ccc;
+    box-shadow:
+        0 0 1px rgba(0, 0, 0, 0.3),
+        0 3px 7px rgba(0, 0, 0, 0.3),
+        inset 0 1px rgba(255,255,255,1),
+        inset 0 -3px 2px rgba(0,0,0,0.25);
+    border-radius: 5px;
+    background: linear-gradient(#ffffff, #eeefef 75%);
+}
+
+#output{
+  margin-bottom: 10px;
+  color: rgb(228, 105, 105);
+}
+
+#output.alert-success{
+    background: rgb(25, 204, 25);
+}
+
+#output.alert-danger{
+    background: rgb(228, 105, 105);
+}
+
+
+.login-container::before,.login-container::after{
+    content: "";
+    position: absolute;
+    width: 100%;height: 100%;
+    top: 3.5px;left: 0;
+    background: #fff;
+    z-index: -1;
+    -webkit-transform: rotateZ(4deg);
+    -moz-transform: rotateZ(4deg);
+    -ms-transform: rotateZ(4deg);
+    border: 1px solid #ccc;
+
+}
+
+.login-container::after{
+    top: 5px;
+    z-index: -2;
+    -webkit-transform: rotateZ(-2deg);
+     -moz-transform: rotateZ(-2deg);
+      -ms-transform: rotateZ(-2deg);
+
+}
+
+.form-box input{
+    width: 100%;
+    padding: 10px;
+    height:40px;
+    border: 1px solid #ccc;
+    transition:0.2s ease-in-out;     
+    box-shadow: 1px 0 0 rgba(255, 255, 255, 0.7);
+}
+
+.form-box input:focus{
+    outline: 0;
+    background: #f7f7f7;
+}
+
+.form-box input[type="text"]{
+    border-radius: 5px;
+}
+
+.form-box input[type="password"]{
+    border-radius: 5px;
+}
+
+.form-box button.login{
+    margin-top:15px;
+    padding: 10px 20px;
+}
+
+.animated {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+}
+
+.profile-img
+{
+    width: 100px;
+    margin: 0 auto 10px;
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+.forgot-pass
+{
+    margin-top: 10px;
+}
+</style>
   
 </head>
  
 <body>
  
-<div class="popup">
- 
-<div class="container-fluid" style="margin-top:15%;">
- 
-  <div class="mid">
-   
-    <div class="row">
-      <div class="col-sm-4 col-sm-offset-4">
-      <img src="<?php echo base_url(); ?>assets/images/logo.png" style="width:300px;" class="grayscale" />
+<div class="container"> 
+	<div class="login-container"> 
+    <img class="profile-img grayscale" src="<?php echo base_url(); ?>assets/images/logo.png" alt="ePOS">  
+    <div class="form-box">
+    <?php 
+	   echo validation_errors(); 
+	   $attributes = array('class' => 'form-signin', 'id' => 'myform', 'role' => 'form');
+	   echo form_open('loginauth', $attributes); 
+	  ?>  
+      <div class="form-group">
+        <div class="input-group"> 
+          <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
+          <input type="text" class="form-control" name="username" id="username" placeholder="Username" required autofocus>  
+        </div>
       </div>
-    </div><!-- /.row -->
-     
-    <div class="row">
-      <div class="col-sm-6 col-sm-offset-3">
-      <hr />
-      <?php 
-	  	echo validation_errors(); 
-	  	$attributes = array('class' => 'form-login form-inline', 'id' => 'myform', 'role' => 'form');
-	  	echo form_open('loginauth', $attributes); 
-	  ?>
-        <!--<form class="form-login form-inline" role="form">-->
-        
-          <div class="form-group">
-            <div class="input-group">
-              <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
-              <!--<input name="username" id="username" class="form-control" type="email" placeholder="Username">-->
-              <input name="username" id="username" class="form-control" type="text" placeholder="Username">
-            </div>
-          </div>
-          
-          <div class="form-group" style="margin-left:15px;">
-            <div class="input-group">
-              <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
-              <input name="password" id="password" class="form-control" type="password" placeholder="Password">
-            </div>
-          </div>
-          
-          <input name="login" type="submit" value="Sign in" class="btn btn-primary col-sm-2 pull-right" />
-          <!--<button type="submit" class="btn btn-primary col-sm-2 pull-right">Sign in</button>-->
-          <!--<a href="home" class="btn btn-primary col-sm-2 pull-right">Sign in</a>-->
-          <div style="margin: 5px 5px -5px 5px;">
-          <a href="#" style="color:#fff;" class="pull-right">Forgot Password ?</a>
-          <div class="checkbox">
-            <label>
-              <input type="checkbox"> <span style="vertical-align:top;color:#fff;">Remember me</span>
-            </label>
-          </div>
-          </div>
-        <!--</form>-->
-      </div><!-- /.col-sm-6 col-sm-offset-3 -->
-    </div><!-- /.row -->
-           
-  </div><!-- /.mid -->
- 
-</div><!-- /.container-fluid -->
-   
-</div><!-- /.popup -->
-<!-- /. -->
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
+          <input name="password" id="password" class="form-control" type="password" placeholder="Password" required>
+        </div>
+      </div>
+      <input name="login" type="submit" value="Sign in" class="btn btn-lg btn-primary btn-block" />
+      <a href="#" class="pull-right forgot-pass">Forgot Password? </a><span class="clearfix"></span>
+    <?=form_close()?>
+    </div>
+  </div>
+</div> 
 </body>
 </html>

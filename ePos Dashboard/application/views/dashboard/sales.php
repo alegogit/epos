@@ -422,14 +422,14 @@
      $("#mobutt").click(function(){      
         $("#monthly-line-chart,#motit").show(); 
         $("#weekly-line-chart,#wktit").hide();  
-        $("#mobutt").addClass("btn-primary"); 
-        $("#wkbutt").removeClass("btn-primary").addClass("btn-default");
+        $("#mobutt").removeClass("grdbg").addClass("btn-primary"); 
+        $("#wkbutt").removeClass("grdbg").removeClass("btn-primary").addClass("btn-default");
      });  
      $("#wkbutt").click(function(){
         $("#monthly-line-chart,#motit").hide(); 
         $("#weekly-line-chart,#wktit").show();  
-        $("#mobutt").removeClass("btn-primary").addClass("btn-default"); 
-        $("#wkbutt").addClass("btn-primary");         
+        $("#mobutt").removeClass("grdbg").removeClass("btn-primary").addClass("btn-default"); 
+        $("#wkbutt").removeClass("grdbg").addClass("btn-primary");         
      });                                  
      
      //print page
