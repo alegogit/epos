@@ -45,7 +45,7 @@ html,body{
 }
 
 #output.alert-success{
-    background: rgb(25, 204, 25);
+    color: rgb(25, 204, 25);
 }
 
 #output.alert-danger{
@@ -118,7 +118,7 @@ html,body{
     margin-top: 10px;
     margin-bottom: 30px;
 }
-.forgot-pass
+.mt10
 {
     margin-top: 10px;
 }
@@ -135,22 +135,16 @@ html,body{
     <?php 
 	   echo validation_errors(); 
 	   $attributes = array('class' => 'form-signin', 'id' => 'myform', 'role' => 'form');
-	   echo form_open('loginauth', $attributes); 
+	   echo form_open('forgot', $attributes); 
 	  ?>  
       <div class="form-group">
         <div class="input-group"> 
-          <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
-          <input type="text" class="form-control" name="username" id="username" placeholder="Username" required autofocus>  
+          <div class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></div>
+          <input type="text" class="form-control" name="email" id="email" placeholder="Email" required autofocus>  
         </div>
       </div>
-      <div class="form-group">
-        <div class="input-group">
-          <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
-          <input name="password" id="password" class="form-control" type="password" placeholder="Password" required>
-        </div>
-      </div>
-      <input name="login" type="submit" value="Sign in" class="btn btn-lg btn-primary btn-block" />
-      <a href="/forgot" class="pull-right forgot-pass">Forgot Password? </a><span class="clearfix"></span>
+      <input name="login" type="submit" value="Reset Your Password" class="btn btn-lg btn-primary btn-block" />
+      <a href="/" class="pull-right mt10">Back Home </a><span class="clearfix"></span>
     <?=form_close()?>
     </div>
   </div>

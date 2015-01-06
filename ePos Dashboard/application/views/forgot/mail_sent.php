@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="refresh" content="5;url=<?php echo base_url(); ?>">
 <title>ePOS</title>   
 <link rel="shortcut icon" href="<?php echo base_url(); ?>assets/images/icon.ico" />
  
@@ -45,7 +46,7 @@ html,body{
 }
 
 #output.alert-success{
-    background: rgb(25, 204, 25);
+    color: rgb(25, 204, 25);
 }
 
 #output.alert-danger{
@@ -76,40 +77,6 @@ html,body{
 
 }
 
-.form-box input{
-    width: 100%;
-    padding: 10px;
-    height:40px;
-    border: 1px solid #ccc;
-    transition:0.2s ease-in-out;     
-    box-shadow: 1px 0 0 rgba(255, 255, 255, 0.7);
-}
-
-.form-box input:focus{
-    outline: 0;
-    background: #f7f7f7;
-}
-
-.form-box input[type="text"]{
-    border-radius: 5px;
-}
-
-.form-box input[type="password"]{
-    border-radius: 5px;
-}
-
-.form-box button.login{
-    margin-top:15px;
-    padding: 10px 20px;
-}
-
-.animated {
-  -webkit-animation-duration: 1s;
-  animation-duration: 1s;
-  -webkit-animation-fill-mode: both;
-  animation-fill-mode: both;
-}
-
 .profile-img
 {
     width: 100px;
@@ -118,7 +85,7 @@ html,body{
     margin-top: 10px;
     margin-bottom: 30px;
 }
-.forgot-pass
+.mt10
 {
     margin-top: 10px;
 }
@@ -131,28 +98,9 @@ html,body{
 <div class="container"> 
 	<div class="login-container"> 
     <img class="profile-img grayscale" src="<?php echo base_url(); ?>assets/images/logo.png" alt="ePOS">  
-    <div class="form-box">
-    <?php 
-	   echo validation_errors(); 
-	   $attributes = array('class' => 'form-signin', 'id' => 'myform', 'role' => 'form');
-	   echo form_open('loginauth', $attributes); 
-	  ?>  
-      <div class="form-group">
-        <div class="input-group"> 
-          <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
-          <input type="text" class="form-control" name="username" id="username" placeholder="Username" required autofocus>  
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="input-group">
-          <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
-          <input name="password" id="password" class="form-control" type="password" placeholder="Password" required>
-        </div>
-      </div>
-      <input name="login" type="submit" value="Sign in" class="btn btn-lg btn-primary btn-block" />
-      <a href="/forgot" class="pull-right forgot-pass">Forgot Password? </a><span class="clearfix"></span>
-    <?=form_close()?>
-    </div>
+    Please check your e-mail for details on changing your password..<br>   
+    <img class="grayscale mt10" src="<?php echo base_url(); ?>assets/img/loading.gif" alt="loading..."><br> 
+    <a href="/" class="mt10">Back Home</a><span class="clearfix"></span>
   </div>
 </div> 
 </body>

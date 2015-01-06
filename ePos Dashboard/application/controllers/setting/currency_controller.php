@@ -5,11 +5,11 @@ class Currency_controller extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();	
-		$this->load->model('setting/currency_model','currency',TRUE);  
+		$this->load->model('setting/currency_model','setting',TRUE);  
     $this->load->helper(array('form', 'url','html'));
 		$session_data = $this->session->userdata('logged_in');
-		$this->data['user'] = $this->currency->get_profile();
-		$this->data['restaurants'] = $this->currency->get_restaurant(); 
+		$this->data['user'] = $this->setting->get_profile();
+		$this->data['restaurants'] = $this->setting->get_restaurant(); 
 	}
 
 	public function index()
@@ -28,6 +28,14 @@ class Currency_controller extends CI_Controller {
 			$data['startdate'] = $start_date;
 			$data['enddate'] = $end_date;   
 			
+			$data['currencies'] = $this->setting->get_currencies();
+			$data['rest_dcurr'] = $this->setting->get_rest_currency($rest_id);
+			$data['rest_name'] = $this->setting->get_restaurant_name($rest_id)->REST_NAME;
+			
+			if($this->input->post('curr_cd')){
+			   $this->setting->set_default_currency($this->input->post('curr_cd'),$rest_id);
+      }
+			
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);
 			$this->load->view('setting/currency',$data);
@@ -43,7 +51,7 @@ class Currency_controller extends CI_Controller {
 	
 	public function profile()
 	{
-		$data['profile'] = $this->currency->get_profile();
+		$data['profile'] = $this->setting->get_profile();
 		
 		$this->load->view('shared/header',$this->data);
 		$this->load->view('shared/left_menu');

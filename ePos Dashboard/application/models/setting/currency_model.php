@@ -41,4 +41,35 @@ class Currency_model extends CI_Model {
     return $query->row();
   }
   
+	function get_currencies(){
+    $query = $this->db->select('CODE,VALUE,DESCRIPTION')
+                      ->from('ref_values')
+                      ->where('LOOKUP_NAME','CURRENCY')
+                      ->get('');
+    return $query->result();
+  }
+  
+	function get_rest_currency($rest_id){
+    $query = $this->db->select('CURRENCY')
+                      ->from('restaurants')
+                      ->where('ID',$rest_id)
+                      ->limit(1)
+                      ->get('');
+    return $query->row()->CURRENCY;
+  }
+  
+  
+	function set_default_currency($curr_cd,$rest_id){
+	  date_default_timezone_set('Asia/Jakarta');
+		$session_data = $this->session->userdata('logged_in');
+		$id = $session_data['id']; 
+		$dt = date('Y-m-d H:i:s');
+	  $data = array(
+               'CURRENCY' => $curr_cd,
+               'LAST_UPDATED_BY' => $id,
+               'LAST_UPDATED_DATE' => $dt,
+            ); 
+		$this->db->where('ID',$rest_id);
+    $query = $this->db->update('restaurants',$data);
+  }
 }

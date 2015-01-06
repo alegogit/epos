@@ -1,0 +1,11 @@
+ <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
+ $config['protocol'] = 'smtp';
+ $config['smtp_host'] = 'localhost';
+ $config['smtp_port'] = '25';
+ //$config['protocol'] = 'sendmail';
+ //$config['mailpath'] = '/usr/sbin/sendmail';
+ $config['charset'] = 'iso-8859-1';
+ $config['wordwrap'] = TRUE; 
+ $config['smtp_timeout']='10';
+ $config['newline'] = "\r\n";
+ $config['crlf'] = "\r\n";
