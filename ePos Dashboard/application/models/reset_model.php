@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
   
-class Forgot_model extends CI_Model {
+class Reset_model extends CI_Model {
  
     function __construct() {
         parent::__construct();

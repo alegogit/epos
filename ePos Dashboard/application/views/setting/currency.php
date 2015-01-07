@@ -37,7 +37,7 @@
             <button type="submit" class="btn btn-success" style="display:inline">Filter</button>   
           </div>
         </div>
-      <?=form_close()?>
+      <?=form_close()?>     
     </div>      
                                                      
     <hr style="margin-bottom:10px;margin-top:10px" />
@@ -50,7 +50,7 @@
           </div>
 					<div class="panel-body">                
 					  <div class="table-responsive">     
-						  <table id="dtable" class="table table-condensed" data-toggle="table" data-url="" data-show-refresh="false" data-show-toggle="false" data-show-columns="false" data-search="false" data-pagination="true" data-sort-name="code" data-sort-order="asc">
+						  <table id="dtable" class="table table-striped" data-toggle="table" data-url="" data-show-refresh="false" data-show-toggle="false" data-show-columns="false" data-search="false" data-pagination="true" data-sort-name="code" data-sort-order="asc">
 						    <thead>
 						    <tr>
 						        <th data-field="code" data-sortable="false">Code</th>
@@ -96,7 +96,6 @@
   
   </div><!-- /.container-fluid -->
 </div><!-- /#page-content-wrapper -->
-
 <script>
   $(document).ready(function(){ 
     $('.set-default').on("click", function(event){

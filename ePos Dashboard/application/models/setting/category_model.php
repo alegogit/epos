@@ -41,4 +41,10 @@ class Category_model extends CI_Model {
     return $query->row();
   }
   
+	function get_rest_categories($rest_id){    
+    $this->db->where('REST_ID',$rest_id);
+    $query = $this->db->get('category');
+    return $query->result();
+  }
+  
 }

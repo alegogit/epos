@@ -1,11 +1,11 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Forgot_controller extends CI_Controller {
+class Reset_controller extends CI_Controller {
 
 	function __construct() {
         parent::__construct();
         //load session and connect to database
-        $this->load->model('forgot_model','forgot',TRUE);
+        $this->load->model('reset_model','reset',TRUE);
         $this->load->helper(array('form', 'url','html'));
         $this->load->library(array('form_validation','session'));   
 		    $this->data['user'] = '';

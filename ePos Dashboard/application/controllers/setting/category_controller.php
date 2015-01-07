@@ -7,7 +7,8 @@ class Category_controller extends CI_Controller {
 		parent::__construct();	
 		$this->load->model('setting/category_model','category',TRUE);  
     $this->load->helper(array('form', 'url','html'));
-		$session_data = $this->session->userdata('logged_in');
+		$session_data = $this->session->userdata('logged_in'); 
+		$this->data['menu'] = 'setting';      
 		$this->data['user'] = $this->category->get_profile();
 		$this->data['restaurants'] = $this->category->get_restaurant(); 
 	}
@@ -26,8 +27,10 @@ class Category_controller extends CI_Controller {
 			$end_date = (!($this->input->post('startdate')))?$data['def_end_date']:$this->input->post('enddate'); 
 			$data['rest_id'] = $rest_id;
 			$data['startdate'] = $start_date;
-			$data['enddate'] = $end_date;   
+			$data['enddate'] = $end_date;       
 			
+		  $data['categories'] = $this->category->get_rest_categories($rest_id);
+			                   
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);
 			$this->load->view('setting/category',$data);

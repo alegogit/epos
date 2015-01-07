@@ -42,6 +42,9 @@ $route['default_controller'] = "Login_controller";
  
 $route['forgot'] = "Forgot_controller";
 
+$route['reset/(:any)'] = "Reset_controller";
+//$route['book/(:any)'] = "book/slugify/$1";
+
 $route['login'] = "Login_controller";
 $route['loginauth'] = "Loginauth_controller";
 $route['logout'] = "dashboard/sales_controller/logout";
