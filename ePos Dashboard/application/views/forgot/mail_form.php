@@ -22,7 +22,7 @@ html,body{
     position: relative;
     height: 100%;
 }
-
+            
 .login-container{
     position: relative;
     width: 300px;
@@ -121,7 +121,7 @@ html,body{
 .mt10
 {
     margin-top: 10px;
-}
+}           
 </style>
   
 </head>
@@ -130,18 +130,18 @@ html,body{
  
 <div class="container"> 
 	<div class="login-container"> 
-    <img class="profile-img grayscale" src="<?php echo base_url(); ?>assets/images/logo.png" alt="ePOS">  
+    <img class="profile-img grayscale" src="<?php echo base_url(); ?>assets/images/logo3d.png" alt="ePOS">  
     <div class="form-box">
     <?php 
 	   echo validation_errors(); 
 	   $attributes = array('class' => 'form-signin', 'id' => 'myform', 'role' => 'form');
 	   echo form_open('forgot', $attributes); 
-	  ?>  
+	  ?>     
       <div class="form-group">
         <div class="input-group"> 
-          <div class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></div>
+          <div class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></div>     
           <input type="text" class="form-control" name="email" id="email" placeholder="Email" required autofocus>  
-        </div>
+        </div> 
       </div>
       <input name="login" type="submit" value="Reset Your Password" class="btn btn-lg btn-primary btn-block" />
       <a href="/" class="pull-right mt10">Back Home </a><span class="clearfix"></span>

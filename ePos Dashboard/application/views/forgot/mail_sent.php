@@ -97,7 +97,7 @@ html,body{
  
 <div class="container"> 
 	<div class="login-container"> 
-    <img class="profile-img grayscale" src="<?php echo base_url(); ?>assets/images/logo.png" alt="ePOS">  
+    <img class="profile-img grayscale" src="<?php echo base_url(); ?>assets/images/logo3d.png" alt="ePOS">  
     Please check your e-mail for details on changing your password..<br>   
     <img class="grayscale mt10" src="<?php echo base_url(); ?>assets/img/loading.gif" alt="loading..."><br> 
     <a href="/" class="mt10">Back Home</a><span class="clearfix"></span>

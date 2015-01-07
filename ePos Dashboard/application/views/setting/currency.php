@@ -73,7 +73,7 @@
                   </td>
                   <td style="">          
                     <a role="button" class="btn-lg" href="#">
-                      <i id="<?=$row->CODE?>" class="fa <?=($row->CODE==$rest_dcurr)?'fa-check-circle':'fa-check-circle-o'?>" data-id="<?=$row->CODE?>" data-csym="<?=$row->VALUE?>" data-rid="<?=$rest_id?>" data-rnm="<?=$rest_name?>"></i>
+                      <i id="<?=$row->CODE?>" class="set-default fa <?=($row->CODE==$rest_dcurr)?'fa-check-circle':'fa-check-circle-o'?>" data-id="<?=$row->CODE?>" data-csym="<?=$row->VALUE?>" data-rid="<?=$rest_id?>" data-rnm="<?=$rest_name?>"></i>
                     </a>
                   </td>
                 </tr>
@@ -99,7 +99,7 @@
 
 <script>
   $(document).ready(function(){ 
-    $('.fa-check-circle-o').on("click", function(event){
+    $('.set-default').on("click", function(event){
       var currid = $(this).data('id');
       var csymbl = $(this).data('csym');
       var restid = $(this).data('rid');

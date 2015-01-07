@@ -36,7 +36,8 @@ html,body{
         inset 0 1px rgba(255,255,255,1),
         inset 0 -3px 2px rgba(0,0,0,0.25);
     border-radius: 5px;
-    background: linear-gradient(#ffffff, #eeefef 75%);
+    /* background: linear-gradient(#fafaee, #ecece0 75%); */
+    background: linear-gradient(#ffffff, #eeefef 75%); 
 }
 
 #output{
@@ -130,7 +131,7 @@ html,body{
  
 <div class="container"> 
 	<div class="login-container"> 
-    <img class="profile-img grayscale" src="<?php echo base_url(); ?>assets/images/logo.png" alt="ePOS">  
+    <img class="profile-img grayscale" src="<?php echo base_url(); ?>assets/images/logo3d.png" alt="ePOS">  
     <div class="form-box">
     <?php 
 	   echo validation_errors(); 

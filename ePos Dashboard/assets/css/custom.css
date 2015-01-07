@@ -16,6 +16,9 @@
 .mw90{
   max-width: 90px;
 }
+.logocolor{
+  color: #7ac6bb; 
+}
 .gold{
     color: #D5AD6D;   
     background: -webkit-linear-gradient(transparent, transparent),
