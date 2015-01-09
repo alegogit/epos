@@ -36,9 +36,8 @@ class Forgot_controller extends CI_Controller {
                         <br>&nbsp;<br>
                         This is a post-only mailing. Replies to this message are not monitored or answered.";     
           $this->load->library('email');
-          $this->email->from('epos.zakuna@gmail.com','ePOS');
-          //$this->email->to($email);
-          $this->email->to('alex@disiniaje.com');
+          $this->email->from('donotreply@zakuna.co','ePOS');
+          $this->email->to($email);
           
           $this->email->subject('ePOS Reset Password Request');
           $this->email->message($message);

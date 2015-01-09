@@ -7,17 +7,29 @@ class Reset_model extends CI_Model {
         $this->load->database();
     }
  
-    function mail_avail($email) {
-        $this->db->where('EMAIL_ADDRESS', $email); 
-        $this->db->limit(1);
-         
-        //get query and processing
-        $query = $this->db->get('USERS');
+    function get_user_id($user) {
+        $query = $this->db->select('ID')
+                          ->from('USERS')
+                          ->where('USERNAME', $user) 
+                          ->limit(1)
+                          ->get('');
         if($query->num_rows() == 1){ 
-            return $query->result(); //if data is true
+            return $query->row()->ID; //if data is true
         }	else {
             return false; //if data is wrong
         }
+    }
+    
+    function change_password($id,$pass){
+  	  date_default_timezone_set('Asia/Jakarta');
+  		$dt = date('Y-m-d H:i:s');
+  	  $data = array(
+                 'PASSWORD' => $pass,
+                 'LAST_UPDATED_BY' => $id,
+                 'LAST_UPDATED_DATE' => $dt,
+              ); 
+  		$this->db->where('ID',$id);
+      $query = $this->db->update('users',$data);
     }
     
     function epos_encrypt($text, $salt = "vsdfkjheret3453fdgd"){

@@ -8,11 +8,6 @@
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap.js"></script>
 <script>
-window.setTimeout(function() {
-  $("#output").fadeTo(500, 0).slideUp(500, function(){
-      $(this).remove();
-  });
-}, 3000);
 </script>
  
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap.css"/>
@@ -46,10 +41,12 @@ html,body{
 
 #output.alert-success{
     color: rgb(25, 204, 25);
+    background: none;
 }
 
 #output.alert-danger{
-    background: rgb(228, 105, 105);
+    color: rgb(228, 105, 105);    
+    background: none;
 }
 
 
@@ -131,23 +128,48 @@ html,body{
 <div class="container"> 
 	<div class="login-container"> 
     <img class="profile-img grayscale" src="<?php echo base_url(); ?>assets/images/logo3d.png" alt="ePOS">  
-    <div class="form-box">
+    <div class="form-box">      
+    <div id="output"></div>
     <?php 
 	   echo validation_errors(); 
 	   $attributes = array('class' => 'form-signin', 'id' => 'myform', 'role' => 'form');
-	   echo form_open('forgot', $attributes); 
-	  ?>     
+	   echo form_open('reset/'.$code, $attributes); 
+	  ?>    
       <div class="form-group">
-        <div class="input-group"> 
-          <div class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></div>     
-          <input type="text" class="form-control" name="email" id="email" placeholder="Email" required autofocus>  
-        </div> 
+        <div class="input-group">
+          <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
+          <input name="password1" id="password1" class="form-control" type="password" placeholder="Fill In New Password" required>
+        </div>
       </div>
-      <input name="login" type="submit" value="Reset Your Password" class="btn btn-lg btn-primary btn-block" />
-      <a href="/" class="pull-right mt10">Back Home </a><span class="clearfix"></span>
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
+          <input name="password2" id="password2" class="form-control" type="password" placeholder="Retype New Password" required>
+        </div>
+      </div>
+      <input id="resetbutt" name="reset" type="submit" value="Reset Your Password" class="btn btn-lg btn-primary btn-block" />
+      <a href="/" class="pull-right mt10">Nope, not this time </a><span class="clearfix"></span>
     <?=form_close()?>
     </div>
   </div>
 </div> 
+<script>
+ $(document).ready(function () {
+   $("#password2").keyup(function(){checkPasswordMatch("#password1","#password2","#output","#resetbutt");});
+});
+
+function checkPasswordMatch(ale,ela,luv,vul) {
+    var password = $(ale).val();
+    var confirmPassword = $(ela).val();
+
+    if (password != confirmPassword){       
+        $(vul).prop("disabled", true);
+        $(luv).html("Passwords do not match!").addClass("alert-danger").removeClass("alert-success");
+    } else {                                
+        $(vul).prop("disabled", false);
+        $(luv).html("Passwords match.").addClass("alert-success").removeClass("alert-danger");
+    }
+}
+</script>
 </body>
 </html>

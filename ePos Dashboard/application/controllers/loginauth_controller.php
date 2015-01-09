@@ -50,7 +50,7 @@ class Loginauth_controller extends CI_Controller {
 		   );
 		   $this->session->set_userdata('logged_in', $sess_array);
 		  }
-		  //echo "<pre>" . var_dump($row) . "</pre>";
+		  //echo "<pre>" . var_dump($row) . "</pre>";   
 		  return TRUE;
 	   } else {
 	    $this->form_validation->set_error_delimiters('<div id="output" class="fade-in">', '</div>');
