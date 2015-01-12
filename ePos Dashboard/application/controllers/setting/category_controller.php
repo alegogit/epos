@@ -5,12 +5,12 @@ class Category_controller extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();	
-		$this->load->model('setting/category_model','category',TRUE);  
+		$this->load->model('setting/category_model','setting',TRUE);  
     $this->load->helper(array('form', 'url','html'));
 		$session_data = $this->session->userdata('logged_in'); 
 		$this->data['menu'] = 'setting';      
-		$this->data['user'] = $this->category->get_profile();
-		$this->data['restaurants'] = $this->category->get_restaurant(); 
+		$this->data['user'] = $this->setting->get_profile();
+		$this->data['restaurants'] = $this->setting->get_restaurant(); 
 	}
 
 	public function index()
@@ -29,7 +29,11 @@ class Category_controller extends CI_Controller {
 			$data['startdate'] = $start_date;
 			$data['enddate'] = $end_date;       
 			
-		  $data['categories'] = $this->category->get_rest_categories($rest_id);
+      if($this->input->post('category_name')){               
+		    $this->setting->new_category($this->input->post('category_name'),$this->input->post('rest_id'));
+      } 
+      
+		  $data['categories'] = $this->setting->get_rest_categories($rest_id);
 			                   
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);
@@ -46,7 +50,7 @@ class Category_controller extends CI_Controller {
 	
 	public function profile()
 	{
-		$data['profile'] = $this->category->get_profile();
+		$data['profile'] = $this->setting->get_profile();
 		
 		$this->load->view('shared/header',$this->data);
 		$this->load->view('shared/left_menu');

@@ -87,40 +87,38 @@
 						</tbody>
 					</table>
 				<?php } else {?>  
-	         <table id="report" class="table table-striped" data-toggle="table" data-url="" data-show-refresh="false" data-show-toggle="false" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+	         <table id="report" class="table table-striped dt-right">
 					   <thead>
-						  <tr>
-						    <th data-field="state" data-checkbox="true">Order ID</th>
-						    <th data-field="name" data-sortable="true">Order Number</th>
-						    <th data-field="rest"  data-sortable="true">Table Number</th>
-						    <th data-field="conn" data-sortable="true">Customer</th>
-						    <th data-field="ip" data-sortable="true">Started</th>
-						    <th data-field="port"  data-sortable="true">Ended</th>
-						    <th data-field="crby" data-sortable="true">Num Of Guest</th>
-						    <th data-field="crdt" data-sortable="true">Total</th>
-						    <th data-field="crdt" data-sortable="true">Tip</th>
-						    <th data-field="crdt" data-sortable="true">Discount</th>
-						    <th data-field="upby"  data-sortable="true">Paid Amount</th>
+						  <tr class="tablehead text3D">
+						    <th class="cin">Order Number</th>
+						    <th class="cin">Table Number</th>
+						    <th>Customer</th>
+						    <th>Started</th>
+						    <th>Ended</th>
+						    <th class="cin">Num Of Guest</th>
+						    <th class="cin">Total</th>
+						    <th class="cin">Tip</th>
+						    <th class="cin">Discount</th>
+						    <th class="cin">Paid Amount</th>
 						  </tr>
 						</thead>
 						<tbody>   
 						  <?php $i = 0;  foreach ($sales_report as $row){ ?>
 						  <tr>
-						    <td data-field="state" data-checkbox="true" ><?=$row->ID?></td>
-						    <td data-field="name" data-sortable="true" data-valign="center">
+						    <td data-field="name" class="cin" data-valign="center">
                   <a href="#" style="font-size:90%" class="label label-lg label-success modalTrigger" data-toggle="modal" data-target="#bookModal" data-id="<?=$row->ID?>" data-odn="<?=$row->ORDER_NUMBER?>">
                     <?=$row->ORDER_NUMBER?>
                   </a>  
                 </td>
-						    <td data-field="rest"  data-sortable="true"><?=$row->TABLE_NUMBER?></td>
-						    <td data-field="conn" data-sortable="true"><?=$row->CUSTOMER_NAME?></td>
-						    <td data-field="ip" data-sortable="true"><?=$row->STARTED?></td>
-						    <td data-field="port"  data-sortable="true"><?=$row->ENDED?></td>
-						    <td data-field="crby" data-sortable="true"><?=$row->NO_OF_GUEST?></td>
-						    <td data-field="crdt" data-sortable="true"><?=$row->TOTAL?></td>
-						    <td data-field="crdt" data-sortable="true"><?=$row->TIP?></td>
-						    <td data-field="crdt" data-sortable="true"><?=$row->DISCOUNT?></td>
-						    <td data-field="upby"  data-sortable="true"><?=$row->PAID_AMOUNT?></td>
+						    <td class="cin"><?=$row->TABLE_NUMBER?></td>
+						    <td><?=$row->CUSTOMER_NAME?></td>
+						    <td><?=$row->STARTED?></td>
+						    <td><?=$row->ENDED?></td>
+						    <td class="cin"><?=$row->NO_OF_GUEST?></td>
+						    <td class="cin"><?=$row->TOTAL?></td>
+						    <td class="cin"><?=$row->TIP?></td>
+						    <td class="cin"><?=$row->DISCOUNT?></td>
+						    <td class="cin"><?=$row->PAID_AMOUNT?></td>
 						  </tr>
 						  <?php $i++; } ?>
 						</tbody>
@@ -151,16 +149,16 @@
         <h4 class="modal-title" id="myModalLabel"><span id="ordnumb"></span> Order Detail List</h4>
       </div><!-- /.modal-header -->
       <div class="modal-body">    	 	 	 	 	
-        <table data-toggle="table" data-url="" data-show-refresh="false" data-show-toggle="false" data-show-columns="false" data-search="false" data-select-item-name="toolbar1" data-pagination="false" data-sort-name="name" data-sort-order="desc">
+        <table id="modalTable" class="table table-striped compact hover">
 					  <thead>
-						  <tr>
-						    <th data-field="numb" data-checkbox="false">No</th>
-						    <th data-field="name" data-sortable="false">Name</th>
-						    <th data-field="rson" data-sortable="false">Quantity</th>
-						    <th data-field="onum" data-sortable="false">Kitchen Note</th>
-						    <th data-field="strd" data-sortable="false">Price</th>
-						    <th data-field="endd" data-sortable="false">Void</th>
-						    <th data-field="endd" data-sortable="false">Void Reason</th>
+						  <tr class="tablehead text3D">
+						    <th>No</th>
+						    <th>Name</th>
+						    <th>Quantity</th>
+						    <th>Kitchen Note</th>
+						    <th>Price</th>
+						    <th>Void</th>
+						    <th>Void Reason</th>
 						  </tr>
 						</thead>
 						<tbody id="datarow">  
@@ -199,7 +197,7 @@
   
   $(document).ready(function(){
     gOrdDet();  
-    $('#report').bootstrapTable({ 
+    $('#report').DataTable({ 
       url: '/reports/sales',
       method: 'get',
       onAll: function (name, args) {
@@ -214,7 +212,13 @@
           console.log('triggered');
         }
       console.log('Event:', name, ', data:', args);
-    }).trigger( "gOrdDet" ); 
+    }); 
+  });
+  
+  $('#modalTable').DataTable({
+    paging: false,    
+    searching: false,
+    ordering:  false
   });
   
   $(function () { 

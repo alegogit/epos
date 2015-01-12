@@ -108,3 +108,15 @@
 .noborder{
      border: none;
 }
+.tablehead{
+    background: linear-gradient(to bottom, white 0%, gainsboro 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: 1px solid #cacaca !important;
+    color: #333333 !important;
+    height: 35px;
+}
+.cin{
+    text-align: right;
+}
+.text3D{
+  text-shadow: 1px 4px 4px white, 0 0 0 #000;
+}

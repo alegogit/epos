@@ -28,6 +28,7 @@
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/msform.css"/>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/gallery-effect.css"/>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/custom.css"/>    
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap-table.css"/>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/font-awesome.min.css"/>
 
 <!-- Chart -->
@@ -37,10 +38,15 @@
 <script src="<?=base_url()?>assets/js/bootstrap-datepicker.js"></script>
 
 <!-- Table -->
-<script src="<?=base_url()?>assets/js/jquery.dataTables.js"></script> 
+<script src="<?=base_url()?>assets/js/bootstrap-table.js"></script> 
  
 <!-- IP Input -->
 <script src="<?=base_url()?>assets/js/jquery.input-ip-address-control-1.0.min.js"></script>
+
+<!-- Scheduler -->
+<script src='<?php echo base_url(); ?>assets/codebase/dhtmlxscheduler.js' type="text/javascript" charset="utf-8"></script>
+<script src='<?php echo base_url(); ?>assets/codebase/ext/dhtmlxscheduler_timeline.js' type="text/javascript" charset="utf-8"></script>
+<link rel='stylesheet' type='text/css' href='<?php echo base_url(); ?>assets/codebase/dhtmlxscheduler.css'>
 
 <script type="text/javascript">
 $(function() {

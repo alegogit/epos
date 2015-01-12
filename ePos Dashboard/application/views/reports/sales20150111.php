@@ -108,7 +108,7 @@
 						  <tr>
 						    <td data-field="state" data-checkbox="true" ><?=$row->ID?></td>
 						    <td data-field="name" data-sortable="true" data-valign="center">
-                  <a href="#" style="font-size:90%" class="label label-lg label-success modalTrigger" data-toggle="modal" data-target="#bookModal" data-id="<?=$row->ID?>" data-odn="<?=$row->ORDER_NUMBER?>">
+                  <a id="trig<?=$row->ID?>" href="#" style="font-size:90%" class="label label-lg label-success modalTrigger" data-toggle="modal" data-target="#bookModal" data-id="<?=$row->ID?>" data-odn="<?=$row->ORDER_NUMBER?>">
                     <?=$row->ORDER_NUMBER?>
                   </a>  
                 </td>
@@ -172,14 +172,36 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal fade -->
 <?php } ?>
-
+<?php
+  $rep_script = "";
+  $rep_script .= "<script>";
+  $rep_script .= "$(document).ready(function(){ ";  
+  $rep_script .= "  var gOrdDets = function gOrdDets(){";
+  foreach ($sales_report as $rows){ 
+  $rep_script .= "    gOrdDet('#trig".$rows->ID."');";
+  }
+  $rep_script .= "  };"; 
+  $rep_script .= "gOrdDets();";
+  $rep_script .= "
+                  $('#report').bootstrapTable().on('all.bs.table', function (e, name, args) { 
+        if (typeof gOrdDets == 'function') { 
+          gOrdDets(e);     
+          console.log('triggered');
+        }
+      console.log('Event:', name, ', data:', args);
+    }).trigger( 'gOrdDets' );
+    ";
+  $rep_script .= "});";
+  $rep_script .= "</script>";
+  echo $rep_script;
+?>
 <script type="text/javascript">      
   //datepickers    
   $("#startdate").datepicker({format: 'dd M yyyy'});
   $("#enddate").datepicker({format: 'dd M yyyy'});
-  
-  var gOrdDet = function gOrdDet(){
-       $(".modalTrigger").click(function () { 
+                                   
+  function gOrdDet(ale){
+       $(ale).click(function () { 
         var odnP = $(this).data('odn');   
         $(".modal-title #ordnumb").html(odnP);
         var varP = $(this).data('id');  
@@ -191,31 +213,20 @@
           cache: false,
           success: function(result){
             $(".modal-body #datarow").html(result); 
-            return false; 
+            $('#report').bootstrapTable().on('all.bs.table', function (e, name, args) { 
+              if (typeof gOrdDets == 'function') { 
+                gOrdDets();     
+                console.log('triggered2');
+              }
+            });
           }
         }); 
        });
-    }; 
+    } 
   
-  $(document).ready(function(){
-    gOrdDet();  
-    $('#report').bootstrapTable({ 
-      url: '/reports/sales',
-      method: 'get',
-      onAll: function (name, args) {
-        if (typeof gOrdDet == 'function') {  
-          gOrdDet(); 
-          console.log('inside fired');
-        }
-      }
-    }).on('all.bs.table', function (e, name, args) { 
-        if (typeof gOrdDet == 'function') { 
-          gOrdDet();     
-          console.log('triggered');
-        }
-      console.log('Event:', name, ', data:', args);
-    }).trigger( "gOrdDet" ); 
-  });
+  
+    
+     
   
   $(function () { 
   });

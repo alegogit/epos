@@ -55,10 +55,10 @@
             </button>        
             <div style="margin-bottom:15px"></div> 
             <div class="table-responsive">
-						  <table id="dtable" class="table table-condensed" data-toggle="table" data-url="" data-show-refresh="false" data-show-toggle="false" data-show-columns="false" data-search="false" data-pagination="true" data-sort-name="updt" data-sort-order="desc">
+						  <table id="setting" class="table table-striped dt-right compact">
 						    <thead>
-						    <tr>
-						        <th data-field="id" data-checkbox="true" >Item ID</th>
+						    <tr class="tablehead text3D">
+						        <th class="no-sort cin"><input type="checkbox" id="checkall" value="Check All"></th>
 						        <th data-field="name"  data-sortable="true">Category Name</th>
 						        <th data-field="crby" data-sortable="false">Created By</th>
 						        <th data-field="crdt" data-sortable="false">Created Date</th>
@@ -69,15 +69,15 @@
 						    <tbody>                    
 						    <?php $i = 0;  foreach ($categories as $row){ ?>
                 <tr data-index="<?=$i?>" class="datarow" id="<?=$row->ID.'_'.$row->NAME?>">
-                  <td>
-                    <input type="checkbox">
+                  <td class="cin" style="padding-right:10px">
+                    <input type="checkbox" class="case">
                   </td>
                   <td style="">
                     <a id="NAME-<?=$row->ID?>" class=""><?=$row->NAME?></a>
                   </td>
-                  <td style=""><span id="crby<?=$row->ID?>"><?=$this->category->get_username($row->CREATED_BY)->USERNAME?></span></td>
+                  <td style=""><span id="crby<?=$row->ID?>"><?=$this->setting->get_username($row->CREATED_BY)->USERNAME?></span></td>
                   <td style=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
-                  <td style=""><span id="upby<?=$row->ID?>"><?=$this->category->get_username($row->LAST_UPDATED_BY)->USERNAME?></span></td>
+                  <td style=""><span id="upby<?=$row->ID?>"><?=$this->setting->get_username($row->LAST_UPDATED_BY)->USERNAME?></span></td>
                   <td style=""><span id="updt<?=$row->ID?>"><?=$row->LAST_UPDATED_DATE?></span></td>
                 </tr>
                 <?php $i++; } ?>
@@ -106,50 +106,40 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Book a Facility</h4>
+        <h4 class="modal-title" id="myModalLabel">Add New Category</h4>
       </div><!-- /.modal-header -->
       <div class="modal-body">
-        <form role="form">
-          <div class="form-group">
-            <label for="bookId">Booking ID -</label> <span class="text-disabled">A108</span>
+      <?php
+        $attributes = array('class' => 'form-inline', 'id' => 'newcat', 'role' => 'form');
+        echo form_open('setting/category',$attributes)
+      ?>
+        <div class="form-group" style="margin-bottom:10px"> 
+          <div class="input-group">       
+            <label for="inputCaption">Category Name</label>
+            <input type="text" class="form-control" id="inputCaption" placeholder="" name="category_name" required>
           </div>
-
-          <div class="form-group">
-            <label for="inputCaption">Caption</label>
-            <input type="text" class="form-control" id="inputCaption" placeholder="">
-          </div>
-          <div class="form-group">
-            <label for="inputDate">Date</label>
-            <input type="text" class="form-control datepicker" id="inputDate" placeholder="">
-          </div>
-          <div class="form-group">
-            <label for="inputDate">Time</label><br />
-            <div class="col-sm-6">
-            <select name="timeFrom" class="btn btn-default">
-              <option>08:00</option>
-              <option>08:30</option>
-              <option>09:00</option>
-              <option>09:30</option>
-            </select> 
-            -
-            <select name="timeTo" class="btn btn-default">
-              <option>08:00</option>
-              <option>08:30</option>
-              <option>09:00</option>
-              <option>09:30</option>
+        </div><br />
+        <div class="form-group" style="margin-bottom:10px"> 
+          <div class="input-group">       
+            <label for="inputDate">Restaurant</label><br /> 
+            <select name="rest_id" class="form-control">
+            <?php foreach($restaurants as $rows){ ?>
+              <option value = "<?=$rows->REST_ID?>" <?= ($rows->REST_ID==$rest_id)?'selected':''?> ><?=$rows->NAME?></option>
+            <?php } ?>
             </select>
-            </div>
-          </div><br />
-          <div class="form-group text-right">
+          </div>
+        </div><br />  
+        <div class="form-group text-right" style="margin-bottom:10px">
+          <div class="input-group">       
             <button type="submit" class="btn btn-success">Submit</button>
             <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
           </div>
-        </form>
+        </div><br /> 
+        <?=form_close()?>
       </div><!-- /.modal-body -->
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal fade -->
-
 <?php  
   //editable script
   $i = 0;
@@ -178,10 +168,29 @@
 <script>   
 $(document).ready(function()
 {   
+  var table = $('#setting').DataTable({
+    columnDefs: [
+      { targets: 'no-sort', orderable: false }
+    ],
+    "order": [[ 5, "desc" ]]
+  });
+  
+  //check all
+  $("#checkall").click(function(){
+    $('.case').prop('checked',this.checked);
+  });
+  $(".case").click(function(){
+    if($(".case").length==$(".case:checked").length){
+      $("#selectall").prop("checked","checked");
+    }else{
+      $("#selectall").removeAttr("checked");
+    }
+  }); 
+  
   //function to delete selected row
   $('.btn-danger').on("click", function(event){
   	var sel = false;	
-  	var ch = $('#dtable').find('tbody input[type=checkbox]');
+  	var ch = $('#setting').find('tbody input[type=checkbox]');
     var dt = '';	
   	ch.each(function(){  
       if($(this).is(':checked')) { 
@@ -200,9 +209,6 @@ $(document).ready(function()
   		 var $this = $(this);
   			if($this.is(':checked')) {
   				sel = true;	//set to true if there is/are selected row
-  				$this.parents('tr').fadeOut(function(){
-  					$this.remove(); //remove row when animation is finished
-  				});     
           var idf = $(this).parents('tr').attr('id');
           var dataP = "idf="+idf;
   				$.ajax({
@@ -210,7 +216,14 @@ $(document).ready(function()
             url: "/process/category?p=delete",
             data: dataP,
             cache: false,
-            success: function(result){  
+            success: function(result){ 
+              if(result.trim()!='OK'){    
+                alert(result); 
+              } else {    
+        				$this.parents('tr').fadeOut(function(){
+        					$this.remove(); //remove row when animation is finished
+        				});     
+              }   
             }
           });   
   			}
@@ -220,4 +233,8 @@ $(document).ready(function()
   	return false;
   }); 
 });
+
+  $(function(){             
+  });
+  
 </script>

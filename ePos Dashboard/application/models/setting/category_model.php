@@ -45,6 +45,16 @@ class Category_model extends CI_Model {
     $this->db->where('REST_ID',$rest_id);
     $query = $this->db->get('category');
     return $query->result();
+  } 
+   
+	function new_category($NAME,$REST_ID){       
+		$session_data = $this->session->userdata('logged_in');
+		$id = $session_data['id'];
+    $query = $this->db->query('INSERT INTO category 
+      (NAME,REST_ID,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
+      VALUES 
+      ("'.$NAME.'",'.$REST_ID.','.$id.',NOW(),'.$id.',NOW());');
+		//return $query->row();
   }
   
 }

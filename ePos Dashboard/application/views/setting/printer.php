@@ -32,10 +32,10 @@
             </button>   
             <div style="margin-bottom:15px"></div> 
 					  <div class="table-responsive">     
-						  <table id="dtable" class="table table-condensed" data-toggle="table" data-url="" data-show-refresh="false" data-show-toggle="false" data-show-columns="false" data-search="false" data-pagination="true" data-sort-name="updt" data-sort-order="desc">
+						  <table id="setting" class="table table-striped dt-right compact">
 						    <thead>
-						    <tr>
-						        <th data-field="state" data-checkbox="true"></th>
+						    <tr class="tablehead text3D">
+						        <th class="no-sort cin"><input type="checkbox" id="checkall" value="Check All"></th>
 						        <th data-field="name" data-sortable="false">Printer Name</th>
 						        <th data-field="rest"  data-sortable="false">Restaurant</th>
 						        <th data-field="conn" data-sortable="false">Connectivity</th>
@@ -114,7 +114,7 @@
         <div class="form-group" style="margin-bottom:10px"> 
           <div class="input-group">       
             <label for="inputCaption">Printer Name</label>
-            <input type="text" class="form-control" id="inputCaption" placeholder="" name="printer_name">
+            <input type="text" class="form-control" id="inputCaption" placeholder="" name="printer_name" required>
           </div>
         </div><br /> 
         <div class="form-group" style="margin-bottom:10px"> 
@@ -140,13 +140,13 @@
         <div class="form-group" style="margin-bottom:10px">
           <div class="input-group">       
             <label for="inputCaption">IP Address</label>
-            <input type="text" class="form-control ipv4" id="inputCaption" placeholder="" name="IP_address">
+            <input type="text" class="form-control ipv4" id="inputCaption" placeholder="" name="IP_address" required>
           </div>
         </div><br /> 
         <div class="form-group" style="margin-bottom:10px">  
           <div class="input-group">       
             <label for="inputCaption">Port</label>
-            <input type="text" class="form-control" id="inputCaption" placeholder="" name="Port">
+            <input type="text" class="form-control" id="inputCaption" placeholder="" name="Port" required>
           </div>
         </div><br /> 
         <div class="form-group text-right" style="margin-bottom:10px">
@@ -256,11 +256,30 @@
 
 <script>     
 $(document).ready(function()
-{   
+{  
+  var table = $('#setting').DataTable({
+    columnDefs: [
+      { targets: 'no-sort', orderable: false }
+    ],
+    "order": [[ 8, "desc" ]]
+  });
+  
+  //check all
+  $("#checkall").click(function(){
+    $('.case').prop('checked',this.checked);
+  });
+  $(".case").click(function(){
+    if($(".case").length==$(".case:checked").length){
+      $("#selectall").prop("checked","checked");
+    }else{
+      $("#selectall").removeAttr("checked");
+    }
+  });
+   
   //function to delete selected row
   $('.btn-danger').on("click", function(event){
   	var sel = false;	
-  	var ch = $('#dtable').find('tbody input[type=checkbox]');
+  	var ch = $('#setting').find('tbody input[type=checkbox]');
     var dt = '';	
   	ch.each(function(){  
       if($(this).is(':checked')) { 
@@ -299,60 +318,6 @@ $(document).ready(function()
   	return false;
   }); 
   
-  
-  /*
-  $(".datarow").click(function(){
-    var idf = $(this).attr("id");  
-    var idr = idf.substring(0,idf.indexOf('_'));
-    $(".thedata"+idr).hide();
-    $(".theedit"+idr).show();
-  }).change(function(){ 
-    var idf = $(this).attr("id");   
-    var idr = idf.substring(0,idf.indexOf('_'));
-    var name = $("#name"+idr).val(); 
-    var rest = $("#rest"+idr).val();
-    var conn = $("#conn"+idr).val();
-    var ip = $("#ip"+idr).val();
-    var port = $("#port"+idr).val();
-    var upby = $("#upby"+idr);
-    var updt = $("#updt"+idr);    
-    var todt = new Date();
-    var dataP = "varP="+idr+","+name+","+rest+","+conn+","+ip+","+port+"&funP=update_printer"; 
-    $(".subch").show();
-    $(".subch").click(function(){ 
-      $.ajax({
-        type: "POST",
-        url: "process.html",
-        data: dataP,
-        cache: false,
-        success: function(result){    
-          $(".thedata"+idr).toggle();
-          $(".theedit"+idr).toggle();
-          var data = result.split(',');
-          $("#ename"+idr).html(data[1]);
-          $("#erest"+idr).html(data[2]);
-          $("#econn"+idr).html(data[3]);
-          $("#eip"+idr).html(data[4]);
-          $("#eport"+idr).html(data[5]);
-          $("#upby"+idr).html(data[6]);
-          $("#updt"+idr).html(data[7]); 
-        }
-      });   
-      $(".subch").hide();
-      return false;
-    });
-  }); 
-  */
-  
 });
   
-  // Edit input box click action
-  $(".editbox").mouseup(function(){
-    return false
-  });
-  // Outside click action
-  $(document).mouseup(function(){
-    $(".editbox").hide();
-    $(".text").show();
-  });
 </script>
