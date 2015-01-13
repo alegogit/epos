@@ -33,7 +33,7 @@ class Printer_controller extends CI_Controller {
 		    $this->printer->new_printer($this->input->post('printer_name'),$this->input->post('rest_id'),$this->input->post('conn_code'),$this->input->post('IP_address'),$this->input->post('Port'));
       } 
 			
-      $data['printer_conf'] = $this->printer->get_printer();
+      $data['printer_conf'] = $this->printer->get_printer($rest_id);
 		  $data['connectivity'] = $this->printer->get_all_connectivity();
      
 			$this->load->view('shared/header',$this->data);

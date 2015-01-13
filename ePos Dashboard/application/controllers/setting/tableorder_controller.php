@@ -5,11 +5,12 @@ class Tableorder_controller extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();	
-		$this->load->model('setting/tableorder_model','tableorder',TRUE);  
+		$this->load->model('setting/tableorder_model','setting',TRUE);  
     $this->load->helper(array('form', 'url','html'));
-		$session_data = $this->session->userdata('logged_in');
-		$this->data['user'] = $this->tableorder->get_profile();
-		$this->data['restaurants'] = $this->tableorder->get_restaurant(); 
+		$session_data = $this->session->userdata('logged_in'); 
+		$this->data['menu'] = 'setting';      
+		$this->data['user'] = $this->setting->get_profile();
+		$this->data['restaurants'] = $this->setting->get_restaurant(); 
 	}
 
 	public function index()
@@ -27,7 +28,13 @@ class Tableorder_controller extends CI_Controller {
 			$data['rest_id'] = $rest_id;
 			$data['startdate'] = $start_date;
 			$data['enddate'] = $end_date;   
-			
+			         			
+      if($this->input->post('tableorder_name')){               
+		    $this->setting->new_tableorder($this->input->post('tableorder_name'),$this->input->post('tableorder_position'),$this->input->post('rest_id'));
+      } 
+      
+		  $data['tableorder'] = $this->setting->get_rest_tableorder($rest_id);
+			                   
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);
 			$this->load->view('setting/tableorder',$data);
@@ -43,7 +50,7 @@ class Tableorder_controller extends CI_Controller {
 	
 	public function profile()
 	{
-		$data['profile'] = $this->tableorder->get_profile();
+		$data['profile'] = $this->setting->get_profile();
 		
 		$this->load->view('shared/header',$this->data);
 		$this->load->view('shared/left_menu');

@@ -40,5 +40,20 @@ class Tableorder_model extends CI_Model {
                       ->get('');
     return $query->row();
   }
-  
+       
+	function get_rest_tableorder($rest_id){    
+    $this->db->where('REST_ID',$rest_id);
+    $query = $this->db->get('tables');
+    return $query->result();
+  } 
+   
+	function new_tableorder($TNUM,$POSITION,$REST_ID){       
+		$session_data = $this->session->userdata('logged_in');
+		$id = $session_data['id'];
+    $query = $this->db->query('INSERT INTO tables
+      (TABLE_NUMBER,POSITION,REST_ID,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
+      VALUES 
+      ('.$TNUM.','.$POSITION.','.$REST_ID.','.$id.',NOW(),'.$id.',NOW());');
+		//return $query->row();
+  }
 }

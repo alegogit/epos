@@ -17,7 +17,7 @@ window.setTimeout(function() {
  
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap.css"/>
 <style>
-body{background: #eee url('/assets/images/resto.png');}
+body{background: #eee url('./assets/images/resto.png');}
 html,body{
     position: relative;
     height: 100%;

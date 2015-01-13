@@ -77,6 +77,7 @@ $route['extracts'] = "extracts/ordersdata_controller";
 $route['process/orders'] = "process/orderdetails_controller";
 $route['process/printer'] = "process/printersetting_controller";
 $route['process/category'] = "process/categorysetting_controller";
+$route['process/tableorder'] = "process/tableordersetting_controller";
 
 $route['404_override'] = 'P404';
 

@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Categorysetting_model extends CI_Model {
+class Tableordersetting_model extends CI_Model {
   function __construct(){
     // Call the Model constructor
     parent::__construct();
@@ -14,7 +14,7 @@ class Categorysetting_model extends CI_Model {
     return $query->row();
   }  
 	
-	function update_category($arrin){ 
+	function update_tableorder($arrin){ 
 	  date_default_timezone_set('Asia/Jakarta');
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id']; 
@@ -26,20 +26,20 @@ class Categorysetting_model extends CI_Model {
                'LAST_UPDATED_DATE' => $dt,
             ); 
 		$this->db->where('ID',$arrin[0]);
-    $query = $this->db->update('category',$data);
-    $output[0] = $this->process->get_username($this->process->get_category($arrin[0])->LAST_UPDATED_BY);
-    $output[1] = $this->process->get_category($arrin[0])->LAST_UPDATED_DATE;
+    $query = $this->db->update('tables',$data);
+    $output[0] = $this->process->get_username($this->process->get_tableorder($arrin[0])->LAST_UPDATED_BY);
+    $output[1] = $this->process->get_tableorder($arrin[0])->LAST_UPDATED_DATE;
     $outputs = implode(",",$output);   
     return $outputs;
 	}
 	
-	function delete_category($cid){ 
+	function delete_tableorder($cid){ 
 		$did = strstr($cid, '_', true); 
-		$idn = $this->process->get_category($did)->NAME;
-    $query = $this->db->query('DELETE c FROM category c 
-      LEFT JOIN menu m ON m.CATEGORY_ID = c.ID 
+		$idn = $this->process->get_tableorder($did)->NAME;
+    $query = $this->db->query('DELETE t FROM tables t 
+      LEFT JOIN menu m ON m.CATEGORY_ID = t.ID 
       WHERE m.CATEGORY_ID IS NULL
-      AND c.ID='.$did.';');    
+      AND t.ID='.$did.';');    
     if($this->db->affected_rows()!=0){
       $out = "OK";
     } else {
@@ -49,15 +49,15 @@ class Categorysetting_model extends CI_Model {
     return $out;
   }   
 	
-	function get_category($cid){    
+	function get_tableorder($cid){    
     $query = $this->db->select('*')
-                      ->from('category')  
+                      ->from('tables')  
                       ->where('ID',$cid)
                       ->limit(1)
                       ->get('');
     return $query->row();
   }      
-            
+                     
 	function get_restaurant_name($id){
     $query = $this->db->select('NAME AS REST_NAME')
                       ->from('restaurants')

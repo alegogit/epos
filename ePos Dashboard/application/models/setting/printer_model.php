@@ -70,7 +70,7 @@ class Printer_model extends CI_Model {
     return $query->result();
   }
      
-	function get_printer(){    
+	function get_printer2(){    
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id'];
 		$this->db->where('users_restaurants.USER_ID',$id);
@@ -78,6 +78,12 @@ class Printer_model extends CI_Model {
                       ->from('printer')
                       ->join('users_restaurants', 'printer.REST_ID = users_restaurants.REST_ID')
                       ->get('');
+    return $query->result();
+  } 
+  
+  function get_printer($rest_id){    
+    $this->db->where('REST_ID',$rest_id);
+    $query = $this->db->get('printer');
     return $query->result();
   }       
     

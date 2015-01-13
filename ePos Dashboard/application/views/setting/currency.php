@@ -3,15 +3,15 @@
   <div class="container-fluid" style="font-size:90%;">
   
     <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
-      <a role="button" class="btn btn-default" href="/setting/restaurant">Restaurant</a>
-      <a role="button" class="btn btn-default" href="/setting/tableorder">Table Order</a>               
-      <a role="button" class="btn btn-default" href="/setting/category">Category</a>               
-      <a role="button" class="btn btn-default" href="/setting/menu">Menu</a>                 
-      <a role="button" class="btn btn-default" href="/setting/printer">Printer</a>               
-      <a role="button" class="btn btn-default" href="/setting/users">Users</a>           
-      <a role="button" class="btn btn-default" href="/setting/tax">Tax</a>               
-      <a role="button" class="btn btn-default" href="/setting/discounts">Discounts</a>               
-      <a role="button" class="btn btn-primary" href="/setting/currency">Currency</a>           
+      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/restaurant">Restaurant</a>
+      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/tableorder">Table Order</a>               
+      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/category">Category</a>               
+      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/menu">Menu</a>                 
+      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/printer">Printer</a>               
+      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/users">Users</a>           
+      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/tax">Tax</a>               
+      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/discounts">Discounts</a>               
+      <a role="button" class="btn btn-primary" href="<?=base_url()?>setting/currency">Currency</a>           
     </div>           
                                                                        
     <hr style="margin-bottom:10px" />
@@ -50,14 +50,14 @@
           </div>
 					<div class="panel-body">                
 					  <div class="table-responsive">     
-						  <table id="dtable" class="table table-striped" data-toggle="table" data-url="" data-show-refresh="false" data-show-toggle="false" data-show-columns="false" data-search="false" data-pagination="true" data-sort-name="code" data-sort-order="asc">
-						    <thead>
-						    <tr>
-						        <th data-field="code" data-sortable="false">Code</th>
-						        <th data-field="valu"  data-sortable="false">Symbol</th>
-						        <th data-field="desc" data-sortable="false">Description</th>
-						        <th data-field="defa" data-sortable="false">Default</th>
-						    </tr>
+						  <table id="setting" class="table table-striped dt-right compact"> 
+                <thead>
+						    <tr class="tablehead text3D">
+						        <th>Code</th>
+						        <th>Symbol</th>
+						        <th>Description</th>
+						        <th>Default</th>
+						      </tr>
 						    </thead>
 						    <tbody>                    
 						    <?php $i = 0;  foreach ($currencies as $row){ ?>
@@ -98,6 +98,14 @@
 </div><!-- /#page-content-wrapper -->
 <script>
   $(document).ready(function(){ 
+    
+    var table = $('#setting').DataTable({
+      columnDefs: [
+        { targets: 'no-sort', orderable: false }
+      ],
+      "order": [[ 3, "desc" ]]
+    });
+  
     $('.set-default').on("click", function(event){
       var currid = $(this).data('id');
       var csymbl = $(this).data('csym');
