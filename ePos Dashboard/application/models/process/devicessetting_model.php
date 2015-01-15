@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Tableordersetting_model extends CI_Model {
+class Devicessetting_model extends CI_Model {
   function __construct(){
     // Call the Model constructor
     parent::__construct();
@@ -14,7 +14,7 @@ class Tableordersetting_model extends CI_Model {
     return $query->row();
   }  
 	
-	function update_tableorder($arrin){ 
+	function update_devices($arrin){ 
 	  date_default_timezone_set('Asia/Jakarta');
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id']; 
@@ -26,32 +26,29 @@ class Tableordersetting_model extends CI_Model {
                'LAST_UPDATED_DATE' => $dt,
             ); 
 		$this->db->where('ID',$arrin[0]);
-    $query = $this->db->update('tables',$data);
-    $output[0] = $this->process->get_username($this->process->get_tableorder($arrin[0])->LAST_UPDATED_BY);
-    $output[1] = $this->process->get_tableorder($arrin[0])->LAST_UPDATED_DATE;
+    $query = $this->db->update('devices',$data);
+    $output[0] = $this->process->get_username($this->process->get_devices($arrin[0])->LAST_UPDATED_BY);
+    $output[1] = $this->process->get_devices($arrin[0])->LAST_UPDATED_DATE;
     $outputs = implode(",",$output);   
     return $outputs;
 	}
 	
-	function delete_tableorder($cid){ 
+	function delete_devices($cid){ 
 		$did = strstr($cid, '_', true);
-    $query = $this->db->query('DELETE t FROM tables t 
-      LEFT JOIN orders o ON o.TABLE_ID = t.ID 
-      WHERE o.TABLE_ID IS NULL
-      AND t.ID='.$did.';');    
+    $query = $this->db->where('ID', $did);
+    $query = $this->db->limit(1);
+    $query = $this->db->delete('devices');
     if($this->db->affected_rows()!=0){
       $out = "OK";
-    } else {                        
-		  //$idn = $this->process->get_tableorder($did)->TABLE_NUMBER;
-      //$out = $idn." can not be deleted, it has been used by some menus";
-      $out = "This Entry has being currently used, please make sure there's NO Dependencies";
+    } else {                  
+      $out = "Unable to delete";
     }
     return $out;
   }   
 	
-	function get_tableorder($cid){    
+	function get_devices($cid){    
     $query = $this->db->select('*')
-                      ->from('tables')  
+                      ->from('devices')  
                       ->where('ID',$cid)
                       ->limit(1)
                       ->get('');

@@ -5,11 +5,12 @@ class Menu_controller extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();	
-		$this->load->model('setting/menu_model','menu',TRUE);  
+		$this->load->model('setting/menu_model','setting',TRUE);  
     $this->load->helper(array('form', 'url','html'));
-		$session_data = $this->session->userdata('logged_in');
-		$this->data['user'] = $this->menu->get_profile();
-		$this->data['restaurants'] = $this->menu->get_restaurant(); 
+		$session_data = $this->session->userdata('logged_in');  
+		$this->data['menu'] = 'setting';      
+		$this->data['user'] = $this->setting->get_profile();
+		$this->data['restaurants'] = $this->setting->get_restaurant(); 
 	}
 
 	public function index()
@@ -26,7 +27,15 @@ class Menu_controller extends CI_Controller {
 			$end_date = (!($this->input->post('startdate')))?$data['def_end_date']:$this->input->post('enddate'); 
 			$data['rest_id'] = $rest_id;
 			$data['startdate'] = $start_date;
-			$data['enddate'] = $end_date;   
+			$data['enddate'] = $end_date; 
+			
+      if($this->input->post('menu_name')){               
+		    $this->setting->new_menu($this->input->post('menu_name'),$this->input->post('menu_position'),$this->input->post('rest_id'));
+      } 
+      
+		  $data['menus'] = $this->setting->get_rest_menus($rest_id);
+		  $data['printer'] = $this->setting->get_rest_printer($rest_id);
+		  $data['categories'] = $this->setting->get_rest_categories($rest_id);			                   
 			
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);
@@ -43,7 +52,7 @@ class Menu_controller extends CI_Controller {
 	
 	public function profile()
 	{
-		$data['profile'] = $this->menu->get_profile();
+		$data['profile'] = $this->setting->get_profile();
 		
 		$this->load->view('shared/header',$this->data);
 		$this->load->view('shared/left_menu');

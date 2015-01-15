@@ -39,6 +39,43 @@ class Menu_model extends CI_Model {
                       ->where('ID',$id)
                       ->get('');
     return $query->row();
+  }    
+  
+	function get_rest_menus($rest_id){    
+    $query = $this->db->get('menu');                      
+    $query = $this->db->select('menu.*, category.NAME AS CAT_NAME, printer.NAME AS PRINT_NAME')
+                      ->from('menu')
+                      ->join('category', 'menu.CATEGORY_ID = category.ID')
+                      ->join('printer', 'menu.PRINTER = printer.ID')
+                      ->where('category.REST_ID',$rest_id)
+                      ->get('');
+    return $query->result();
+  } 
+  
+  function get_rest_categories($rest_id){
+    $query = $this->db->select('ID,NAME')
+                      ->from('category')
+                      ->where('REST_ID',$rest_id)
+                      ->get('');
+    return $query->result();
+  }    
+  
+  function get_rest_printer($rest_id){
+    $query = $this->db->select('ID,NAME')
+                      ->from('printer')
+                      ->where('REST_ID',$rest_id)
+                      ->get('');
+    return $query->result();
+  }
+   
+	function new_menu($TNUM,$POSITION,$REST_ID){       
+		$session_data = $this->session->userdata('logged_in');
+		$id = $session_data['id'];
+    $query = $this->db->query('INSERT INTO menu
+      (TABLE_NUMBER,POSITION,REST_ID,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
+      VALUES 
+      ('.$TNUM.','.$POSITION.','.$REST_ID.','.$id.',NOW(),'.$id.',NOW());');
+		//return $query->row();
   }
   
 }

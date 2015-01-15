@@ -8,16 +8,16 @@
       <a role="button" class="btn btn-default" href="<?=base_url()?>setting/menu">Menu</a>             
       <a role="button" class="btn btn-default" href="<?=base_url()?>setting/tableorder">Table Order</a>        
       <a role="button" class="btn btn-default" href="<?=base_url()?>setting/users">Users</a>               
-      <a role="button" class="btn btn-primary" href="<?=base_url()?>setting/printer">Printer</a>       
-      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/devices">Devices</a>      
-    </div>                    
+      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/printer">Printer</a>       
+      <a role="button" class="btn btn-primary" href="<?=base_url()?>setting/devices">Devices</a>           
+    </div>       
                                                                           
     <hr style="margin-bottom:10px" />
     
     <div class="row" style="padding-left: 15px">  
       <?php
         $attributes = array('class' => 'form-inline', 'id' => 'filter', 'role' => 'form');
-        echo form_open('setting/printer',$attributes)
+        echo form_open('setting/devices',$attributes)
       ?>
         <div class="form-group" style="margin-bottom:0px">
           <div class="input-group">
@@ -37,76 +37,70 @@
         </div>
       <?=form_close()?>     
     </div>              
-                                                    
-    <hr style="margin-bottom:10px" />
-                                             
+                                                     
+    <hr style="margin-bottom:10px;margin-top:10px" />
+    
     <div class="row">
 			<div class="col-lg-12">
 				<div class="panel panel-default">
-					<div class="panel-heading">
-            <b>Printer Setting</b>  
-          </div>
-					<div class="panel-body">                   
+					<div class="panel-heading"><b>Add/Edit Table Order</b></div>
+					<div class="panel-body">                 					                    
 			      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#bookModal">
-              <span class="glyphicon glyphicon-plus"></span> Add New Printer  
+              <span class="glyphicon glyphicon-plus"></span> Add New Device  
             </button>             
             <button type="button" class="btn btn-danger">
-              <span class="glyphicon glyphicon-remove"></span> Delete Selected Printer  
+              <span class="glyphicon glyphicon-remove"></span> Delete Selected Device(s)
             </button>        
-            <button type="button" class="btn btn-warning subch" style="display:none">
-              <span class="glyphicon glyphicon-edit"></span> Submit Changes  
-            </button>   
             <div style="margin-bottom:15px"></div> 
-					  <div class="table-responsive">     
+            <div class="table-responsive">
 						  <table id="setting" class="table table-striped dt-right compact">
 						    <thead>
 						    <tr class="tablehead text3D">
 						        <th class="no-sort"><input type="checkbox" id="checkall" value="Check All"></th>
-						        <th>Printer Name</th>
-						        <th>Connectivity</th>
-						        <th>IP Address</th>
-						        <th>Port</th>
-						        <th>Created By</th>
-						        <th>Created Date</th>
-						        <th>Updated By</th>
-						        <th>Updated Date</th>
+						        <th>Type</th>
+						        <th>Manufacturer</th>
+						        <th>Model</th>
+						        <th>MAC Address</th>
+						        <th>Last Sync</th>
+						        <th data-field="crby" data-sortable="false">Created By</th>
+						        <th data-field="crdt" data-sortable="false">Created Date</th>
+						        <th data-field="upby"  data-sortable="false">Updated By</th>
+						        <th data-field="updt" data-sortable="false">Updated Date</th>
 						    </tr>
-						    </thead>
+						    </thead>  
 						    <tbody>                    
-						    <?php $i = 0;  foreach ($printer_conf as $row){ ?>
-                <tr data-index="<?=$i?>" class="datarow" id="<?=$row->ID.'_'.$row->NAME?>">
-                  <td>
+						    <?php $i = 0;  foreach ($devices as $row){ ?>
+                <tr data-index="<?=$i?>" class="datarow" id="<?=$row->ID.'_'.$row->MAKE.' '.$row->MODEL.' '.$row->TYPE?>">
+                  <td class="">
                     <input type="checkbox" class="case">
                   </td>
                   <td style="">
-                    <a id="NAME-<?=$row->ID?>" class=""><?=$row->NAME?></a>
-                  </td>
-                  <td style="">  
-                    <a id="PRINTER_CONNECTION-<?=$row->ID?>" class=""><?=$this->printer->get_connectivity($row->PRINTER_CONNECTION)->VALUE?></a>
-                    <select id="conn<?=$row->ID?>" name="conn_code" class="form-control theedit<?=$row->ID?>" style="display:none;border:none">
-                      <?php foreach($connectivity as $rowc){ ?>
-                      <option value = "<?=$rowc->CODE?>" <?= ($rowc->CODE==$row->PRINTER_CONNECTION)?'selected':''?> ><?=$rowc->VALUE?></option>
-                      <?php } ?>
-                    </select>
+                    <a id="TYPE-<?=$row->ID?>" class=""><?=$row->TYPE?></a>
                   </td>
                   <td style="">
-                    <a id="PRINTER_IP_ADDRESS-<?=$row->ID?>" data-inputclass="ipv4" data-type="text"><?=$row->PRINTER_IP_ADDRESS?></a>   
+                    <a id="MAKE-<?=$row->ID?>" class=""><?=$row->MAKE?></a>
                   </td>
-                  <td style="">       
-                    <a id="PRINTER_PORT-<?=$row->ID?>" data-inputclass="mw90"><?=$row->PRINTER_PORT?></a> 
+                  <td style="">
+                    <a id="MODEL-<?=$row->ID?>" class=""><?=$row->MODEL?></a>
                   </td>
-                  <td style=""><span id="crby<?=$row->ID?>"><?=$this->printer->get_username($row->CREATED_BY)->USERNAME?></span></td>
+                  <td style="">
+                    <a id="MAC_ADDRESS-<?=$row->ID?>" class=""><?=$row->MAC_ADDRESS?></a>
+                  </td>
+                  <td style="">
+                    <a id="LAST_SYNC-<?=$row->ID?>" class=""><?=$row->LAST_SYNC?></a>
+                  </td>
+                  <td style=""><span id="crby<?=$row->ID?>"><?=$this->setting->get_username($row->CREATED_BY)->USERNAME?></span></td>
                   <td style=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
-                  <td style=""><span id="upby<?=$row->ID?>"><?=$this->printer->get_username($row->LAST_UPDATED_BY)->USERNAME?></span></td>
+                  <td style=""><span id="upby<?=$row->ID?>"><?=$this->setting->get_username($row->LAST_UPDATED_BY)->USERNAME?></span></td>
                   <td style=""><span id="updt<?=$row->ID?>"><?=$row->LAST_UPDATED_DATE?></span></td>
                 </tr>
                 <?php $i++; } ?>
 						    </tbody>
 						  </table>
-						</div>
-					</div> 
-				</div>
-			</div>
+             </div> 
+					</div><!--/.panel-body-->
+				</div><!--/.panel-->
+			</div><!--/.col-lg-12-->
 		</div><!--/.row-->
     <!-- FOOTER -->
     <hr class="featurette-divider" />
@@ -126,19 +120,37 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Add New Printer</h4>
+        <h4 class="modal-title" id="myModalLabel">Add New Device</h4>
       </div><!-- /.modal-header -->
       <div class="modal-body">
       <?php
-        $attributes = array('class' => 'form-inline', 'id' => 'newprinter', 'role' => 'form');
-        echo form_open('setting/printer',$attributes)
-      ?>
+        $attributes = array('class' => 'form-inline', 'id' => 'newcat', 'role' => 'form');
+        echo form_open('setting/devices',$attributes)
+      ?>                    		
         <div class="form-group" style="margin-bottom:10px"> 
           <div class="input-group">       
-            <label for="inputCaption">Printer Name</label>
-            <input type="text" class="form-control" id="inputCaption" placeholder="" name="printer_name" required>
+            <label for="inputCaption">Type</label>
+            <input type="text" class="form-control" id="inputCaption" placeholder="" name="devices_type" required>
           </div>
-        </div><br /> 
+        </div><br />
+        <div class="form-group" style="margin-bottom:10px"> 
+          <div class="input-group">       
+            <label for="inputCaption">Manufacturer</label>
+            <input type="text" class="form-control" id="inputCaption" placeholder="" name="devices_manufacturer" required>
+          </div>
+        </div><br />
+        <div class="form-group" style="margin-bottom:10px"> 
+          <div class="input-group">       
+            <label for="inputCaption">Model</label>
+            <input type="text" class="form-control" id="inputCaption" placeholder="" name="devices_model" required>
+          </div>
+        </div><br />
+        <div class="form-group" style="margin-bottom:10px"> 
+          <div class="input-group">       
+            <label for="inputCaption">MAC Address</label>
+            <input type="text" class="form-control" id="inputCaption" placeholder="00:00:00:00:00:00" name="devices_mac" pattern="^([0-9a-fA-F]{2}[:-]){5}([0-9a-fA-F]{2})$" required>
+          </div>
+        </div><br />
         <div class="form-group" style="margin-bottom:10px"> 
           <div class="input-group">       
             <label for="inputDate">Restaurant</label><br /> 
@@ -148,29 +160,7 @@
             <?php } ?>
             </select>
           </div>
-        </div><br /> 
-        <div class="form-group" style="margin-bottom:10px">
-          <div class="input-group">       
-            <label for="inputDate">Connectivity</label><br />  
-            <select name="conn_code" class="form-control">
-            <?php foreach($connectivity as $rowc){ ?>
-              <option value="<?=$rowc->CODE?>"><?=$rowc->VALUE?></option>
-            <?php } ?>
-            </select>
-          </div>
-        </div><br />   
-        <div class="form-group" style="margin-bottom:10px">
-          <div class="input-group">       
-            <label for="inputCaption">IP Address</label>
-            <input type="text" class="form-control ipv4" id="inputCaption" placeholder="" name="IP_address" required>
-          </div>
-        </div><br /> 
-        <div class="form-group" style="margin-bottom:10px">  
-          <div class="input-group">       
-            <label for="inputCaption">Port</label>
-            <input type="text" class="form-control" id="inputCaption" placeholder="" name="Port" required>
-          </div>
-        </div><br /> 
+        </div><br />  
         <div class="form-group text-right" style="margin-bottom:10px">
           <div class="input-group">       
             <button type="submit" class="btn btn-success">Submit</button>
@@ -182,7 +172,6 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal fade -->
-
 <?php  
   //editable script
   $i = 0;
@@ -190,9 +179,9 @@
   $edit_script = "<script>"; 
   $edit_script .= "$(document).ready(function(){";
   $edit_script .= "  $.fn.editable.defaults.mode = 'inline';";
-  foreach ($printer_conf as $row){
-  $edit_script .= "  $('#NAME-".$row->ID."').editable({
-                        url: '/process/printer?p=update',
+  foreach ($devices as $row){
+  $edit_script .= "  $('#TYPE-".$row->ID."').editable({
+                        url: '/process/devices?p=update',
                         pk: ".$row->ID.", 
                         validate: function(v) {
                           if (!v) return 'don\'t leave it blank!';
@@ -203,87 +192,56 @@
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
                     });";
-  $edit_script .= "  $('#REST_ID-".$row->ID."').editable({
-                        type: 'select',  
-                        value: ".$row->REST_ID.", 
-                        source: [ ";
-    $j = 1;
-    $n = count($restaurants);
-    foreach($restaurants as $rows){
-      $edit_script .= "  {value: ".$rows->REST_ID.", text: '".$rows->NAME."'}";
-      $edit_script .= ($j<$n)?", ":"";
-      $j++;
-    }
-  $edit_script .= "    ],
-                        url: '/process/printer?p=update',
-                        pk: ".$row->ID.",
-                        success: function(result){  
-                          var data = result.split(',');
-                          $('#upby".$row->ID."').html(data[0]);
-                          $('#updt".$row->ID."').html(data[1]); 
-                        }  
-                      });";
-  $edit_script .= "  $('#PRINTER_CONNECTION-".$row->ID."').editable({
-                        type: 'select',  
-                        value: '".$row->PRINTER_CONNECTION."', 
-                        source: [ ";
-    $k = 1;
-    $q = count($connectivity);
-    foreach($connectivity as $rowc){
-      $edit_script .= "  {value: '".$rowc->CODE."', text: '".$rowc->VALUE."'}";
-      $edit_script .= ($k<$q)?", ":"";
-      $k++;
-    }
-  $edit_script .= "    ],
-                        url: '/process/printer?p=update',
-                        pk: ".$row->ID.",
-                        success: function(result){  
-                          var data = result.split(',');
-                          $('#upby".$row->ID."').html(data[0]);
-                          $('#updt".$row->ID."').html(data[1]); 
-                        }  
-                      });";
-  $edit_script .= "   $('#PRINTER_IP_ADDRESS-".$row->ID."').on('shown', function(e, editable) { 
-                        $('.ipv4').ipAddress();
-                      });";
-  $edit_script .= "  $('#PRINTER_IP_ADDRESS-".$row->ID."').editable({
-                        url: '/process/printer?p=update',
-                        pk: ".$row->ID.",    
-                        validate: function(v) { 
+  $edit_script .= "  $('#MAKE-".$row->ID."').editable({
+                        url: '/process/devices?p=update',
+                        pk: ".$row->ID.", 
+                        validate: function(v) {
                           if (!v) return 'don\'t leave it blank!';
                         },
                         success: function(result){  
                           var data = result.split(',');
                           $('#upby".$row->ID."').html(data[0]);
                           $('#updt".$row->ID."').html(data[1]); 
-                        }  
-                      });";
-  $edit_script .= "  $('#PRINTER_PORT-".$row->ID."').editable({
-                        url: '/process/printer?p=update',
-                        pk: ".$row->ID.",       
-                        validate: function(v) {  
-                          if (!v) return 'don\'t leave it blank!';
+                      } 
+                    });";
+  $edit_script .= "  $('#MODEL-".$row->ID."').editable({
+                        url: '/process/devices?p=update',
+                        pk: ".$row->ID.", 
+                        validate: function(v) {
+                          if (!v) return 'don\'t leave it blank!';   
                         },
                         success: function(result){  
                           var data = result.split(',');
                           $('#upby".$row->ID."').html(data[0]);
                           $('#updt".$row->ID."').html(data[1]); 
-                        } 
-                      });";
+                      } 
+                    });";
+  $edit_script .= "  $('#MAC_ADDRESS-".$row->ID."').editable({
+                        url: '/process/devices?p=update',
+                        pk: ".$row->ID.", 
+                        validate: function(v) {
+                          if (!v) return 'don\'t leave it blank!';
+                          if (isValidMacAddress(v)==false) return 'please fill in a correct MAC Address format!';
+                        },
+                        success: function(result){  
+                          var data = result.split(',');
+                          $('#upby".$row->ID."').html(data[0]);
+                          $('#updt".$row->ID."').html(data[1]); 
+                      } 
+                    });";
   }
   $edit_script .= "}); ";
 	$edit_script .= '</script>';
   echo $edit_script;
 ?>
-
-<script>     
+<script>   
 $(document).ready(function()
-{  
+{   
   var table = $('#setting').DataTable({
     columnDefs: [
       { targets: 'no-sort', orderable: false }
     ],
-    "order": [[ 8, "desc" ]]
+    "order": [[ 9, "desc" ]]
   });
   
   //check all
@@ -296,8 +254,8 @@ $(document).ready(function()
     }else{
       $("#selectall").removeAttr("checked");
     }
-  });
-   
+  }); 
+  
   //function to delete selected row
   $('.btn-danger').on("click", function(event){
   	var sel = false;	
@@ -320,17 +278,21 @@ $(document).ready(function()
   		 var $this = $(this);
   			if($this.is(':checked')) {
   				sel = true;	//set to true if there is/are selected row
-  				$this.parents('tr').fadeOut(function(){
-  					$this.remove(); //remove row when animation is finished
-  				});     
           var idf = $(this).parents('tr').attr('id');
           var dataP = "idf="+idf;
   				$.ajax({
             type: "POST",
-            url: "/process/printer?p=delete",
+            url: "/process/devices?p=delete",
             data: dataP,
             cache: false,
-            success: function(result){  
+            success: function(result){ 
+              if(result.trim()!='OK'){    
+                alert(result); 
+              } else {    
+        				$this.parents('tr').fadeOut(function(){
+        					$this.remove(); //remove row when animation is finished
+        				});     
+              }   
             }
           });   
   			}
@@ -339,7 +301,18 @@ $(document).ready(function()
   	}
   	return false;
   }); 
-  
-});
+});                                           
+
+function isValidMacAddress(macAdd){
+  var RegExPattern = /^([0-9a-fA-F]{2}[:-]){5}([0-9a-fA-F]{2})$/;
+  if (!(macAdd.match(RegExPattern)) || macAdd.length != 17){
+   return false;
+  } else {
+   return true;
+  }
+}
+ 
+  $(function(){             
+  });
   
 </script>

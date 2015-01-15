@@ -1,15 +1,16 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Tax_controller extends CI_Controller {
+class Devices_controller extends CI_Controller {
 	
 	function __construct()
 	{
 		parent::__construct();	
-		$this->load->model('setting/tax_model','tax',TRUE);  
+		$this->load->model('setting/devices_model','setting',TRUE);  
     $this->load->helper(array('form', 'url','html'));
-		$session_data = $this->session->userdata('logged_in');
-		$this->data['user'] = $this->tax->get_profile();
-		$this->data['restaurants'] = $this->tax->get_restaurant(); 
+		$session_data = $this->session->userdata('logged_in');  
+		$this->data['menu'] = 'setting';      
+		$this->data['user'] = $this->setting->get_profile();
+		$this->data['restaurants'] = $this->setting->get_restaurant(); 
 	}
 
 	public function index()
@@ -26,11 +27,18 @@ class Tax_controller extends CI_Controller {
 			$end_date = (!($this->input->post('startdate')))?$data['def_end_date']:$this->input->post('enddate'); 
 			$data['rest_id'] = $rest_id;
 			$data['startdate'] = $start_date;
-			$data['enddate'] = $end_date;   
+			$data['enddate'] = $end_date; 
+			
+      if($this->input->post('devices_type')){               
+		    $this->setting->new_devices($this->input->post('devices_mac'),$this->input->post('devices_type'),$this->input->post('devices_manufacturer'),$this->input->post('devices_model'),$this->input->post('rest_id'));
+      } 
+      
+		  $data['devices'] = $this->setting->get_rest_devices($rest_id);
+			                   
 			
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);
-			$this->load->view('setting/tax',$data);
+			$this->load->view('setting/devices',$data);
 			$this->load->view('shared/footer');
 		}
 		else
@@ -43,7 +51,7 @@ class Tax_controller extends CI_Controller {
 	
 	public function profile()
 	{
-		$data['profile'] = $this->tax->get_profile();
+		$data['profile'] = $this->setting->get_profile();
 		
 		$this->load->view('shared/header',$this->data);
 		$this->load->view('shared/left_menu');

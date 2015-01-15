@@ -59,12 +59,12 @@ $route['customers'] = "customers/customers_controller";
 
 $route['setting'] = "setting/restaurant_controller";
 $route['setting/restaurant'] = "setting/restaurant_controller";
-$route['setting/tableorder'] = "setting/tableorder_controller";
 $route['setting/category'] = "setting/category_controller";   
-$route['setting/menu'] = "setting/menu_controller"; 
-$route['setting/printer'] = "setting/printer_controller";
+$route['setting/menu'] = "setting/menu_controller";            
+$route['setting/tableorder'] = "setting/tableorder_controller";
 $route['setting/users'] = "setting/users_controller";
-$route['setting/tax'] = "setting/tax_controller"; 
+$route['setting/printer'] = "setting/printer_controller";
+$route['setting/devices'] = "setting/devices_controller"; 
 $route['setting/discounts'] = "setting/discounts_controller";
 $route['setting/currency'] = "setting/currency_controller";    
 
@@ -73,9 +73,11 @@ $route['reports/sales'] = "reports/sales_controller";
 $route['reports/inventory'] = "reports/inventory_controller";   
 
 $route['extracts'] = "extracts/ordersdata_controller";
-
+                                                             
+$route['process/menu'] = "process/menu_controller";
 $route['process/orders'] = "process/orderdetails_controller";
 $route['process/printer'] = "process/printersetting_controller";
+$route['process/devices'] = "process/devicessetting_controller";
 $route['process/category'] = "process/categorysetting_controller";
 $route['process/tableorder'] = "process/tableordersetting_controller";
 
