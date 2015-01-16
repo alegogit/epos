@@ -28,9 +28,9 @@ class Menu_controller extends CI_Controller {
 			$data['rest_id'] = $rest_id;
 			$data['startdate'] = $start_date;
 			$data['enddate'] = $end_date; 
-			
+			                                 
       if($this->input->post('menu_name')){               
-		    $this->setting->new_menu($this->input->post('menu_name'),$this->input->post('menu_position'),$this->input->post('rest_id'));
+		    $this->setting->new_menu($this->input->post('menu_name'),$this->input->post('menu_category'),$this->input->post('menu_price'),$this->input->post('menu_printer'),$this->input->post('menu_tax'));
       } 
       
 		  $data['menus'] = $this->setting->get_rest_menus($rest_id);
@@ -68,7 +68,7 @@ class Menu_controller extends CI_Controller {
 	{
 		$this->session->unset_userdata('logged_in');
 		//session_destroy();
-		redirect('home', 'refresh');
+		redirect('dashboard', 'refresh');
 	}
 		
 	public function notif()

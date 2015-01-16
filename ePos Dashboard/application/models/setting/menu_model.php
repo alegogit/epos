@@ -68,13 +68,13 @@ class Menu_model extends CI_Model {
     return $query->result();
   }
    
-	function new_menu($TNUM,$POSITION,$REST_ID){       
+	function new_menu($NAME,$CATEGORY_ID,$PRICE,$PRINTER,$TAX){       
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id'];
     $query = $this->db->query('INSERT INTO menu
-      (TABLE_NUMBER,POSITION,REST_ID,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
+      (NAME,CATEGORY_ID,PRICE,PRINTER,TAX,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
       VALUES 
-      ('.$TNUM.','.$POSITION.','.$REST_ID.','.$id.',NOW(),'.$id.',NOW());');
+      ("'.$NAME.'",'.$CATEGORY_ID.','.$PRICE.','.$PRINTER.','.$TAX.','.$id.',NOW(),'.$id.',NOW());');
 		//return $query->row();
   }
   

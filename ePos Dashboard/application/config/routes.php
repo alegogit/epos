@@ -65,7 +65,6 @@ $route['setting/tableorder'] = "setting/tableorder_controller";
 $route['setting/users'] = "setting/users_controller";
 $route['setting/printer'] = "setting/printer_controller";
 $route['setting/devices'] = "setting/devices_controller"; 
-$route['setting/discounts'] = "setting/discounts_controller";
 $route['setting/currency'] = "setting/currency_controller";    
 
 $route['reports'] = "reports/sales_controller";
@@ -74,7 +73,7 @@ $route['reports/inventory'] = "reports/inventory_controller";
 
 $route['extracts'] = "extracts/ordersdata_controller";
                                                              
-$route['process/menu'] = "process/menu_controller";
+$route['process/menu'] = "process/menusetting_controller";
 $route['process/orders'] = "process/orderdetails_controller";
 $route['process/printer'] = "process/printersetting_controller";
 $route['process/devices'] = "process/devicessetting_controller";

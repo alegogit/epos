@@ -85,7 +85,7 @@
                   </td>
                   <td style="">
                     <a id="PRINTER-<?=$row->ID?>" class=""><?=$row->PRINT_NAME?></a>
-                  </td>
+                 </td>
                   <td style="">
                     <a id="TAX-<?=$row->ID?>" class=""><?=$row->TAX?></a>
                   </td>
@@ -120,7 +120,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Add New Device</h4>
+        <h4 class="modal-title" id="myModalLabel">Add New Menu</h4>
       </div><!-- /.modal-header -->
       <div class="modal-body">
       <?php
@@ -134,9 +134,9 @@
           </div>
         </div><br />
         <div class="form-group" style="margin-bottom:10px"> 
-          <div class="input-group">       
+          <div class="input-group col-xs-5">       
             <label for="inputCaption">Price</label>
-            <input type="text" class="form-control" id="inputCaption" placeholder="" name="menu_price" required>
+            <input type="text" class="form-control" id="inputCaption" placeholder="please fill in a number format" pattern="\d*" name="menu_price" required>
           </div>
         </div><br />     
         <div class="form-group" style="margin-bottom:10px">
@@ -160,9 +160,10 @@
           </div>
         </div><br />  
         <div class="form-group" style="margin-bottom:10px"> 
-          <div class="input-group">       
+          <div class="input-group col-xs-3">       
             <label for="inputCaption">Tax</label>
-            <input type="text" class="form-control" id="inputCaption" placeholder="00:00:00:00:00:00" name="menu_tax" required>
+            <input type="text" class="form-control" id="inputCaption" placeholder="please fill in a number format" pattern="\d*" name="menu_tax" required>
+             %
           </div>
         </div><br />
         <div class="form-group" style="margin-bottom:10px"> 
@@ -210,7 +211,8 @@
                         url: '/process/menu?p=update',
                         pk: ".$row->ID.", 
                         validate: function(v) {
-                          if (!v) return 'don\'t leave it blank!';
+                          if (!v) return 'don\'t leave it blank!'; 
+                          if (isNaN(v)) return 'please fill in a number format!';
                         },
                         success: function(result){  
                           var data = result.split(',');
@@ -240,7 +242,7 @@
                       });";
   $edit_script .= "  $('#PRINTER-".$row->ID."').editable({
                         type: 'select',  
-                        value: '".$row->PRINT_NAME."', 
+                        value: '".$row->PRINTER."', 
                         source: [ ";
   $i = 1;
   $n = count($printer);
@@ -262,7 +264,8 @@
                         url: '/process/menu?p=update',
                         pk: ".$row->ID.", 
                         validate: function(v) {
-                          if (!v) return 'don\'t leave it blank!';
+                          if (!v) return 'don\'t leave it blank!'; 
+                          if (isNaN(v)) return 'please fill in a number format!';
                         },
                         success: function(result){  
                           var data = result.split(',');
@@ -343,17 +346,5 @@ $(document).ready(function()
   	return false;
   }); 
 });
-
-function isValidMacAddress(macAdd){
-  var RegExPattern = /^[0-9a-fA-F:]+$/;
-  if (!(macAdd.match(RegExPattern)) || macAdd.length != 17){
-   return false;
-  } else {
-   return true;
-  }
-}
- 
-  $(function(){             
-  });
   
 </script>
