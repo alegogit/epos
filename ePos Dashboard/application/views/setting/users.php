@@ -17,10 +17,10 @@
     <div class="row">
 			<div class="col-lg-12">
 				<div class="panel panel-default">
-					<div class="panel-heading"><b>Add/Edit users</b></div>
+					<div class="panel-heading"><b>Users Setting</b></div>
 					<div class="panel-body">                 					                    
 			      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#bookModal">
-              <span class="glyphicon glyphicon-plus"></span> Add New users
+              <span class="glyphicon glyphicon-plus"></span> Add New User
             </button>             
             <button type="button" class="btn btn-danger">
               <span class="glyphicon glyphicon-remove"></span> Delete Selected users(s)
@@ -44,28 +44,28 @@
 						    </tr>
 						    </thead>  
 						    <tbody>                    
-						    <?php $i = 0;  foreach ($users as $row){ ?>
+						    <?php $i = 0; $tab = 1; foreach ($users as $row){ ?>
                 <tr data-index="<?=$i?>" class="datarow" id="<?=$row->ID.'_'.$row->NAME?>">
                   <td class="">
-                    <input type="checkbox" class="case">
+                    <input type="checkbox" class="case" tabindex="-1">
                   </td>
                   <td style="">
-                    <a id="NAME-<?=$row->ID?>" class=""><?=$row->NAME?></a>
+                    <a id="NAME-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->NAME?></a>
                   </td>
                   <td style="">
-                    <a id="EMAIL_ADDRESS-<?=$row->ID?>" class=""><?=$row->EMAIL_ADDRESS?></a>
+                    <a id="EMAIL_ADDRESS-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->EMAIL_ADDRESS?></a>
                   </td>
                   <td style="">
-                    <a id="USERNAME-<?=$row->ID?>" class=""><?=$row->USERNAME?></a>
+                    <a id="USERNAME-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->USERNAME?></a>
                   </td>
                   <td style="">
-                    <a id="PASSWORD-<?=$row->ID?>" class="">******</a>
+                    <a id="PASSWORD-<?=$row->ID?>" class="edit" tabindex="0">******</a>
                  </td>
                   <td style="">
-                    <a id="ROLE_ID-<?=$row->ID?>" class=""><?=$this->setting->get_role_name($row->ROLE_ID)?></a>
+                    <a id="ROLE_ID-<?=$row->ID?>" class="edit" tabindex="0"><?=$this->setting->get_role_name($row->ROLE_ID)?></a>
                   </td>
                   <td style="">
-                    <a id="REST_ID-<?=$row->ID?>" class=""><?=$this->setting->get_rest_name($row->ID)?></a>
+                    <a id="REST_ID-<?=$row->ID?>" class="edit" tabindex="0"></a>
                   </td>
                   <td style=""><span id="crby<?=$row->ID?>"><?=$this->setting->get_username($row->CREATED_BY)->USERNAME?></span></td>
                   <td style=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
@@ -100,53 +100,59 @@
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
         <h4 class="modal-title" id="myModalLabel">Add New users</h4>
       </div><!-- /.modal-header -->
-      <div class="modal-body">
+      <div class="modal-body">  <div id="errmsg"></div>
       <?php
-        $attributes = array('class' => 'form-inline', 'id' => 'newcat', 'role' => 'form');
+        $attributes = array('class' => 'form-inline', 'id' => 'newuser', 'role' => 'form');
         echo form_open('setting/users',$attributes)
       ?>                    		
         <div class="form-group" style="margin-bottom:10px"> 
           <div class="input-group">       
-            <label for="inputCaption">users Name</label>
-            <input type="text" class="form-control" id="inputCaption" placeholder="" name="users_name" required>
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" placeholder="" name="name" required>
+            <span class="errmsg"></span>
           </div>
         </div><br />
         <div class="form-group" style="margin-bottom:10px"> 
-          <div class="input-group col-xs-5">       
-            <label for="inputCaption">Price</label>
-            <input type="text" class="form-control" id="inputCaption" placeholder="please fill in a number format" pattern="\d*" name="users_price" required>
-          </div>
-        </div><br />     
-        <div class="form-group" style="margin-bottom:10px">
           <div class="input-group">       
-            <label for="inputDate">Category</label><br />  
-            <select name="users_category" class="form-control">
-            <?php foreach($categories as $rowc){ ?>
-              <option value="<?=$rowc->ID?>"><?=$rowc->NAME?></option>
-            <?php } ?>
-            </select>
+            <label for="email">E-mail Address</label>
+            <input type="text" class="form-control" id="email" placeholder="please fill in an e-mail format" pattern="^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$" name="email" required>
+            <span class="errmsg"></span>
           </div>
-        </div><br />     
-        <div class="form-group" style="margin-bottom:10px">
+        </div><br />        		
+        <div class="form-group" style="margin-bottom:10px"> 
           <div class="input-group">       
-            <label for="inputDate">Printer</label><br />  
-            <select name="users_printer" class="form-control">
-            <?php foreach($printer as $rowp){ ?>
-              <option value="<?=$rowp->ID?>"><?=$rowp->NAME?></option>
-            <?php } ?>
-            </select>
+            <label for="username">Username</label>
+            <input type="text" class="form-control" id="username" placeholder="" name="username" required>
+            <span class="errmsg"></span>
+          </div>
+        </div><br />     		
+        <div class="form-group" style="margin-bottom:10px"> 
+          <div class="input-group">       
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" placeholder="minimum 6 chars" name="password" pattern=".{5,}" required>
+            <span class="errmsg"></span>
           </div>
         </div><br />  
         <div class="form-group" style="margin-bottom:10px"> 
-          <div class="input-group col-xs-3">       
-            <label for="inputCaption">Tax</label>
-            <input type="text" class="form-control" id="inputCaption" placeholder="please fill in a number format" pattern="\d*" name="users_tax" required>
-             %
+          <div class="input-group">       
+            <label for="confirm">Confirm Password</label>
+            <input type="password" class="form-control" id="confirm" placeholder="please retype password" name="confirm" pattern=".{5,}" required>
+            <span class="errmsg"></span>
           </div>
         </div><br />
+        <div class="form-group" style="margin-bottom:10px">
+          <div class="input-group">       
+            <label for="role">Role</label><br />  
+            <select name="users_printer" class="form-control">
+            <?php foreach($roles as $rowr){ ?>
+              <option value="<?=$rowr->ID?>"><?=$rowr->NAME?></option>
+            <?php } ?>
+            </select>
+          </div>
+        </div><br /> 
         <div class="form-group" style="margin-bottom:10px"> 
           <div class="input-group">       
-            <label for="inputDate">Restaurant</label><br /> 
+            <label for="rest_id">Restaurant</label><br /> 
             <select name="rest_id" class="form-control">
             <?php foreach($restaurants as $rows){ ?>
               <option value = "<?=$rows->REST_ID?>" <?= ($rows->REST_ID==$rest_id)?'selected':''?> ><?=$rows->NAME?></option>
@@ -170,12 +176,15 @@
   $i = 0;
   //$n = count($dtopcats);
   $edit_script = "<script>"; 
-  $edit_script .= "$(document).ready(function(){";
+  $edit_script .= "$(document).ready(function(){";        
   $edit_script .= "  $.fn.editable.defaults.mode = 'inline';";
+  $edit_script .= "  $.fn.editable.defaults.showbuttons = false;";
+  $edit_script .= "  var updateurl = '/process/users?p=update';";
   foreach ($users as $row){
   $edit_script .= "  $('#NAME-".$row->ID."').editable({
-                        url: '/process/users?p=update',
+                        url: updateurl,
                         pk: ".$row->ID.", 
+                        activate: 'focus',
                         validate: function(v) {
                           if (!v) return 'don\'t leave it blank!';
                         },
@@ -186,11 +195,11 @@
                       } 
                     });";
   $edit_script .= "  $('#EMAIL_ADDRESS-".$row->ID."').editable({
-                        url: '/process/users?p=update',
+                        url: updateurl,
                         pk: ".$row->ID.", 
                         validate: function(v) {
                           if (!v) return 'don\'t leave it blank!'; 
-                          if (isNaN(v)) return 'please fill in a number format!';
+                          if (!isEmail(v)) return 'please fill in an e-Mail format!';
                         },
                         success: function(result){  
                           var data = result.split(',');
@@ -199,7 +208,7 @@
                       } 
                     });";    
   $edit_script .= "  $('#USERNAME-".$row->ID."').editable({
-                        url: '/process/users?p=update',
+                        url: updateurl,
                         pk: ".$row->ID.", 
                         validate: function(v) {
                           if (!v) return 'don\'t leave it blank!';
@@ -210,25 +219,35 @@
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
                     });";    
-  $edit_script .= "  $('#PASSWORD-".$row->ID."').editable({
-                        url: '/process/users?p=update',
-                        pk: ".$row->ID.", 
-                        validate: function(v) {
-                          if (!v) return 'don\'t leave it blank!';
-                        },
+                    
+  $edit_script .= "  $('#PASSWORD-".$row->ID."').editable({ 
+                        url: updateurl,
+                        mode: 'popup',
+                        placement: 'right',
+                        showbuttons: true,
+                        pk: ".$row->ID.",
+        tpl: '<div class=\"editable-address\"><label><span>Pass1: </span><input type=\"password\" name=\"pass1\" class=\"input-small\"></label></div><br>'+
+             '<div class=\"editable-address\"><label><span>Pass2: </span><input type=\"password\" name=\"pass2\" class=\"input-small\"></label></div>',         
                         success: function(result){  
                           var data = result.split(',');
                           $('#upby".$row->ID."').html(data[0]);
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
                     });";
-  $edit_script .= "  $('#ROLE_ID-".$row->ID."').editable({
-                        url: '/process/users?p=update',
+  $edit_script .= "  $('#ROLE_ID-".$row->ID."').editable({    
+                        type: 'select',  
+                        url: updateurl,
                         pk: ".$row->ID.", 
-                        validate: function(v) {
-                          if (!v) return 'don\'t leave it blank!'; 
-                          if (isNaN(v)) return 'please fill in a number format!';
-                        },
+                        value: ".$row->ROLE_ID.", 
+                        source: [ ";
+    $r = 1; 
+    $t = count($roles);                   
+    foreach($roles as $rowr){      
+      $edit_script .= "  {value: ".$rowr->ID.", text: '".$rowr->NAME."'}";
+      $edit_script .= ($r<$t)?", ":"";
+      $t++;
+    }                      
+  $edit_script .= "     ],
                         success: function(result){  
                           var data = result.split(',');
                           $('#upby".$row->ID."').html(data[0]);
@@ -237,20 +256,29 @@
                     });";
                     
   $edit_script .= "  $('#REST_ID-".$row->ID."').editable({
-                        type: 'select2',  
-                        value: ".$row->REST_ID.", 
+                        type: 'checklist',  
+                        mode: 'popup',
+                        placement: 'right',
+                        value: [";  
+		$assigned = $this->setting->get_assigned_rest($row->ID);
+    $a = 1;
+    $b = count($assigned);                    
+    foreach($assigned as $rowa){   
+      $edit_script .= $rowa->REST_ID;
+      $edit_script .= ($a<$b)?", ":"";
+      $a++;
+    }
+  $edit_script .= "     ], 
                         source: [ ";
     $j = 1;
-    $usersrest = $this->setting->get_users_rest($row->ID);
-    $n = count($usersrest);
-    foreach($usersrest as $rows){
+    $n = count($restaurants);
+    foreach($restaurants as $rows){
       $edit_script .= "  {value: ".$rows->REST_ID.", text: '".$rows->NAME."'}";
       $edit_script .= ($j<$n)?", ":"";
       $j++;
     }
   $edit_script .= "    ],
-                        select2:{multiple: true},
-                        url: '/process/users?p=update',
+                        url: updateurl,
                         pk: ".$row->ID.",
                         success: function(result){  
                           var data = result.split(',');
@@ -265,7 +293,13 @@
 ?>
 <script>   
 $(document).ready(function()
-{   
+{ 
+  //make editable on focus  
+  $('.edit').focus(function(e) {
+    e.stopPropagation();
+    $(this).editable('toggle');
+  });
+  
   var table = $('#setting').DataTable({
     columnDefs: [
       { targets: 'no-sort', orderable: false }
@@ -332,4 +366,37 @@ $(document).ready(function()
   }); 
 });
   
+$(function(){
+  //pass validation
+  $("#newuser").validate({ 
+    rules: {
+      email: { 
+        email: true 
+      }, 
+      password: { 
+        minlength: 6 
+      }, 
+      confirm: { 
+        equalTo: "#password",
+        minlength: 6
+      }       
+    },
+    messages:{ 
+      name: "Please enter name.",
+      username: "Please enter username.",
+      confirm: { 
+        equalTo:"the passwords aren't match"
+      }
+    },
+    errorElement: "span",   
+    errorPlacement: function(error, element) {
+      error.insertAfter(element);
+    } 
+  });
+});
+  
+function isEmail(email) {
+  var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+  return regex.test(email);
+}  
 </script>

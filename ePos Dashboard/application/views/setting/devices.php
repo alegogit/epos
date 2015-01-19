@@ -236,7 +236,7 @@
 ?>
 <script>   
 $(document).ready(function()
-{   
+{     
   var table = $('#setting').DataTable({
     columnDefs: [
       { targets: 'no-sort', orderable: false }

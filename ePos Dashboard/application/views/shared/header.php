@@ -16,8 +16,15 @@
 <?php if($menu == 'setting') { ?>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap-editable.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/select2.min.js"></script> 
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.validate.js"></script> 
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap-editable.css"/> 
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/select2.min.css"/>
+<style>
+.popover-content {
+    max-height: 300px;
+    overflow-y: scroll;
+}
+</style>
 <?php } ?>  
 
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap.css"/>

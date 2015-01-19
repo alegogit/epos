@@ -72,22 +72,22 @@
 						    <?php $i = 0;  foreach ($menus as $row){ ?>
                 <tr data-index="<?=$i?>" class="datarow" id="<?=$row->ID.'_'.$row->NAME?>">
                   <td class="">
-                    <input type="checkbox" class="case">
+                    <input type="checkbox" class="case" tabindex="-1">
                   </td>
                   <td style="">
-                    <a id="NAME-<?=$row->ID?>" class=""><?=$row->NAME?></a>
+                    <a id="NAME-<?=$row->ID?>" class="edit" tabindex><?=$row->NAME?></a>
                   </td>
                   <td style="">
-                    <a id="PRICE-<?=$row->ID?>" class=""><?=$row->PRICE?></a>
+                    <a id="PRICE-<?=$row->ID?>" class="edit" tabindex><?=$row->PRICE?></a>
                   </td>
                   <td style="">
-                    <a id="CATEGORY_ID-<?=$row->ID?>" class=""><?=$row->CAT_NAME?></a>
+                    <a id="CATEGORY_ID-<?=$row->ID?>" class="edit" tabindex><?=$row->CAT_NAME?></a>
                   </td>
                   <td style="">
-                    <a id="PRINTER-<?=$row->ID?>" class=""><?=$row->PRINT_NAME?></a>
+                    <a id="PRINTER-<?=$row->ID?>" class="edit" tabindex><?=$row->PRINT_NAME?></a>
                  </td>
                   <td style="">
-                    <a id="TAX-<?=$row->ID?>" class=""><?=$row->TAX?></a>
+                    <a id="TAX-<?=$row->ID?>" class="edit" tabindex><?=$row->TAX?></a>
                   </td>
                   <td style=""><span id="crby<?=$row->ID?>"><?=$this->setting->get_username($row->CREATED_BY)->USERNAME?></span></td>
                   <td style=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
@@ -280,7 +280,13 @@
 ?>
 <script>   
 $(document).ready(function()
-{   
+{                    
+  //make editable on focus  
+  $('.edit').focus(function(e) {
+    e.stopPropagation();
+    $(this).editable('toggle');
+  });
+  
   var table = $('#setting').DataTable({
     columnDefs: [
       { targets: 'no-sort', orderable: false }

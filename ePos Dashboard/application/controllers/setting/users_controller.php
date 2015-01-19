@@ -35,8 +35,7 @@ class Users_controller extends CI_Controller {
       } 
       
 		  $data['users'] = $this->setting->get_users_data();
-		  //$data['printer'] = $this->setting->get_rest_printer($rest_id);
-		  //$data['categories'] = $this->setting->get_rest_categories($rest_id);			                   
+		  $data['roles'] = $this->setting->get_roles();			                   
 			
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);
