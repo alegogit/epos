@@ -141,8 +141,8 @@
                       $chart_legend = "";
                       foreach ($dbestsells as $row){
                         $chart_legend .= "<b>".($i+1)."</b> ";  
-                        $chart_legend .= " <b>".ucwords(strtolower($row->ITEMS))."</b><span style='padding:10px'>&nbsp;</span>";
-                        $chart_legend .= " <b>".number_format($row->AMOUNT, 0, '', '.')."</b><span style='padding:10px'>&nbsp;</span>";
+                        $chart_legend .= " <b>".ucwords(strtolower($row->ITEMS)).": </b><span style='padding:10px'>&nbsp;</span>".$cur." <span style='text-align:right'>";
+                        $chart_legend .= " <b>".number_format($row->AMOUNT, 0, '', '.')."</b>&nbsp;</span><span style='padding:10px'>&nbsp;</span>";
                         $chart_legend .= " ".$row->QTY."<hr style='margin-top:5px;margin-bottom:5px'>";
                         $i++;  
                       }
@@ -174,12 +174,12 @@
                     }
                     foreach ($dpayment as $row){
                       $chart_legend .= "<span class='glyphicon glyphicon-tint' style='color:".$donut_color[$i]."'></span>";  
-                      $chart_legend .= " ".ucwords(strtolower($row->PAYMENT_METHOD))."<span style='padding:10px'>&nbsp;</span>";
+                      $chart_legend .= " ".ucwords(strtolower($row->PAYMENT_METHOD)).": ".$cur." <span style='padding:10px'>&nbsp;</span>";
                       $chart_legend .= " <span style='float:right;display:inline-block'>".number_format($row->AMOUNT, 0, '', '.')."</span><br>";
                       $i++;  
                     }
                     
-                    $chart_legend .= "<hr style='margin-top:5px;margin-bottom:5px;border-color:#222'><b><i class='fa fa-money'></i> Total: <span style='float:right;display:inline-block'>".number_format($total, 0, '', '.')."</span></b><br>";
+                    $chart_legend .= "<hr style='margin-top:5px;margin-bottom:5px;border-color:#222'><b><i class='fa fa-money'></i> Total: ".$cur." <span style='float:right;display:inline-block'>".number_format($total, 0, '', '.')."</span></b><br>";
                     echo $chart_legend;
                   ?>
                  </div>
@@ -227,7 +227,7 @@
           <div class="rdtitle">Sales Today</div>
           <!--<a href="#" class="pull-right">See all</a>-->
           <span class="list-group-item orgbg noborder pad30">
-            <span class="text270">Rp <span id="salesd" value="<?=$sales_today->res?>"></span></span>
+            <span class="text270"><?=$cur?> <span id="salesd" value="<?=$sales_today->res?>"></span></span>
             <br><span class="glyphicon glyphicon-info-sign"></span>&nbsp;<?=round((float)$percent_today->PERCENTAGE * 100 ) . '%'?> From Yesterday
           </span>      
           <div class="rdinfo"><?=$trans_today->res?> Transactions</div>
@@ -237,7 +237,7 @@
           <div class="rdtitle">Sales This Year</div>
           <!--<a href="#" class="pull-right">See all</a>-->
           <span class="list-group-item teabg noborder pad30">
-            <span class="text270">Rp <span id="salesy" value="<?=$sales_this_year->res?>"></span></span>   
+            <span class="text270"><?=$cur?> <span id="salesy" value="<?=$sales_this_year->res?>"></span></span>   
             <br><span class="glyphicon glyphicon-info-sign"></span>&nbsp;<?=round((float)$percent_last_week->PERCENTAGE * 100 ) . '%'?> From Last Week
             <br><span class="glyphicon glyphicon-info-sign"></span>&nbsp;<?=round((float)$percent_this_year->PERCENTAGE * 100 ) . '%'?> From Beginning Of The Year
           </span>   
@@ -509,7 +509,7 @@
     };
     
     while( $('.fitin div').height() > $('.fitin').height() ) {
-        $('.fitin div').css('font-size', (parseInt($('.fitin div').css('font-size')) - 1) + "px" );
+        $('.fitin div').css('font-size', (parseInt($('.fitin div').css('font-size')) - 2) + "px" );
     }
     
     })(jQuery);

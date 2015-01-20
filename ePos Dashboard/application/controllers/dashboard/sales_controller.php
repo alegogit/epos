@@ -28,7 +28,8 @@ class Sales_controller extends CI_Controller {
 			$end_date = (!($this->input->post('startdate')))?$data['def_end_date']:$this->input->post('enddate'); 
 			$data['rest_id'] = $rest_id;
 			$data['startdate'] = $start_date;
-			$data['enddate'] = $end_date;
+			$data['enddate'] = $end_date;      
+		  $data['cur'] = $this->dash_sls->get_currency($rest_id);
 			$data['trans_today'] = $this->dash_sls->num_transactions_today($rest_id);
 			$data['sales_today'] = $this->dash_sls->total_sales_today($rest_id);
 			$data['percent_today'] = $this->dash_sls->percentage_increase_from_yesterday($rest_id);

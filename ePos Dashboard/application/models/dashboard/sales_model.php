@@ -33,6 +33,17 @@ class Sales_model extends CI_Model {
                       ->get('');
     return $query->result();
     }
+    
+  function get_currency($rest_id){
+    $query = $this->db->select('restaurants.CURRENCY, ref_values.VALUE as CUR')
+                      ->from('restaurants')
+                      ->join('ref_values', 'ref_values.CODE = restaurants.CURRENCY')
+                      ->where('restaurants.ID',$rest_id)
+                      ->where('ref_values.LOOKUP_NAME','CURRENCY')
+                      ->limit(1)
+                      ->get('');
+    return $query->row()->CUR;
+  }
 
 	function num_transactions_today($rest_id)
 	{

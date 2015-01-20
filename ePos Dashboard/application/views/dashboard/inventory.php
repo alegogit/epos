@@ -123,7 +123,7 @@
           <div class="rdtitle">Sales Today</div>
           <!--<a href="#" class="pull-right">See all</a>-->
           <span class="list-group-item orgbg noborder pad30">
-            <span class="text270">Rp <span id="salesd" value="<?=$sales_today->res?>"></span></span>
+            <span class="text270"><?=$cur?> <span id="salesd" value="<?=$sales_today->res?>"></span></span>
             <br><span class="glyphicon glyphicon-info-sign"></span>&nbsp;<?=round((float)$percent_today->PERCENTAGE * 100 ) . '%'?> From Yesterday
           </span>      
           <div class="rdinfo"><?=$trans_today->res?> Transactions</div>
@@ -133,7 +133,7 @@
           <div class="rdtitle">Sales This Year</div>
           <!--<a href="#" class="pull-right">See all</a>-->
           <span class="list-group-item teabg noborder pad30">
-            <span class="text270">Rp <span id="salesy" value="<?=$sales_this_year->res?>"></span></span>   
+            <span class="text270"><?=$cur?> <span id="salesy" value="<?=$sales_this_year->res?>"></span></span>   
             <br><span class="glyphicon glyphicon-info-sign"></span>&nbsp;<?=round((float)$percent_last_week->PERCENTAGE * 100 ) . '%'?> From Last Week
             <br><span class="glyphicon glyphicon-info-sign"></span>&nbsp;<?=round((float)$percent_this_year->PERCENTAGE * 100 ) . '%'?> From Beginning Of The Year
           </span>   
