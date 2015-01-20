@@ -73,7 +73,8 @@ $route['reports/inventory'] = "reports/inventory_controller";
 
 $route['extracts'] = "extracts/ordersdata_controller";
                                                              
-$route['process/menu'] = "process/menusetting_controller";
+$route['process/menu'] = "process/menusetting_controller";    
+$route['process/users'] = "process/userssetting_controller";
 $route['process/orders'] = "process/orderdetails_controller";
 $route['process/printer'] = "process/printersetting_controller";
 $route['process/devices'] = "process/devicessetting_controller";

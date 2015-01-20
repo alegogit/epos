@@ -145,7 +145,7 @@
         <div class="form-group" style="margin-bottom:10px">
           <div class="input-group">       
             <label for="role">Role</label><br />  
-            <select name="users_printer" class="form-control">
+            <select name="role" class="form-control">
             <?php foreach($roles as $rowr){ ?>
               <option value="<?=$rowr->ID?>"><?=$rowr->NAME?></option>
             <?php } ?>
@@ -374,8 +374,14 @@ $(function(){
   $("#newuser").validate({ 
     rules: {
       email: { 
-        email: true 
+        email: true,
+        remote: "/process/users?p=takene" 
       }, 
+      username: {
+        required: true,
+        minlength: 5,
+        remote: "/process/users?p=takenu"
+      },
       password: { 
         minlength: 6 
       }, 
@@ -386,7 +392,14 @@ $(function(){
     },
     messages:{ 
       name: "Please enter name.",
-      username: "Please enter username.",
+      email: {
+        required: "Please enter email address.",
+        remote: "Please enter another email"
+      },
+      username: {
+        required: "Please enter username.",
+        remote: "Please enter another username"
+      },
       confirm: { 
         equalTo:"the passwords aren't match"
       }

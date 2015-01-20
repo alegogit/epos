@@ -30,8 +30,8 @@ class Users_controller extends CI_Controller {
 			$data['startdate'] = $start_date;
 			$data['enddate'] = $end_date; 
 			                                 
-      if($this->input->post('users_name')){               
-		    $this->setting->new_users($this->input->post('users_name'),$this->input->post('users_category'),$this->input->post('users_price'),$this->input->post('users_printer'),$this->input->post('users_tax'));
+      if($this->input->post('email')){             
+		    $this->setting->new_users($this->input->post('name'),$this->input->post('email'),$this->input->post('username'),$this->input->post('password'),$this->input->post('role'),$this->input->post('rest_id'));
       } 
       
 		  $data['users'] = $this->setting->get_users_data();
