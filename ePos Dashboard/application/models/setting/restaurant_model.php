@@ -39,6 +39,79 @@ class Restaurant_model extends CI_Model {
                       ->where('ID',$id)
                       ->get('');
     return $query->row();
+  }    
+  
+	function get_restaurant_data(){ 
+    $query = $this->db->select('restaurants.*, ref_values.VALUE AS CURRENCY_NAME')
+                      ->from('restaurants')
+                      ->join('ref_values', 'restaurants.CURRENCY = ref_values.CODE')
+                      ->where('ref_values.LOOKUP_NAME','CURRENCY')
+                      ->get('');
+    return $query->result();
+  } 
+    
+  function get_default_rest($user_id){                         
+    $query = $this->db->query('SELECT users_restaurants.*, restaurants.NAME AS REST_NAME
+                              FROM users_restaurants
+                              JOIN restaurants ON users_restaurants.REST_ID = restaurants.ID
+                              WHERE users_restaurants.DEFAULT_REST=1 AND users_restaurants.USER_ID = '.$user_id.'
+                              ');
+    $output = ($this->db->affected_rows()>0)?$query->row():"NONE";
+    return $output;
+  } 
+  
+  function get_assigned_rest($user_id){                         
+    $query = $this->db->query('SELECT users_restaurants.REST_ID, restaurants.NAME AS NAME
+                              FROM users_restaurants
+                              JOIN restaurants ON users_restaurants.REST_ID = restaurants.ID
+                              WHERE users_restaurants.USER_ID = '.$user_id.'
+                              ');
+    return $query->result();
+  } 
+  
+  function get_users_rest($user_id){                         
+    $query = $this->db->query('SELECT users_restaurants.*, restaurants.NAME AS REST_NAME
+                              FROM users_restaurants
+                              JOIN restaurants ON users_restaurants.REST_ID = restaurants.ID
+                              WHERE users_restaurants.USER_ID = '.$user_id.'
+                              ');
+    return $query->result();
+  }
+  
+  function get_role_name($role_id){
+    $query = $this->db->select('NAME')
+                      ->from('roles')
+                      ->where('ID',$role_id)
+                      ->limit(1)
+                      ->get('');
+    return $query->row()->NAME;
+  }
+  
+  function get_roles(){         
+		$session_data = $this->session->userdata('logged_in');  
+		$role = $session_data['role'];   
+		if($role>1){
+      $query = $this->db->where('ID > 2');
+    }
+    $query = $this->db->select('ID,NAME')
+                      ->from('roles')
+                      ->get('');
+    return $query->result();
+  }
+   
+	function new_restaurant($NAME,$EMAIL,$USERNAME,$PASSWORD,$ROLE,$REST_ID){       
+		$session_data = $this->session->userdata('logged_in');
+		$PASSWD = sha1(md5($PASSWORD));
+		$id = $session_data['id'];
+    $query1 = $this->db->query('INSERT INTO restaurant
+      (NAME,EMAIL_ADDRESS,USERNAME,PASSWORD,ROLE_ID,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
+      VALUES 
+      ("'.$NAME.'","'.$EMAIL.'","'.$USERNAME.'","'.$PASSWD.'",'.$ROLE.','.$id.',NOW(),'.$id.',NOW());');
+    $query2 = $this->db->query('INSERT INTO users_restaurants
+      (USER_ID,REST_ID,DEFAULT_REST,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
+      VALUES 
+      ('.$this->setting->get_mail_user($EMAIL)->ID.','.$REST_ID.',1,'.$id.',NOW(),'.$id.',NOW());');
+		//return $query->row();
   }
   
 }

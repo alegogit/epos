@@ -5,11 +5,12 @@ class Restaurant_controller extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();	
-		$this->load->model('setting/restaurant_model','restaurant',TRUE);  
+		$this->load->model('setting/restaurant_model','setting',TRUE);  
     $this->load->helper(array('form', 'url','html'));
-		$session_data = $this->session->userdata('logged_in');
-		$this->data['user'] = $this->restaurant->get_profile();
-		$this->data['restaurants'] = $this->restaurant->get_restaurant(); 
+		$session_data = $this->session->userdata('logged_in');  
+		$this->data['menu'] = 'setting';      
+		$this->data['user'] = $this->setting->get_profile();
+		$this->data['restaurants'] = $this->setting->get_restaurant(); 
 	}
 
 	public function index()
@@ -17,7 +18,8 @@ class Restaurant_controller extends CI_Controller {
 		if($this->session->userdata('logged_in'))
 		{
 			$data['menu'] = 'setting';         
-			$session_data = $this->session->userdata('logged_in');
+			$session_data = $this->session->userdata('logged_in');  
+		  $role = $session_data['role'];
 			$data['def_rest'] = $session_data['def_rest'];
 			$data['def_start_date'] = date('d M Y', time() - 30 * 60 * 60 * 24);
 			$data['def_end_date'] = date('d M Y', time());
@@ -26,7 +28,14 @@ class Restaurant_controller extends CI_Controller {
 			$end_date = (!($this->input->post('startdate')))?$data['def_end_date']:$this->input->post('enddate'); 
 			$data['rest_id'] = $rest_id;
 			$data['startdate'] = $start_date;
-			$data['enddate'] = $end_date;   
+			$data['enddate'] = $end_date; 
+			                                 
+      if($this->input->post('email')){             
+		    $this->setting->new_restaurant($this->input->post('name'),$this->input->post('email'),$this->input->post('username'),$this->input->post('password'),$this->input->post('role'),$this->input->post('rest_id'));
+      } 
+      
+		  $data['restaurant'] = $this->setting->get_restaurant_data();
+		  $data['roles'] = $this->setting->get_roles();			                   
 			
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);
@@ -43,7 +52,7 @@ class Restaurant_controller extends CI_Controller {
 	
 	public function profile()
 	{
-		$data['profile'] = $this->restaurant->get_profile();
+		$data['profile'] = $this->setting->get_profile();
 		
 		$this->load->view('shared/header',$this->data);
 		$this->load->view('shared/left_menu');
@@ -59,7 +68,7 @@ class Restaurant_controller extends CI_Controller {
 	{
 		$this->session->unset_userdata('logged_in');
 		//session_destroy();
-		redirect('home', 'refresh');
+		redirect('dashboard', 'refresh');
 	}
 		
 	public function notif()

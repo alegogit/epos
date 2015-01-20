@@ -154,7 +154,7 @@
         </div><br /> 
         <div class="form-group" style="margin-bottom:10px"> 
           <div class="input-group">       
-            <label for="rest_id">Restaurant</label><br /> 
+            <label for="rest_id">Default Restaurant</label><br /> 
             <select name="rest_id" class="form-control">
             <?php foreach($restaurants as $rows){ ?>
               <option value = "<?=$rows->REST_ID?>" <?= ($rows->REST_ID==$rest_id)?'selected':''?> ><?=$rows->NAME?></option>
