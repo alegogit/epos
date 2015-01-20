@@ -37,10 +37,11 @@
 						        <th>Password</th>
 						        <th>Role</th>
 						        <th>Restaurant</th>
-						        <th data-field="crby" data-sortable="false">Created By</th>
-						        <th data-field="crdt" data-sortable="false">Created Date</th>
-						        <th data-field="upby"  data-sortable="false">Updated By</th>
-						        <th data-field="updt" data-sortable="false">Updated Date</th>
+						        <th>Last Login</th>
+						        <th>Created By</th>
+						        <th>Created Date</th>
+						        <th>Updated By</th>
+						        <th>Updated Date</th>
 						    </tr>
 						    </thead>  
 						    <tbody>                    
@@ -67,6 +68,7 @@
                   <td style="">
                     <a id="REST_ID-<?=$row->ID?>" class="edit" tabindex="0"></a>
                   </td>
+                  <td style=""><span id="last<?=$row->ID?>"><?=$row->LAST_LOGIN?></span></td>
                   <td style=""><span id="crby<?=$row->ID?>"><?=$this->setting->get_username($row->CREATED_BY)->USERNAME?></span></td>
                   <td style=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
                   <td style=""><span id="upby<?=$row->ID?>"><?=$this->setting->get_username($row->LAST_UPDATED_BY)->USERNAME?></span></td>
@@ -300,11 +302,12 @@ $(document).ready(function()
     $(this).editable('toggle');
   });
   
+  //inititate datatable
   var table = $('#setting').DataTable({
     columnDefs: [
       { targets: 'no-sort', orderable: false }
     ],
-    "order": [[ 9, "desc" ]]
+    "order": [[ 10, "desc" ]]
   });
   
   //check all

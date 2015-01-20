@@ -49,6 +49,7 @@ class Loginauth_controller extends CI_Controller {
 			   ,'def_rest' => $row->REST_ID
 		   );
 		   $this->session->set_userdata('logged_in', $sess_array);
+		   $this->login->update_logintime();
 		  }
 		  //echo "<pre>" . var_dump($row) . "</pre>";   
 		  return TRUE;
