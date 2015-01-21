@@ -227,28 +227,28 @@
           <div class="rdtitle">Sales Today</div>
           <!--<a href="#" class="pull-right">See all</a>-->
           <span class="list-group-item orgbg noborder pad30">
-            <span class="text270"><?=$cur?> <span id="salesd" value="<?=$sales_today->res?>"></span></span>
+            <span class="text270"><?=$cur?> <span id="salesd" value="<?=$sales_today->RES?>"></span></span>
             <br><span class="glyphicon glyphicon-info-sign"></span>&nbsp;<?=round((float)$percent_today->PERCENTAGE * 100 ) . '%'?> From Yesterday
           </span>      
-          <div class="rdinfo"><?=$trans_today->res?> Transactions</div>
+          <div class="rdinfo"><?=$trans_today->RES?> Transactions</div>
         </div>    
         
         <div class="list-group rightdash">            
           <div class="rdtitle">Sales This Year</div>
           <!--<a href="#" class="pull-right">See all</a>-->
           <span class="list-group-item teabg noborder pad30">
-            <span class="text270"><?=$cur?> <span id="salesy" value="<?=$sales_this_year->res?>"></span></span>   
+            <span class="text270"><?=$cur?> <span id="salesy" value="<?=$sales_this_year->RES?>"></span></span>   
             <br><span class="glyphicon glyphicon-info-sign"></span>&nbsp;<?=round((float)$percent_last_week->PERCENTAGE * 100 ) . '%'?> From Last Week
             <br><span class="glyphicon glyphicon-info-sign"></span>&nbsp;<?=round((float)$percent_this_year->PERCENTAGE * 100 ) . '%'?> From Beginning Of The Year
           </span>   
-          <div class="rdinfo"><?=$trans_this_year->res?> Transactions</div>
+          <div class="rdinfo"><?=$trans_this_year->RES?> Transactions</div>
         </div>        
                   
         <div class="list-group rightdash">    
           <div class="rdtitle">Your Customers</div>   
           <!--<a href="#" class="pull-right">See all</a>-->
           <span class="list-group-item redbg noborder pad30">
-            <span class="text270"><span id="cust30" value="<?=$num_cust_30day->res?>"></span></span>
+            <span class="text270"><span id="cust30" value="<?=$num_cust_30day->RES?>"></span></span>
             <br>People
           </span>  
           <div class="rdinfo">Last 30 Days</div> 

@@ -10,7 +10,7 @@ class Categorysetting_model extends CI_Model {
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id'];
 		$this->db->where('ID',$id);
-    $query = $this->db->get('users');
+    $query = $this->db->get('USERS');
     return $query->row();
   }  
 	
@@ -26,7 +26,7 @@ class Categorysetting_model extends CI_Model {
                'LAST_UPDATED_DATE' => $dt,
             ); 
 		$this->db->where('ID',$arrin[0]);
-    $query = $this->db->update('category',$data);
+    $query = $this->db->update('CATEGORY',$data);
     $output[0] = $this->process->get_username($this->process->get_category($arrin[0])->LAST_UPDATED_BY);
     $output[1] = $this->process->get_category($arrin[0])->LAST_UPDATED_DATE;
     $outputs = implode(",",$output);   
@@ -36,10 +36,10 @@ class Categorysetting_model extends CI_Model {
 	function delete_category($cid){ 
 		$did = strstr($cid, '_', true); 
 		$idn = $this->process->get_category($did)->NAME;
-    $query = $this->db->query('DELETE c FROM category c 
-      LEFT JOIN menu m ON m.CATEGORY_ID = c.ID 
-      WHERE m.CATEGORY_ID IS NULL
-      AND c.ID='.$did.';');    
+    $query = $this->db->query('DELETE C FROM CATEGORY C 
+      LEFT JOIN MENU M ON M.CATEGORY_ID = C.ID 
+      WHERE M.CATEGORY_ID IS NULL
+      AND C.ID='.$did.';');    
     if($this->db->affected_rows()!=0){
       $out = "OK";
     } else {
@@ -51,7 +51,7 @@ class Categorysetting_model extends CI_Model {
 	
 	function get_category($cid){    
     $query = $this->db->select('*')
-                      ->from('category')  
+                      ->from('CATEGORY')  
                       ->where('ID',$cid)
                       ->limit(1)
                       ->get('');
@@ -60,7 +60,7 @@ class Categorysetting_model extends CI_Model {
             
 	function get_restaurant_name($id){
     $query = $this->db->select('NAME AS REST_NAME')
-                      ->from('restaurants')
+                      ->from('RESTAURANTS')
                       ->where('ID',$id)
                       ->get('');
     return $query->row()->REST_NAME;
@@ -68,7 +68,7 @@ class Categorysetting_model extends CI_Model {
   
   function get_username($id){
     $query = $this->db->select('USERNAME')
-                      ->from('users')
+                      ->from('USERS')
                       ->where('ID',$id)
                       ->get('');
     return $query->row()->USERNAME;

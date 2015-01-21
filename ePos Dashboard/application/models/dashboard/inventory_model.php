@@ -17,7 +17,7 @@ class Inventory_model extends CI_Model {
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id'];
 		$this->db->where('ID',$id);
-          $query = $this->db->get('users');
+          $query = $this->db->get('USERS');
           return $query->row();
     }
 	
@@ -25,21 +25,20 @@ class Inventory_model extends CI_Model {
     {
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id'];
-		$this->db->where('users_restaurants.USER_ID',$id);
-    //$query = $this->db->get('restaurants');
+		$this->db->where('USERS_RESTAURANTS.USER_ID',$id);
     $query = $this->db->select('*')
-                      ->from('restaurants')
-                      ->join('users_restaurants', 'restaurants.ID = users_restaurants.REST_ID')
+                      ->from('RESTAURANTS')
+                      ->join('USERS_RESTAURANTS', 'RESTAURANTS.ID = USERS_RESTAURANTS.REST_ID')
                       ->get('');
     return $query->result();
     }
                                 
   function get_currency($rest_id){
-    $query = $this->db->select('restaurants.CURRENCY, ref_values.VALUE as CUR')
-                      ->from('restaurants')
-                      ->join('ref_values', 'ref_values.CODE = restaurants.CURRENCY')
-                      ->where('restaurants.ID',$rest_id)
-                      ->where('ref_values.LOOKUP_NAME','CURRENCY')
+    $query = $this->db->select('RESTAURANTS.CURRENCY, REF_VALUES.VALUE as CUR')
+                      ->from('RESTAURANTS')
+                      ->join('REF_VALUES', 'REF_VALUES.CODE = RESTAURANTS.CURRENCY')
+                      ->where('RESTAURANTS.ID',$rest_id)
+                      ->where('REF_VALUES.LOOKUP_NAME','CURRENCY')
                       ->limit(1)
                       ->get('');
     return $query->row()->CUR;
@@ -47,7 +46,7 @@ class Inventory_model extends CI_Model {
   
 	function num_transactions_today($rest_id)
 	{
-	     $query = $this->db->query('SELECT IFNULL(COUNT(ID),0) AS res FROM ORDERS WHERE DATE(ENDED) = DATE(SYSDATE()) AND REST_ID = '.$rest_id.';');
+	     $query = $this->db->query('SELECT IFNULL(COUNT(ID),0) AS RES FROM ORDERS WHERE DATE(ENDED) = DATE(SYSDATE()) AND REST_ID = '.$rest_id.';');
 		//return $query->result();  
           return $query->row();
 	}
@@ -68,14 +67,14 @@ class Inventory_model extends CI_Model {
 	
 	function total_sales_today($rest_id)
 	{
-	     $query = $this->db->query('SELECT IFNULL(SUM(TOTAL),0) AS res FROM ORDERS WHERE DATE(ENDED) = DATE(SYSDATE()) AND REST_ID ='.$rest_id.';');
+	     $query = $this->db->query('SELECT IFNULL(SUM(TOTAL),0) AS RES FROM ORDERS WHERE DATE(ENDED) = DATE(SYSDATE()) AND REST_ID ='.$rest_id.';');
 		//return $query->result();  
           return $query->row();
 	}
      
      function num_transactions_this_year($rest_id)
 	{
-	     $query = $this->db->query('SELECT IFNULL(COUNT(ID),0) AS res FROM ORDERS WHERE YEAR(ENDED) = YEAR(SYSDATE()) AND REST_ID ='.$rest_id.';');
+	     $query = $this->db->query('SELECT IFNULL(COUNT(ID),0) AS RES FROM ORDERS WHERE YEAR(ENDED) = YEAR(SYSDATE()) AND REST_ID ='.$rest_id.';');
 		//return $query->result();  
           return $query->row();
 	}
@@ -115,14 +114,14 @@ class Inventory_model extends CI_Model {
 	
 	function total_sales_this_year($rest_id)
 	{
-	     $query = $this->db->query('SELECT IFNULL(SUM(TOTAL),0) AS res FROM ORDERS WHERE YEAR(ENDED) = YEAR(SYSDATE()) AND REST_ID ='.$rest_id.'');
+	     $query = $this->db->query('SELECT IFNULL(SUM(TOTAL),0) AS RES FROM ORDERS WHERE YEAR(ENDED) = YEAR(SYSDATE()) AND REST_ID ='.$rest_id.'');
 		//return $query->result();  
           return $query->row();
 	}
      
   function num_customers_30day($rest_id)
 	{
-	     $query = $this->db->query('SELECT COUNT(C.ID) AS res 
+	     $query = $this->db->query('SELECT COUNT(C.ID) AS RES 
           FROM CUSTOMERS C
 			INNER JOIN ORDERS O ON O.CUSTOMER_ID = C.ID
             WHERE O.REST_ID = '.$rest_id.'

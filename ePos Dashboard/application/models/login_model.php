@@ -14,8 +14,8 @@ class Login_model extends CI_Model {
         $this->db->where('USERS.USERNAME', $username);
         $this->db->where('USERS.PASSWORD', $password);  
         $this->db->limit(1);
-        $this->db->join('users_restaurants', 'USERS.ID = users_restaurants.USER_ID');   
-        $this->db->where('users_restaurants.DEFAULT_REST', 1);  
+        $this->db->join('USERS_RESTAURANTS', 'USERS.ID = USERS_RESTAURANTS.USER_ID');   
+        $this->db->where('USERS_RESTAURANTS.DEFAULT_REST', 1);  
          
         //get query and processing
         $query = $this->db->get('USERS');
@@ -39,7 +39,7 @@ class Login_model extends CI_Model {
                'LAST_LOGIN' => $dt
             );          
 		$this->db->where('ID',$id);
-    $query = $this->db->update('users',$data);
+    $query = $this->db->update('USERS',$data);
   }
     
 }

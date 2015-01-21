@@ -29,7 +29,7 @@ class Reset_model extends CI_Model {
                  'LAST_UPDATED_DATE' => $dt,
               ); 
   		$this->db->where('ID',$id);
-      $query = $this->db->update('users',$data);
+      $query = $this->db->update('USERS',$data);
     }
     
     function epos_encrypt($text, $salt = "vsdfkjheret3453fdgd"){

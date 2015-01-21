@@ -10,7 +10,7 @@ class Devicessetting_model extends CI_Model {
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id'];
 		$this->db->where('ID',$id);
-    $query = $this->db->get('users');
+    $query = $this->db->get('USERS');
     return $query->row();
   }  
 	
@@ -26,7 +26,7 @@ class Devicessetting_model extends CI_Model {
                'LAST_UPDATED_DATE' => $dt,
             ); 
 		$this->db->where('ID',$arrin[0]);
-    $query = $this->db->update('devices',$data);
+    $query = $this->db->update('DEVICES',$data);
     $output[0] = $this->process->get_username($this->process->get_devices($arrin[0])->LAST_UPDATED_BY);
     $output[1] = $this->process->get_devices($arrin[0])->LAST_UPDATED_DATE;
     $outputs = implode(",",$output);   
@@ -37,7 +37,7 @@ class Devicessetting_model extends CI_Model {
 		$did = strstr($cid, '_', true);
     $query = $this->db->where('ID', $did);
     $query = $this->db->limit(1);
-    $query = $this->db->delete('devices');
+    $query = $this->db->delete('DEVICES');
     if($this->db->affected_rows()!=0){
       $out = "OK";
     } else {                  
@@ -48,7 +48,7 @@ class Devicessetting_model extends CI_Model {
 	
 	function get_devices($cid){    
     $query = $this->db->select('*')
-                      ->from('devices')  
+                      ->from('DEVICES')  
                       ->where('ID',$cid)
                       ->limit(1)
                       ->get('');
@@ -57,7 +57,7 @@ class Devicessetting_model extends CI_Model {
                      
 	function get_restaurant_name($id){
     $query = $this->db->select('NAME AS REST_NAME')
-                      ->from('restaurants')
+                      ->from('RESTAURANTS')
                       ->where('ID',$id)
                       ->get('');
     return $query->row()->REST_NAME;
@@ -65,7 +65,7 @@ class Devicessetting_model extends CI_Model {
   
   function get_username($id){
     $query = $this->db->select('USERNAME')
-                      ->from('users')
+                      ->from('USERS')
                       ->where('ID',$id)
                       ->get('');
     return $query->row()->USERNAME;

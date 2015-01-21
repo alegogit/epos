@@ -10,7 +10,7 @@ class Tableordersetting_model extends CI_Model {
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id'];
 		$this->db->where('ID',$id);
-    $query = $this->db->get('users');
+    $query = $this->db->get('USERS');
     return $query->row();
   }  
 	
@@ -26,7 +26,7 @@ class Tableordersetting_model extends CI_Model {
                'LAST_UPDATED_DATE' => $dt,
             ); 
 		$this->db->where('ID',$arrin[0]);
-    $query = $this->db->update('tables',$data);
+    $query = $this->db->update('TABLES',$data);
     $output[0] = $this->process->get_username($this->process->get_tableorder($arrin[0])->LAST_UPDATED_BY);
     $output[1] = $this->process->get_tableorder($arrin[0])->LAST_UPDATED_DATE;
     $outputs = implode(",",$output);   
@@ -35,10 +35,10 @@ class Tableordersetting_model extends CI_Model {
 	
 	function delete_tableorder($cid){ 
 		$did = strstr($cid, '_', true);
-    $query = $this->db->query('DELETE t FROM tables t 
-      LEFT JOIN orders o ON o.TABLE_ID = t.ID 
-      WHERE o.TABLE_ID IS NULL
-      AND t.ID='.$did.';');    
+    $query = $this->db->query('DELETE T FROM TABLES T 
+      LEFT JOIN ORDERS O ON O.TABLE_ID = T.ID 
+      WHERE O.TABLE_ID IS NULL
+      AND T.ID='.$did.';');    
     if($this->db->affected_rows()!=0){
       $out = "OK";
     } else {                        
@@ -51,7 +51,7 @@ class Tableordersetting_model extends CI_Model {
 	
 	function get_tableorder($cid){    
     $query = $this->db->select('*')
-                      ->from('tables')  
+                      ->from('TABLES')  
                       ->where('ID',$cid)
                       ->limit(1)
                       ->get('');
@@ -60,7 +60,7 @@ class Tableordersetting_model extends CI_Model {
                      
 	function get_restaurant_name($id){
     $query = $this->db->select('NAME AS REST_NAME')
-                      ->from('restaurants')
+                      ->from('RESTAURANTS')
                       ->where('ID',$id)
                       ->get('');
     return $query->row()->REST_NAME;
@@ -68,7 +68,7 @@ class Tableordersetting_model extends CI_Model {
   
   function get_username($id){
     $query = $this->db->select('USERNAME')
-                      ->from('users')
+                      ->from('USERS')
                       ->where('ID',$id)
                       ->get('');
     return $query->row()->USERNAME;

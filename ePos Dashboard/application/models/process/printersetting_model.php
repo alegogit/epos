@@ -10,7 +10,7 @@ class Printersetting_model extends CI_Model {
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id'];
 		$this->db->where('ID',$id);
-    $query = $this->db->get('users');
+    $query = $this->db->get('USERS');
     return $query->row();
   }  
 	
@@ -26,7 +26,7 @@ class Printersetting_model extends CI_Model {
                'LAST_UPDATED_DATE' => $dt,
             ); 
 		$this->db->where('ID',$arrin[0]);
-    $query = $this->db->update('printer',$data);
+    $query = $this->db->update('PRINTER',$data);
     $output[0] = $this->process->get_username($this->process->get_printer($arrin[0])->LAST_UPDATED_BY);
     $output[1] = $this->process->get_printer($arrin[0])->LAST_UPDATED_DATE;
     $outputs = implode(",",$output);   
@@ -37,18 +37,18 @@ class Printersetting_model extends CI_Model {
 		$did = strstr($pid, '_', true); 
     $query = $this->db->where('ID', $did);
     $query = $this->db->limit(1);
-    $query = $this->db->delete('printer');    
+    $query = $this->db->delete('PRINTER');    
     return $did;
   }
 	
 	function get_printer($pid){    
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id'];
-		$this->db->where('users_restaurants.USER_ID',$id);
-    $query = $this->db->select('printer.*')
-                      ->from('printer')
-                      ->join('users_restaurants', 'printer.REST_ID = users_restaurants.REST_ID')  
-                      ->where('printer.ID',$pid)
+		$this->db->where('USERS_RESTAURANTS.USER_ID',$id);
+    $query = $this->db->select('PRINTER.*')
+                      ->from('PRINTER')
+                      ->join('USERS_RESTAURANTS', 'PRINTER.REST_ID = USERS_RESTAURANTS.REST_ID')  
+                      ->where('PRINTER.ID',$pid)
                       ->limit(1)
                       ->get('');
     return $query->row();
@@ -56,7 +56,7 @@ class Printersetting_model extends CI_Model {
   
 	function get_restaurant_name($id){
     $query = $this->db->select('NAME AS REST_NAME')
-                      ->from('restaurants')
+                      ->from('RESTAURANTS')
                       ->where('ID',$id)
                       ->get('');
     return $query->row()->REST_NAME;
@@ -64,7 +64,7 @@ class Printersetting_model extends CI_Model {
   
   function get_username($id){
     $query = $this->db->select('USERNAME')
-                      ->from('users')
+                      ->from('USERS')
                       ->where('ID',$id)
                       ->get('');
     return $query->row()->USERNAME;
@@ -72,7 +72,7 @@ class Printersetting_model extends CI_Model {
          
   function get_connectivity($code){
     $query = $this->db->select('VALUE')
-                      ->from('ref_values')
+                      ->from('REF_VALUES')
                       ->where('CODE',$code)
                       ->get('');
     return $query->row()->VALUE;

@@ -10,7 +10,7 @@ class Menusetting_model extends CI_Model {
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id'];
 		$this->db->where('ID',$id);
-    $query = $this->db->get('users');
+    $query = $this->db->get('USERS');
     return $query->row();
   }  
 	
@@ -26,7 +26,7 @@ class Menusetting_model extends CI_Model {
                'LAST_UPDATED_DATE' => $dt,
             ); 
 		$this->db->where('ID',$arrin[0]);
-    $query = $this->db->update('menu',$data);
+    $query = $this->db->update('MENU',$data);
     $output[0] = $this->process->get_username($this->process->get_menu($arrin[0])->LAST_UPDATED_BY);
     $output[1] = $this->process->get_menu($arrin[0])->LAST_UPDATED_DATE;
     $outputs = implode(",",$output);   
@@ -35,10 +35,10 @@ class Menusetting_model extends CI_Model {
   
   function delete_menu($mid){ 
 		$did = strstr($mid, '_', true);
-    $query = $this->db->query('DELETE m FROM menu m 
-      LEFT JOIN order_details o ON o.MENU_ID = m.ID 
-      WHERE o.MENU_ID IS NULL
-      AND m.ID='.$did.';');    
+    $query = $this->db->query('DELETE M FROM MENU M 
+      LEFT JOIN ORDER_DETAILS O ON O.MENU_ID = M.ID 
+      WHERE O.MENU_ID IS NULL
+      AND M.ID='.$did.';');    
     if($this->db->affected_rows()!=0){
       $out = "OK";
     } else {                        
@@ -51,7 +51,7 @@ class Menusetting_model extends CI_Model {
 	
 	function get_menu($cid){    
     $query = $this->db->select('*')
-                      ->from('menu')  
+                      ->from('MENU')  
                       ->where('ID',$cid)
                       ->limit(1)
                       ->get('');
@@ -60,7 +60,7 @@ class Menusetting_model extends CI_Model {
                      
 	function get_restaurant_name($id){
     $query = $this->db->select('NAME AS REST_NAME')
-                      ->from('restaurants')
+                      ->from('RESTAURANTS')
                       ->where('ID',$id)
                       ->get('');
     return $query->row()->REST_NAME;
@@ -68,7 +68,7 @@ class Menusetting_model extends CI_Model {
   
   function get_username($id){
     $query = $this->db->select('USERNAME')
-                      ->from('users')
+                      ->from('USERS')
                       ->where('ID',$id)
                       ->get('');
     return $query->row()->USERNAME;
