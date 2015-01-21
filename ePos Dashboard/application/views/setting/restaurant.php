@@ -18,14 +18,16 @@
 			<div class="col-lg-12">
 				<div class="panel panel-default">
 					<div class="panel-heading"><b>Restaurant Setting</b></div>
-					<div class="panel-body">                 					                    
+					<div class="panel-body">               
+          <?php if ($role == 1) { ?>   					                    
 			      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#bookModal">
               <span class="glyphicon glyphicon-plus"></span> Add New User
             </button>             
             <button type="button" class="btn btn-danger">
               <span class="glyphicon glyphicon-remove"></span> Delete Selected restaurant(s)
-            </button>        
-            <div style="margin-bottom:15px"></div> 
+            </button>
+            <div style="margin-bottom:15px"></div>        
+          <?php } ?> 
             <div class="table-responsive">
 						  <table id="setting" class="table table-striped dt-right compact">
 						    <thead>
@@ -43,7 +45,7 @@
 						        <th>Email Address</th>
 						        <th>Currency</th>
 						        <th>Service Charge</th>
-						        <th>Order No. Prefix</th>
+						        <th>Order No. Start</th>
 						        <th>Created By</th>
 						        <th>Created Date</th>
 						        <th>Updated By</th>
@@ -222,6 +224,110 @@
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
                     });";
+  $edit_script .= "  $('#TELEPHONE-".$row->ID."').editable({
+                        url: updateurl,
+                        pk: ".$row->ID.", 
+                        activate: 'focus',
+                        validate: function(v) {
+                          if (!v) return 'don\'t leave it blank!';
+                        },
+                        success: function(result){  
+                          var data = result.split(',');
+                          $('#upby".$row->ID."').html(data[0]);
+                          $('#updt".$row->ID."').html(data[1]); 
+                      } 
+                    });";
+  $edit_script .= "  $('#FAX-".$row->ID."').editable({
+                        url: updateurl,
+                        pk: ".$row->ID.", 
+                        activate: 'focus',
+                        validate: function(v) {
+                          if (!v) return 'don\'t leave it blank!';
+                        },
+                        success: function(result){  
+                          var data = result.split(',');
+                          $('#upby".$row->ID."').html(data[0]);
+                          $('#updt".$row->ID."').html(data[1]); 
+                      } 
+                    });";
+  $edit_script .= "  $('#ADDRESS_LINE_1-".$row->ID."').editable({
+                        url: updateurl,
+                        pk: ".$row->ID.", 
+                        activate: 'focus',
+                        validate: function(v) {
+                          if (!v) return 'don\'t leave it blank!';
+                        },
+                        success: function(result){  
+                          var data = result.split(',');
+                          $('#upby".$row->ID."').html(data[0]);
+                          $('#updt".$row->ID."').html(data[1]); 
+                      } 
+                    });";
+  $edit_script .= "  $('#ADDRESS_LINE_2-".$row->ID."').editable({
+                        url: updateurl,
+                        pk: ".$row->ID.", 
+                        activate: 'focus',
+                        validate: function(v) {
+                          if (!v) return 'don\'t leave it blank!';
+                        },
+                        success: function(result){  
+                          var data = result.split(',');
+                          $('#upby".$row->ID."').html(data[0]);
+                          $('#updt".$row->ID."').html(data[1]); 
+                      } 
+                    });";
+  $edit_script .= "  $('#CITY-".$row->ID."').editable({
+                        url: updateurl,
+                        pk: ".$row->ID.", 
+                        activate: 'focus',
+                        validate: function(v) {
+                          if (!v) return 'don\'t leave it blank!';
+                        },
+                        success: function(result){  
+                          var data = result.split(',');
+                          $('#upby".$row->ID."').html(data[0]);
+                          $('#updt".$row->ID."').html(data[1]); 
+                      } 
+                    });";
+  $edit_script .= "  $('#POSTAL_CODE-".$row->ID."').editable({
+                        url: updateurl,
+                        pk: ".$row->ID.", 
+                        activate: 'focus',
+                        validate: function(v) {
+                          if (!v) return 'don\'t leave it blank!';
+                        },
+                        success: function(result){  
+                          var data = result.split(',');
+                          $('#upby".$row->ID."').html(data[0]);
+                          $('#updt".$row->ID."').html(data[1]); 
+                      } 
+                    });";
+  $edit_script .= "  $('#COUNTRY-".$row->ID."').editable({
+                        url: updateurl,
+                        pk: ".$row->ID.", 
+                        activate: 'focus',
+                        validate: function(v) {
+                          if (!v) return 'don\'t leave it blank!';
+                        },
+                        success: function(result){  
+                          var data = result.split(',');
+                          $('#upby".$row->ID."').html(data[0]);
+                          $('#updt".$row->ID."').html(data[1]); 
+                      } 
+                    });";
+  $edit_script .= "  $('#GEOLOC-".$row->ID."').editable({
+                        url: updateurl,
+                        pk: ".$row->ID.", 
+                        activate: 'focus',
+                        validate: function(v) {
+                          if (!v) return 'don\'t leave it blank!';
+                        },
+                        success: function(result){  
+                          var data = result.split(',');
+                          $('#upby".$row->ID."').html(data[0]);
+                          $('#updt".$row->ID."').html(data[1]); 
+                      } 
+                    });";
   $edit_script .= "  $('#EMAIL_ADDRESS-".$row->ID."').editable({
                         url: updateurl,
                         pk: ".$row->ID.", 
@@ -235,7 +341,27 @@
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
                     });";    
-  $edit_script .= "  $('#USERNAME-".$row->ID."').editable({
+  $edit_script .= "  $('#CURRENCY-".$row->ID."').editable({    
+                        type: 'select',  
+                        url: updateurl,
+                        pk: ".$row->ID.", 
+                        value: '".$row->CURRENCY."', 
+                        source: [ ";
+    $r = 1; 
+    $t = count($currencies);                   
+    foreach($currencies as $rowc){      
+      $edit_script .= "  {value: '".$rowc->CODE."', text: '".$rowc->VALUE."'}";
+      $edit_script .= ($r<$t)?", ":"";
+      $t++;
+    }                      
+  $edit_script .= "     ],
+                        success: function(result){  
+                          var data = result.split(',');
+                          $('#upby".$row->ID."').html(data[0]);
+                          $('#updt".$row->ID."').html(data[1]); 
+                      } 
+                    });";    
+  $edit_script .= "  $('#SERVICE_CHARGE-".$row->ID."').editable({
                         url: updateurl,
                         pk: ".$row->ID.", 
                         validate: function(v) {
@@ -246,74 +372,7 @@
                           $('#upby".$row->ID."').html(data[0]);
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
-                    });";    
-                    
-  $edit_script .= "  $('#PASSWORD-".$row->ID."').editable({ 
-                        url: updateurl,
-                        mode: 'popup',
-                        placement: 'right',
-                        showbuttons: true,
-                        pk: ".$row->ID.",
-        tpl: '<div class=\"editable-address\"><label><span>Pass1: </span><input type=\"password\" name=\"pass1\" class=\"input-small\"></label></div><br>'+
-             '<div class=\"editable-address\"><label><span>Pass2: </span><input type=\"password\" name=\"pass2\" class=\"input-small\"></label></div>',         
-                        success: function(result){  
-                          var data = result.split(',');
-                          $('#upby".$row->ID."').html(data[0]);
-                          $('#updt".$row->ID."').html(data[1]); 
-                      } 
                     });";
-  $edit_script .= "  $('#ROLE_ID-".$row->ID."').editable({    
-                        type: 'select',  
-                        url: updateurl,
-                        pk: ".$row->ID.", 
-                        value: ".$row->ROLE_ID.", 
-                        source: [ ";
-    $r = 1; 
-    $t = count($roles);                   
-    foreach($roles as $rowr){      
-      $edit_script .= "  {value: ".$rowr->ID.", text: '".$rowr->NAME."'}";
-      $edit_script .= ($r<$t)?", ":"";
-      $t++;
-    }                      
-  $edit_script .= "     ],
-                        success: function(result){  
-                          var data = result.split(',');
-                          $('#upby".$row->ID."').html(data[0]);
-                          $('#updt".$row->ID."').html(data[1]); 
-                      } 
-                    });";
-                    
-  $edit_script .= "  $('#REST_ID-".$row->ID."').editable({
-                        type: 'checklist',  
-                        mode: 'popup',
-                        placement: 'right',
-                        value: [";  
-		$assigned = $this->setting->get_assigned_rest($row->ID);
-    $a = 1;
-    $b = count($assigned);                    
-    foreach($assigned as $rowa){   
-      $edit_script .= $rowa->REST_ID;
-      $edit_script .= ($a<$b)?", ":"";
-      $a++;
-    }
-  $edit_script .= "     ], 
-                        source: [ ";
-    $j = 1;
-    $n = count($restaurants);
-    foreach($restaurants as $rows){
-      $edit_script .= "  {value: ".$rows->REST_ID.", text: '".$rows->NAME."'}";
-      $edit_script .= ($j<$n)?", ":"";
-      $j++;
-    }
-  $edit_script .= "    ],
-                        url: updateurl,
-                        pk: ".$row->ID.",
-                        success: function(result){  
-                          var data = result.split(',');
-                          $('#upby".$row->ID."').html(data[0]);
-                          $('#updt".$row->ID."').html(data[1]); 
-                        }  
-                      });";
   }
   $edit_script .= "}); ";
 	$edit_script .= '</script>';

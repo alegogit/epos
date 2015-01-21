@@ -35,7 +35,7 @@ class Restaurant_controller extends CI_Controller {
       } 
       
 		  $data['restaurant'] = $this->setting->get_restaurant_data();
-		  $data['roles'] = $this->setting->get_roles();			                   
+		  $data['currencies'] = $this->setting->get_currencies();			                   
 			
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);

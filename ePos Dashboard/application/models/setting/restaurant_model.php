@@ -42,13 +42,28 @@ class Restaurant_model extends CI_Model {
   }    
   
 	function get_restaurant_data(){ 
+		$session_data = $this->session->userdata('logged_in');  
+		$role = $session_data['role'];                             
+		$id = $session_data['id'];
+		if($role>1){
+      $query = $this->db->where('users_restaurants.USER_ID',$id);
+      $query = $this->db->join('users_restaurants', 'restaurants.ID = users_restaurants.REST_ID');
+    }
     $query = $this->db->select('restaurants.*, ref_values.VALUE AS CURRENCY_NAME')
                       ->from('restaurants')
                       ->join('ref_values', 'restaurants.CURRENCY = ref_values.CODE')
                       ->where('ref_values.LOOKUP_NAME','CURRENCY')
                       ->get('');
+    return $query->result();                                           
+  }
+  
+	function get_currencies(){
+    $query = $this->db->select('CODE,VALUE,DESCRIPTION')
+                      ->from('ref_values')
+                      ->where('LOOKUP_NAME','CURRENCY')
+                      ->get('');
     return $query->result();
-  } 
+  }
     
   function get_default_rest($user_id){                         
     $query = $this->db->query('SELECT users_restaurants.*, restaurants.NAME AS REST_NAME
