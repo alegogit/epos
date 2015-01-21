@@ -21,10 +21,10 @@
 					<div class="panel-body">               
           <?php if ($role == 1) { ?>   					                    
 			      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#bookModal">
-              <span class="glyphicon glyphicon-plus"></span> Add New User
+              <span class="glyphicon glyphicon-plus"></span> Add New Restaurant
             </button>             
             <button type="button" class="btn btn-danger">
-              <span class="glyphicon glyphicon-remove"></span> Delete Selected restaurant(s)
+              <span class="glyphicon glyphicon-remove"></span> Delete Selected Restaurant(s)
             </button>
             <div style="margin-bottom:15px"></div>        
           <?php } ?> 
@@ -122,13 +122,14 @@
   </div><!-- /.container-fluid -->
 </div><!-- /#page-content-wrapper -->
 
+<?php if ($role == 1) { ?>
 <!-- Modal -->
 <div class="modal fade" id="bookModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Add New restaurant</h4>
+        <h4 class="modal-title" id="myModalLabel">Add New Restaurant</h4>
       </div><!-- /.modal-header -->
       <div class="modal-body">  <div id="errmsg"></div>
       <?php
@@ -144,52 +145,88 @@
         </div><br />
         <div class="form-group" style="margin-bottom:10px"> 
           <div class="input-group">       
+            <label for="telephone">Telephone</label>
+            <input type="text" class="form-control" id="telephone" placeholder="" name="telephone" required>
+            <span class="errmsg"></span>
+          </div>
+        </div><br />
+        <div class="form-group" style="margin-bottom:10px"> 
+          <div class="input-group">       
+            <label for="FAX">FAX</label>
+            <input type="text" class="form-control" id="FAX" placeholder="" name="FAX" required>
+            <span class="errmsg"></span>
+          </div>
+        </div><br />
+        <div class="form-group" style="margin-bottom:10px"> 
+          <div class="input-group">       
+            <label for="address1">Address Line 1</label>
+            <input type="text" class="form-control" id="address1" placeholder="" name="address1" required>
+            <span class="errmsg"></span>
+          </div>
+        </div><br />
+        <div class="form-group" style="margin-bottom:10px"> 
+          <div class="input-group">       
+            <label for="address2">Address Line 2</label>
+            <input type="text" class="form-control" id="address2" placeholder="" name="address2" required>
+            <span class="errmsg"></span>
+          </div>
+        </div><br />	
+        <div class="form-group" style="margin-bottom:10px"> 
+          <div class="input-group">       
+            <label for="city">City</label>
+            <input type="text" class="form-control" id="city" placeholder="" name="city" required>
+            <span class="errmsg"></span>
+          </div>
+        </div><br />
+        <div class="form-group" style="margin-bottom:10px"> 
+          <div class="input-group">       
+            <label for="postalcode">Postal Code</label>
+            <input type="text" class="form-control" id="postalcode" placeholder="" name="postalcode" required>
+            <span class="errmsg"></span>
+          </div>
+        </div><br />
+        <div class="form-group" style="margin-bottom:10px"> 
+          <div class="input-group">       
+            <label for="country">Country</label>
+            <input type="text" class="form-control" id="country" placeholder="" name="country" required>
+            <span class="errmsg"></span>
+          </div>
+        </div><br />
+        <div class="form-group" style="margin-bottom:10px"> 
+          <div class="input-group">       
+            <label for="geoloc">Geo Location</label>
+            <input type="text" class="form-control" id="geoloc" placeholder="" name="geoloc" required>
+            <span class="errmsg"></span>
+          </div>
+        </div><br />
+        <div class="form-group" style="margin-bottom:10px"> 
+          <div class="input-group">       
             <label for="email">E-mail Address</label>
             <input type="text" class="form-control" id="email" placeholder="please fill in an e-mail format" pattern="^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$" name="email" required>
+            <span class="errmsg"></span>
+          </div>
+        </div><br />
+        <div class="form-group" style="margin-bottom:10px"> 
+          <div class="input-group">       
+            <label for="currency">Currency</label>
+            <input type="text" class="form-control" id="currency" placeholder="" name="currency" required>
             <span class="errmsg"></span>
           </div>
         </div><br />        		
         <div class="form-group" style="margin-bottom:10px"> 
           <div class="input-group">       
-            <label for="username">Username</label>
-            <input type="text" class="form-control" id="username" placeholder="" name="username" required>
+            <label for="service">Service Charge</label>
+            <input type="text" class="form-control" id="service" placeholder="" name="service" required>
+            <span class="errmsg"></span>
+          </div>
+        </div><br />     				
+        <div class="form-group" style="margin-bottom:10px"> 
+          <div class="input-group">       
+            <label for="orderns">Order No. Start</label>
+            <input type="text" class="form-control" id="orderns" placeholder="" name="orderns" required>
             <span class="errmsg"></span>
           </div>
         </div><br />     		
-        <div class="form-group" style="margin-bottom:10px"> 
-          <div class="input-group">       
-            <label for="password">Password</label>
-            <input type="password" class="form-control" id="password" placeholder="minimum 6 chars" name="password" pattern=".{5,}" required>
-            <span class="errmsg"></span>
-          </div>
-        </div><br />  
-        <div class="form-group" style="margin-bottom:10px"> 
-          <div class="input-group">       
-            <label for="confirm">Confirm Password</label>
-            <input type="password" class="form-control" id="confirm" placeholder="please retype password" name="confirm" pattern=".{5,}" required>
-            <span class="errmsg"></span>
-          </div>
-        </div><br />
-        <div class="form-group" style="margin-bottom:10px">
-          <div class="input-group">       
-            <label for="role">Role</label><br />  
-            <select name="role" class="form-control">
-            <?php foreach($roles as $rowr){ ?>
-              <option value="<?=$rowr->ID?>"><?=$rowr->NAME?></option>
-            <?php } ?>
-            </select>
-          </div>
-        </div><br /> 
-        <div class="form-group" style="margin-bottom:10px"> 
-          <div class="input-group">       
-            <label for="rest_id">Restaurant</label><br /> 
-            <select name="rest_id" class="form-control">
-            <?php foreach($restaurants as $rows){ ?>
-              <option value = "<?=$rows->REST_ID?>" <?= ($rows->REST_ID==$rest_id)?'selected':''?> ><?=$rows->NAME?></option>
-            <?php } ?>
-            </select>
-          </div>
-        </div><br />  
         <div class="form-group text-right" style="margin-bottom:10px">
           <div class="input-group">       
             <button type="submit" class="btn btn-success">Submit</button>
@@ -201,6 +238,8 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal fade -->
+<?php } ?>
+
 <?php  
   //editable script
   $i = 0;

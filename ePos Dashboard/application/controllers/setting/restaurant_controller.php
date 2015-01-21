@@ -19,7 +19,7 @@ class Restaurant_controller extends CI_Controller {
 		{
 			$data['menu'] = 'setting';         
 			$session_data = $this->session->userdata('logged_in');  
-		  $role = $session_data['role'];
+		  $data['role'] = $session_data['role'];
 			$data['def_rest'] = $session_data['def_rest'];
 			$data['def_start_date'] = date('d M Y', time() - 30 * 60 * 60 * 24);
 			$data['def_end_date'] = date('d M Y', time());
