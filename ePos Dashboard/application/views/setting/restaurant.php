@@ -59,43 +59,47 @@
                     <input type="checkbox" class="case" tabindex="-1">
                   </td>
                   <td style="">
-                    <a id="NAME-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->NAME?></a>
+                    <?php if ($role==1){ ?>
+                    <a id="NAME__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->NAME?></a>
+                    <?php } else { ?>                                                        
+                    <span id="NAME__<?=$row->ID?>" tabindex="0"><?=$row->NAME?></span>
+                    <?php } ?>
                   </td>
                   <td style="">
-                    <a id="TELEPHONE-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->TELEPHONE?></a>
+                    <a id="TELEPHONE__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->TELEPHONE?></a>
                   </td>
                   <td style="">
-                    <a id="FAX-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->FAX?></a>
+                    <a id="FAX__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->FAX?></a>
                   </td>
                   <td style="">
-                    <a id="ADDRESS_LINE_1-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->ADDRESS_LINE_1?></a>
+                    <a id="ADDRESS_LINE_1__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->ADDRESS_LINE_1?></a>
                   </td>
                   <td style="">
-                    <a id="ADDRESS_LINE_2-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->ADDRESS_LINE_2?></a>
+                    <a id="ADDRESS_LINE_2__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->ADDRESS_LINE_2?></a>
                   </td>             
                   <td style="">
-                    <a id="CITY-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->CITY?></a>
+                    <a id="CITY__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->CITY?></a>
                   </td>
                   <td style="">
-                    <a id="POSTAL_CODE-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->POSTAL_CODE?></a>
+                    <a id="POSTAL_CODE__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->POSTAL_CODE?></a>
                   </td>
                   <td style="">
-                    <a id="COUNTRY-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->COUNTRY?></a>
+                    <a id="COUNTRY__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->COUNTRY?></a>
                   </td>
                   <td style="">
-                    <a id="GEOLOC-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->GEOLOC?></a>
+                    <a id="GEOLOC__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->GEOLOC?></a>
                   </td>
                   <td style="">
-                    <a id="EMAIL_ADDRESS-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->EMAIL_ADDRESS?></a>
+                    <a id="EMAIL_ADDRESS__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->EMAIL_ADDRESS?></a>
                   </td>
                   <td style="">
-                    <a id="CURRENCY-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->CURRENCY_NAME?></a>
+                    <a id="CURRENCY__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->CURRENCY_NAME?></a>
                   </td>
                   <td style="">
-                    <a id="SERVICE_CHARGE-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->SERVICE_CHARGE?></a>
+                    <a id="SERVICE_CHARGE__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->SERVICE_CHARGE?></a>
                   </td>
                   <!--<td style="">
-                    <a id="ORDER_NUMBER_START-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->ORDER_NUMBER_START?></a>
+                    <a id="ORDER_NUMBER_START__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->ORDER_NUMBER_START?></a>
                   </td>-->
                   <td style=""><span id="crby<?=$row->ID?>"><?=$this->setting->get_username($row->CREATED_BY)->USERNAME?></span></td>
                   <td style=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
@@ -212,7 +216,7 @@
           <label for="email"></label><br>                   
           <div class="input-group">                                              
             <div class="input-group-addon"><span class="fa fa-envelope-o"></span></div>
-            <input type="text" class="form-control" id="email" placeholder="E-mail Address" pattern="^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$" name="email" required>
+            <input type="text" class="form-control" id="email" placeholder="E-mail Address" pattern="__([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$" name="email" required>
             <span class="errmsg"></span>
           </div>
         </div><br />
@@ -266,7 +270,8 @@
   $edit_script .= "  $.fn.editable.defaults.showbuttons = false;";
   $edit_script .= "  var updateurl = '/process/restaurant?p=update';";
   foreach ($restaurant as $row){
-  $edit_script .= "  $('#NAME-".$row->ID."').editable({
+  if($role==1){
+  $edit_script .= "  $('#NAME__".$row->ID."').editable({
                         url: updateurl,
                         pk: ".$row->ID.", 
                         activate: 'focus',
@@ -279,7 +284,8 @@
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
                     });";
-  $edit_script .= "  $('#TELEPHONE-".$row->ID."').editable({
+  }
+  $edit_script .= "  $('#TELEPHONE__".$row->ID."').editable({
                         url: updateurl,
                         pk: ".$row->ID.", 
                         activate: 'focus',
@@ -292,7 +298,7 @@
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
                     });";
-  $edit_script .= "  $('#FAX-".$row->ID."').editable({
+  $edit_script .= "  $('#FAX__".$row->ID."').editable({
                         url: updateurl,
                         pk: ".$row->ID.", 
                         activate: 'focus',
@@ -305,7 +311,7 @@
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
                     });";
-  $edit_script .= "  $('#ADDRESS_LINE_1-".$row->ID."').editable({
+  $edit_script .= "  $('#ADDRESS_LINE_1__".$row->ID."').editable({
                         url: updateurl,
                         pk: ".$row->ID.", 
                         activate: 'focus',
@@ -318,7 +324,7 @@
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
                     });";
-  $edit_script .= "  $('#ADDRESS_LINE_2-".$row->ID."').editable({
+  $edit_script .= "  $('#ADDRESS_LINE_2__".$row->ID."').editable({
                         url: updateurl,
                         pk: ".$row->ID.", 
                         activate: 'focus',
@@ -331,7 +337,7 @@
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
                     });";
-  $edit_script .= "  $('#CITY-".$row->ID."').editable({
+  $edit_script .= "  $('#CITY__".$row->ID."').editable({
                         url: updateurl,
                         pk: ".$row->ID.", 
                         activate: 'focus',
@@ -344,7 +350,7 @@
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
                     });";
-  $edit_script .= "  $('#POSTAL_CODE-".$row->ID."').editable({
+  $edit_script .= "  $('#POSTAL_CODE__".$row->ID."').editable({
                         url: updateurl,
                         pk: ".$row->ID.", 
                         activate: 'focus',
@@ -357,7 +363,7 @@
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
                     });";
-  $edit_script .= "  $('#COUNTRY-".$row->ID."').editable({
+  $edit_script .= "  $('#COUNTRY__".$row->ID."').editable({
                         url: updateurl,
                         pk: ".$row->ID.", 
                         activate: 'focus',
@@ -370,12 +376,13 @@
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
                     });";
-  $edit_script .= "  $('#GEOLOC-".$row->ID."').editable({
+  $edit_script .= "  $('#GEOLOC__".$row->ID."').editable({
                         url: updateurl,
                         pk: ".$row->ID.", 
                         activate: 'focus',
                         validate: function(v) {
-                          if (!v) return 'don\'t leave it blank!';
+                          if (!v) return 'don\'t leave it blank!';  
+                          if (!isGeoLoc(v)) return 'please fill in a Geo Location format!';
                         },
                         success: function(result){  
                           var data = result.split(',');
@@ -383,7 +390,7 @@
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
                     });";
-  $edit_script .= "  $('#EMAIL_ADDRESS-".$row->ID."').editable({
+  $edit_script .= "  $('#EMAIL_ADDRESS__".$row->ID."').editable({
                         url: updateurl,
                         pk: ".$row->ID.", 
                         validate: function(v) {
@@ -396,7 +403,7 @@
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
                     });";    
-  $edit_script .= "  $('#CURRENCY-".$row->ID."').editable({    
+  $edit_script .= "  $('#CURRENCY__".$row->ID."').editable({    
                         type: 'select',  
                         url: updateurl,
                         pk: ".$row->ID.", 
@@ -416,7 +423,7 @@
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
                     });";    
-  $edit_script .= "  $('#SERVICE_CHARGE-".$row->ID."').editable({
+  $edit_script .= "  $('#SERVICE_CHARGE__".$row->ID."').editable({
                         url: updateurl,
                         pk: ".$row->ID.", 
                         validate: function(v) {
@@ -550,7 +557,13 @@ $(function(){
 });
   
 function isEmail(email) {
-  var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+  var regex = /__([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
   return regex.test(email);
 }  
+
+function isGeoLoc(geoloc) {
+  var regex = /^(-?\d{1,2}\.\d{6}),(-?\d{1,3}\.\d{6})$/;
+  return regex.test(geoloc);
+}  
+
 </script>

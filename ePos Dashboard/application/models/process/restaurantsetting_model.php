@@ -19,7 +19,7 @@ class Restaurantsetting_model extends CI_Model {
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id']; 
 		$dt = date('Y-m-d H:i:s');
-		$up = strstr($arrin[2], '-', true);
+		$up = strstr($arrin[2], '__', true);
 	  $data = array(
                $up => $arrin[1],
                'LAST_UPDATED_BY' => $id,

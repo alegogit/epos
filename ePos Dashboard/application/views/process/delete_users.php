@@ -1,4 +1,4 @@
 <?php
-  $output = $this->process->delete_menu($varP); 
+  $output = $this->process->delete_users($varP); 
   echo trim($output);
 ?> 
