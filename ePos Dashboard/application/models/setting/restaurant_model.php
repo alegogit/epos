@@ -114,19 +114,13 @@ class Restaurant_model extends CI_Model {
     return $query->result();
   }
    
-	function new_restaurant($NAME,$EMAIL,$USERNAME,$PASSWORD,$ROLE,$REST_ID){       
+	function new_restaurant($NAME,$TELEPHONE,$FAX,$ADDRESS_LINE_1,$ADDRESS_LINE_2,$CITY,$POSTAL_CODE,$COUNTRY,$GEOLOC,$EMAIL_ADDRESS,$CURRENCY,$SERVICE_CHARGE){       
 		$session_data = $this->session->userdata('logged_in');
-		$PASSWD = sha1(md5($PASSWORD));
 		$id = $session_data['id'];
-    $query1 = $this->db->query('INSERT INTO RESTAURANT
-      (NAME,EMAIL_ADDRESS,USERNAME,PASSWORD,ROLE_ID,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
+    $query1 = $this->db->query('INSERT INTO RESTAURANTS
+      (REST_NAME,TELEPHONE,FAX,ADDRESS_LINE_1,ADDRESS_LINE_2,CITY,POSTAL_CODE,COUNTRY,GEOLOC,EMAIL_ADDRESS,CURRENCY,SERVICE_CHARGE,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
       VALUES 
-      ("'.$NAME.'","'.$EMAIL.'","'.$USERNAME.'","'.$PASSWD.'",'.$ROLE.','.$id.',NOW(),'.$id.',NOW());');
-    $query2 = $this->db->query('INSERT INTO USERS_RESTAURANTS
-      (USER_ID,REST_ID,DEFAULT_REST,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
-      VALUES 
-      ('.$this->setting->get_mail_user($EMAIL)->ID.','.$REST_ID.',1,'.$id.',NOW(),'.$id.',NOW());');
-		//return $query->row();
+      ("'.$NAME.'","'.$TELEPHONE.'","'.$FAX.'","'.$ADDRESS_LINE_1.'","'.$ADDRESS_LINE_2.'","'.$CITY.'","'.$POSTAL_CODE.'","'.$COUNTRY.'","'.$GEOLOC.'","'.$EMAIL_ADDRESS.'","'.$CURRENCY.'",'.$SERVICE_CHARGE.','.$id.',NOW(),'.$id.',NOW());');
   }
   
 }

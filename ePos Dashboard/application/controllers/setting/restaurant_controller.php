@@ -30,8 +30,13 @@ class Restaurant_controller extends CI_Controller {
 			$data['startdate'] = $start_date;
 			$data['enddate'] = $end_date; 
 			                                 
-      if($this->input->post('email')){             
-		    $this->setting->new_restaurant($this->input->post('name'),$this->input->post('email'),$this->input->post('username'),$this->input->post('password'),$this->input->post('role'),$this->input->post('rest_id'));
+      if($this->input->post('email') && $data['role']==1){             
+		    $this->setting->new_restaurant(
+          $this->input->post('name'),$this->input->post('telephone'),$this->input->post('FAX'),
+          $this->input->post('address1'),$this->input->post('address2'),$this->input->post('city'),
+          $this->input->post('postalcode'),$this->input->post('country'),$this->input->post('geoloc'),
+          $this->input->post('email'),$this->input->post('currency'),$this->input->post('service')
+        );
       } 
       
 		  $data['restaurant'] = $this->setting->get_restaurant_data();

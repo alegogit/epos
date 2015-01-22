@@ -79,6 +79,7 @@ $route['process/orders'] = "process/orderdetails_controller";
 $route['process/printer'] = "process/printersetting_controller";
 $route['process/devices'] = "process/devicessetting_controller";
 $route['process/category'] = "process/categorysetting_controller";
+$route['process/restaurant'] = "process/restaurantsetting_controller";
 $route['process/tableorder'] = "process/tableordersetting_controller";
 
 $route['404_override'] = 'P404';
