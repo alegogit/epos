@@ -54,12 +54,12 @@
 						    </thead>  
 						    <tbody>                    
 						    <?php $i = 0; $tab = 1; foreach ($restaurant as $row){ ?>
-                <tr data-index="<?=$i?>" class="datarow" id="<?=$row->ID.'_'.$row->REST_NAME?>">
+                <tr data-index="<?=$i?>" class="datarow" id="<?=$row->ID.'_'.$row->NAME?>">
                   <td class="">
                     <input type="checkbox" class="case" tabindex="-1">
                   </td>
                   <td style="">
-                    <a id="REST_NAME-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->REST_NAME?></a>
+                    <a id="NAME-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->NAME?></a>
                   </td>
                   <td style="">
                     <a id="TELEPHONE-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->TELEPHONE?></a>
@@ -266,7 +266,7 @@
   $edit_script .= "  $.fn.editable.defaults.showbuttons = false;";
   $edit_script .= "  var updateurl = '/process/restaurant?p=update';";
   foreach ($restaurant as $row){
-  $edit_script .= "  $('#REST_NAME-".$row->ID."').editable({
+  $edit_script .= "  $('#NAME-".$row->ID."').editable({
                         url: updateurl,
                         pk: ".$row->ID.", 
                         activate: 'focus',

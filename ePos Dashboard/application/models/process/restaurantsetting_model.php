@@ -27,8 +27,8 @@ class Restaurantsetting_model extends CI_Model {
             ); 
 		$this->db->where('ID',$arrin[0]);
     $query = $this->db->update('RESTAURANTS',$data);
-    $output[0] = $this->process->get_username($this->process->get_users($arrin[0])->LAST_UPDATED_BY);
-    $output[1] = $this->process->get_users($arrin[0])->LAST_UPDATED_DATE;
+    $output[0] = $this->process->get_username($this->process->get_restaurant($arrin[0])->LAST_UPDATED_BY);
+    $output[1] = $this->process->get_restaurant($arrin[0])->LAST_UPDATED_DATE;
     $outputs = implode(",",$output);   
     return $outputs;
 	}
@@ -49,10 +49,10 @@ class Restaurantsetting_model extends CI_Model {
     return $out;
   } 
 	
-	function get_users($cid){    
+	function get_restaurant($rid){    
     $query = $this->db->select('*')
-                      ->from('USERS')  
-                      ->where('ID',$cid)
+                      ->from('RESTAURANTS')  
+                      ->where('ID',$rid)
                       ->limit(1)
                       ->get('');
     return $query->row();
@@ -69,7 +69,7 @@ class Restaurantsetting_model extends CI_Model {
   }  
   
 	function get_taken_restname($restname){    
-    $query = $this->db->query('SELECT REST_NAME FROM RESTAURANTS WHERE REST_NAME = "'.$restname.'";');
+    $query = $this->db->query('SELECT NAME FROM RESTAURANTS WHERE NAME = "'.$restname.'";');
     if ($query->num_rows() > 0){
       $out = 'false';
     } else {
