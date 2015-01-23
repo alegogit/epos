@@ -120,7 +120,11 @@
                           $chart_legend .= " <span style='float:right;display:inline-block'>".round(($row->AMOUNT/$total)*100)."% </span><hr style='margin-top:5px;margin-bottom:5px'>";
                           $i++;  
                         }
-                      echo $chart_legend;
+                        if($n!=0){    
+                          echo $chart_legend;
+                        }else{
+                          echo "<div class='alert alert-danger' style='padding:10px;'>NO DATA</div>";
+                        }
                     ?>
                     </div>
                   </div> 
@@ -146,7 +150,11 @@
                         $chart_legend .= " ".$row->QTY."<hr style='margin-top:5px;margin-bottom:5px'>";
                         $i++;  
                       }
-                      echo $chart_legend;
+                      if($n!=0){    
+                        echo $chart_legend;
+                      }else{
+                        echo "<div class='alert alert-danger' style='padding:10px;'>NO DATA</div>";
+                      }
                     ?>
                   </div>
                 </div>
@@ -180,7 +188,12 @@
                     }
                     
                     $chart_legend .= "<hr style='margin-top:5px;margin-bottom:5px;border-color:#222'><b><i class='fa fa-money'></i> Total: ".$cur." <span style='float:right;display:inline-block'>".number_format($total, 0, '', '.')."</span></b><br>";
-                    echo $chart_legend;
+                    
+                    if($total!=0){    
+                      echo $chart_legend;
+                    }else{
+                      echo "<div class='alert alert-danger' style='padding:10px;'>NO DATA</div>";
+                    }
                   ?>
                  </div>
                 </div>
@@ -278,16 +291,22 @@
   $n = count($dtopcats);
   $chart_script = "<script>"; 
   $chart_script .= "var doughnutData = [";
-  foreach ($dtopcats as $row){
+  if ($n!=0){
+    foreach ($dtopcats as $row){
+      $chart_script .= "{";  
+      //$chart_script .= "value: ".$row->AMOUNT.",";
+      $chart_script .= "value: ".round(($row->AMOUNT/$total)*100).",";
+      //$chart_script .= "tooltip: 'eek',";
+      $chart_script .= "color: '".$donut_color[$i]."',";
+      $chart_script .= "highlight: '".$donut_highl[$i]."',";
+      $chart_script .= "label: '".ucwords(strtolower($row->CAT_NAME))."'";
+      $chart_script .= ($i==($n-1))?"}":"},";  
+      $i++;  
+    }
+  }else{                                                                   
     $chart_script .= "{";  
-    //$chart_script .= "value: ".$row->AMOUNT.",";
-    $chart_script .= "value: ".round(($row->AMOUNT/$total)*100).",";
-    //$chart_script .= "tooltip: 'eek',";
-    $chart_script .= "color: '".$donut_color[$i]."',";
-    $chart_script .= "highlight: '".$donut_highl[$i]."',";
-    $chart_script .= "label: '".ucwords(strtolower($row->CAT_NAME))."',";
-    $chart_script .= ($i==($n-1))?"}":"},";  
-    $i++;  
+    $chart_script .= "value: 1,";
+    $chart_script .= "color: '#ebccd1', label: 'NO DATA'}";
   }
   $chart_script .= "];";
   $chart_script .= "var chart1 = document.getElementById('topcats_donut').getContext('2d');";
@@ -295,9 +314,10 @@
   $chart_script .= "chart1.canvas.height = 150;";
   $chart_script .= "window.myDoughnut1 = new Chart(chart1).Doughnut(doughnutData, {
     responsive: true, 
-    showInLegend: true, 
-    tooltipTemplate: '<%if (label){%><%=label%>: <%}%><%= value %>%'
-    });";  
+    showInLegend: true,";
+  $chart_script .= ($n!=0)?"   
+    tooltipTemplate: '<%if (label){%><%=label%>: <%}%><%= value %>%'":"tooltipTemplate: '<%if (label){%><%=label%> <%}%>'";
+  $chart_script .= "  });";  
 	$chart_script .= '</script>';
   echo $chart_script;
 ?>                                                                                          
@@ -305,27 +325,36 @@
 <?php 
   //donut chart script
   $i = 0;
-  $n = count($dpayment);
+  $n = count($dpayment);          
+  foreach ($dpayment as $tot){
+    $total = $total + $tot->AMOUNT;
+  }
   $chart_script = "<script>"; 
-  $chart_script .= "var doughnutData = [";
-  foreach ($dpayment as $row){
+  $chart_script .= "var doughnutData = [";   
+  if ($total!=0){
+    foreach ($dpayment as $row){
+      $chart_script .= "{";  
+      $chart_script .= "value: ".$row->AMOUNT.",";
+      $chart_script .= "color: '".$donut_color[$i]."',";
+      $chart_script .= "highlight: '".$donut_highl[$i]."',";
+      $chart_script .= "label: '".ucwords(strtolower($row->PAYMENT_METHOD))."',";
+      $chart_script .= ($i==($n-1))?"}":"},";  
+      $i++;  
+    }       
+  }else{                                                                   
     $chart_script .= "{";  
-    $chart_script .= "value: ".$row->AMOUNT.",";
-    $chart_script .= "color: '".$donut_color[$i]."',";
-    $chart_script .= "highlight: '".$donut_highl[$i]."',";
-    $chart_script .= "label: '".ucwords(strtolower($row->PAYMENT_METHOD))."',";
-    //$chart_script .= 'legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>",';
-    $chart_script .= ($i==($n-1))?"}":"},";  
-    $i++;  
+    $chart_script .= "value: 1,";
+    $chart_script .= "color: '#ebccd1', label: 'NO DATA'}";
   }
   $chart_script .= "];";
   $chart_script .= "var chart2 = document.getElementById('payment_donut').getContext('2d');";      
   $chart_script .= "chart2.canvas.width = 150;";
   $chart_script .= "chart2.canvas.height = 150;";
   $chart_script .= "window.myDoughnut2 = new Chart(chart2).Doughnut(doughnutData, {
-    responsive : true, 
-    tooltipTemplate: '<%if (label){%><%=label%>: <%}%><%= currencyFormat(value) %>'
-    });"; 
+    responsive : true,";
+  $chart_script .= ($total!=0)?" 
+    tooltipTemplate: '<%if (label){%><%=label%>: <%}%><%= currencyFormat(value) %>'":"tooltipTemplate: '<%if (label){%><%=label%> <%}%>'";
+  $chart_script .= "  });"; 
 	$chart_script .= '</script>';                       
   echo $chart_script;
 ?>  
