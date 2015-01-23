@@ -7,7 +7,7 @@
     <div class="row" style="padding-left: 15px">  
       <?php
         $attributes = array('class' => 'form-inline', 'id' => 'filter', 'role' => 'form');
-        echo form_open('inventory',$attributes)
+        echo form_open('customers',$attributes)
       ?>
         <div class="form-group" style="margin-bottom:0px">
           <div class="input-group">
@@ -33,24 +33,28 @@
     <div class="row">
 			<div class="col-lg-12">
 				<div class="panel panel-default">
-					<div class="panel-heading"><b>Inventory</b></div>
+					<div class="panel-heading"><b>Customers</b></div>
 					<div class="panel-body">                 					                    
 			      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#bookModal">
-              <span class="glyphicon glyphicon-plus"></span> Add New Inventory
+              <span class="glyphicon glyphicon-plus"></span> Add New Customers
             </button>             
             <button type="button" class="btn btn-danger">
-              <span class="glyphicon glyphicon-remove"></span> Delete Selected Device(s)
+              <span class="glyphicon glyphicon-remove"></span> Delete Selected Customer(s)
             </button>        
             <div style="margin-bottom:15px"></div> 
             <div class="table-responsive">
-						  <table id="inventory" class="table table-striped dt-right compact">
+						  <table id="customers" class="table table-striped dt-right compact">
 						    <thead>
 						    <tr class="tablehead text3D">
 						        <th class="no-sort"><input type="checkbox" id="checkall" value="Check All"></th>
-						        <th>Inventory Name</th>
-						        <th>QTY</th>
-						        <th>Metric</th>
-						        <th>Min QTY</th>
+						        <th>Customers' Name</th>
+						        <th>Email Address</th>
+						        <th>Telephone</th>
+						        <th>Address Line 1</th>
+						        <th>Address Line 2</th>
+						        <th>City</th>
+						        <th>Postal Code</th>
+						        <th>Country</th>
 						        <th data-field="crby" data-sortable="false">Created By</th>
 						        <th data-field="crdt" data-sortable="false">Created Date</th>
 						        <th data-field="upby"  data-sortable="false">Updated By</th>
@@ -58,7 +62,7 @@
 						    </tr>
 						    </thead>  
 						    <tbody>                    
-						    <?php $i = 0;  foreach ($inventory as $row){ ?>
+						    <?php $i = 0;  foreach ($customers as $row){ ?>
                 <tr data-index="<?=$i?>" class="datarow" id="<?=$row->ID.'_'.$row->NAME?>">
                   <td class="">
                     <input type="checkbox" class="case">
@@ -67,17 +71,29 @@
                     <a id="NAME-<?=$row->ID?>" class=""><?=$row->NAME?></a>
                   </td>
                   <td style="">
-                    <a id="QUANTITY-<?=$row->ID?>" class=""><?=$row->QUANTITY?></a>
+                    <a id="TELEPHONE-<?=$row->ID?>" class=""><?=$row->TELEPHONE?></a>
                   </td>
                   <td style="">
-                    <a id="METRIC-<?=$row->ID?>" class=""><?=$row->METRIC?></a>
+                    <a id="ADDRESS_LINE_1-<?=$row->ID?>" class=""><?=$row->ADDRESS_LINE_1?></a>
                   </td>
                   <td style="">
-                    <a id="MIN_QUANTITY-<?=$row->ID?>" class=""><?=$row->MIN_QUANTITY?></a>
+                    <a id="ADDRESS_LINE_2-<?=$row->ID?>" class=""><?=$row->ADDRESS_LINE_2?></a>
                   </td>
-                  <td style=""><span id="crby<?=$row->ID?>"><?=$this->inventory->get_username($row->CREATED_BY)->USERNAME?></span></td>
+                  <td style="">
+                    <a id="CITY-<?=$row->ID?>" class=""><?=$row->CITY?></a>
+                  </td>
+                  <td style="">
+                    <a id="POSTAL_CODE-<?=$row->ID?>" class=""><?=$row->POSTAL_CODE?></a>
+                  </td>
+                  <td style="">
+                    <a id="COUNTRY-<?=$row->ID?>" class=""><?=$row->COUNTRY?></a>
+                  </td>
+                  <td style="">
+                    <a id="EMAIL_ADDRESS-<?=$row->ID?>" class=""><?=$row->EMAIL_ADDRESS?></a>
+                  </td>
+                  <td style=""><span id="crby<?=$row->ID?>"><?=$this->customers->get_username($row->CREATED_BY)->USERNAME?></span></td>
                   <td style=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
-                  <td style=""><span id="upby<?=$row->ID?>"><?=$this->inventory->get_username($row->LAST_UPDATED_BY)->USERNAME?></span></td>
+                  <td style=""><span id="upby<?=$row->ID?>"><?=$this->customers->get_username($row->LAST_UPDATED_BY)->USERNAME?></span></td>
                   <td style=""><span id="updt<?=$row->ID?>"><?=$row->LAST_UPDATED_DATE?></span></td>
                 </tr>
                 <?php $i++; } ?>
@@ -111,30 +127,30 @@
       <div class="modal-body">
       <?php
         $attributes = array('class' => 'form-inline', 'id' => 'newcat', 'role' => 'form');
-        echo form_open('inventory/inventory',$attributes)
+        echo form_open('customers',$attributes)
       ?>                    		
         <div class="form-group" style="margin-bottom:10px"> 
           <div class="input-group">       
             <label for="inputCaption">Type</label>
-            <input type="text" class="form-control" id="inputCaption" placeholder="" name="inventory_type" required>
+            <input type="text" class="form-control" id="inputCaption" placeholder="" name="customers_type" required>
           </div>
         </div><br />
         <div class="form-group" style="margin-bottom:10px"> 
           <div class="input-group">       
             <label for="inputCaption">Manufacturer</label>
-            <input type="text" class="form-control" id="inputCaption" placeholder="" name="inventory_manufacturer" required>
+            <input type="text" class="form-control" id="inputCaption" placeholder="" name="customers_manufacturer" required>
           </div>
         </div><br />
         <div class="form-group" style="margin-bottom:10px"> 
           <div class="input-group">       
             <label for="inputCaption">Model</label>
-            <input type="text" class="form-control" id="inputCaption" placeholder="" name="inventory_model" required>
+            <input type="text" class="form-control" id="inputCaption" placeholder="" name="customers_model" required>
           </div>
         </div><br />
         <div class="form-group" style="margin-bottom:10px"> 
           <div class="input-group">       
             <label for="inputCaption">MAC Address</label>
-            <input type="text" class="form-control" id="inputCaption" placeholder="00:00:00:00:00:00" name="inventory_mac" pattern="^([0-9a-fA-F]{2}[:-]){5}([0-9a-fA-F]{2})$" required>
+            <input type="text" class="form-control" id="inputCaption" placeholder="00:00:00:00:00:00" name="customers_mac" pattern="^([0-9a-fA-F]{2}[:-]){5}([0-9a-fA-F]{2})$" required>
           </div>
         </div><br />
         <div class="form-group" style="margin-bottom:10px"> 
@@ -165,9 +181,9 @@
   $edit_script = "<script>"; 
   $edit_script .= "$(document).ready(function(){";
   $edit_script .= "  $.fn.editable.defaults.mode = 'inline';";
-  foreach ($inventory as $row){
+  foreach ($customers as $row){
   $edit_script .= "  $('#TYPE-".$row->ID."').editable({
-                        url: '/process/inventory?p=update',
+                        url: '/process/customers?p=update',
                         pk: ".$row->ID.", 
                         validate: function(v) {
                           if (!v) return 'don\'t leave it blank!';
@@ -179,7 +195,7 @@
                       } 
                     });";
   $edit_script .= "  $('#MAKE-".$row->ID."').editable({
-                        url: '/process/inventory?p=update',
+                        url: '/process/customers?p=update',
                         pk: ".$row->ID.", 
                         validate: function(v) {
                           if (!v) return 'don\'t leave it blank!';
@@ -191,7 +207,7 @@
                       } 
                     });";
   $edit_script .= "  $('#MODEL-".$row->ID."').editable({
-                        url: '/process/inventory?p=update',
+                        url: '/process/customers?p=update',
                         pk: ".$row->ID.", 
                         validate: function(v) {
                           if (!v) return 'don\'t leave it blank!';   
@@ -203,7 +219,7 @@
                       } 
                     });";
   $edit_script .= "  $('#MAC_ADDRESS-".$row->ID."').editable({
-                        url: '/process/inventory?p=update',
+                        url: '/process/customers?p=update',
                         pk: ".$row->ID.", 
                         validate: function(v) {
                           if (!v) return 'don\'t leave it blank!';
@@ -223,11 +239,11 @@
 <script>   
 $(document).ready(function()
 {     
-  var table = $('#inventory').DataTable({
+  var table = $('#customers').DataTable({
     columnDefs: [
       { targets: 'no-sort', orderable: false }
     ],
-    "order": [[ 9, "desc" ]]
+    "order": [[ 12, "desc" ]]
   });
   
   //check all
@@ -245,7 +261,7 @@ $(document).ready(function()
   //function to delete selected row
   $('.btn-danger').on("click", function(event){
   	var sel = false;	
-  	var ch = $('#inventory').find('tbody input[type=checkbox]');
+  	var ch = $('#customers').find('tbody input[type=checkbox]');
     var dt = '';	
   	ch.each(function(){  
       if($(this).is(':checked')) { 
@@ -268,7 +284,7 @@ $(document).ready(function()
           var dataP = "idf="+idf;
   				$.ajax({
             type: "POST",
-            url: "/process/inventory?p=delete",
+            url: "/process/customers?p=delete",
             data: dataP,
             cache: false,
             success: function(result){ 

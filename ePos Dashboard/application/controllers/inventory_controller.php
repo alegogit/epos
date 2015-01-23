@@ -5,7 +5,7 @@ class Inventory_controller extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();	
-		$this->load->model('inventory/inventory_model','inventory',TRUE);  
+		$this->load->model('inventory_model','inventory',TRUE);  
     $this->load->helper(array('form', 'url','html'));
 		$session_data = $this->session->userdata('logged_in');  
 		$this->data['menu'] = 'inventory';      
@@ -38,7 +38,7 @@ class Inventory_controller extends CI_Controller {
 			
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);
-			$this->load->view('inventory/inventory',$data);
+			$this->load->view('inventory',$data);
 			$this->load->view('shared/footer');
 		}
 		else
@@ -67,7 +67,7 @@ class Inventory_controller extends CI_Controller {
 	{
 		$this->session->unset_userdata('logged_in');
 		//session_destroy();
-		redirect('home', 'refresh');
+		redirect('dashboard', 'refresh');
 	}
 		
 	public function notif()

@@ -8,8 +8,8 @@
         <div class="row">
           <div class="col-md-6">
             <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
-              <a role="button" class="btn btn-primary" href="/dashboard/sales">&nbsp;&nbsp;Sales&nbsp;&nbsp;</a>
-              <a role="button" class="btn btn-default" href="/dashboard/inventory" <?=(count($nostock)>0)?'title="'.(count($nostock)>0).' no stock item(s)"':''?>>Inventory</a>
+              <a role="button" class="btn btn-primary" href="<?=base_url()?>dashboard/sales">&nbsp;&nbsp;Sales&nbsp;&nbsp;</a>
+              <a role="button" class="btn btn-default" href="<?=base_url()?>dashboard/inventory" <?=(count($nostock)>0)?'title="'.(count($nostock)>0).' no stock item(s)"':''?>>Inventory</a>
             </div>  
             <?php if(count($nostock)>0){ ?>
             <span class="label label-danger label-as-badge" style="margin-top:5px;margin-left:-10px;z-index:3;position:absolute">
@@ -24,9 +24,9 @@
             <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
               <a id="print" role="button" class="btn btn-primary" href="#">&nbsp;<span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Print&nbsp;</a>        
             </div> 
-            <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
+            <!--<div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
               <a id="export" role="button" class="btn btn-primary" href="#"><span class="glyphicon glyphicon-export"></span>&nbsp;&nbsp;Export</a>        
-            </div> 
+            </div>--> 
             </div>
             <!--<span class="pull-right">
               <div style="display:inline-block" name="print_tab" class="navdash navdash_alone">
@@ -133,7 +133,7 @@
   				  </div>
   				</div>
           
-          <div class="col-md-4">
+          <div class="col-md-3">
   				  <div class="panel panel-default">
   				    <div class="panel-heading"><b>Top Items By Sales</b></div>
   					  <div class="panel-body">  
@@ -162,7 +162,7 @@
   				  </div>
   				</div>
 				  
-				  <div class="col-md-4">
+				  <div class="col-md-5">
   				  <div class="panel panel-default">
   				    <div class="panel-heading"><b>Payment Methods</b></div>
   					  <div class="panel-body">
@@ -170,7 +170,7 @@
   						  <div class="canvas-donut" style="float:left;margin-left:10px">
   							  <canvas class="chart" id="payment_donut" ></canvas>
   						  </div>  
-                <div class="fitin" style="display:inline-block;margin-left:20px;max-width:150px;"> 
+                <div class="fitin" style="display:inline-block;margin-left:20px;max-width:250px;"> 
                   <div>
                   <?php 
                     $i = 0;
@@ -180,15 +180,23 @@
                     foreach ($dpayment as $tot){
                       $total = $total + $tot->AMOUNT;
                     }
+                    $chart_legend .= "<table>";
                     foreach ($dpayment as $row){
-                      $chart_legend .= "<span class='glyphicon glyphicon-tint' style='color:".$donut_color[$i]."'></span>";  
-                      $chart_legend .= " ".ucwords(strtolower($row->PAYMENT_METHOD)).": ".$cur." <span style='padding:10px'>&nbsp;</span>";
-                      $chart_legend .= " <span style='float:right;display:inline-block'>".number_format($row->AMOUNT, 0, '', '.')."</span><br>";
+                      $chart_legend .= "<tr><td class='col-md-1'><span class='glyphicon glyphicon-tint' style='color:".$donut_color[$i]."'></span></td>";  
+                      $chart_legend .= "<td class='col-md-4'>".ucwords(strtolower($row->PAYMENT_METHOD))."</td> <td class='col-md-1'>".$cur."</td>";
+                      $chart_legend .= "<td class='col-md-6'><span style='float:right;display:inline-block'>".number_format($row->AMOUNT, 0, '', '.')."</span></td></tr>";
                       $i++;  
                     }
                     
-                    $chart_legend .= "<hr style='margin-top:5px;margin-bottom:5px;border-color:#222'><b><i class='fa fa-money'></i> Total: ".$cur." <span style='float:right;display:inline-block'>".number_format($total, 0, '', '.')."</span></b><br>";
-                    
+                    $chart_legend .= "<tr>
+                        <td colspan='4'><hr style='margin-top:5px;margin-bottom:5px;border-color:#222'></td>
+                      </tr>
+                      <tr>
+                        <td class='col-md-1'><b><i class='fa fa-money'></i></b></td> 
+                        <td class='col-md-4'><b>Total</b></td>
+                        <td class='col-md-1'><b>".$cur."</b></td>
+                        <td class='col-md-6'><b><span style='float:right;display:inline-block'>".number_format($total, 0, '', '.')."</span></b></td>";
+                    $chart_legend .= "</tr></table>";
                     if($total!=0){    
                       echo $chart_legend;
                     }else{

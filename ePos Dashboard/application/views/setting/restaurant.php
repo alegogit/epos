@@ -41,7 +41,7 @@
 						        <th>City</th>
 						        <th>Postal Code</th>
 						        <th>Country</th>
-						        <th>Geo Location</th>
+						        <!--<th>Geo Location</th>-->
 						        <th>Email Address</th>
 						        <th>Currency</th>
 						        <th>Service Charge</th>
@@ -86,9 +86,9 @@
                   <td style="">
                     <a id="COUNTRY__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->COUNTRY?></a>
                   </td>
-                  <td style="">
+                  <!--<td style="">
                     <a id="GEOLOC__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->GEOLOC?></a>
-                  </td>
+                  </td>-->
                   <td style="">
                     <a id="EMAIL_ADDRESS__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->EMAIL_ADDRESS?></a>
                   </td>
@@ -376,6 +376,7 @@
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
                     });";
+  /*
   $edit_script .= "  $('#GEOLOC__".$row->ID."').editable({
                         url: updateurl,
                         pk: ".$row->ID.", 
@@ -390,6 +391,7 @@
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
                     });";
+  */
   $edit_script .= "  $('#EMAIL_ADDRESS__".$row->ID."').editable({
                         url: updateurl,
                         pk: ".$row->ID.", 
@@ -454,7 +456,7 @@ $(document).ready(function()
     columnDefs: [
       { targets: 'no-sort', orderable: false }
     ],
-    "order": [[ 16, "desc" ]]
+    "order": [[ 15, "desc" ]]
   });
   
   //check all

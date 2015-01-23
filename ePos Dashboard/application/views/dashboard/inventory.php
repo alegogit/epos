@@ -8,8 +8,8 @@
         <div class="row">
           <div class="col-md-6">
             <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
-              <a role="button" class="btn btn-default" href="/dashboard/sales">&nbsp;&nbsp;Sales&nbsp;&nbsp;</a>
-              <a role="button" class="btn btn-primary" href="/dashboard/inventory">Inventory</a>         
+              <a role="button" class="btn btn-default" href="<?=base_url()?>dashboard/sales">&nbsp;&nbsp;Sales&nbsp;&nbsp;</a>
+              <a role="button" class="btn btn-primary" href="<?=base_url()?>dashboard/inventory">Inventory</a>         
             </div> 
           </div>
           <div class="col-md-6">    
@@ -17,9 +17,9 @@
             <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
               <a id="print" role="button" class="btn btn-primary" href="#">&nbsp;<span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Print&nbsp;</a>        
             </div> 
-            <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
+            <!--<div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
               <a id="export" role="button" class="btn btn-primary" href="#"><span class="glyphicon glyphicon-export"></span>&nbsp;&nbsp;Export</a>        
-            </div> 
+            </div>--> 
             </div>
           </div> 
         </div>                          

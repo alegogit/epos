@@ -36,7 +36,8 @@
 						        <th>Username</th>
 						        <th>Password</th>
 						        <th>Role</th>
-						        <th>Restaurant</th>
+						        <th>Assigned Restaurant(s)</th>
+						        <th>Default Restaurant</th>
 						        <th>Last Login</th>
 						        <th>Created By</th>
 						        <th>Created Date</th>
@@ -60,13 +61,23 @@
                     <a id="USERNAME-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->USERNAME?></a>
                   </td>
                   <td style="">
-                    <a id="PASSWORD-<?=$row->ID?>" class="edit" tabindex="0">******</a>
+                    <a id="PASSWORD-<?=$row->ID?>" class="epop" tabindex="0" data-toggle="modal" data-target="#passModal" style="font-size:70%">
+                      <i class="fa fa-circle"></i>
+                      <i class="fa fa-circle"></i>
+                      <i class="fa fa-circle"></i>
+                      <i class="fa fa-circle"></i>
+                      <i class="fa fa-circle"></i>
+                      <i class="fa fa-circle"></i>
+                    </a>
                  </td>
                   <td style="">
                     <a id="ROLE_ID-<?=$row->ID?>" class="edit" tabindex="0"><?=$this->setting->get_role_name($row->ROLE_ID)?></a>
                   </td>
                   <td style="">
                     <a id="REST_ID-<?=$row->ID?>" class="edit" tabindex="0"></a>
+                  </td>
+                  <td style="">
+                    <a id="DEF_REST-<?=$row->ID?>" class="edit" tabindex="0"><?=$this->setting->get_default_rest($row->ID)->REST_NAME?></a>
                   </td>
                   <td style=""><span id="last<?=$row->ID?>"><?=$row->LAST_LOGIN?></span></td>
                   <td style=""><span id="crby<?=$row->ID?>"><?=$this->setting->get_username($row->CREATED_BY)->USERNAME?></span></td>
@@ -173,6 +184,44 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal fade -->
+
+<!-- Modal2 -->
+<div class="modal fade" id="passModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Edit Password</h4>
+      </div><!-- /.modal-header -->
+      <div class="modal-body">  <div id="errmsg"></div>
+      <?php
+        $attributes = array('class' => 'form-inline', 'id' => 'editpass', 'role' => 'form');
+        echo form_open('setting/users',$attributes)
+      ?>                    		
+        <div class="form-group" style="margin-bottom:10px"> 
+          <div class="input-group">       
+            <label for="name">New Password</label>                  
+            <input type="password" class="form-control" id="pass1" placeholder="minimum 6 chars" name="pass1" pattern=".{5,}" required>
+            <span class="errmsg"></span>
+          </div>
+        </div><br />
+        <div class="form-group" style="margin-bottom:10px"> 
+          <div class="input-group">       
+            <label for="email">Retype Password</label>
+            <input type="password" class="form-control" id="pass1" placeholder="minimum 6 chars" name="pass1" pattern=".{5,}" required><span class="errmsg"></span>
+          </div>
+        </div><br />        		
+        <div class="form-group text-right" style="margin-bottom:10px">
+          <div class="input-group">       
+            <button type="submit" class="btn btn-success">Submit</button>
+            <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+          </div>
+        </div><br /> 
+        <?=form_close()?>
+      </div><!-- /.modal-body -->
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal fade -->
 <?php  
   //editable script
   $i = 0;
@@ -222,20 +271,6 @@
                       } 
                     });";    
                     
-  $edit_script .= "  $('#PASSWORD-".$row->ID."').editable({ 
-                        url: updateurl,
-                        mode: 'popup',
-                        placement: 'right',
-                        showbuttons: true,
-                        pk: ".$row->ID.",
-        tpl: '<div class=\"editable-address\"><label><span>Pass1: </span><input type=\"password\" name=\"pass1\" class=\"input-small\"></label></div><br>'+
-             '<div class=\"editable-address\"><label><span>Pass2: </span><input type=\"password\" name=\"pass2\" class=\"input-small\"></label></div>',         
-                        success: function(result){  
-                          var data = result.split(',');
-                          $('#upby".$row->ID."').html(data[0]);
-                          $('#updt".$row->ID."').html(data[1]); 
-                      } 
-                    });";
   $edit_script .= "  $('#ROLE_ID-".$row->ID."').editable({    
                         type: 'select',  
                         url: updateurl,
@@ -300,6 +335,12 @@ $(document).ready(function()
   $('.edit').focus(function(e) {
     e.stopPropagation();
     $(this).editable('toggle');
+  });
+   
+  $('.epop1').focus(function(e) {
+    e.stopPropagation();
+    $(this).click();
+    return false;
   });
   
   //inititate datatable

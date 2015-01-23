@@ -144,7 +144,7 @@ html,body{
         </div> 
       </div>
       <input name="login" type="submit" value="Reset Your Password" class="btn btn-lg btn-primary btn-block" />
-      <a href="/" class="pull-right mt10">Back Home </a><span class="clearfix"></span>
+      <a href="<?=base_url()?>" class="pull-right mt10">Back Home </a><span class="clearfix"></span>
     <?=form_close()?>
     </div>
   </div>

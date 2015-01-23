@@ -151,7 +151,7 @@ html,body{
         </div>
       </div>
       <input name="login" type="submit" value="Sign in" class="btn btn-lg btn-primary btn-block" />
-      <a href="/forgot" class="pull-right forgot-pass">Forgot Password? </a><span class="clearfix"></span>
+      <a href="<?=base_url()?>forgot" class="pull-right forgot-pass">Forgot Password? </a><span class="clearfix"></span>
     <?=form_close()?>
     </div>
   </div>

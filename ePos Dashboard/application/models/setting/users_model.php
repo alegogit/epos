@@ -55,8 +55,7 @@ class Users_model extends CI_Model {
     $query = $this->db->query('SELECT USERS_RESTAURANTS.*, RESTAURANTS.NAME AS REST_NAME
                               FROM USERS_RESTAURANTS
                               JOIN RESTAURANTS ON USERS_RESTAURANTS.REST_ID = RESTAURANTS.ID
-                              WHERE USERS_RESTAURANTS.DEFAULT_REST=1 AND USERS_RESTAURANTS.USER_ID = '.$USER_ID.'
-                              ');
+                              WHERE USERS_RESTAURANTS.DEFAULT_REST=1 AND USERS_RESTAURANTS.USER_ID = '.$user_id.';');
     $output = ($this->db->affected_rows()>0)?$query->row():"NONE";
     return $output;
   } 

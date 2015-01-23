@@ -53,9 +53,9 @@ $route['dashboard'] = "dashboard/sales_controller";
 $route['dashboard/sales'] = "dashboard/sales_controller";
 $route['dashboard/inventory'] = "dashboard/inventory_controller";
 
-$route['inventory'] = "inventory/inventory_controller";
+$route['inventory'] = "inventory_controller";
 
-$route['customers'] = "customers/customers_controller";
+$route['customers'] = "customers_controller";
 
 $route['setting'] = "setting/restaurant_controller";
 $route['setting/restaurant'] = "setting/restaurant_controller";
