@@ -36,9 +36,9 @@ class Inventory_controller extends CI_Controller {
 			$data['percent_this_year'] = $this->dash_inv->percentage_increase_this_year($rest_id);       
 			$data['percent_this_week'] = $this->dash_inv->percentage_increase_from_last_week($rest_id); 
 			$data['num_cust_30day'] = $this->dash_inv->num_customers_30day($rest_id);
-			$data['nonmovitm'] = $this->dash_inv->non_moving_items();
-			$data['lowinstck'] = $this->dash_inv->low_in_stock();
-			$data['nostock'] = $this->dash_inv->no_stock();
+			$data['nonmovitm'] = $this->dash_inv->non_moving_items($rest_id);
+			$data['lowinstck'] = $this->dash_inv->low_in_stock($rest_id);
+			$data['nostock'] = $this->dash_inv->no_stock($rest_id);
 			
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);

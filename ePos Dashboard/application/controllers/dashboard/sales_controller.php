@@ -43,7 +43,7 @@ class Sales_controller extends CI_Controller {
 			$data['dbestsells'] = $this->dash_sls->dash_best_sellers(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id);
 			$data['dmorevenue'] = $this->dash_sls->dash_monthly_revenue($rest_id);
 		  $data['dwkrevenue'] = $this->dash_sls->dash_weekly_revenue($rest_id);
-		  $data['nostock'] = $this->dash_sls->no_stock();
+		  $data['nostock'] = $this->dash_sls->no_stock($rest_id);
 		  //$data['promotions'] = $this->home->get_latest_promotions();
 			//$data['services'] = $this->home->get_latest_services();
 			

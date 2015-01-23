@@ -130,21 +130,21 @@ class Inventory_model extends CI_Model {
           return $query->row();
 	}
 	
-	function non_moving_items()
+	function non_moving_items($rest_id)
 	{
-	     $query = $this->db->query('SELECT NAME FROM INVENTORY WHERE LAST_UPDATED_DATE <SUBDATE(SYSDATE(),7);');
+	     $query = $this->db->query('SELECT NAME FROM INVENTORY WHERE REST_ID = '.$rest_id.' AND LAST_UPDATED_DATE <SUBDATE(SYSDATE(),7);');
 	     return $query->result();  
 	}
 	
-	function low_in_stock()
+	function low_in_stock($rest_id)
 	{
-	     $query = $this->db->query('SELECT NAME FROM INVENTORY WHERE QUANTITY<MIN_QUANTITY;');
+	     $query = $this->db->query('SELECT NAME FROM INVENTORY WHERE REST_ID = '.$rest_id.' AND QUANTITY<MIN_QUANTITY;');
 	     return $query->result();  
 	}
 	
-	function no_stock()
+	function no_stock($rest_id)
 	{
-	     $query = $this->db->query('SELECT NAME FROM INVENTORY WHERE QUANTITY=0;');
+	     $query = $this->db->query('SELECT NAME FROM INVENTORY WHERE REST_ID = '.$rest_id.' AND QUANTITY=0;');
 	     return $query->result();  
 	}
 

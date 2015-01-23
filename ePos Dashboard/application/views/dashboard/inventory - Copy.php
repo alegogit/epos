@@ -69,24 +69,13 @@
   				  <div class="panel panel-default">
   				    <div class="panel-heading"><b>Non Moving Items</b></div>
   					  <div class="panel-body" style="min-height:180px;">
-  					   <div class="table-responsive">
-						    <table id="" class="inv table dt-right compact">
-						      <thead>
-						        <tr><th></th></tr>
-						      </thead>
-						      <tbody>
-						        
                       <?php    
                         $i = 1;
                         foreach ($nonmovitm as $row){ 
-                          echo '<tr><td class="alert alert-info" style="padding:10px;margin-bottom:10px">'.$i.". <b>".ucwords(strtolower($row->NAME))."</b></td> </tr>";
+                          echo '<div class="alert alert-info" style="padding:10px;margin-bottom:10px">'.$i.". <b>".ucwords(strtolower($row->NAME))."</b></div>";
                           $i++;  
                         }
-                      ?>
-                   
-                  </tbody>
-                </table>
-               </div>
+                    ?>
   					  </div>
   				  </div>
   				</div> 
@@ -95,25 +84,16 @@
   				  <div class="panel panel-default">
   				    <div class="panel-heading"><b>Low in Stock</b></div>
   					  <div class="panel-body" style="min-height:180px;"> 
-  					   <div class="table-responsive">
-						    <table id="" class="inv table dt-right compact">
-						      <thead>
-						        <tr><th></th></tr>
-						      </thead>
-						      <tbody>
   					     
       					     <?php 
                       $i = 1;
                       foreach ($lowinstck as $row){  
-                        echo '<tr><td class="alert alert-warning" style="padding:10px;margin-bottom:10px">'.$i.". <b>".ucwords(strtolower($row->NAME))."</b></td></tr>";
+                        echo '<div class="alert alert-warning" style="padding:10px;margin-bottom:10px">'.$i.". <b>".ucwords(strtolower($row->NAME))."</b></div>";
                         $i++;  
                       }
-                    ?> 
-                   
-                  </tbody>
-                </table>
+                    ?>
+                
               </div>
-  				   </div>
   				  </div>
   				</div>
 				  
@@ -121,25 +101,14 @@
   				  <div class="panel panel-default">
   				    <div class="panel-heading"><b>No Stock</b></div>
   					  <div class="panel-body" style="min-height:180px;">
-  					   <div class="table-responsive">
-						    <table id="" class="inv table dt-right compact">
-						      <thead>
-						        <tr><th></th></tr>
-						      </thead>
-						      <tbody>
-						      
                   <?php 
                     $i = 1;
                     foreach ($nostock as $row){
-                      echo '<tr><td class="alert alert-danger" style="padding:10px;margin-bottom:10px">'.$i.". <b>".ucwords(strtolower($row->NAME))."</b></td></tr>";
+                      echo '<div class="alert alert-danger" style="padding:10px;margin-bottom:10px">'.$i.". <b>".ucwords(strtolower($row->NAME))."</b></div>";
                       $i++;  
                     }
-                  ?>   
-                   
-                  </tbody>
-                </table>
+                  ?>
   					  </div>
-  				   </div>
   				  </div>
 				  </div>
 				  
@@ -285,19 +254,5 @@
     }
     
     })(jQuery);
-    
-    
-  //inititate datatable
-  var table = $('.inv').DataTable({
-    columnDefs: [
-      { targets: 'no-sort', orderable: false }
-    ],    
-    searching: false,
-    ordering:  false,
-    bLengthChange: false,
-    pageLength: 5
-  });
-  
-  $('table.dataTable thead th, table.dataTable thead td').css('border','none');
      	
 </script>

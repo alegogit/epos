@@ -298,9 +298,9 @@ class Sales_model extends CI_Model {
 	}
 			
    
-	function no_stock()
+	function no_stock($rest_id)
 	{
-	     $query = $this->db->query('SELECT NAME FROM INVENTORY WHERE QUANTITY=0;');
+	     $query = $this->db->query('SELECT NAME FROM INVENTORY WHERE REST_ID = '.$rest_id.' AND QUANTITY=0;');
 	     return $query->result();  
 	}
 
