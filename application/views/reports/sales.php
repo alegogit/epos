@@ -169,12 +169,15 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal fade -->
+<div id="ajaxurl" data-url="<?=base_url()?>"></div>
 <?php } ?>
 
 <script type="text/javascript">      
   //datepickers    
   $("#startdate").datepicker({format: 'dd M yyyy'});
   $("#enddate").datepicker({format: 'dd M yyyy'});
+  
+  var ajaxurl = $("#ajaxurl").data('url');
   
   var gOrdDet = function gOrdDet(){
        $(".modalTrigger").click(function () { 
@@ -184,7 +187,7 @@
         var dataP = "varP="+varP;  
         $.ajax({
           type: "POST",
-          url: "/process/orders",
+          url: ajaxurl+"process/orders",
           data: dataP,
           cache: false,
           success: function(result){
@@ -198,7 +201,7 @@
   $(document).ready(function(){
     gOrdDet();  
     $('#report').DataTable({ 
-      url: '/reports/sales',
+      url: ajaxurl+'reports/sales',
       method: 'get',
       onAll: function (name, args) {
         if (typeof gOrdDet == 'function') {  
