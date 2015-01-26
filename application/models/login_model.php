@@ -31,15 +31,20 @@ class Login_model extends CI_Model {
     }
     
   function update_logintime(){       
-	  date_default_timezone_set('Asia/Jakarta');
+		date_default_timezone_set('Asia/Jakarta');
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id']; 
 		$dt = date('Y-m-d H:i:s');         
-	  $data = array(            
+	  	$data = array(            
                'LAST_LOGIN' => $dt
             );          
 		$this->db->where('ID',$id);
-    $query = $this->db->update('USERS',$data);
+    	$query = $this->db->update('USERS',$data);
+		$query1 = $this->db->query('INSERT INTO LOGIN_LOG
+      		(USER_ID,LOGIN_TIME,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
+      		VALUES 
+      		('.$id.',NOW(),'.$id.',NOW(),'.$id.',NOW());');
+  
   }
     
 }

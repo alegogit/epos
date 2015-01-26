@@ -3,8 +3,8 @@
   <div class="container-fluid" style="font-size:90%;">
   
     <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
-      <a role="button" class="btn btn-primary" href="/reports/sales">&nbsp;&nbsp;Sales&nbsp;&nbsp;</a>
-      <a role="button" class="btn btn-default" href="/reports/inventory">Inventory</a>         
+      <a role="button" class="btn btn-primary" href="<?=base_url()?>reports/sales">&nbsp;&nbsp;Sales&nbsp;&nbsp;</a>
+      <a role="button" class="btn btn-default" href="<?=base_url()?>reports/inventory">Inventory</a>         
     </div>                                                                       
     <hr style="margin-bottom:10px;margin-top:10px" />         
     
