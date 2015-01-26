@@ -6,7 +6,7 @@ class Sales_controller extends CI_Controller {
 	{
 		parent::__construct();	
 		$this->load->model('reports/sales_model','sales',TRUE); 
-    $this->load->helper(array('form', 'url','html'));
+    	$this->load->helper(array('form', 'url','html'));
 		$session_data = $this->session->userdata('logged_in');
 		$this->data['user'] = $this->sales->get_profile();
 		$this->data['restaurants'] = $this->sales->get_restaurant(); 

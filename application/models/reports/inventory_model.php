@@ -41,16 +41,17 @@ class Inventory_model extends CI_Model {
     return $query->row();
   }
   	
-	function get_inventory()
+	function get_inventory($rest_id)
 	{
-	     $query = $this->db->query('SELECT I.NAME,  
+	    $query = $this->db->query('SELECT I.NAME,  
 		      CONCAT(I.QUANTITY," ",I.METRIC) AS QUANTITY,
 		        CASE WHEN I.QUANTITY = 0 THEN "NONE"
 			         WHEN I.QUANTITY < MIN_QUANTITY THEN "LOW"
                WHEN I.LAST_UPDATED_DATE <SUBDATE(SYSDATE(),7) THEN "Not Moving"
             ELSE "OK"
             END AS STATUS
-          FROM INVENTORY I;');
+          FROM INVENTORY I 
+		  WHERE REST_ID='.$rest_id.';');
 		    return $query->result();
 	}
 	

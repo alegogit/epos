@@ -17,7 +17,7 @@
         <div class="form-group" style="margin-bottom:0px">
           <div class="input-group">
             <div class="input-group-addon"><span class="glyphicon glyphicon-cutlery"></span></div>
-            <select id = "myRestaurant" name="rest_id" title="Restaurant Name" class="form-control" style="display:inline" disabled>
+            <select id = "myRestaurant" name="rest_id" title="Restaurant Name" class="form-control" style="display:inline">
               <option value = "0">ALL Restaurants</option>
               <?php foreach($restaurants as $row){ ?>
               <option value = "<?=$row->REST_ID?>" <?= ($row->REST_ID==$rest_id)?'selected':''?> ><?=$row->NAME?></option>
@@ -40,10 +40,9 @@
           <b>Inventory Report</b>  
         </div>
 	      <div class="panel-body table-responsive">   
-	        <table class="table" data-toggle="table" data-url="" data-show-refresh="false" data-show-toggle="false" data-show-columns="true" data-search="true" data-pagination="true" data-sort-name="" data-sort-order="">
-					  <thead>
-						  <tr>
-						    <th data-field="state" data-checkbox="true">Inv ID</th>
+	        <table id="report" class="table table-striped dt-right compact">
+				<thead>
+						  <tr class="tablehead text3D">
 						    <th data-field="name" data-sortable="true">Name</th>
 						    <th data-field="qty"  data-sortable="true">Quantity</th>
 						    <th data-field="stat" data-sortable="true">Status</th>
@@ -52,7 +51,6 @@
 						<tbody>           
 						  <?php $i = 0;  foreach ($inventory as $row){ ?>
 						  <tr class="<?=$this->inventory->inv_status_class($row->STATUS)?>" data-index="<?=$i?>">
-						    <td><input data-index="<?=$i?>" name="btSelectItem<?=$i?>" type="checkbox">eek</td>
 						    <td><?=$row->NAME?></td>
 						    <td><?=$row->QUANTITY?></td>
 						    <td><?=$row->STATUS?></td>
@@ -126,8 +124,12 @@
 </div><!-- /.modal fade -->
 
 <script> 
-     //datepickers
-     //$("#startdate").datepicker({format: 'dd M yyyy'});
-     //$("#enddate").datepicker({format: 'dd M yyyy'});
+    //inititate datatable
+  	var table = $('#report').DataTable({
+	    columnDefs: [
+	    	{ targets: 'no-sort', orderable: false }
+	    ],
+	    "order": [[ 2, "desc" ]]
+  	});
 
 </script>

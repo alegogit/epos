@@ -6,7 +6,7 @@ class Inventory_controller extends CI_Controller {
 	{
 		parent::__construct();	
 		$this->load->model('reports/inventory_model','inventory',TRUE); 
-    $this->load->helper(array('form', 'url','html'));
+    	$this->load->helper(array('form', 'url','html'));
 		$session_data = $this->session->userdata('logged_in');
 		$this->data['user'] = $this->inventory->get_profile();
 		$this->data['restaurants'] = $this->inventory->get_restaurant(); 
@@ -27,11 +27,11 @@ class Inventory_controller extends CI_Controller {
 			$data['rest_id'] = $rest_id;
 			$data['startdate'] = $start_date;
 			$data['enddate'] = $end_date;        
-			$data['inventory'] = $this->inventory->get_inventory(); 
+			$data['inventory'] = $this->inventory->get_inventory($rest_id); 
 			
 			$data['deleteId'] = (!($this->input->post('invid')))?'invid':$this->input->post('invid');
-      $data['deleteIdStr'] = (!($this->input->post('invid')))?'invidstr':implode(',', $deleteId);
-      //$sql = "delete from usertable where userid in ($deleteIdStr)";
+      		$data['deleteIdStr'] = (!($this->input->post('invid')))?'invidstr':implode(',', $deleteId);
+      		//$sql = "delete from usertable where userid in ($deleteIdStr)";
 
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);
