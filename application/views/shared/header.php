@@ -13,7 +13,7 @@
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery-ui.js"></script>
 
-<?php if($menu == 'setting') { ?>
+<?php if ( ($menu == 'setting') || ($menu == 'inventory') || ($menu == 'customers') ) { ?>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap-editable.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap-select.min.js"></script> 
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.validate.js"></script> 

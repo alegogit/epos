@@ -6,7 +6,7 @@ class Inventory_controller extends CI_Controller {
 	{
 		parent::__construct();	
 		$this->load->model('inventory_model','inventory',TRUE);  
-    $this->load->helper(array('form', 'url','html'));
+    	$this->load->helper(array('form', 'url','html'));
 		$session_data = $this->session->userdata('logged_in');  
 		$this->data['menu'] = 'inventory';      
 		$this->data['user'] = $this->inventory->get_profile();
@@ -29,12 +29,12 @@ class Inventory_controller extends CI_Controller {
 			$data['startdate'] = $start_date;
 			$data['enddate'] = $end_date; 
 			
-      if($this->input->post('inventory_type')){               
-		    $this->inventory->new_inventory($this->input->post('inventory_mac'),$this->input->post('inventory_type'),$this->input->post('inventory_manufacturer'),$this->input->post('inventory_model'),$this->input->post('rest_id'));
-      } 
+		    if($this->input->post('qty')){               
+				$this->inventory->new_inventory($this->input->post('name'),$this->input->post('qty'),$this->input->post('metric'),$this->input->post('minq'),$this->input->post('rest_id'));
+		    } 
       
-		  $data['inventory'] = $this->inventory->get_rest_inventory($rest_id);
-			                   
+		  	$data['inventory'] = $this->inventory->get_rest_inventory($rest_id);
+		  	$data['metrics'] = $this->inventory->get_metrics();			                   
 			
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);

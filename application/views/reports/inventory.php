@@ -43,16 +43,16 @@
 	        <table id="report" class="table table-striped dt-right compact">
 				<thead>
 						  <tr class="tablehead text3D">
-						    <th data-field="name" data-sortable="true">Name</th>
-						    <th data-field="qty"  data-sortable="true">Quantity</th>
-						    <th data-field="stat" data-sortable="true">Status</th>
+						    <th>Name</th>
+						    <th class="cin">Quantity</th>
+						    <th>Status</th>
 						  </tr>
 						</thead>
 						<tbody>           
 						  <?php $i = 0;  foreach ($inventory as $row){ ?>
 						  <tr class="<?=$this->inventory->inv_status_class($row->STATUS)?>" data-index="<?=$i?>">
 						    <td><?=$row->NAME?></td>
-						    <td><?=$row->QUANTITY?></td>
+						    <td class="cin"><?=$row->QUANTITY?></td>
 						    <td><?=$row->STATUS?></td>
 						  </tr>
 						  <?php $i++; } ?>
