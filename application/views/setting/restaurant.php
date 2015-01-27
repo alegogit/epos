@@ -250,6 +250,7 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal fade -->
+<div id="baseurl" data-url="<?=base_url()?>"></div>
 <?php } ?>
 
 <?php  
@@ -439,12 +440,14 @@
 ?>
 <script>   
 $(document).ready(function()
-{ 
-  //make editable on focus  
-  $('.edit').focus(function(e) {
-    e.stopPropagation();
-    $(this).editable('toggle');
-  });
+{   
+	var baseurl = $("#baseurl").data('url');
+  
+  	//make editable on focus  
+  	$('.edit').focus(function(e) {
+    	e.stopPropagation();
+    	$(this).editable('toggle');
+  	});
   
   //inititate datatable
   var table = $('#setting').DataTable({
@@ -492,7 +495,7 @@ $(document).ready(function()
           var dataP = "idf="+idf;
   				$.ajax({
             type: "POST",
-            url: "/process/restaurant?p=delete",
+            url: baseurl+"process/restaurant?p=delete",
             data: dataP,
             cache: false,
             success: function(result){ 
@@ -514,17 +517,18 @@ $(document).ready(function()
 });
   
 $(function(){
+	var baseurl = $("#baseurl").data('url');
   //pass validation
   $("#newresto").validate({ 
     rules: {
       email: { 
         email: true,
-        remote: "/process/restaurant?p=takene" 
+        remote: baseurl+"process/restaurant?p=takene" 
       }, 
       name: {
         required: true,
         minlength: 3,
-        remote: "/process/restaurant?p=takenu"
+        remote: baseurl+"process/restaurant?p=takenu"
       },
       telephone: { 
         phone: true 

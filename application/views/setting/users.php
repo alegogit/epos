@@ -243,24 +243,23 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal fade -->
 <?php  
-  //editable script
-  $i = 0;
-  //$n = count($dtopcats);
-  $edit_script = "<script>"; 
-  $edit_script .= "$(document).ready(function(){";        
-  $edit_script .= "  $.fn.editable.defaults.mode = 'inline';";
-  $edit_script .= "  $.fn.editable.defaults.showbuttons = false;";
-  $edit_script .= "  var updateurl = '".base_url()."process/users?p=update';";
-  foreach ($users as $row){
-  $edit_script .= "  $('#NAME-".$row->ID."').editable({
-                        url: updateurl,
-                        pk: ".$row->ID.", 
-                        activate: 'focus',
-                        validate: function(v) {
-                          if (!v) return 'don\'t leave it blank!';
-                        },
-                        success: function(result){  
-                          var data = result.split(',');
+  	//editable script
+  	$i = 0;
+  	$edit_script = "<script>"; 
+  	$edit_script .= "$(document).ready(function(){";        
+  	$edit_script .= "  $.fn.editable.defaults.mode = 'inline';";
+  	$edit_script .= "  $.fn.editable.defaults.showbuttons = false;";
+  	$edit_script .= "  var updateurl = '".base_url()."process/users?p=update';";
+  	foreach ($users as $row){
+  		$edit_script .= "  $('#NAME-".$row->ID."').editable({
+        					url: updateurl,
+                        	pk: ".$row->ID.", 
+                        	activate: 'focus',
+                        	validate: function(v) {
+                          		if (!v) return 'don\'t leave it blank!';
+                        	},
+                        	success: function(result){  
+                          	var data = result.split(',');
                           $('#upby".$row->ID."').html(data[0]);
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
@@ -377,7 +376,7 @@
 $(document).ready(function()
 { 
   //make editable on focus  
-  $('.edit').focus(function(e) {
+  $('.edit0').focus(function(e) {
     e.stopPropagation();
     $(this).editable('toggle');
   });
