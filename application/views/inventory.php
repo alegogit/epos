@@ -61,19 +61,19 @@
 						    <?php $i = 0;  foreach ($inventory as $row){ ?>
                 <tr data-index="<?=$i?>" class="datarow <?=$this->inventory->set_class($row->QUANTITY,$row->MIN_QUANTITY)?>" id="<?=$row->ID.'_'.$row->NAME?>">
                   <td class="">
-                    <input type="checkbox" class="case">
+                    <input type="checkbox" class="case" tabindex="-1">
                   </td>
                   <td class="">
-                    <a id="NAME-<?=$row->ID?>" class=""><?=$row->NAME?></a>
+                    <a id="NAME-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->NAME?></a>
                   </td>
                   <td class="cin">
-                    <a id="QUANTITY-<?=$row->ID?>" class="cin"><?=$row->QUANTITY?></a>
+                    <a id="QUANTITY-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->QUANTITY?></a>
                   </td>
                   <td class="">
-                    <a id="METRIC-<?=$row->ID?>" class=""><?=$this->inventory->get_metric_name($row->METRIC)->VALUE?></a>
+                    <a id="METRIC-<?=$row->ID?>" class="edit" tabindex="0"><?=$this->inventory->get_metric_name($row->METRIC)->VALUE?></a>
                   </td>
                   <td class="cin">
-                    <a id="MIN_QUANTITY-<?=$row->ID?>"><?=$row->MIN_QUANTITY?></a>
+                    <a id="MIN_QUANTITY-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->MIN_QUANTITY?></a>
                   </td>
                   <td class=""><span id="crby<?=$row->ID?>"><?=$this->inventory->get_username($row->CREATED_BY)->USERNAME?></span></td>
                   <td class=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
@@ -175,6 +175,7 @@
   	$edit_script = "<script>"; 
   	$edit_script .= "$(document).ready(function(){";
   	$edit_script .= "  $.fn.editable.defaults.mode = 'inline';";
+  	$edit_script .= "  $.fn.editable.defaults.showbuttons = false;";
   	$edit_script .= "  var updateurl = '".base_url()."process/inventory?p=update';";
   	foreach ($inventory as $row){
   		$edit_script .= "  $('#NAME-".$row->ID."').editable({
@@ -193,36 +194,46 @@
 		                        url: updateurl,
 		                        pk: ".$row->ID.", 
 		                        validate: function(v) {
-		                          if (!v) return 'don\'t leave it blank!';
+		                          	if (!v) return 'don\'t leave it blank!';
+                          		  	if (isNaN(v)) return 'please fill in a number format!';
 		                        },
 		                        success: function(result){  
-		                          var data = result.split(',');
-		                          $('#upby".$row->ID."').html(data[0]);
-		                          $('#updt".$row->ID."').html(data[1]); 
+		                          	var data = result.split(',');
+		                          	$('#upby".$row->ID."').html(data[0]);
+		                          	$('#updt".$row->ID."').html(data[1]); 
 		                      } 
 		                    });";
-  		$edit_script .= "  $('#METRIC-".$row->ID."').editable({
-		                        url: updateurl,
-		                        pk: ".$row->ID.", 
-		                        validate: function(v) {
-		                          if (!v) return 'don\'t leave it blank!';   
-		                        },
-		                        success: function(result){  
-		                          var data = result.split(',');
-		                          $('#upby".$row->ID."').html(data[0]);
-		                          $('#updt".$row->ID."').html(data[1]); 
-		                      } 
-		                    });";
+  		$edit_script .= "  $('#METRIC-".$row->ID."').editable({    
+                        		type: 'select',  
+                        		url: updateurl,
+                        		pk: ".$row->ID.", 
+                        		value: '".$row->METRIC."', 
+                        		source: [ ";
+    	$m = 1; 
+    	$t = count($metrics);                   
+    	foreach($metrics as $rowm){      
+      		$edit_script .= "  {value: '".$rowm->CODE."', text: '".$rowm->VALUE."'}";
+      		$edit_script .= ($m<$t)?", ":"";
+      		$m++;
+    	}                      
+  		$edit_script .= "     ],
+                        		success: function(result){  
+                          			var data = result.split(',');
+                          			$('#upby".$row->ID."').html(data[0]);
+                          			$('#updt".$row->ID."').html(data[1]); 
+                      			} 
+                    		});";							
   		$edit_script .= "  $('#MIN_QUANTITY-".$row->ID."').editable({
 	                        url: updateurl,
 	                        pk: ".$row->ID.", 
 	                        validate: function(v) {
-	                          if (!v) return 'don\'t leave it blank!';
+	                          	if (!v) return 'don\'t leave it blank!';
+                          		if (isNaN(v)) return 'please fill in a number format!';
 	                        },
 	                        success: function(result){  
-	                          var data = result.split(',');
-	                          $('#upby".$row->ID."').html(data[0]);
-	                          $('#updt".$row->ID."').html(data[1]); 
+	                          	var data = result.split(',');
+	                          	$('#upby".$row->ID."').html(data[0]);
+	                          	$('#updt".$row->ID."').html(data[1]); 
 	                      } 
 	                    });";
   	}
@@ -233,8 +244,15 @@
 <script>   
 $(document).ready(function(){     
 	var baseurl = $("#baseurl").data('url');
-  	
-	var table = $('#inventory').DataTable({
+  
+  	//make editable on focus  
+  	$('.edit').focus(function(e) {
+    	e.stopPropagation();
+    	$(this).editable('toggle');
+  	});
+  
+  	//inititate datatable
+  	var table = $('#inventory').DataTable({
     	columnDefs: [
       		{ targets: 'no-sort', orderable: false }
     	],
