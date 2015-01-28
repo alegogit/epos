@@ -19,7 +19,7 @@ class Users_controller extends CI_Controller {
 		{
 			$data['menu'] = 'setting';         
 			$session_data = $this->session->userdata('logged_in');  
-		  $role = $session_data['role'];
+		  	$role = $session_data['role'];
 			$data['def_rest'] = $session_data['def_rest'];
 			$data['def_start_date'] = date('d M Y', time() - 30 * 60 * 60 * 24);
 			$data['def_end_date'] = date('d M Y', time());
@@ -30,16 +30,20 @@ class Users_controller extends CI_Controller {
 			$data['startdate'] = $start_date;
 			$data['enddate'] = $end_date; 
 			                                 
-      if($this->input->post('email')){             
-		    $this->setting->new_users($this->input->post('name'),$this->input->post('email'),$this->input->post('username'),$this->input->post('password'),$this->input->post('role'),$this->input->post('rest_id'));
-      }        
-                    
-      if($this->input->post('uid')&&($this->input->post('pass1')==$this->input->post('pass2'))){             
-		    $this->setting->update_pass($this->input->post('uid'),$this->input->post('pass2'));
-      } 
+		    if($this->input->post('email')){             
+				$this->setting->new_users($this->input->post('name'),$this->input->post('email'),$this->input->post('username'),$this->input->post('password'),$this->input->post('role'),$this->input->post('rest_id'));
+		    }        
+		                    
+		    if($this->input->post('uid')&&($this->input->post('pass1')==$this->input->post('pass2'))){             
+				$this->setting->update_pass($this->input->post('uid'),$this->input->post('pass2'));
+		    }     
+			    
+		    if($this->input->post('asgrest')){             
+				$this->setting->assign_rest($this->input->post('uid'),$this->input->post('asgrest'));
+		  	} 
       
-		  $data['users'] = $this->setting->get_users_data();
-		  $data['roles'] = $this->setting->get_roles();			                   
+		  	$data['users'] = $this->setting->get_users_data();
+		  	$data['roles'] = $this->setting->get_roles();			                   
 			
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);

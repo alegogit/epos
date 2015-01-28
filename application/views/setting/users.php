@@ -74,7 +74,24 @@
                     <a id="ROLE_ID-<?=$row->ID?>" class="edit" tabindex="0"><?=$this->setting->get_role_name($row->ROLE_ID)?></a>
                   </td>
                   <td style="">
-                    <a id="REST_ID-<?=$row->ID?>" class="edit" tabindex="0"></a>
+				  	<?php
+							$assigned = $this->setting->get_assigned_rest($row->ID);
+						    $a = 1;
+						    $b = count($assigned);
+							$assval = "[";         
+							$asstxt = "";                    
+						    foreach($assigned as $rowa){   
+						      	$assval .= $rowa->REST_ID;
+						      	$assval .= ($a<$b)?",":"";   
+						      	$asstxt .= $rowa->NAME;
+						      	$asstxt .= ($a<$b)?", ":"";
+						      	$a++;
+						    }         
+							$assval .= "]";
+					?>
+                    <a id="ASS_REST-<?=$row->ID?>" class="epop" tabindex="0" data-toggle="modal" data-target="#restModal" data-uid="<?=$row->ID?>" data-unm="<?=$row->USERNAME?>" data-def="<?=$assval?>" style="">
+						<?=($asstxt!="")?$asstxt:"click to assign restaurant(s)"?>
+					</a>
                   </td>
                   <td style="">
                     <a id="DEF_REST-<?=$row->ID?>" class="edit" tabindex="0"><?=$this->setting->get_default_rest($row->ID)->REST_NAME?></a>
@@ -242,6 +259,44 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal fade -->
+
+<!-- Modal3 -->
+<div class="modal fade" id="restModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Assign Restaurant to <span id="moduser"></span></h4>
+      </div><!-- /.modal-header -->
+      <div class="modal-body">  <div id="errmsg"></div>
+      <?php
+        $attributes = array('class' => 'form-inline', 'id' => 'assrest', 'role' => 'form');
+        echo form_open('setting/users',$attributes);
+      ?>            
+        <div class="form-group" style="margin-bottom:10px"> 
+         	<label for="asgrest"></label><br>
+        	<div class="input-group">  
+        		<div class="input-group-addon"><span class="glyphicon glyphicon-cutlery"></span></div>  
+            	<select id="asgrest" name="asgrest[]" class="form-control selectpicker show-tick" data-size="5" data-width="168px" data-live-search="true" required multiple>
+              	<?php foreach($restaurants as $rows){ ?>
+                	<option value = "<?=$rows->REST_ID?>"><?=$rows->NAME?></option>
+              	<?php } ?>
+              	</select>
+            </div>
+		</div><br/>
+        <div class="form-group text-right" style="margin-bottom:10px">
+          <div class="input-group">  
+            <input type="hidden" name="uid" id="auid">     
+            <button type="submit" class="btn btn-success">Submit</button>&nbsp;
+            <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+          </div>
+        </div><br /> 
+        <?=form_close()?>
+      </div><!-- /.modal-body -->
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal fade -->
+<div id="baseurl" data-url="<?=base_url()?>"></div>
 <?php  
   	//editable script
   	$i = 0;
@@ -259,246 +314,210 @@
                           		if (!v) return 'don\'t leave it blank!';
                         	},
                         	success: function(result){  
-                          	var data = result.split(',');
-                          $('#upby".$row->ID."').html(data[0]);
-                          $('#updt".$row->ID."').html(data[1]); 
-                      } 
-                    });";
-  $edit_script .= "  $('#EMAIL_ADDRESS-".$row->ID."').editable({
-                        url: updateurl,
-                        pk: ".$row->ID.", 
-                        validate: function(v) {
-                          if (!v) return 'don\'t leave it blank!'; 
-                          if (!isEmail(v)) return 'please fill in an e-Mail format!';
-                        },
-                        success: function(result){  
-                          var data = result.split(',');
-                          $('#upby".$row->ID."').html(data[0]);
-                          $('#updt".$row->ID."').html(data[1]); 
-                      } 
-                    });";    
-  $edit_script .= "  $('#USERNAME-".$row->ID."').editable({
-                        url: updateurl,
-                        pk: ".$row->ID.", 
-                        validate: function(v) {
-                          if (!v) return 'don\'t leave it blank!';
-                        },
-                        success: function(result){  
-                          var data = result.split(',');
-                          $('#upby".$row->ID."').html(data[0]);
-                          $('#updt".$row->ID."').html(data[1]); 
-                      } 
-                    });";    
+                          		var data = result.split(',');
+                          		$('#upby".$row->ID."').html(data[0]);
+                          		$('#updt".$row->ID."').html(data[1]); 
+                      		} 
+                    	});";
+  		$edit_script .= "  $('#EMAIL_ADDRESS-".$row->ID."').editable({
+	                        url: updateurl,
+	                        pk: ".$row->ID.", 
+	                        validate: function(v) {
+	                          	if (!v) return 'don\'t leave it blank!'; 
+	                          	if (!isEmail(v)) return 'please fill in an e-Mail format!';
+	                        },
+	                        success: function(result){  
+	                          	var data = result.split(',');
+	                          	$('#upby".$row->ID."').html(data[0]);
+	                          	$('#updt".$row->ID."').html(data[1]); 
+	                      	} 
+	                    });";    
+  		$edit_script .= "  $('#USERNAME-".$row->ID."').editable({
+	                        url: updateurl,
+	                        pk: ".$row->ID.", 
+	                        validate: function(v) {
+	                          	if (!v) return 'don\'t leave it blank!';
+	                        },
+	                        success: function(result){  
+	                          	var data = result.split(',');
+	                          	$('#upby".$row->ID."').html(data[0]);
+	                          	$('#updt".$row->ID."').html(data[1]); 
+	                      	} 
+	                    });";    
                     
-  $edit_script .= "  $('#ROLE_ID-".$row->ID."').editable({    
-                        type: 'select',  
-                        url: updateurl,
-                        pk: ".$row->ID.", 
-                        value: ".$row->ROLE_ID.", 
-                        source: [ ";
-    $r = 1; 
-    $t = count($roles);                   
-    foreach($roles as $rowr){      
-      $edit_script .= "  {value: ".$rowr->ID.", text: '".$rowr->NAME."'}";
-      $edit_script .= ($r<$t)?", ":"";
-      $r++;
-    }                      
-  $edit_script .= "     ],
-                        success: function(result){  
-                          var data = result.split(',');
-                          $('#upby".$row->ID."').html(data[0]);
-                          $('#updt".$row->ID."').html(data[1]); 
-                      } 
-                    });";
-                    
-  $edit_script .= "  $('#REST_ID-".$row->ID."').editable({
-                        type: 'checklist',  
-                        mode: 'popup',
-                        placement: 'right',
-                        value: [";  
-		$assigned = $this->setting->get_assigned_rest($row->ID);
-    $a = 1;
-    $b = count($assigned);                    
-    foreach($assigned as $rowa){   
-      $edit_script .= $rowa->REST_ID;
-      $edit_script .= ($a<$b)?", ":"";
-      $a++;
-    }
-  $edit_script .= "], 
-                        source: [ ";
-    $j = 1;
-    $n = count($restaurants);
-    foreach($restaurants as $rows){
-      $edit_script .= "  {value: ".$rows->REST_ID.", text: '".$rows->NAME."'}";
-      $edit_script .= ($j<$n)?", ":"";
-      $j++;
-    }
-  $edit_script .= "    ],
-                        url: updateurl,
-                        pk: ".$row->ID.",
-                        success: function(result){  
-                          var data = result.split(',');
-                          $('#upby".$row->ID."').html(data[0]);
-                          $('#updt".$row->ID."').html(data[1]); 
-                        }  
-                      });";
-  $edit_script .= "  $('#DEF_REST-".$row->ID."').editable({
+  		$edit_script .= "  $('#ROLE_ID-".$row->ID."').editable({    
+	                        type: 'select',  
+	                        url: updateurl,
+	                        pk: ".$row->ID.", 
+	                        value: ".$row->ROLE_ID.", 
+	                        source: [ ";
+	    $r = 1; 
+	    $t = count($roles);                   
+	    foreach($roles as $rowr){      
+	      	$edit_script .= "  {value: ".$rowr->ID.", text: '".$rowr->NAME."'}";
+	      	$edit_script .= ($r<$t)?", ":"";
+	      	$r++;
+	    }                      
+	  	$edit_script .= "     ],
+	                    	success: function(result){  
+	                          	var data = result.split(',');
+	                          	$('#upby".$row->ID."').html(data[0]);
+	                          	$('#updt".$row->ID."').html(data[1]); 
+	                      	} 
+	                    });";
+  		$def_rest = (!$this->setting->get_default_rest($row->ID)->REST_ID)?0:$this->setting->get_default_rest($row->ID)->REST_ID;						  
+  		$edit_script .= "  $('#DEF_REST-".$row->ID."').editable({
                         type: 'select', 
+						value: ".$def_rest.",
                         inputClass: 'selectpicker show-tick',
-                        tpl: '<select multiple></select>',
-                        params: function(params) {
-                          params.param1 = $(this).editable().data('param');
-                          params.param2 = $(this).editable().data('nextparam');
-                          return params;
-                        },
                         source: [";
-    $k = 1;
-    foreach($restaurants as $rows){
-      $edit_script .= "  {value: ".$rows->REST_ID.", text: '".$rows->NAME."'}";
-      $edit_script .= ($k<$n)?", ":"";
-      $k++;
-    }
-  $edit_script .= "    ],
+		$assigned = $this->setting->get_assigned_rest($row->ID);
+		$a = 1;
+		$b = count($assigned);
+		foreach($assigned as $rowa){   
+			$edit_script .= "  {value: ".$rowa->REST_ID.", text: '".$rowa->NAME."'}";
+      		$edit_script .= ($a<$b)?", ":"";
+      		$a++;
+    	}
+  		$edit_script .= "    ],
                         url: updateurl,
                         pk: ".$row->ID.",
                         success: function(result){  
-                          var data = result.split(',');
-                          $('#upby".$row->ID."').html(data[0]);
-                          $('#updt".$row->ID."').html(data[1]); 
+                          	var data = result.split(',');
+                          	$('#upby".$row->ID."').html(data[0]);
+                          	$('#updt".$row->ID."').html(data[1]); 
                         }  
-                      });";
-  }
-  $edit_script .= "var editpassurl = '".base_url()."setting/users';";
-	$edit_script .= '});</script>';
-  echo $edit_script;
+                     });";
+  	}
+  	$edit_script .= '});</script>';
+  	echo $edit_script;
 ?>
 <script>   
-$(document).ready(function()
-{ 
-  //make editable on focus  
-  $('.edit0').focus(function(e) {
-    e.stopPropagation();
-    $(this).editable('toggle');
-  });
-   
-  $('.epop1').focus(function(e) {
-    e.stopPropagation();
-    $(this).click();
-    return false;
-  });
+$(document).ready(function(){ 
+	var baseurl = $("#baseurl").data('url');
   
-  $(".epop").click(function () { 
-    var uidP = $(this).data('uid'); 
-    var unmP = $(this).data('unm');   
-    $(".modal-title #moduser").html(unmP);   
-    $("#uid").val(uidP);
-  });
+  	//make editable on focus  
+  	$('.edit0').focus(function(e) {
+    	e.stopPropagation();
+    	$(this).editable('toggle');
+  	});
+     
+  	$(".epop").click(function () { 
+    	var uidP = $(this).data('uid'); 
+    	var unmP = $(this).data('unm'); 
+    	var defP = $(this).data('def');   
+    	$(".modal-title #moduser").html(unmP);   
+    	$("#uid").val(uidP);
+    	$("#auid").val(uidP);
+		if(defP) $('.selectpicker').selectpicker('val', defP); console.log(defP);
+  	});
   
-  //inititate datatable
-  var table = $('#setting').DataTable({
-    columnDefs: [
-      { targets: 'no-sort', orderable: false }
-    ],
-    "order": [[ 12, "desc" ]]
-  });
+  	//inititate datatable
+  	var table = $('#setting').DataTable({
+    	columnDefs: [
+      		{ targets: 'no-sort', orderable: false }
+    	],
+    	"order": [[ 12, "desc" ]]
+  	});
   
-  //check all
-  $("#checkall").click(function(){
-    $('.case').prop('checked',this.checked);
-  });
-  $(".case").click(function(){
-    if($(".case").length==$(".case:checked").length){
-      $("#selectall").prop("checked","checked");
-    }else{
-      $("#selectall").removeAttr("checked");
-    }
-  }); 
+  	//check all
+  	$("#checkall").click(function(){
+    	$('.case').prop('checked',this.checked);
+  	});
+  	$(".case").click(function(){
+    	if($(".case").length==$(".case:checked").length){
+      		$("#selectall").prop("checked","checked");
+    	}else{
+      		$("#selectall").removeAttr("checked");
+    	}
+  	}); 
   
-  //function to delete selected row
-  $('.btn-danger').on("click", function(event){
-  	var sel = false;	
-  	var ch = $('#setting').find('tbody input[type=checkbox]');
-    var dt = '';	
-  	ch.each(function(){  
-      if($(this).is(':checked')) { 
-        var idf = $(this).parents('tr').attr('id');
-        var idm = idf.substring(idf.indexOf('_')+1,idf.length);
-  		  dt = dt+' '+idm+',';
-      }    
-    }); 
-    if(dt==''){
-      var c = false;
-    } else {  	
-  	  var c = confirm('Continue delete \n'+dt.substring(1,dt.length-1)+'?');
-    }
-  	if(c) {
-  	  ch.each(function(){
-  		 var $this = $(this);
-  			if($this.is(':checked')) {
-  				sel = true;	//set to true if there is/are selected row
-          var idf = $(this).parents('tr').attr('id');
-          var dataP = "idf="+idf;
-  				$.ajax({
-            type: "POST",
-            url: "/process/users?p=delete",
-            data: dataP,
-            cache: false,
-            success: function(result){ 
-              if(result.trim()!='OK'){    
-                alert(result); 
-              } else {    
-        				$this.parents('tr').fadeOut(function(){
-        					$this.remove(); //remove row when animation is finished
-        				});     
-              }   
-            }
-          });   
-  			}
-  	  });
-  		  if(!sel) alert('No data selected');	
-  	}
-  	return false;
-  }); 
+  	//function to delete selected row
+  	$('.btn-danger').on("click", function(event){
+  		var sel = false;	
+  		var ch = $('#setting').find('tbody input[type=checkbox]');
+    	var dt = '';	
+  		ch.each(function(){  
+      		if($(this).is(':checked')) { 
+        		var idf = $(this).parents('tr').attr('id');
+        		var idm = idf.substring(idf.indexOf('_')+1,idf.length);
+  		  		dt = dt+' '+idm+',';
+      		}    
+    	}); 
+    	if(dt==''){
+      		var c = false;
+    	} else {  	
+  	  		var c = confirm('Continue delete \n'+dt.substring(1,dt.length-1)+'?');
+    	}
+  		if(c) {
+  	  		ch.each(function(){
+  		 		var $this = $(this);
+  				if($this.is(':checked')) {
+  					sel = true;	//set to true if there is/are selected row
+          			var idf = $(this).parents('tr').attr('id');
+          			var dataP = "idf="+idf;
+  					$.ajax({
+            			type: "POST",
+            			url: baseurl+"process/users?p=delete",
+            			data: dataP,
+            			cache: false,
+            			success: function(result){ 
+              				if(result.trim()!='OK'){    
+                				alert(result); 
+              				} else {    
+        						$this.parents('tr').fadeOut(function(){
+        							$this.remove(); //remove row when animation is finished
+        						});     
+              				}   
+            			}
+          			});   
+  				}
+  	  		});
+  		  	if(!sel) alert('No data selected');	
+  		}
+  		return false;
+  	}); 
 });
   
 $(function(){
-  //pass validation
-  $("#newuser").validate({ 
-    rules: {
-      email: { 
-        email: true,
-        remote: "/process/users?p=takene" 
-      }, 
-      username: {
-        required: true,
-        minlength: 5,
-        remote: "/process/users?p=takenu"
-      },
-      password: { 
-        minlength: 6 
-      }, 
-      confirm: { 
-        equalTo: "#password",
-        minlength: 6
-      },
-      role: {
-        required: true
-      }       
-    },
-    messages:{ 
-      name: "Please enter name.",
-      email: {
-        required: "Please enter email address.",
-        remote: "Please enter another email"
-      },
-      username: {
-        required: "Please enter username.",
-        remote: "Please enter another username"
-      },
-      confirm: { 
-        equalTo:"the passwords aren't match"
-      }
-    }
+	var baseurl = $("#baseurl").data('url');
+  	//pass validation
+  	$("#newuser").validate({ 
+    	rules: {
+      		email: { 
+        		email: true,
+        		remote: baseurl+"process/users?p=takene" 
+      		}, 
+	      	username: {
+	        	required: true,
+	        	minlength: 5,
+	        	remote: baseurl+"process/users?p=takenu"
+	      	},
+	      	password: { 
+	        	minlength: 6 
+	      	}, 
+	      	confirm: { 
+	        	equalTo: "#password",
+	        	minlength: 6
+	      	},
+	      	role: {
+	        	required: true
+	      	}       
+    	},
+	    messages:{ 
+	      	name: "Please enter name.",
+	      	email: {
+	        	required: "Please enter email address.",
+	        	remote: "Please enter another email"
+	      	},
+	      	username: {
+	        	required: "Please enter username.",
+	        	remote: "Please enter another username"
+	      	},
+	      	confirm: { 
+	        	equalTo:"the passwords aren't match"
+	      	}
+	    }
   });
   
   $("#editpass").validate({ 
