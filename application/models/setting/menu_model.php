@@ -45,7 +45,7 @@ class Menu_model extends CI_Model {
     $query = $this->db->get('MENU');                      
     $query = $this->db->select('MENU.*, CATEGORY.NAME AS CAT_NAME, PRINTER.NAME AS PRINT_NAME')
                       ->from('MENU')
-                      ->join('CATEGORY', 'MENU.CATEGORY_ID = category.ID')
+                      ->join('CATEGORY', 'MENU.CATEGORY_ID = CATEGORY.ID')
                       ->join('PRINTER', 'MENU.PRINTER = PRINTER.ID')
                       ->where('CATEGORY.REST_ID',$rest_id)
                       ->get('');
