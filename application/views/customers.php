@@ -65,31 +65,31 @@
 						    <?php $i = 0;  foreach ($customers as $row){ ?>
                 <tr data-index="<?=$i?>" class="datarow" id="<?=$row->ID.'_'.$row->NAME?>">
                   <td class="">
-                    <input type="checkbox" class="case">
+                    <input type="checkbox" class="case" tabindex="-1">
                   </td>
                   <td style="">
-                    <a id="NAME-<?=$row->ID?>" class=""><?=$row->NAME?></a>
+                    <a id="NAME-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->NAME?></a>
                   </td>
                   <td style="">
-                    <a id="TELEPHONE-<?=$row->ID?>" class=""><?=$row->TELEPHONE?></a>
+                    <a id="EMAIL_ADDRESS-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->EMAIL_ADDRESS?></a>
                   </td>
                   <td style="">
-                    <a id="ADDRESS_LINE_1-<?=$row->ID?>" class=""><?=$row->ADDRESS_LINE_1?></a>
+                    <a id="TELEPHONE-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->TELEPHONE?></a>
                   </td>
                   <td style="">
-                    <a id="ADDRESS_LINE_2-<?=$row->ID?>" class=""><?=$row->ADDRESS_LINE_2?></a>
+                    <a id="ADDRESS_LINE_1-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->ADDRESS_LINE_1?></a>
                   </td>
                   <td style="">
-                    <a id="CITY-<?=$row->ID?>" class=""><?=$row->CITY?></a>
+                    <a id="ADDRESS_LINE_2-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->ADDRESS_LINE_2?></a>
                   </td>
                   <td style="">
-                    <a id="POSTAL_CODE-<?=$row->ID?>" class=""><?=$row->POSTAL_CODE?></a>
+                    <a id="CITY-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->CITY?></a>
                   </td>
                   <td style="">
-                    <a id="COUNTRY-<?=$row->ID?>" class=""><?=$row->COUNTRY?></a>
+                    <a id="POSTAL_CODE-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->POSTAL_CODE?></a>
                   </td>
                   <td style="">
-                    <a id="EMAIL_ADDRESS-<?=$row->ID?>" class=""><?=$row->EMAIL_ADDRESS?></a>
+                    <a id="COUNTRY-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->COUNTRY?></a>
                   </td>
                   <td style=""><span id="crby<?=$row->ID?>"><?=$this->customers->get_username($row->CREATED_BY)->USERNAME?></span></td>
                   <td style=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
@@ -122,50 +122,87 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Add New Device</h4>
+        <h4 class="modal-title" id="myModalLabel">Add New Customer</h4>
       </div><!-- /.modal-header -->
       <div class="modal-body">
       <?php
-        $attributes = array('class' => 'form-inline', 'id' => 'newcat', 'role' => 'form');
+        $attributes = array('class' => 'form-inline', 'id' => 'newcust', 'role' => 'form');
         echo form_open('customers',$attributes)
-      ?>                    		
-        <div class="form-group" style="margin-bottom:10px"> 
-          <div class="input-group">       
-            <label for="inputCaption">Type</label>
-            <input type="text" class="form-control" id="inputCaption" placeholder="" name="customers_type" required>
-          </div>
-        </div><br />
-        <div class="form-group" style="margin-bottom:10px"> 
-          <div class="input-group">       
-            <label for="inputCaption">Manufacturer</label>
-            <input type="text" class="form-control" id="inputCaption" placeholder="" name="customers_manufacturer" required>
-          </div>
-        </div><br />
-        <div class="form-group" style="margin-bottom:10px"> 
-          <div class="input-group">       
-            <label for="inputCaption">Model</label>
-            <input type="text" class="form-control" id="inputCaption" placeholder="" name="customers_model" required>
-          </div>
-        </div><br />
-        <div class="form-group" style="margin-bottom:10px"> 
-          <div class="input-group">       
-            <label for="inputCaption">MAC Address</label>
-            <input type="text" class="form-control" id="inputCaption" placeholder="00:00:00:00:00:00" name="customers_mac" pattern="^([0-9a-fA-F]{2}[:-]){5}([0-9a-fA-F]{2})$" required>
-          </div>
-        </div><br />
-        <div class="form-group" style="margin-bottom:10px"> 
-          <div class="input-group">       
-            <label for="inputDate">Restaurant</label><br /> 
-            <select name="rest_id" class="form-control">
-            <?php foreach($restaurants as $rows){ ?>
-              <option value = "<?=$rows->REST_ID?>" <?= ($rows->REST_ID==$rest_id)?'selected':''?> ><?=$rows->NAME?></option>
-            <?php } ?>
-            </select>
-          </div>
-        </div><br />  
+      ?>  
+	  	<div class="responsive col-md-6">                  		
+	        <div class="form-group" style="margin-bottom:10px">
+	          <label for="name"></label> 
+	          <div class="input-group">      
+	            <div class="input-group-addon"><span class="glyphicon glyphicon-cutlery"></span></div> 
+	            <input type="text" class="form-control" id="name" placeholder="Customer Name" name="name" required>
+	          </div>
+	        </div><br />
+	        <div class="form-group" style="margin-bottom:10px">
+	          <label for="email"></label> 
+	          <div class="input-group">                                              
+	            <div class="input-group-addon"><span class="fa fa-envelope-o"></span></div>
+	            <input type="text" class="form-control" id="email" placeholder="Email Address" name="email" required>
+	          </div>
+	        </div><br />
+	        <div class="form-group" style="margin-bottom:10px">
+	          <label for="phone"></label> 
+	          <div class="input-group">                              
+	            <div class="input-group-addon"><span class="glyphicon glyphicon-phone-alt"></span></div>    
+	            <input type="text" class="form-control" id="phone" placeholder="Phone Number" name="phone" required>
+	          </div>
+	        </div><br />
+	        <div class="form-group" style="margin-bottom:10px"> 
+	          <label for="resto">Select Restaurant</label><br /> 
+	          <div class="input-group">       
+	            <div class="input-group-addon"><span class="glyphicon glyphicon-cutlery"></span></div>
+	            <select id="resto" name="rest_id" class="form-control">
+	            <?php foreach($restaurants as $rows){ ?>
+	              <option value = "<?=$rows->REST_ID?>" <?= ($rows->REST_ID==$rest_id)?'selected':''?> ><?=$rows->NAME?></option>
+	            <?php } ?>
+	            </select>
+	          </div>
+	        </div><br />
+	  	</div> 
+	  	<div class="responsive col-md-6">
+	        <div class="form-group" style="margin-bottom:10px">
+	          <label for="address1"></label> 
+	          <div class="input-group">                                                                                                  
+	            <div class="input-group-addon"><span class="glyphicon glyphicon-home"></span></div>
+	            <input type="text" class="form-control" id="address1" placeholder="Address Line 1" name="address1" required>
+	          </div>
+	        </div><br />
+	        <div class="form-group" style="margin-bottom:10px">
+	          <label for="address2"></label> 
+	          <div class="input-group">                                                                                               
+	            <div class="input-group-addon"><span class="glyphicon glyphicon-home"></span></div>   
+	            <input type="text" class="form-control" id="address2" placeholder="Address Line 2" name="address2" required>
+	          </div>
+	        </div><br />
+	        <div class="form-group" style="margin-bottom:10px">
+	          <label for="city"></label> 
+	          <div class="input-group">                                                                                     
+	            <div class="input-group-addon"><span class="fa fa-building"></span></div>
+	            <input type="text" class="form-control" id="city" placeholder="City" name="city" required>
+	          </div>
+	        </div><br />
+	        <div class="form-group" style="margin-bottom:10px">
+	          <label for="postal"></label> 
+	          <div class="input-group">                                                  
+	            <div class="input-group-addon"><span class="fa fa-envelope"></span></div> 
+	            <input type="text" class="form-control" id="postal" placeholder="Postal Code" name="postal" required>
+	          </div>
+	        </div><br />
+	        <div class="form-group" style="margin-bottom:10px">
+	          <label for="country"></label> 
+	          <div class="input-group">                              
+	            <div class="input-group-addon"><span class="fa fa-flag"></span></div>  
+	            <input type="text" class="form-control" id="country" placeholder="Country" name="country" required>
+	          </div>
+	        </div><br />
+	  	</div>  
         <div class="form-group text-right" style="margin-bottom:10px">
           <div class="input-group">       
-            <button type="submit" class="btn btn-success">Submit</button>
+            <button type="submit" class="btn btn-success">Submit</button>&nbsp;
             <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
           </div>
         </div><br /> 
@@ -174,147 +211,253 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal fade -->
+<div id="baseurl" data-url="<?=base_url()?>"></div>
 <?php  
-  //editable script
-  $i = 0;
-  //$n = count($dtopcats);
-  $edit_script = "<script>"; 
-  $edit_script .= "$(document).ready(function(){";
-  $edit_script .= "  $.fn.editable.defaults.mode = 'inline';";
-  foreach ($customers as $row){
-  $edit_script .= "  $('#TYPE-".$row->ID."').editable({
-                        url: '/process/customers?p=update',
-                        pk: ".$row->ID.", 
-                        validate: function(v) {
-                          if (!v) return 'don\'t leave it blank!';
-                        },
-                        success: function(result){  
-                          var data = result.split(',');
-                          $('#upby".$row->ID."').html(data[0]);
-                          $('#updt".$row->ID."').html(data[1]); 
-                      } 
-                    });";
-  $edit_script .= "  $('#MAKE-".$row->ID."').editable({
-                        url: '/process/customers?p=update',
-                        pk: ".$row->ID.", 
-                        validate: function(v) {
-                          if (!v) return 'don\'t leave it blank!';
-                        },
-                        success: function(result){  
-                          var data = result.split(',');
-                          $('#upby".$row->ID."').html(data[0]);
-                          $('#updt".$row->ID."').html(data[1]); 
-                      } 
-                    });";
-  $edit_script .= "  $('#MODEL-".$row->ID."').editable({
-                        url: '/process/customers?p=update',
-                        pk: ".$row->ID.", 
-                        validate: function(v) {
-                          if (!v) return 'don\'t leave it blank!';   
-                        },
-                        success: function(result){  
-                          var data = result.split(',');
-                          $('#upby".$row->ID."').html(data[0]);
-                          $('#updt".$row->ID."').html(data[1]); 
-                      } 
-                    });";
-  $edit_script .= "  $('#MAC_ADDRESS-".$row->ID."').editable({
-                        url: '/process/customers?p=update',
-                        pk: ".$row->ID.", 
-                        validate: function(v) {
-                          if (!v) return 'don\'t leave it blank!';
-                          if (isValidMacAddress(v)==false) return 'please fill in a correct MAC Address format!';
-                        },
-                        success: function(result){  
-                          var data = result.split(',');
-                          $('#upby".$row->ID."').html(data[0]);
-                          $('#updt".$row->ID."').html(data[1]); 
-                      } 
-                    });";
-  }
-  $edit_script .= "}); ";
+	//editable script
+	$i = 0;
+	$edit_script = "<script>"; 
+	$edit_script .= "$(document).ready(function(){";
+	$edit_script .= "  var updateurl = '".base_url()."process/customers?p=update';";
+	$edit_script .= "  $.fn.editable.defaults.mode = 'inline';";
+  	$edit_script .= "  $.fn.editable.defaults.showbuttons = false;";
+	foreach ($customers as $row){
+		$edit_script .= "  $('#NAME-".$row->ID."').editable({
+		                        url: updateurl,
+		                        pk: ".$row->ID.", 
+		                        validate: function(v) {
+		                          	if (!v) return 'don\'t leave it blank!';
+		                        },
+		                        success: function(result){  
+		                          	var data = result.split(',');
+		                          	$('#upby".$row->ID."').html(data[0]);
+		                          	$('#updt".$row->ID."').html(data[1]); 
+		                      	} 
+		                    });";
+		$edit_script .= "  $('#TELEPHONE-".$row->ID."').editable({
+		                        url: updateurl,
+		                        pk: ".$row->ID.", 
+		                        validate: function(v) {
+		                          	if (!v) return 'don\'t leave it blank!';  
+                          			if (!isPhone(v)) return 'please fill in a Phone Number format!';
+		                        },
+		                        success: function(result){  
+		                          	var data = result.split(',');
+		                          	$('#upby".$row->ID."').html(data[0]);
+		                          	$('#updt".$row->ID."').html(data[1]); 
+		                      	} 
+		                    });";
+		$edit_script .= "  $('#ADDRESS_LINE_1-".$row->ID."').editable({
+		                        url: updateurl,
+		                        pk: ".$row->ID.", 
+		                        validate: function(v) {
+		                          	if (!v) return 'don\'t leave it blank!';   
+		                        },
+		                        success: function(result){  
+		                          	var data = result.split(',');
+		                          	$('#upby".$row->ID."').html(data[0]);
+		                          	$('#updt".$row->ID."').html(data[1]); 
+		                      	} 
+		                    });";
+		$edit_script .= "  $('#ADDRESS_LINE_2-".$row->ID."').editable({
+		                        url: updateurl,
+		                        pk: ".$row->ID.", 
+		                        validate: function(v) {
+		                          	if (!v) return 'don\'t leave it blank!';
+		                        },
+		                        success: function(result){  
+		                          	var data = result.split(',');
+		                          	$('#upby".$row->ID."').html(data[0]);
+		                          	$('#updt".$row->ID."').html(data[1]); 
+		                      	} 
+		                    });";
+		$edit_script .= "  $('#CITY-".$row->ID."').editable({
+		                        url: updateurl,
+		                        pk: ".$row->ID.", 
+		                        validate: function(v) {
+		                          	if (!v) return 'don\'t leave it blank!';
+		                        },
+		                        success: function(result){  
+		                          	var data = result.split(',');
+		                          	$('#upby".$row->ID."').html(data[0]);
+		                          	$('#updt".$row->ID."').html(data[1]); 
+		                      } 
+		                    });";
+		$edit_script .= "  $('#POSTAL_CODE-".$row->ID."').editable({
+		                        url: updateurl,
+		                        pk: ".$row->ID.", 
+		                        validate: function(v) {
+		                          	if (!v) return 'don\'t leave it blank!';   
+		                        },
+		                        success: function(result){  
+		                          	var data = result.split(',');
+		                          	$('#upby".$row->ID."').html(data[0]);
+		                          	$('#updt".$row->ID."').html(data[1]); 
+		                      	} 
+		                    });";
+		$edit_script .= "  $('#COUNTRY-".$row->ID."').editable({
+		                        url: updateurl,
+		                        pk: ".$row->ID.", 
+		                        validate: function(v) {
+		                          	if (!v) return 'don\'t leave it blank!';
+		                        },
+		                        success: function(result){  
+		                          	var data = result.split(',');
+		                          	$('#upby".$row->ID."').html(data[0]);
+		                          	$('#updt".$row->ID."').html(data[1]); 
+		                      	} 
+		                    });";
+		$edit_script .= "  $('#EMAIL_ADDRESS-".$row->ID."').editable({
+		                        url: updateurl,
+		                        pk: ".$row->ID.", 
+		                        validate: function(v) {
+		                          	if (!v) return 'don\'t leave it blank!';
+                          			if (!isEmail(v)) return 'please fill in an e-Mail format!';
+		                        },
+		                        success: function(result){  
+		                          var data = result.split(',');
+		                          $('#upby".$row->ID."').html(data[0]);
+		                          $('#updt".$row->ID."').html(data[1]); 
+		                      } 
+		                    });";
+	}
+	$edit_script .= "}); ";
 	$edit_script .= '</script>';
-  echo $edit_script;
+	echo $edit_script;
 ?>
 <script>   
-$(document).ready(function()
-{     
-  var table = $('#customers').DataTable({
-    columnDefs: [
-      { targets: 'no-sort', orderable: false }
-    ],
-    "order": [[ 12, "desc" ]]
-  });
+$(document).ready(function(){  
+	var baseurl = $("#baseurl").data('url');
   
-  //check all
-  $("#checkall").click(function(){
-    $('.case').prop('checked',this.checked);
-  });
-  $(".case").click(function(){
-    if($(".case").length==$(".case:checked").length){
-      $("#selectall").prop("checked","checked");
-    }else{
-      $("#selectall").removeAttr("checked");
-    }
-  }); 
+  	//make editable on focus  
+  	$('.edit').focus(function(e) {
+    	e.stopPropagation();
+    	$(this).editable('toggle');
+  	});
+     
+	//initiate datatable 
+  	var table = $('#customers').DataTable({
+    	columnDefs: [
+      		{ targets: 'no-sort', orderable: false }
+    	],
+    	"order": [[ 12, "desc" ]]
+  	});
   
-  //function to delete selected row
-  $('.btn-danger').on("click", function(event){
-  	var sel = false;	
-  	var ch = $('#customers').find('tbody input[type=checkbox]');
-    var dt = '';	
-  	ch.each(function(){  
-      if($(this).is(':checked')) { 
-        var idf = $(this).parents('tr').attr('id');
-        var idm = idf.substring(idf.indexOf('_')+1,idf.length);
-  		  dt = dt+' '+idm+',';
-      }    
-    }); 
-    if(dt==''){
-      var c = false;
-    } else {  	
-  	  var c = confirm('Continue delete \n'+dt.substring(1,dt.length-1)+'?');
-    }
-  	if(c) {
-  	  ch.each(function(){
-  		 var $this = $(this);
-  			if($this.is(':checked')) {
-  				sel = true;	//set to true if there is/are selected row
-          var idf = $(this).parents('tr').attr('id');
-          var dataP = "idf="+idf;
-  				$.ajax({
-            type: "POST",
-            url: "/process/customers?p=delete",
-            data: dataP,
-            cache: false,
-            success: function(result){ 
-              if(result.trim()!='OK'){    
-                alert(result); 
-              } else {    
-        				$this.parents('tr').fadeOut(function(){
-        					$this.remove(); //remove row when animation is finished
-        				});     
-              }   
-            }
-          });   
-  			}
-  	  });
-  		  if(!sel) alert('No data selected');	
-  	}
-  	return false;
-  }); 
-});                                           
+	//check all
+	$("#checkall").click(function(){
+	    $('.case').prop('checked',this.checked);
+	});
+	$(".case").click(function(){
+	    if($(".case").length==$(".case:checked").length){
+	      	$("#selectall").prop("checked","checked");
+	    }else{
+	      	$("#selectall").removeAttr("checked");
+	    }
+	}); 
+	  
+  	//function to delete selected row
+  	$('.btn-danger').on("click", function(event){
+  		var sel = false;	
+  		var ch = $('#customers').find('tbody input[type=checkbox]');
+    	var dt = '';	
+  		ch.each(function(){  
+      		if($(this).is(':checked')) { 
+        		var idf = $(this).parents('tr').attr('id');
+        		var idm = idf.substring(idf.indexOf('_')+1,idf.length);
+  		  		dt = dt+' '+idm+',';
+      		}    
+    	}); 
+    	if(dt==''){
+      		var c = false;
+    	} else {  	
+  	  		var c = confirm('Continue delete \n'+dt.substring(1,dt.length-1)+'?');
+    	}
+  		if(c) {
+  	  		ch.each(function(){
+  		 		var $this = $(this);
+  				if($this.is(':checked')) {
+  					sel = true;	//set to true if there is/are selected row
+          			var idf = $(this).parents('tr').attr('id');
+          			var dataP = "idf="+idf;
+  					$.ajax({
+            			type: "POST",
+            			url: baseurl+"process/customers?p=delete",
+            			data: dataP,
+            			cache: false,
+            			success: function(result){ 
+              				if(result.trim()!='OK'){    
+                				alert(result); 
+              				} else {    
+        						$this.parents('tr').fadeOut(function(){
+        							$this.remove(); //remove row when animation is finished
+        						});     
+              				}   
+            			}
+          			});   
+  				}
+  	  		});
+  		  	if(!sel) alert('No data selected');	
+  		}
+  		return false;
+  	}); 
+}); 
+  
+$(function(){
+	var baseurl = $("#baseurl").data('url');
+  	//pass validation
+  	$("#newcust").validate({ 
+	    rules: {
+	      email: { 
+	        email: true
+	      }, 
+	      name: {
+	        required: true,
+	        minlength: 3
+	      },
+	      phone: { 
+	        phone: true 
+	      }      
+	    },
+	    messages:{
+	      email: {
+	        required: "Please enter email address."
+	      },
+	      phone: {
+	        phone: "Please fill in a Phone Number format" 
+	      }
+	    }      
+  	});
+});                                          
 
-function isValidMacAddress(macAdd){
-  var RegExPattern = /^([0-9a-fA-F]{2}[:-]){5}([0-9a-fA-F]{2})$/;
-  if (!(macAdd.match(RegExPattern)) || macAdd.length != 17){
-   return false;
-  } else {
-   return true;
-  }
-}
- 
-  $(function(){             
-  });
+
+$.validator.setDefaults({
+    highlight: function(element) {
+        $(element).closest('.form-group').addClass('has-error');
+    },
+    unhighlight: function(element) {
+        $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+    },
+    errorElement: 'span',
+    errorClass: 'help-block',
+    errorPlacement: function(error, element) {
+        if(element.parent('.input-group').length) {
+            error.insertAfter(element.parent());
+        } else {
+            error.insertAfter(element);
+        }
+    }
+});
+
+jQuery.validator.addMethod("phone", function(value, element) {
+  return this.optional(element) || /(\D*\d){8}/.test(value);
+}, "Please fill in a Phone Number format");
   
+function isEmail(email) {
+  var regex = /([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+  return regex.test(email);
+}  
+
+function isPhone(phone) {
+  var regex = /(\D*\d){8}/;
+  return regex.test(phone);
+}    
 </script>

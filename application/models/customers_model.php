@@ -47,13 +47,13 @@ class Customers_model extends CI_Model {
     return $query->result();
   } 
    
-	function new_customers($MAC,$TYPE,$MAKE,$MODEL,$REST_ID){       
+	function new_customers($NAME,$TELEPHONE,$ADDRESS_LINE_1,$ADDRESS_LINE_2,$CITY,$EMAIL_ADDRESS,$POSTAL_CODE,$COUNTRY,$REST_ID){       
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id'];
-    $query = $this->db->query('INSERT INTO DEVICES
-      (MAC_ADDRESS,TYPE,MAKE,MODEL,REST_ID,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
-      VALUES 
-      ("'.$MAC.'","'.$TYPE.'","'.$MAKE.'","'.$MODEL.'",'.$REST_ID.','.$id.',NOW(),'.$id.',NOW());');
+    	$query = $this->db->query('INSERT INTO CUSTOMERS
+      		(NAME,TELEPHONE,ADDRESS_LINE_1,ADDRESS_LINE_2,CITY,EMAIL_ADDRESS,POSTAL_CODE,COUNTRY,REST_ID,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
+      		VALUES 
+      		("'.$NAME.'","'.$TELEPHONE.'","'.$ADDRESS_LINE_1.'","'.$ADDRESS_LINE_2.'","'.$CITY.'","'.$EMAIL_ADDRESS.'","'.$POSTAL_CODE.'","'.$COUNTRY.'",'.$REST_ID.','.$id.',NOW(),'.$id.',NOW());');
 		//return $query->row();
   }
   

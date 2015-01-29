@@ -6,7 +6,7 @@ class Customers_controller extends CI_Controller {
 	{
 		parent::__construct();	
 		$this->load->model('customers_model','customers',TRUE);  
-    $this->load->helper(array('form', 'url','html'));
+    	$this->load->helper(array('form', 'url','html'));
 		$session_data = $this->session->userdata('logged_in');  
 		$this->data['menu'] = 'customers';      
 		$this->data['user'] = $this->customers->get_profile();
@@ -29,9 +29,9 @@ class Customers_controller extends CI_Controller {
 			$data['startdate'] = $start_date;
 			$data['enddate'] = $end_date; 
 			
-      if($this->input->post('customers_type')){               
-		    $this->customers->new_customers($this->input->post('customers_mac'),$this->input->post('customers_type'),$this->input->post('customers_manufacturer'),$this->input->post('customers_model'),$this->input->post('rest_id'));
-      } 
+      	if($this->input->post('email')){               
+		    $this->customers->new_customers($this->input->post('name'),$this->input->post('phone'),$this->input->post('address1'),$this->input->post('address2'),$this->input->post('city'),$this->input->post('email'),$this->input->post('postal'),$this->input->post('country'),$this->input->post('rest_id'));
+      	} 
       
 		  $data['customers'] = $this->customers->get_rest_customers($rest_id);
 			                   
