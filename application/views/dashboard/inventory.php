@@ -221,7 +221,7 @@
         $(ale).countTo({
             from: 0,
             to: num,
-            speed: 3500,
+            speed: 1000,
             refreshInterval: 50,
             onComplete: function(value) {
                 $(ale).html(currencyFormat(num));
@@ -299,5 +299,5 @@
   });
   
   $('table.dataTable thead th, table.dataTable thead td').css('border','none');
-     	
+  $('.dataTables_empty').html('None');   	
 </script>

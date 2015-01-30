@@ -97,7 +97,7 @@
           <?php //echo "<pre>" . var_dump($dpayment) . "</pre>"; ?>
           <div class="col-md-4">
   				  <div class="panel panel-default">
-  				    <div class="panel-heading"><b>Top Categories By Sales</b></div>
+  				    <div class="panel-heading"><b>Top Category By Sales</b></div>
   					  <div class="panel-body">
     					  <div class="row">
     						  <div class="canvas-donut" style="float:left;margin-left:10px">
@@ -123,7 +123,7 @@
                         if($n!=0){    
                           echo $chart_legend;
                         }else{
-                          echo "<div class='alert alert-danger' style='padding:10px;'>NO DATA</div>";
+                          echo "<div id='nrtcbs' class='alert alert-danger' style='padding:10px;'>No Records</div>";
                         }
                     ?>
                     </div>
@@ -135,7 +135,7 @@
           
           <div class="col-md-3">
   				  <div class="panel panel-default">
-  				    <div class="panel-heading"><b>Top Items By Sales</b></div>
+  				    <div class="panel-heading"><b>Top Menu Items By Sales</b></div>
   					  <div class="panel-body">  
                 <div class="fitin">
                   <div style="display:inline-block;width:100%;">
@@ -157,7 +157,7 @@
                       if($n!=0){    
                         echo $chart_legend;
                       }else{
-                        echo "<div class='alert alert-danger' style='padding:10px;max-width:78px;'>NO DATA</div>";
+                        echo "<div id='nrtibs' class='alert alert-danger' style='padding:10px;'>No Records</div>";
                       }
                     ?>
                   </div>
@@ -204,7 +204,7 @@
                     if($total!=0){    
                       echo $chart_legend;
                     }else{
-                      echo "<div class='alert alert-danger' style='padding:10px;'>NO DATA</div>";
+                      echo "<div class='alert alert-danger' style='padding:10px;'>No Records</div>";
                     }
                   ?>
                  </div>
@@ -318,7 +318,7 @@
   }else{                                                                   
     $chart_script .= "{";  
     $chart_script .= "value: 1,";
-    $chart_script .= "color: '#ebccd1', label: 'NO DATA'}";
+    $chart_script .= "color: '#ebccd1', label: 'No Records'}";
   }
   $chart_script .= "];";
   $chart_script .= "var chart1 = document.getElementById('topcats_donut').getContext('2d');";
@@ -356,7 +356,7 @@
   }else{                                                                   
     $chart_script .= "{";  
     $chart_script .= "value: 1,";
-    $chart_script .= "color: '#ebccd1', label: 'NO DATA'}";
+    $chart_script .= "color: '#ebccd1', label: 'No Records'}";
   }
   $chart_script .= "];";
   $chart_script .= "var chart2 = document.getElementById('payment_donut').getContext('2d');";      
@@ -464,6 +464,8 @@ $(document).ready(function(){
     $("#ttibs").css('font-size',ttibs_f+'px');  
     $(".col-md-3 div .panel").css('min-height',colmd4h+'px !important');  
   }
+  var nrtcbs_w = parseInt($("#nrtcbs").width())+24;
+   $("#nrtibs").css('width',nrtcbs_w+'px');  
   //console.log(ttibs_h+' '+colmd4h+' '+perctwf+' '+ttibs_f);
   //$(".canvas-donut").css("overflow","visible");
 }); 
@@ -502,7 +504,7 @@ $(document).ready(function(){
         $(ale).countTo({
             from: 0,
             to: num,
-            speed: 3500,
+            speed: 1000,
             refreshInterval: 50,
             onComplete: function(value) {
                 $(ale).html(currencyFormat(num));

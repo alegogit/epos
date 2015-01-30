@@ -11,8 +11,14 @@
 </script>
  
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap.css"/>
+<?php
+	echo "
+		<style>
+			body{background: #eee url('".base_url()."assets/images/resto.png');}
+		</style>
+	";
+?>
 <style>
-body{background: #eee url('/assets/images/resto.png');}
 html,body{
     position: relative;
     height: 100%;
