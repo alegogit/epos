@@ -187,7 +187,7 @@
             <label for="rest_id">Default Restaurant</label><br> 
             <div class="input-group">  
               <div class="input-group-addon"><span class="glyphicon glyphicon-cutlery"></span></div>  
-              <select name="rest_id" class="form-control selectpicker show-tick" data-size="5" data-width="168px" data-live-search="true">
+              <select id="rest_id" name="rest_id" class="form-control selectpicker show-tick" data-size="5" data-width="168px" data-live-search="true">
               <?php foreach($restaurants as $rows){ ?>
                 <option value = "<?=$rows->REST_ID?>"><?=$rows->NAME?></option>
               <?php } ?>

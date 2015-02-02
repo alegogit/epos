@@ -41,21 +41,21 @@
     <hr style="margin-bottom:10px;margin-top:10px" />
     
     <div class="row">
-			<div class="col-lg-12">
-				<div class="panel panel-default">
-					<div class="panel-heading"><b>Add/Edit Table Order</b></div>
-					<div class="panel-body">                 					                    
-			      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#bookModal">
-              <span class="glyphicon glyphicon-plus"></span> Add New Device  
-            </button>             
-            <button type="button" class="btn btn-danger">
-              <span class="glyphicon glyphicon-remove"></span> Delete Selected Device(s)
-            </button>        
-            <div style="margin-bottom:15px"></div> 
-            <div class="table-responsive">
-						  <table id="setting" class="table table-striped dt-right compact">
-						    <thead>
-						    <tr class="tablehead text3D">
+		<div class="col-lg-12">
+			<div class="panel panel-default">
+				<div class="panel-heading"><b>Add/Edit Table Order</b></div>
+				<div class="panel-body">                 					                    
+			    	<button type="button" class="btn btn-success" data-toggle="modal" data-target="#bookModal">
+              			<span class="glyphicon glyphicon-plus"></span> Add New Device  
+            		</button>             
+            		<button type="button" class="btn btn-danger">
+              			<span class="glyphicon glyphicon-remove"></span> Delete Selected Device(s)
+            		</button>        
+            	<div style="margin-bottom:15px"></div> 
+            	<div class="table-responsive">
+					<table id="setting" class="table table-striped dt-right compact">
+						<thead>
+							<tr class="tablehead text3D">
 						        <th class="no-sort"><input type="checkbox" id="checkall" value="Check All"></th>
 						        <th>Type</th>
 						        <th>Manufacturer</th>
@@ -67,34 +67,34 @@
 						        <th data-field="upby"  data-sortable="false">Updated By</th>
 						        <th data-field="updt" data-sortable="false">Updated Date</th>
 						    </tr>
-						    </thead>  
-						    <tbody>                    
-						    <?php $i = 0;  foreach ($devices as $row){ ?>
-                <tr data-index="<?=$i?>" class="datarow" id="<?=$row->ID.'_'.$row->MAKE.' '.$row->MODEL.' '.$row->TYPE?>">
-                  <td class="">
-                    <input type="checkbox" class="case">
-                  </td>
-                  <td style="">
-                    <a id="TYPE-<?=$row->ID?>" class=""><?=$row->TYPE?></a>
-                  </td>
-                  <td style="">
-                    <a id="MAKE-<?=$row->ID?>" class=""><?=$row->MAKE?></a>
-                  </td>
-                  <td style="">
-                    <a id="MODEL-<?=$row->ID?>" class=""><?=$row->MODEL?></a>
-                  </td>
-                  <td style="">
-                    <a id="MAC_ADDRESS-<?=$row->ID?>" class=""><?=$row->MAC_ADDRESS?></a>
-                  </td>
-                  <td style="">
-                    <a id="LAST_SYNC-<?=$row->ID?>" class=""><?=$row->LAST_SYNC?></a>
-                  </td>
-                  <td style=""><span id="crby<?=$row->ID?>"><?=$this->setting->get_username($row->CREATED_BY)->USERNAME?></span></td>
-                  <td style=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
-                  <td style=""><span id="upby<?=$row->ID?>"><?=$this->setting->get_username($row->LAST_UPDATED_BY)->USERNAME?></span></td>
-                  <td style=""><span id="updt<?=$row->ID?>"><?=$row->LAST_UPDATED_DATE?></span></td>
-                </tr>
-                <?php $i++; } ?>
+						</thead>  
+						<tbody>                    
+						<?php $i = 0;  foreach ($devices as $row){ ?>
+                			<tr data-index="<?=$i?>" class="datarow" id="<?=$row->ID.'_'.$row->MAKE.' '.$row->MODEL.' '.$row->TYPE?>">
+			                  	<td class="">
+			                    	<input type="checkbox" class="case" tabindex="-1">
+			                  	</td>
+			                  	<td style="">
+			                    	<a id="TYPE-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->TYPE?></a>
+			                  	</td>
+			                  	<td style="">
+			                    	<a id="MAKE-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->MAKE?></a>
+			                  	</td>
+			                  	<td style="">
+			                    	<a id="MODEL-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->MODEL?></a>
+			                  	</td>
+			                  	<td style="">
+			                    	<a id="MAC_ADDRESS-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->MAC_ADDRESS?></a>
+			                  	</td>
+			                  	<td style="">
+			                    	<?=$row->LAST_SYNC?>
+			                  	</td>
+			                  	<td style=""><span id="crby<?=$row->ID?>"><?=$this->setting->get_username($row->CREATED_BY)->USERNAME?></span></td>
+			                  	<td style=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
+			                  	<td style=""><span id="upby<?=$row->ID?>"><?=$this->setting->get_username($row->LAST_UPDATED_BY)->USERNAME?></span></td>
+			                  	<td style=""><span id="updt<?=$row->ID?>"><?=$row->LAST_UPDATED_DATE?></span></td>
+			                </tr>
+			                <?php $i++; } ?>
 						    </tbody>
 						  </table>
              </div> 
@@ -116,37 +116,42 @@
       </div><!-- /.modal-header -->
       <div class="modal-body">
       <?php
-        $attributes = array('class' => 'form-inline', 'id' => 'newcat', 'role' => 'form');
+        $attributes = array('class' => 'form-inline', 'id' => 'newdev', 'role' => 'form');
         echo form_open('setting/devices',$attributes)
       ?>                    		
-        <div class="form-group" style="margin-bottom:10px"> 
-          <div class="input-group">       
-            <label for="inputCaption">Type</label>
-            <input type="text" class="form-control" id="inputCaption" placeholder="" name="devices_type" required>
+        <div class="form-group" style="margin-bottom:10px">  
+          <label for="Type"></label>
+          <div class="input-group">          
+            <div class="input-group-addon"><span class="fa fa-tablet"></span></div>
+            <input type="text" class="form-control" id="Type" placeholder="Type" name="devices_type" required>
           </div>
         </div><br />
         <div class="form-group" style="margin-bottom:10px"> 
+          <label for="Manufacturer"></label>
           <div class="input-group">       
-            <label for="inputCaption">Manufacturer</label>
-            <input type="text" class="form-control" id="inputCaption" placeholder="" name="devices_manufacturer" required>
+            <div class="input-group-addon"><span class="fa fa-tablet"></span></div>
+            <input type="text" class="form-control" id="Manufacturer" placeholder="Manufacturer" name="devices_manufacturer" required>
+          </div>
+        </div><br />
+        <div class="form-group" style="margin-bottom:10px">    
+          <label for="Model"></label>
+          <div class="input-group">    
+            <div class="input-group-addon"><span class="fa fa-tablet"></span></div>
+            <input type="text" class="form-control" id="Model" placeholder="Model" name="devices_model" required>
+          </div>
+        </div><br />
+        <div class="form-group" style="margin-bottom:10px">      
+          <label for="devices_mac">MAC Address</label><br/>
+          <div class="input-group"> 
+            <div class="input-group-addon"><span class="fa fa-gear"></span></div>
+            <input type="text" class="form-control" id="devices_mac" placeholder="00:00:00:00:00:00" name="devices_mac" required>
           </div>
         </div><br />
         <div class="form-group" style="margin-bottom:10px"> 
-          <div class="input-group">       
-            <label for="inputCaption">Model</label>
-            <input type="text" class="form-control" id="inputCaption" placeholder="" name="devices_model" required>
-          </div>
-        </div><br />
-        <div class="form-group" style="margin-bottom:10px"> 
-          <div class="input-group">       
-            <label for="inputCaption">MAC Address</label>
-            <input type="text" class="form-control" id="inputCaption" placeholder="00:00:00:00:00:00" name="devices_mac" pattern="^([0-9a-fA-F]{2}[:-]){5}([0-9a-fA-F]{2})$" required>
-          </div>
-        </div><br />
-        <div class="form-group" style="margin-bottom:10px"> 
-          <div class="input-group">       
-            <label for="inputDate">Restaurant</label><br /> 
-            <select name="rest_id" class="form-control">
+          <label for="devrest">Restaurant</label><br />  
+          <div class="input-group">             
+            <div class="input-group-addon"><span class="glyphicon glyphicon-cutlery"></span></div>
+            <select id="devrest" name="rest_id" class="form-control" style="width:168px">
             <?php foreach($restaurants as $rows){ ?>
               <option value = "<?=$rows->REST_ID?>" <?= ($rows->REST_ID==$rest_id)?'selected':''?> ><?=$rows->NAME?></option>
             <?php } ?>
@@ -155,7 +160,7 @@
         </div><br />  
         <div class="form-group text-right" style="margin-bottom:10px">
           <div class="input-group">       
-            <button type="submit" class="btn btn-success">Submit</button>
+            <button type="submit" class="btn btn-success">Submit</button>&nbsp;
             <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
           </div>
         </div><br /> 
@@ -164,16 +169,18 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal fade -->
+<div id="baseurl" data-url="<?=base_url()?>"></div>
 <?php  
   //editable script
   $i = 0;
-  //$n = count($dtopcats);
   $edit_script = "<script>"; 
   $edit_script .= "$(document).ready(function(){";
   $edit_script .= "  $.fn.editable.defaults.mode = 'inline';";
+  $edit_script .= "  $.fn.editable.defaults.showbuttons = false;";
+  $edit_script .= "  var updateurl = '".base_url()."process/devices?p=update';";
   foreach ($devices as $row){
   $edit_script .= "  $('#TYPE-".$row->ID."').editable({
-                        url: '/process/devices?p=update',
+                        url: updateurl,
                         pk: ".$row->ID.", 
                         validate: function(v) {
                           if (!v) return 'don\'t leave it blank!';
@@ -185,7 +192,7 @@
                       } 
                     });";
   $edit_script .= "  $('#MAKE-".$row->ID."').editable({
-                        url: '/process/devices?p=update',
+                        url: updateurl,
                         pk: ".$row->ID.", 
                         validate: function(v) {
                           if (!v) return 'don\'t leave it blank!';
@@ -197,7 +204,7 @@
                       } 
                     });";
   $edit_script .= "  $('#MODEL-".$row->ID."').editable({
-                        url: '/process/devices?p=update',
+                        url: updateurl,
                         pk: ".$row->ID.", 
                         validate: function(v) {
                           if (!v) return 'don\'t leave it blank!';   
@@ -209,7 +216,7 @@
                       } 
                     });";
   $edit_script .= "  $('#MAC_ADDRESS-".$row->ID."').editable({
-                        url: '/process/devices?p=update',
+                        url: updateurl,
                         pk: ".$row->ID.", 
                         validate: function(v) {
                           if (!v) return 'don\'t leave it blank!';
@@ -228,13 +235,22 @@
 ?>
 <script>   
 $(document).ready(function()
-{     
-  var table = $('#setting').DataTable({
-    columnDefs: [
-      { targets: 'no-sort', orderable: false }
-    ],
-    "order": [[ 9, "desc" ]]
-  });
+{  
+	var baseurl = $("#baseurl").data('url');
+  
+  	//make editable on focus  
+  	$('.edit').focus(function(e) {
+    	e.stopPropagation();
+    	$(this).editable('toggle');
+  	});
+  
+  	//inititate datatable
+  	var table = $('#setting').DataTable({
+    	columnDefs: [
+      		{ targets: 'no-sort', orderable: false }
+    	],
+    	"order": [[ 1, "asc" ]]
+  	});  
   
   //check all
   $("#checkall").click(function(){
@@ -274,7 +290,7 @@ $(document).ready(function()
           var dataP = "idf="+idf;
   				$.ajax({
             type: "POST",
-            url: "/process/devices?p=delete",
+            url: baseurl+"process/devices?p=delete",
             data: dataP,
             cache: false,
             success: function(result){ 
@@ -295,16 +311,51 @@ $(document).ready(function()
   }); 
 });                                           
 
+
+  
+$(function(){
+	var baseurl = $("#baseurl").data('url');
+  	//pass validation
+  
+  $("#newdev").validate({ 
+    rules: {
+      devices_mac: { 
+        macadd: true 
+      }
+	}
+  });
+  
+});         
+
+$.validator.setDefaults({
+    highlight: function(element) {
+        $(element).closest('.form-group').addClass('has-error');
+    },
+    unhighlight: function(element) {
+        $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+    },
+    errorElement: 'span',
+    errorClass: 'help-block',
+    errorPlacement: function(error, element) {
+        if(element.parent('.input-group').length) {
+            error.insertAfter(element.parent());
+        } else {
+            error.insertAfter(element);
+        }
+    }
+});
+
+jQuery.validator.addMethod("macadd", function(value, element) {
+  return this.optional(element) || /^([0-9a-fA-F]{2}[:]){5}([0-9a-fA-F]{2})$/.test(value);
+}, "Please fill in a Mac Address format");
+
 function isValidMacAddress(macAdd){
-  var RegExPattern = /^([0-9a-fA-F]{2}[:-]){5}([0-9a-fA-F]{2})$/;
+  //var RegExPattern = /^([0-9a-fA-F]{2}[:-]){5}([0-9a-fA-F]{2})$/;
+  var RegExPattern = /^([0-9a-fA-F]{2}[:]){5}([0-9a-fA-F]{2})$/;
   if (!(macAdd.match(RegExPattern)) || macAdd.length != 17){
    return false;
   } else {
    return true;
   }
 }
- 
-  $(function(){             
-  });
-  
 </script>

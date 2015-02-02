@@ -6,7 +6,7 @@ class Devices_controller extends CI_Controller {
 	{
 		parent::__construct();	
 		$this->load->model('setting/devices_model','setting',TRUE);  
-    $this->load->helper(array('form', 'url','html'));
+    	$this->load->helper(array('form', 'url','html'));
 		$session_data = $this->session->userdata('logged_in');  
 		$this->data['menu'] = 'setting';      
 		$this->data['user'] = $this->setting->get_profile();

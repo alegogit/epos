@@ -42,45 +42,45 @@
     <hr style="margin-bottom:10px;margin-top:10px" />
     
     <div class="row">
-			<div class="col-lg-12">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-            <b>Select Default Currency</b>  
-          </div>
-					<div class="panel-body">                
-					  <div class="table-responsive">     
-						  <table id="setting" class="table table-striped dt-right compact"> 
-                <thead>
+		<div class="col-lg-12">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+            		<b>Select Default Currency</b>  
+          		</div>
+				<div class="panel-body">                
+					<div class="table-responsive">     
+						<table id="setting" class="table table-striped dt-right compact"> 
+                		<thead>
 						    <tr class="tablehead text3D">
 						        <th>Code</th>
 						        <th>Symbol</th>
 						        <th>Description</th>
 						        <th>Default</th>
-						      </tr>
-						    </thead>
-						    <tbody>                    
+							</tr>
+						</thead>
+						<tbody>                    
 						    <?php $i = 0;  foreach ($currencies as $row){ ?>
-                <tr data-index="<?=$i?>" class="datarow" id="<?=$i?>">
-                  <td style="">
-                    <?=$row->CODE?>
-                  </td>
-                  <td style="">
-                    <b class="gold"><?=$row->VALUE?></b>
-                  </td>
-                  <td style="">
-                    <?=$row->DESCRIPTION?>   
-                  </td>
-                  <td style="">          
-                    <a role="button" class="btn-lg" href="#">
-                      <i id="<?=$row->CODE?>" class="set-default fa <?=($row->CODE==$rest_dcurr)?'fa-check-circle':'fa-check-circle-o'?>" data-id="<?=$row->CODE?>" data-csym="<?=$row->VALUE?>" data-rid="<?=$rest_id?>" data-rnm="<?=$rest_name?>"></i>
-                    </a>
-                  </td>
-                </tr>
-                <?php $i++; } ?>
-						    </tbody>
-						  </table>
-						</div>
-					</div> 
+                			<tr data-index="<?=$i?>" class="datarow" id="<?=$i?>">
+                  				<td style="">
+                    				<?=$row->CODE?>
+                  				</td>
+                  				<td style="">
+                    				<b class="gold"><?=$row->VALUE?></b>
+                  				</td>
+                  				<td style="">
+                    				<?=$row->DESCRIPTION?>   
+                  				</td>
+                  				<td style="">          
+				                    <a role="button" class="btn-lg" href="#">
+				                      <i id="<?=$row->CODE?>" class="set-default fa <?=($row->CODE==$rest_dcurr)?'fa-check-circle':'fa-check-circle-o'?>" data-id="<?=$row->CODE?>" data-csym="<?=$row->VALUE?>" data-rid="<?=$rest_id?>" data-rnm="<?=$rest_name?>"></i>
+				                    </a>
+				                </td>
+				            </tr>
+				            <?php $i++; } ?>
+						</tbody>
+						</table>
+					</div>
+				</div> 
 				</div>
 			</div>
 		</div><!--/.row-->
