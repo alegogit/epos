@@ -47,7 +47,7 @@
 						    <thead>
 						    <tr class="tablehead text3D">
 						        <th class="no-sort"><input type="checkbox" id="checkall" value="Check All"></th>
-						        <th>Customers' Name</th>
+						        <th>Customer Name</th>
 						        <th>Email Address</th>
 						        <th>Telephone</th>
 						        <th>Address Line 1</th>
