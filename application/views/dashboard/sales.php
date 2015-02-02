@@ -70,7 +70,7 @@
             </div>
             <div class="form-group" style="margin-bottom:0px">
               <div class="input-group">
-                <button type="submit" class="btn btn-success" style="display:inline">Filter</button>   
+                <input type="submit" name="filter" class="btn btn-success" style="display:inline" value="Filter">
               </div>
             </div>
           <?=form_close()?>
