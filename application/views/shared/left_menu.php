@@ -28,7 +28,7 @@
   </ul>
   </div>
   <div class="copyright"> 
-  <div id="calendar" style="background-color:#fff;margin:5px;border-radius:5px;"></div>  
+  <div id="calendar" style="background-color:#fff;margin:5px;border-radius:5px;" class="responsive"></div>  
     <p>© 2014 Company, Inc. · <a href="#">Privacy</a> · <a href="#">Terms</a></p>
   </div>
 </div><!-- /#sidebar-wrapper -->

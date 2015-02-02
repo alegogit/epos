@@ -6,7 +6,8 @@ class Login_controller extends CI_Controller {
 	{
 		
 		$this->load->helper(array('form'));
-		$this->load->view('login');
+		$data['username'] = ($this->input->post('username'))?$this->input->post('username'):"";
+		$this->load->view('login',$data);
 		
 	}
 		

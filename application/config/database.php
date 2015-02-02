@@ -48,10 +48,14 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = 'localhost';
+$db['default']['hostname'] = 'epos.ch32fr0spr6w.ap-southeast-1.rds.amazonaws.com';
 $db['default']['username'] = 'root';
-$db['default']['password'] = '';
-$db['default']['database'] = 'epos';
+$db['default']['password'] = 'zakuna88';
+$db['default']['database'] = 'epos_dev';
+//$db['default']['hostname'] = 'localhost';
+////$db['default']['username'] = 'root';
+//$db['default']['password'] = '';
+//$db['default']['database'] = 'epos';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;

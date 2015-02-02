@@ -1,4 +1,4 @@
-<div id="page-content-wrapper">
+<div id="page-content-wrapper" style="padding-bottom:0px !important">
 <!-- Page Content -->
   <div class="container-fluid" style="font-size:90%;">
     
@@ -100,10 +100,10 @@
   				    <div class="panel-heading"><b>Top Category By Sales</b></div>
   					  <div class="panel-body">
     					  <div class="row">
-    						  <div class="canvas-donut" style="float:left;margin-left:10px">
+    						  <div class="canvas-donut" style="float:left;margin-left:2px">
     							  <canvas class="chart" id="topcats_donut" ></canvas>
     						  </div> 
-                  <div class="fitin" style="display:inline-block;margin-left:20px;max-width:150px;"> 
+                  <div class="fitin" style="display:inline-block;margin-left:2px;max-width:150px;"> 
                     <div>
                       <?php    
                         $i = 0;
@@ -171,10 +171,10 @@
   				    <div class="panel-heading"><b>Payment Methods</b></div>
   					  <div class="panel-body">
   					  <div class="row">
-  						  <div class="canvas-donut" style="float:left;margin-left:10px">
+  						  <div class="canvas-donut" style="float:left;margin-left:2px">
   							  <canvas class="chart" id="payment_donut" ></canvas>
   						  </div>  
-                <div class="fitin" style="display:inline-block;margin-left:20px;max-width:250px;"> 
+                <div class="fitin" style="display:inline-block;margin-left:2px;max-width:205px;"> 
                   <div>
                   <?php 
                     $i = 0;
@@ -186,9 +186,9 @@
                     }
                     $chart_legend .= "<table>";
                     foreach ($dpayment as $row){
-                      $chart_legend .= "<tr><td class='col-md-1'><span class='glyphicon glyphicon-tint' style='color:".$donut_color[$i]."'></span></td>";  
-                      $chart_legend .= "<td class='col-md-4'>".ucwords(strtolower($row->PAYMENT_METHOD))."</td> <td class='col-md-1'>".$cur."</td>";
-                      $chart_legend .= "<td class='col-md-6'><span style='float:right;display:inline-block'>".number_format($row->AMOUNT, 0, '', '.')."</span></td></tr>";
+                      $chart_legend .= "<tr><td class='col-md-1' style='padding-left:5px;padding-right:5px;'><span class='glyphicon glyphicon-tint' style='color:".$donut_color[$i]."'></span></td>";  
+                      $chart_legend .= "<td class='col-md-4' style='padding-left:5px;padding-right:5px;'>".ucwords(strtolower($row->PAYMENT_METHOD))."</td> <td class='col-md-1' style='padding-left:10px;padding-right:5px;'>".$cur."</td>";
+                      $chart_legend .= "<td class='col-md-6' style='padding-left:5px;padding-right:5px;'><span style='float:right;display:inline-block'>".number_format($row->AMOUNT, 0, '', '.')."</span></td></tr>";
                       $i++;  
                     }
                     
@@ -196,10 +196,10 @@
                         <td colspan='4'><hr style='margin-top:5px;margin-bottom:5px;border-color:#222'></td>
                       </tr>
                       <tr>
-                        <td class='col-md-1'><b><i class='fa fa-money'></i></b></td> 
-                        <td class='col-md-4'><b>Total</b></td>
-                        <td class='col-md-1'><b>".$cur."</b></td>
-                        <td class='col-md-6'><b><span style='float:right;display:inline-block'>".number_format($total, 0, '', '.')."</span></b></td>";
+                        <td class='col-md-1' style='padding-left:5px;padding-right:5px;'><b><i class='fa fa-money'></i></b></td> 
+                        <td class='col-md-4' style='padding-left:5px;padding-right:5px;'><b>Total</b></td>
+                        <td class='col-md-1' style='padding-left:10px;padding-right:5px;'><b>".$cur."</b></td>
+                        <td class='col-md-6' style='padding-left:5px;padding-right:5px;'><b><span style='float:right;display:inline-block'>".number_format($total, 0, '', '.')."</span></b></td>";
                     $chart_legend .= "</tr></table>";
                     if($total!=0){    
                       echo $chart_legend;
@@ -283,16 +283,7 @@
       </div><!-- /.col-sm-3 -->
       
     </div><!-- /.row -->
-    
-    <!-- FOOTER -->
-    <hr class="featurette-divider" />
-    
-    <footer>
-      <p class="pull-right">
-        <a href="#">Back to top <span class="glyphicon glyphicon-circle-arrow-up"></span></a>
-      </p>
-    </footer>
-  
+      
   </div><!-- /.container-fluid -->
   
 </div><!-- /#page-content-wrapper -->
@@ -322,10 +313,12 @@
   }
   $chart_script .= "];";
   $chart_script .= "var chart1 = document.getElementById('topcats_donut').getContext('2d');";
-  $chart_script .= "chart1.canvas.width = 150;";
-  $chart_script .= "chart1.canvas.height = 150;";
+  $chart_script .= "chart1.canvas.width = 117;";
+  $chart_script .= "chart1.canvas.height = 117;";
   $chart_script .= "window.myDoughnut1 = new Chart(chart1).Doughnut(doughnutData, {
-    responsive: true,  tooltipFontSize : 12,
+    responsive: true,  
+    tooltipFontSize : 12, 
+    maintainAspectRatio: false,
     showInLegend: true,";
   $chart_script .= ($n!=0)?"   
     tooltipTemplate: '<%if (label){%><%=label%>: <%}%><%= value %>%'":"tooltipTemplate: '<%if (label){%><%=label%> <%}%>'";
@@ -360,10 +353,13 @@
   }
   $chart_script .= "];";
   $chart_script .= "var chart2 = document.getElementById('payment_donut').getContext('2d');";      
-  $chart_script .= "chart2.canvas.width = 150;";
-  $chart_script .= "chart2.canvas.height = 150;";
+  $chart_script .= "chart2.canvas.width = 117;";
+  $chart_script .= "chart2.canvas.height = 117;";
+  $chart_script .= "chart2.canvas.padding = 2;";
   $chart_script .= "window.myDoughnut2 = new Chart(chart2).Doughnut(doughnutData, {
-    responsive : true, tooltipFontSize : 12,";
+    responsive : true, 
+    tooltipFontSize : 12,
+    maintainAspectRatio: false,";
   $chart_script .= ($total!=0)?" 
     tooltipTemplate: '<%if (label){%><%=label%>: ".$cur." <%}%><%= currencyFormat(value) %>'":"tooltipTemplate: '<%if (label){%><%=label%> <%}%>'";
   $chart_script .= "  });"; 
@@ -400,7 +396,7 @@
 	$chart_script .= "		]";
   $chart_script .= "	};";
 	$chart_script .= "var chart3 = document.getElementById('monthly-line-chart').getContext('2d');";    
-  $chart_script .= "chart3.canvas.height = 150;";
+  $chart_script .= "chart3.canvas.height = 175;";
 	$chart_script .= "window.myLine1 = new Chart(chart3).Line(lineChartData, { ";
 	$chart_script .= "	responsive: true, tooltipFontSize : 12,";
 	$chart_script .= "	legendTemplate: '<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%>eek<%=datasets[i].label%><%}%></li><%}%></ul>', ";
@@ -439,7 +435,7 @@
 	$chart_script .= "		]";
   $chart_script .= "	};";
 	$chart_script .= "var chart5 = document.getElementById('weekly-line-chart').getContext('2d');";    
-  $chart_script .= "chart5.canvas.height = 150;";
+  $chart_script .= "chart5.canvas.height = 175;";
 	$chart_script .= "window.myLine2 = new Chart(chart5).Line(lineChartData, { ";
 	$chart_script .= "	responsive: true, tooltipFontSize : 12,";
 	$chart_script .= "	tooltipTemplate: '<%if (label){%><%=label%>: ".$cur." <%}%><%= currencyFormat(value) %>' ";

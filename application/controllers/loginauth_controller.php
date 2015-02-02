@@ -14,12 +14,11 @@ class Loginauth_controller extends CI_Controller {
         $this->form_validation->set_rules('username', 'Username', 'trim|required|xss_clean');
         $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean|callback_check_database'); //|callback_check_database
  
-        if($this->form_validation->run() == FALSE) 
-		{
-            $this->load->view('login');   
-        } 
-		else 
-		{
+        $data['username'] = ($this->input->post('username'))?$this->input->post('username'):"";
+        
+        if($this->form_validation->run() == FALSE){
+            $this->load->view('login',$data);   
+        }	else {
 			//$sess_array = array(
 				//'username' => $this->input->post('username'),
 				//'password' => $this->input->post('password')

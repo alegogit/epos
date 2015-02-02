@@ -68,17 +68,17 @@ class Users_model extends CI_Model {
   	} 
   
   	function get_assigned_rest($user_id){                         
-    	$query = $this->db->query('SELECT users_restaurants.REST_ID, restaurants.NAME AS NAME
-                              FROM users_restaurants
-                              JOIN restaurants ON users_restaurants.REST_ID = restaurants.ID
-                              WHERE users_restaurants.USER_ID = '.$user_id.'
+    	$query = $this->db->query('SELECT USERS_RESTAURANTS.REST_ID, RESTAURANTS.NAME AS NAME
+                              FROM USERS_RESTAURANTS
+                              JOIN RESTAURANTS ON USERS_RESTAURANTS.REST_ID = RESTAURANTS.ID
+                              WHERE USERS_RESTAURANTS.USER_ID = '.$user_id.'
                               ');
     	return $query->result();
   	} 
   
   	function get_rest_name0($rest_id){
     	$query = $this->db->select('NAME')
-                      ->from('restaurants')
+                      ->from('RESTAURANTS')
                       ->where('REST_ID',$rest_id)
                       ->limit(1)
                       ->get('');   

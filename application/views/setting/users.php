@@ -249,8 +249,8 @@
         </div><br />        		
         <div class="form-group text-right" style="margin-bottom:10px">
           <div class="input-group">  
-            <input type="hidden" name="uid" id="uid">     
-            <button type="submit" class="btn btn-success">Submit</button>
+            <input type="hidden" name="uid" id="uid">      
+            <input type="submit" name="cps" class="btn btn-success" value="Submit">&nbsp;
             <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
           </div>
         </div><br /> 
@@ -287,7 +287,7 @@
         <div class="form-group text-right" style="margin-bottom:10px">
           <div class="input-group">  
             <input type="hidden" name="uid" id="auid">     
-            <button type="submit" class="btn btn-success">Submit</button>&nbsp;
+            <input type="submit" name="ars" class="btn btn-success" value="Submit">&nbsp;
             <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
           </div>
         </div><br /> 

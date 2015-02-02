@@ -34,7 +34,7 @@ class Users_controller extends CI_Controller {
 				$this->setting->new_users($this->input->post('name'),$this->input->post('email'),$this->input->post('username'),$this->input->post('password'),$this->input->post('role'),$this->input->post('rest_id'));
 		    }        
 		                    
-		    if($this->input->post('uid')&&($this->input->post('pass1')==$this->input->post('pass2'))){             
+		    if($this->input->post('cps')&&($this->input->post('pass1')==$this->input->post('pass2'))){             
 				$this->setting->update_pass($this->input->post('uid'),$this->input->post('pass2'));
 		    }     
 			    

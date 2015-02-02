@@ -6,7 +6,8 @@
 <link rel="shortcut icon" href="<?php echo base_url(); ?>assets/images/icon.ico" />
  
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap.js"></script> 
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.validate.js"></script> 
 <script>
 window.setTimeout(function() {
   $("#output").fadeTo(500, 0).slideUp(500, function(){
@@ -135,16 +136,18 @@ html,body{
     <div class="form-box">
     <?php 
 	   echo validation_errors(); 
-	   $attributes = array('class' => 'form-signin', 'id' => 'myform', 'role' => 'form');
+	   $attributes = array('class' => 'form-signin', 'id' => 'loginf', 'role' => 'form');
 	   echo form_open('loginauth', $attributes); 
 	  ?>  
       <div class="form-group">
+        <label for="username"></label>
         <div class="input-group"> 
           <div class="input-group-addon"><span class="glyphicon glyphicon-user"></span></div>
-          <input type="text" class="form-control" name="username" id="username" placeholder="Username" required autofocus>  
+          <input type="text" class="form-control" name="username" id="username" placeholder="Username" value="<?=$username?>" required autofocus>  
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group">       
+        <label for="password"></label>
         <div class="input-group">
           <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
           <input name="password" id="password" class="form-control" type="password" placeholder="Password" required>
@@ -156,5 +159,55 @@ html,body{
     </div>
   </div>
 </div> 
+<script> 
+$(function(){
+	//var baseurl = $("#baseurl").data('url');
+  	//pass validation
+  	$("#loginf").validate({ 
+	    rules: {
+	      email: { 
+	        email: true
+	      }, 
+	      username: {
+	        required: true,
+	        minlength: 3
+	      }      
+	    },
+	    messages:{
+	      email: {
+	        required: "Please enter email address."
+	      }
+	    }      
+  	});
+});                                          
+
+
+$.validator.setDefaults({
+    highlight: function(element) {
+        $(element).closest('.form-group').addClass('has-error');
+    },
+    unhighlight: function(element) {
+        $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+    },
+    errorElement: 'span',
+    errorClass: 'help-block',
+    errorPlacement: function(error, element) {
+        if(element.parent('.input-group').length) {
+            error.insertAfter(element.parent());
+        } else {
+            error.insertAfter(element);
+        }
+    }
+});
+
+jQuery.validator.addMethod("phone", function(value, element) {
+  return this.optional(element) || /(\D*\d){8}/.test(value);
+}, "Please fill in a Phone Number format");
+  
+function isEmail(email) {
+  var regex = /([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+  return regex.test(email);
+}  
+</script>
 </body>
 </html>
