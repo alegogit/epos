@@ -271,78 +271,77 @@
   echo $edit_script;
 ?>
 <script>   
-$(document).ready(function()
-{                    
-  //make editable on focus  
-  $('.edit').focus(function(e) {
-    e.stopPropagation();
-    $(this).editable('toggle');
-  });
+$(document).ready(function(){                    
+	//make editable on focus  
+  	$('.edit').focus(function(e) {
+    	e.stopPropagation();
+    	$(this).editable('toggle');
+  	});
   
-  var table = $('#setting').DataTable({
-    columnDefs: [
-      { targets: 'no-sort', orderable: false }
-    ],
-    "order": [[ 9, "desc" ]]
-  });
+  	var table = $('#setting').DataTable({
+    	columnDefs: [
+      		{ targets: 'no-sort', orderable: false }
+    	],
+    	"order": [[ 9, "desc" ]]
+  	});
   
-  //check all
-  $("#checkall").click(function(){
-    $('.case').prop('checked',this.checked);
-  });
-  $(".case").click(function(){
-    if($(".case").length==$(".case:checked").length){
-      $("#selectall").prop("checked","checked");
-    }else{
-      $("#selectall").removeAttr("checked");
-    }
-  }); 
+  	//check all
+  	$("#checkall").click(function(){
+    	$('.case').prop('checked',this.checked);
+  	});
+  	$(".case").click(function(){
+    	if($(".case").length==$(".case:checked").length){
+      		$("#selectall").prop("checked","checked");
+    	}else{
+      		$("#selectall").removeAttr("checked");
+    	}
+  	}); 
   
-  //function to delete selected row
-  $('.btn-danger').on("click", function(event){
-  	var sel = false;	
-  	var ch = $('#setting').find('tbody input[type=checkbox]');
-    var dt = '';	
-  	ch.each(function(){  
-      if($(this).is(':checked')) { 
-        var idf = $(this).parents('tr').attr('id');
-        var idm = idf.substring(idf.indexOf('_')+1,idf.length);
-  		  dt = dt+' '+idm+',';
-      }    
-    }); 
-    if(dt==''){
-      var c = false;
-    } else {  	
-  	  var c = confirm('Continue delete \n'+dt.substring(1,dt.length-1)+'?');
-    }
-  	if(c) {
-  	  ch.each(function(){
-  		 var $this = $(this);
-  			if($this.is(':checked')) {
-  				sel = true;	//set to true if there is/are selected row
-          var idf = $(this).parents('tr').attr('id');
-          var dataP = "idf="+idf;
-  				$.ajax({
-            type: "POST",
-            url: "/process/menu?p=delete",
-            data: dataP,
-            cache: false,
-            success: function(result){ 
-              if(result.trim()!='OK'){    
-                alert(result); 
-              } else {    
-        				$this.parents('tr').fadeOut(function(){
-        					$this.remove(); //remove row when animation is finished
-        				});     
-              }   
-            }
-          });   
-  			}
-  	  });
-  		  if(!sel) alert('No data selected');	
-  	}
-  	return false;
-  }); 
+  	//function to delete selected row
+  	$('.btn-danger').on("click", function(event){
+  		var sel = false;	
+  		var ch = $('#setting').find('tbody input[type=checkbox]');
+    	var dt = '';	
+  		ch.each(function(){  
+	      	if($(this).is(':checked')) { 
+	        	var idf = $(this).parents('tr').attr('id');
+	        	var idm = idf.substring(idf.indexOf('_')+1,idf.length);
+	  		  	dt = dt+' '+idm+',';
+	      	}    
+    	}); 
+    	if(dt==''){
+      		var c = false;
+    	} else {  	
+  	  		var c = confirm('Continue delete \n'+dt.substring(1,dt.length-1)+'?');
+    	}
+  		if(c) {
+  	  		ch.each(function(){
+  		 		var $this = $(this);
+  				if($this.is(':checked')) {
+  					sel = true;	//set to true if there is/are selected row
+          			var idf = $(this).parents('tr').attr('id');
+          			var dataP = "idf="+idf;
+  					$.ajax({
+            			type: "POST",
+            			url: "/process/menu?p=delete",
+            			data: dataP,
+            			cache: false,
+            			success: function(result){ 
+              				if(result.trim()!='OK'){    
+                				alert(result); 
+              				} else {    
+        						$this.parents('tr').fadeOut(function(){
+        							$this.remove(); //remove row when animation is finished
+        						});     
+              				}   
+            			}
+          			});   
+  				}
+  	  		});
+  		  	if(!sel) alert('No data selected');	
+  		}
+  		return false;
+  	}); 
 });
   
 </script>

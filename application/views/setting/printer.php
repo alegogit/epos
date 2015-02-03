@@ -274,6 +274,7 @@
 		                        pk: ".$row->ID.",       
 		                        validate: function(v) {  
 		                          	if (!v) return 'don\'t leave it blank!';
+                          			if (isNaN(v)) return 'please fill in a number format!';
 		                        },
 		                        success: function(result){  
 		                          	var data = result.split(',');
@@ -339,9 +340,6 @@ $(document).ready(function(){
   		 		var $this = $(this);
   				if($this.is(':checked')) {
   					sel = true;	//set to true if there is/are selected row
-  					$this.parents('tr').fadeOut(function(){
-  						$this.remove(); //remove row when animation is finished
-  					});     
           			var idf = $(this).parents('tr').attr('id');
           			var dataP = "idf="+idf;
   					$.ajax({
@@ -349,7 +347,14 @@ $(document).ready(function(){
 			            url: baseurl+"process/printer?p=delete",
 			            data: dataP,
 			            cache: false,
-			            success: function(result){  
+			            success: function(result){ 
+              				if(result.trim()!='OK'){    
+                				alert(result); 
+              				} else {    
+        						$this.parents('tr').fadeOut(function(){
+        							$this.remove(); //remove row when animation is finished
+        						});     
+              				}    
 			            }
 			        });   
   				}
@@ -379,8 +384,8 @@ $(document).ready(function(){
 $(function(){
   	$("#newprinter").validate({ 
     	rules: {
-      		devices_mac: { 
-        		macadd: true 
+      		Port: { 
+        		number: true 
       		}
 		}
   	});

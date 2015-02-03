@@ -33,21 +33,21 @@ class Menusetting_model extends CI_Model {
     return $outputs;
 	}
   
-  function delete_menu($mid){ 
+  	function delete_menu($mid){ 
 		$did = strstr($mid, '_', true);
-    $query = $this->db->query('DELETE M FROM MENU M 
-      LEFT JOIN ORDER_DETAILS O ON O.MENU_ID = M.ID 
-      WHERE O.MENU_ID IS NULL
-      AND M.ID='.$did.';');    
-    if($this->db->affected_rows()!=0){
-      $out = "OK";
-    } else {                        
-		  //$idn = $this->process->get_tableorder($did)->TABLE_NUMBER;
-      //$out = $idn." can not be deleted, it has been used by some menus";
-      $out = "This Entry has being currently used, please make sure there's NO Dependencies";
-    }
-    return $out;
-  } 
+    	$query = $this->db->query('DELETE M FROM MENU M 
+      		LEFT JOIN ORDER_DETAILS O ON O.MENU_ID = M.ID 
+      		WHERE O.MENU_ID IS NULL
+      		AND M.ID='.$did.';');    
+    	if($this->db->affected_rows()!=0){
+      		$out = "OK";
+    	} else {                        
+			//$idn = $this->process->get_tableorder($did)->TABLE_NUMBER;
+      		//$out = $idn." can not be deleted, it has been used by some menus";
+      		$out = "This Entry has being currently used, please make sure there's NO Dependencies";
+    	}
+    	return $out;
+  	} 
 	
 	function get_menu($cid){    
     $query = $this->db->select('*')
