@@ -84,7 +84,7 @@
 			                    	<a id="MODEL-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->MODEL?></a>
 			                  	</td>
 			                  	<td style="">
-			                    	<a id="MAC_ADDRESS-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->MAC_ADDRESS?></a>
+			                    	<a id="MAC_ADDRESS-<?=$row->ID?>" class="edit" data-inputclass="mac" tabindex="0"><?=$row->MAC_ADDRESS?></a>
 			                  	</td>
 			                  	<td style="">
 			                    	<?=$row->LAST_SYNC?>
@@ -215,6 +215,9 @@
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
                     });";
+  $edit_script .= "   $('#MAC_ADDRESS-".$row->ID."').on('shown', function(e, editable) { 
+                        $('.mac').inputmask({ 'mask': '**:**:**:**:**:**' });
+                      });";
   $edit_script .= "  $('#MAC_ADDRESS-".$row->ID."').editable({
                         url: updateurl,
                         pk: ".$row->ID.", 
@@ -309,6 +312,9 @@ $(document).ready(function()
   	}
   	return false;
   }); 
+  
+  	//masking
+ 	$("#devices_mac").inputmask({ "mask": "**:**:**:**:**:**" });
 });                                           
 
 

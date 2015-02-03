@@ -17,6 +17,8 @@
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap-editable.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap-select.min.js"></script> 
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.validate.js"></script> 
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/inputmask/jquery.inputmask.js"></script> 
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/inputmask/jquery.inputmask.numeric.extensions.js"></script> 
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap-editable.css"/> 
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap-select.min.css"/>
 <style>
