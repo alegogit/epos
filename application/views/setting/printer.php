@@ -63,6 +63,7 @@
 						    <tr class="tablehead text3D">
 						        <th class="no-sort"><input type="checkbox" id="checkall" value="Check All"></th>
 						        <th>Printer Name</th>
+						        <th>MAC Address</th>
 						        <th>Connectivity</th>
 						        <th>IP Address</th>
 						        <th>Port</th>
@@ -80,6 +81,9 @@
                   </td>
                   <td style="">
                     <a id="NAME-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->NAME?></a>
+                  </td>
+                  <td style="">
+                    <a id="PRINTER_MAC_ADDRESS-<?=$row->ID?>" data-inputclass="mac" data-type="text" class="edit" tabindex="0"><?=$row->PRINTER_MAC_ADDRESS?></a>   
                   </td>
                   <td style="">  
                     <a id="PRINTER_CONNECTION-<?=$row->ID?>" class="edit" tabindex="0"><?=$this->printer->get_connectivity($row->PRINTER_CONNECTION)->VALUE?></a>
@@ -132,17 +136,24 @@
             <input type="text" class="form-control" id="printer_name" placeholder="Printer Name" name="printer_name" required>
           </div>
         </div><br /> 
+        <div class="form-group" style="margin-bottom:10px">   
+          <label for="MAC_address"></label>
+          <div class="input-group">    
+            <div class="input-group-addon"><span class="fa fa-gear"></span></div>
+            <input type="text" class="form-control mac" id="MAC_address" placeholder="MAC Address" name="MAC_address" required>
+          </div>
+        </div><br /> 
         <div class="form-group" style="margin-bottom:10px">       
-          <label for="resto">Restaurant</label><br /> 
+          <label for="rest_id">Restaurant</label><br /> 
           <div class="input-group"> 
             <div class="input-group-addon"><span class="glyphicon glyphicon-cutlery"></span></div>
-            <select id="resto" name="resto" class="form-control" required>
+            <select id="rest_id" name="rest_id" class="form-control" required>
             <?php foreach($restaurants as $rows){ ?>
               <option value = "<?=$rows->REST_ID?>" <?= ($rows->REST_ID==$rest_id)?'selected':''?> ><?=$rows->NAME?></option>
             <?php } ?>
             </select>
           </div>
-        </div><br /> 
+        </div><br />   
         <div class="form-group" style="margin-bottom:10px">
           <label for="conn_code">Connectivity</label><br /> 
           <div class="input-group">        
@@ -195,6 +206,22 @@
 		                        pk: ".$row->ID.", 
 		                        validate: function(v) {
 		                          if (!v) return 'don\'t leave it blank!';
+		                        },
+		                        success: function(result){  
+		                          var data = result.split(',');
+		                          $('#upby".$row->ID."').html(data[0]);
+		                          $('#updt".$row->ID."').html(data[1]); 
+		                      } 
+		                    });";
+  		$edit_script .= "   $('#PRINTER_MAC_ADDRESS-".$row->ID."').on('shown', function(e, editable) { 
+                        		$('.mac').inputmask({ 'mask': '**:**:**:**:**:**' });
+                      		});";
+  		$edit_script .= "  $('#PRINTER_MAC_ADDRESS-".$row->ID."').editable({
+		                        url: updateurl,
+		                        pk: ".$row->ID.", 
+		                        validate: function(v) {
+		                          if (!v) return 'don\'t leave it blank!';
+		                          if (isValidMacAddress(v)==false) return 'please fill in a correct MAC Address format!';
 		                        },
 		                        success: function(result){  
 		                          var data = result.split(',');
@@ -365,6 +392,7 @@ $(document).ready(function(){
   	}); 
   
   	//masking
+ 	$("#MAC_address").inputmask({ "mask": "**:**:**:**:**:**" });
  	$(".ipv4").inputmask({
 		mask: "i[i[i]].i[i[i]].i[i[i]].i[i[i]]",
 		definitions: {
@@ -386,6 +414,9 @@ $(function(){
     	rules: {
       		Port: { 
         		number: true 
+      		},
+      		MAC_address: { 
+        		macadd: true 
       		}
 		}
   	});
@@ -407,5 +438,19 @@ $.validator.setDefaults({
             error.insertAfter(element);
         }
     }
-});  
+});
+
+jQuery.validator.addMethod("macadd", function(value, element) {
+  return this.optional(element) || /^([0-9a-fA-F]{2}[:]){5}([0-9a-fA-F]{2})$/.test(value);
+}, "Please fill in a Mac Address format");
+
+function isValidMacAddress(macAdd){
+  //var RegExPattern = /^([0-9a-fA-F]{2}[:-]){5}([0-9a-fA-F]{2})$/;
+  var RegExPattern = /^([0-9a-fA-F]{2}[:]){5}([0-9a-fA-F]{2})$/;
+  if (!(macAdd.match(RegExPattern)) || macAdd.length != 17){
+   return false;
+  } else {
+   return true;
+  }
+}  
 </script>

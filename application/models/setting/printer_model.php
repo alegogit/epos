@@ -87,14 +87,14 @@ class Printer_model extends CI_Model {
     return $query->result();
   }       
     
-	function new_printer($NAME,$REST_ID,$PRINTER_CONNECTION,$PRINTER_IP_ADDRESS,$PRINTER_PORT){       
+	function new_printer($NAME,$PRINTER_MAC_ADDRESS,$REST_ID,$PRINTER_CONNECTION,$PRINTER_IP_ADDRESS,$PRINTER_PORT){       
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id'];
-    $query = $this->db->query('INSERT INTO PRINTER 
-      (NAME,REST_ID,PRINTER_CONNECTION,PRINTER_IP_ADDRESS,PRINTER_PORT,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
-      VALUES 
-      ("'.$NAME.'",'.$REST_ID.',"'.$PRINTER_CONNECTION.'","'.$PRINTER_IP_ADDRESS.'","'.$PRINTER_PORT.'",'.$id.',NOW(),'.$id.',NOW());');
+    	$query = $this->db->query('INSERT INTO PRINTER 
+      		(NAME,PRINTER_MAC_ADDRESS,REST_ID,PRINTER_CONNECTION,PRINTER_IP_ADDRESS,PRINTER_PORT,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
+      		VALUES 
+      		("'.$NAME.'","'.$PRINTER_MAC_ADDRESS.'",'.$REST_ID.',"'.$PRINTER_CONNECTION.'","'.$PRINTER_IP_ADDRESS.'","'.$PRINTER_PORT.'",'.$id.',NOW(),'.$id.',NOW());');
 		//return $query->row();
-  }               
+  	}               
    
 }

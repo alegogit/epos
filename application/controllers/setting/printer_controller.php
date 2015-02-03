@@ -6,7 +6,7 @@ class Printer_controller extends CI_Controller {
 	{
 		parent::__construct();	
 		$this->load->model('setting/printer_model','printer',TRUE);
-    $this->load->helper(array('form', 'url','html'));
+    	$this->load->helper(array('form', 'url','html'));
 		$session_data = $this->session->userdata('logged_in'); 
 		$this->data['menu'] = 'setting'; 
 		$this->data['user'] = $this->printer->get_profile();
@@ -29,12 +29,12 @@ class Printer_controller extends CI_Controller {
 			$data['startdate'] = $start_date;
 			$data['enddate'] = $end_date;        
 		  
-      if($this->input->post('printer_name')){               
-		    $this->printer->new_printer($this->input->post('printer_name'),$this->input->post('resto'),$this->input->post('conn_code'),$this->input->post('IP_address'),$this->input->post('Port'));
-      } 
+      		if($this->input->post('printer_name')){               
+		    	$this->printer->new_printer($this->input->post('printer_name'),$this->input->post('MAC_address'),$this->input->post('rest_id'),$this->input->post('conn_code'),$this->input->post('IP_address'),$this->input->post('Port'));
+      		} 
 			
-      $data['printer_conf'] = $this->printer->get_printer($rest_id);
-		  $data['connectivity'] = $this->printer->get_all_connectivity();
+      		$data['printer_conf'] = $this->printer->get_printer($rest_id);
+		  	$data['connectivity'] = $this->printer->get_all_connectivity();
      
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);

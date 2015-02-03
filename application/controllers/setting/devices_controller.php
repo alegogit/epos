@@ -29,11 +29,11 @@ class Devices_controller extends CI_Controller {
 			$data['startdate'] = $start_date;
 			$data['enddate'] = $end_date; 
 			
-      if($this->input->post('devices_type')){               
-		    $this->setting->new_devices($this->input->post('devices_mac'),$this->input->post('devices_type'),$this->input->post('devices_manufacturer'),$this->input->post('devices_model'),$this->input->post('rest_id'));
-      } 
+      		if($this->input->post('devices_type')){               
+		    	$this->setting->new_devices($this->input->post('devices_mac'),$this->input->post('devices_type'),$this->input->post('devices_manufacturer'),$this->input->post('devices_model'),$this->input->post('rest_id'));
+      		} 
       
-		  $data['devices'] = $this->setting->get_rest_devices($rest_id);
+		  	$data['devices'] = $this->setting->get_rest_devices($rest_id);
 			                   
 			
 			$this->load->view('shared/header',$this->data);

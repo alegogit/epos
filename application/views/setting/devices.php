@@ -141,10 +141,10 @@
           </div>
         </div><br />
         <div class="form-group" style="margin-bottom:10px">      
-          <label for="devices_mac">MAC Address</label><br/>
+          <label for="devices_mac"></label>
           <div class="input-group"> 
             <div class="input-group-addon"><span class="fa fa-gear"></span></div>
-            <input type="text" class="form-control" id="devices_mac" placeholder="00:00:00:00:00:00" name="devices_mac" required>
+            <input type="text" class="form-control" id="devices_mac" placeholder="MAC Address" name="devices_mac" required>
           </div>
         </div><br />
         <div class="form-group" style="margin-bottom:10px"> 
