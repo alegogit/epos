@@ -18,7 +18,6 @@
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap-select.min.js"></script> 
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.validate.js"></script> 
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/inputmask/jquery.inputmask.js"></script> 
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/inputmask/jquery.inputmask.numeric.extensions.js"></script> 
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap-editable.css"/> 
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap-select.min.css"/>
 <style>
@@ -50,9 +49,6 @@
 <!-- Table -->
 <script src="<?=base_url()?>assets/js/jquery.dataTables.js"></script> 
  
-<!-- IP Input -->
-<script src="<?=base_url()?>assets/js/jquery.input-ip-address-control-1.0.min.js"></script>
-
 <script type="text/javascript">
 $(function() {
     $( document ).tooltip({
@@ -69,9 +65,6 @@ $(function() {
         }
       }
     });
-    
-    $('.ipv4').ipAddress();
-    $('.ipv6').ipAddress({v:6});
 });
 
 </script>

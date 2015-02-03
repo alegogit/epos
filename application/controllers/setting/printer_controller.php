@@ -30,7 +30,7 @@ class Printer_controller extends CI_Controller {
 			$data['enddate'] = $end_date;        
 		  
       if($this->input->post('printer_name')){               
-		    $this->printer->new_printer($this->input->post('printer_name'),$this->input->post('rest_id'),$this->input->post('conn_code'),$this->input->post('IP_address'),$this->input->post('Port'));
+		    $this->printer->new_printer($this->input->post('printer_name'),$this->input->post('resto'),$this->input->post('conn_code'),$this->input->post('IP_address'),$this->input->post('Port'));
       } 
 			
       $data['printer_conf'] = $this->printer->get_printer($rest_id);

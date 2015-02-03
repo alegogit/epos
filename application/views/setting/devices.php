@@ -320,17 +320,13 @@ $(document).ready(function()
 
   
 $(function(){
-	var baseurl = $("#baseurl").data('url');
-  	//pass validation
-  
-  $("#newdev").validate({ 
-    rules: {
-      devices_mac: { 
-        macadd: true 
-      }
-	}
-  });
-  
+  	$("#newdev").validate({ 
+    	rules: {
+      		devices_mac: { 
+        		macadd: true 
+      		}
+		}
+  	});
 });         
 
 $.validator.setDefaults({

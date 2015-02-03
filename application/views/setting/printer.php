@@ -76,13 +76,13 @@
 						    <?php $i = 0;  foreach ($printer_conf as $row){ ?>
                 <tr data-index="<?=$i?>" class="datarow" id="<?=$row->ID.'_'.$row->NAME?>">
                   <td>
-                    <input type="checkbox" class="case">
+                    <input type="checkbox" class="case" tabindex="-1">
                   </td>
                   <td style="">
-                    <a id="NAME-<?=$row->ID?>" class=""><?=$row->NAME?></a>
+                    <a id="NAME-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->NAME?></a>
                   </td>
                   <td style="">  
-                    <a id="PRINTER_CONNECTION-<?=$row->ID?>" class=""><?=$this->printer->get_connectivity($row->PRINTER_CONNECTION)->VALUE?></a>
+                    <a id="PRINTER_CONNECTION-<?=$row->ID?>" class="edit" tabindex="0"><?=$this->printer->get_connectivity($row->PRINTER_CONNECTION)->VALUE?></a>
                     <select id="conn<?=$row->ID?>" name="conn_code" class="form-control theedit<?=$row->ID?>" style="display:none;border:none">
                       <?php foreach($connectivity as $rowc){ ?>
                       <option value = "<?=$rowc->CODE?>" <?= ($rowc->CODE==$row->PRINTER_CONNECTION)?'selected':''?> ><?=$rowc->VALUE?></option>
@@ -90,10 +90,10 @@
                     </select>
                   </td>
                   <td style="">
-                    <a id="PRINTER_IP_ADDRESS-<?=$row->ID?>" data-inputclass="ipv4" data-type="text"><?=$row->PRINTER_IP_ADDRESS?></a>   
+                    <a id="PRINTER_IP_ADDRESS-<?=$row->ID?>" data-inputclass="ipv4" data-type="text" class="edit" tabindex="0"><?=$row->PRINTER_IP_ADDRESS?></a>   
                   </td>
                   <td style="">       
-                    <a id="PRINTER_PORT-<?=$row->ID?>" data-inputclass="mw90"><?=$row->PRINTER_PORT?></a> 
+                    <a id="PRINTER_PORT-<?=$row->ID?>" data-inputclass="mw90" class="edit" tabindex="0"><?=$row->PRINTER_PORT?></a> 
                   </td>
                   <td style=""><span id="crby<?=$row->ID?>"><?=$this->printer->get_username($row->CREATED_BY)->USERNAME?></span></td>
                   <td style=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
@@ -126,15 +126,17 @@
         echo form_open('setting/printer',$attributes)
       ?>
         <div class="form-group" style="margin-bottom:10px"> 
+          <label for="printer_name"></label>
           <div class="input-group">       
-            <label for="inputCaption">Printer Name</label>
-            <input type="text" class="form-control" id="inputCaption" placeholder="" name="printer_name" required>
+            <div class="input-group-addon"><span class="fa fa-print"></span></div>
+            <input type="text" class="form-control" id="printer_name" placeholder="Printer Name" name="printer_name" required>
           </div>
         </div><br /> 
-        <div class="form-group" style="margin-bottom:10px"> 
-          <div class="input-group">       
-            <label for="inputDate">Restaurant</label><br /> 
-            <select name="rest_id" class="form-control">
+        <div class="form-group" style="margin-bottom:10px">       
+          <label for="resto">Restaurant</label><br /> 
+          <div class="input-group"> 
+            <div class="input-group-addon"><span class="glyphicon glyphicon-cutlery"></span></div>
+            <select id="resto" name="resto" class="form-control" required>
             <?php foreach($restaurants as $rows){ ?>
               <option value = "<?=$rows->REST_ID?>" <?= ($rows->REST_ID==$rest_id)?'selected':''?> ><?=$rows->NAME?></option>
             <?php } ?>
@@ -142,30 +144,33 @@
           </div>
         </div><br /> 
         <div class="form-group" style="margin-bottom:10px">
-          <div class="input-group">       
-            <label for="inputDate">Connectivity</label><br />  
-            <select name="conn_code" class="form-control">
+          <label for="conn_code">Connectivity</label><br /> 
+          <div class="input-group">        
+            <div class="input-group-addon"><span class="fa fa-wifi"></span></div>
+            <select id="conn_code" name="conn_code" class="form-control" required>
             <?php foreach($connectivity as $rowc){ ?>
               <option value="<?=$rowc->CODE?>"><?=$rowc->VALUE?></option>
             <?php } ?>
             </select>
           </div>
         </div><br />   
-        <div class="form-group" style="margin-bottom:10px">
-          <div class="input-group">       
-            <label for="inputCaption">IP Address</label>
-            <input type="text" class="form-control ipv4" id="inputCaption" placeholder="" name="IP_address" required>
+        <div class="form-group" style="margin-bottom:10px">   
+          <label for="IP_address"></label>
+          <div class="input-group">    
+            <div class="input-group-addon"><span class="fa fa-wifi"></span></div>
+            <input type="text" class="form-control ipv4" id="IP_address" placeholder="IP Address" name="IP_address" required>
           </div>
         </div><br /> 
-        <div class="form-group" style="margin-bottom:10px">  
-          <div class="input-group">       
-            <label for="inputCaption">Port</label>
-            <input type="text" class="form-control" id="inputCaption" placeholder="" name="Port" required>
+        <div class="form-group" style="margin-bottom:10px"> 
+          <label for="Port"></label>  
+          <div class="input-group">         
+            <div class="input-group-addon"><span class="fa fa-wifi"></span></div>
+            <input type="text" class="form-control" id="Port" placeholder="Port" name="Port" required>
           </div>
         </div><br /> 
         <div class="form-group text-right" style="margin-bottom:10px">
           <div class="input-group">       
-            <button type="submit" class="btn btn-success">Submit</button>
+            <button type="submit" class="btn btn-success">Submit</button>&nbsp;
             <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
           </div>
         </div><br /> 
@@ -174,164 +179,228 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal fade -->
+<div id="baseurl" data-url="<?=base_url()?>"></div>
 
 <?php  
-  //editable script
-  $i = 0;
-  //$n = count($dtopcats);
-  $edit_script = "<script>"; 
-  $edit_script .= "$(document).ready(function(){";
-  $edit_script .= "  $.fn.editable.defaults.mode = 'inline';";
-  foreach ($printer_conf as $row){
-  $edit_script .= "  $('#NAME-".$row->ID."').editable({
-                        url: '/process/printer?p=update',
-                        pk: ".$row->ID.", 
-                        validate: function(v) {
-                          if (!v) return 'don\'t leave it blank!';
-                        },
-                        success: function(result){  
-                          var data = result.split(',');
-                          $('#upby".$row->ID."').html(data[0]);
-                          $('#updt".$row->ID."').html(data[1]); 
-                      } 
-                    });";
-  $edit_script .= "  $('#REST_ID-".$row->ID."').editable({
-                        type: 'select',  
-                        value: ".$row->REST_ID.", 
-                        source: [ ";
-    $j = 1;
-    $n = count($restaurants);
-    foreach($restaurants as $rows){
-      $edit_script .= "  {value: ".$rows->REST_ID.", text: '".$rows->NAME."'}";
-      $edit_script .= ($j<$n)?", ":"";
-      $j++;
-    }
-  $edit_script .= "    ],
-                        url: '/process/printer?p=update',
-                        pk: ".$row->ID.",
-                        success: function(result){  
-                          var data = result.split(',');
-                          $('#upby".$row->ID."').html(data[0]);
-                          $('#updt".$row->ID."').html(data[1]); 
-                        }  
-                      });";
-  $edit_script .= "  $('#PRINTER_CONNECTION-".$row->ID."').editable({
-                        type: 'select',  
-                        value: '".$row->PRINTER_CONNECTION."', 
-                        source: [ ";
-    $k = 1;
-    $q = count($connectivity);
-    foreach($connectivity as $rowc){
-      $edit_script .= "  {value: '".$rowc->CODE."', text: '".$rowc->VALUE."'}";
-      $edit_script .= ($k<$q)?", ":"";
-      $k++;
-    }
-  $edit_script .= "    ],
-                        url: '/process/printer?p=update',
-                        pk: ".$row->ID.",
-                        success: function(result){  
-                          var data = result.split(',');
-                          $('#upby".$row->ID."').html(data[0]);
-                          $('#updt".$row->ID."').html(data[1]); 
-                        }  
-                      });";
-  $edit_script .= "   $('#PRINTER_IP_ADDRESS-".$row->ID."').on('shown', function(e, editable) { 
-                        $('.ipv4').ipAddress();
-                      });";
-  $edit_script .= "  $('#PRINTER_IP_ADDRESS-".$row->ID."').editable({
-                        url: '/process/printer?p=update',
-                        pk: ".$row->ID.",    
-                        validate: function(v) { 
-                          if (!v) return 'don\'t leave it blank!';
-                        },
-                        success: function(result){  
-                          var data = result.split(',');
-                          $('#upby".$row->ID."').html(data[0]);
-                          $('#updt".$row->ID."').html(data[1]); 
-                        }  
-                      });";
-  $edit_script .= "  $('#PRINTER_PORT-".$row->ID."').editable({
-                        url: '/process/printer?p=update',
-                        pk: ".$row->ID.",       
-                        validate: function(v) {  
-                          if (!v) return 'don\'t leave it blank!';
-                        },
-                        success: function(result){  
-                          var data = result.split(',');
-                          $('#upby".$row->ID."').html(data[0]);
-                          $('#updt".$row->ID."').html(data[1]); 
-                        } 
-                      });";
-  }
-  $edit_script .= "}); ";
+	//editable script
+	$i = 0;
+	$edit_script = "<script>"; 
+	$edit_script .= "$(document).ready(function(){";
+	$edit_script .= "  $.fn.editable.defaults.mode = 'inline';";
+	$edit_script .= "  $.fn.editable.defaults.showbuttons = false;";
+  	$edit_script .= "  var updateurl = '".base_url()."process/printer?p=update';";
+	foreach ($printer_conf as $row){
+		$edit_script .= "  $('#NAME-".$row->ID."').editable({
+								url: updateurl,
+		                        pk: ".$row->ID.", 
+		                        validate: function(v) {
+		                          if (!v) return 'don\'t leave it blank!';
+		                        },
+		                        success: function(result){  
+		                          var data = result.split(',');
+		                          $('#upby".$row->ID."').html(data[0]);
+		                          $('#updt".$row->ID."').html(data[1]); 
+		                      } 
+		                    });";
+	  	$edit_script .= "  $('#REST_ID-".$row->ID."').editable({
+		                        type: 'select',  
+		                        value: ".$row->REST_ID.", 
+		                        source: [ ";
+	    $j = 1;
+	    $n = count($restaurants);
+	    foreach($restaurants as $rows){
+	      	$edit_script .= "  {value: ".$rows->REST_ID.", text: '".$rows->NAME."'}";
+	      	$edit_script .= ($j<$n)?", ":"";
+	      	$j++;
+	    	}
+	  	$edit_script .= "    ],
+		                        url: updateurl,
+		                        pk: ".$row->ID.",
+		                        success: function(result){  
+		                          	var data = result.split(',');
+		                          	$('#upby".$row->ID."').html(data[0]);
+		                          	$('#updt".$row->ID."').html(data[1]); 
+		                        }  
+							});";
+	  	$edit_script .= "  $('#PRINTER_CONNECTION-".$row->ID."').editable({
+		                        type: 'select',  
+		                        value: '".$row->PRINTER_CONNECTION."', 
+		                        source: [ ";
+	    $k = 1;
+	    $q = count($connectivity);
+	    foreach($connectivity as $rowc){
+	      	$edit_script .= "  {value: '".$rowc->CODE."', text: '".$rowc->VALUE."'}";
+	      	$edit_script .= ($k<$q)?", ":"";
+	      	$k++;
+	    }
+	  	$edit_script .= "    ],
+		                        url: updateurl,
+		                        pk: ".$row->ID.",
+		                        success: function(result){  
+		                        	var data = result.split(',');
+		                          	$('#upby".$row->ID."').html(data[0]);
+		                          	$('#updt".$row->ID."').html(data[1]); 
+		                        }  
+							});";
+	  $edit_script .= "   $('#PRINTER_IP_ADDRESS-".$row->ID."').on('shown', function(e, editable) { 
+	                        	$('.ipv4').inputmask({
+									mask: 'i[i[i]].i[i[i]].i[i[i]].i[i[i]]',
+									definitions: {
+										i: {
+											validator: function(chrs, maskset, pos) {
+											return pos - 1 > -1 && '.' != maskset.buffer[pos - 1] ? (chrs = maskset.buffer[pos - 1] + chrs,
+											chrs = pos - 2 > -1 && '.' != maskset.buffer[pos - 2] ? maskset.buffer[pos - 2] + chrs : '0' + chrs) : chrs = '00' + chrs,
+											new RegExp('25[0-5]|2[0-4][0-9]|[01][0-9][0-9]').test(chrs);
+										},
+											cardinality: 1
+										}
+									}
+								});
+	                      	});";
+	  $edit_script .= "  $('#PRINTER_IP_ADDRESS-".$row->ID."').editable({
+		                        url: updateurl,
+		                        pk: ".$row->ID.",    
+		                        validate: function(v) { 
+		                          	if (!v) return 'don\'t leave it blank!';
+		                        },
+		                        success: function(result){  
+		                          	var data = result.split(',');
+		                          	$('#upby".$row->ID."').html(data[0]);
+		                          	$('#updt".$row->ID."').html(data[1]); 
+		                        }  
+		                    });";
+	  $edit_script .= "  $('#PRINTER_PORT-".$row->ID."').editable({
+		                        url: updateurl,
+		                        pk: ".$row->ID.",       
+		                        validate: function(v) {  
+		                          	if (!v) return 'don\'t leave it blank!';
+		                        },
+		                        success: function(result){  
+		                          	var data = result.split(',');
+		                          	$('#upby".$row->ID."').html(data[0]);
+		                          	$('#updt".$row->ID."').html(data[1]); 
+		                        } 
+	                      });";
+	}
+	$edit_script .= "}); ";
 	$edit_script .= '</script>';
-  echo $edit_script;
+	echo $edit_script;
 ?>
 
 <script>     
-$(document).ready(function()
-{  
-  var table = $('#setting').DataTable({
-    columnDefs: [
-      { targets: 'no-sort', orderable: false }
-    ],
-    "order": [[ 8, "desc" ]]
-  });
+$(document).ready(function(){
+	var baseurl = $("#baseurl").data('url');
   
-  //check all
-  $("#checkall").click(function(){
-    $('.case').prop('checked',this.checked);
-  });
-  $(".case").click(function(){
-    if($(".case").length==$(".case:checked").length){
-      $("#selectall").prop("checked","checked");
-    }else{
-      $("#selectall").removeAttr("checked");
-    }
-  });
+  	//make editable on focus  
+  	$('.edit').focus(function(e) {
+    	e.stopPropagation();
+    	$(this).editable('toggle');
+  	});
+  
+  	//inititate datatable  
+  	var table = $('#setting').DataTable({
+    	columnDefs: [
+      		{ targets: 'no-sort', orderable: false }
+    	],
+    	"order": [[ 1, "asc" ]]
+  	});
+  
+  	//check all
+  	$("#checkall").click(function(){
+    	$('.case').prop('checked',this.checked);
+  	});
+  	$(".case").click(function(){
+    	if($(".case").length==$(".case:checked").length){
+      		$("#selectall").prop("checked","checked");
+    	}else{
+      		$("#selectall").removeAttr("checked");
+    	}
+  	});
    
-  //function to delete selected row
-  $('.btn-danger').on("click", function(event){
-  	var sel = false;	
-  	var ch = $('#setting').find('tbody input[type=checkbox]');
-    var dt = '';	
-  	ch.each(function(){  
-      if($(this).is(':checked')) { 
-        var idf = $(this).parents('tr').attr('id');
-        var idm = idf.substring(idf.indexOf('_')+1,idf.length);
-  		  dt = dt+' '+idm+',';
-      }    
-    }); 
-    if(dt==''){
-      var c = false;
-    } else {  	
-  	  var c = confirm('Continue delete \n'+dt.substring(1,dt.length-1)+'?');
-    }
-  	if(c) {
-  	  ch.each(function(){
-  		 var $this = $(this);
-  			if($this.is(':checked')) {
-  				sel = true;	//set to true if there is/are selected row
-  				$this.parents('tr').fadeOut(function(){
-  					$this.remove(); //remove row when animation is finished
-  				});     
-          var idf = $(this).parents('tr').attr('id');
-          var dataP = "idf="+idf;
-  				$.ajax({
-            type: "POST",
-            url: "/process/printer?p=delete",
-            data: dataP,
-            cache: false,
-            success: function(result){  
-            }
-          });   
-  			}
-  	  });
-  		  if(!sel) alert('No data selected');	
-  	}
-  	return false;
-  }); 
+  	//function to delete selected row
+  	$('.btn-danger').on("click", function(event){
+  		var sel = false;	
+  		var ch = $('#setting').find('tbody input[type=checkbox]');
+    	var dt = '';	
+  		ch.each(function(){  
+      		if($(this).is(':checked')) { 
+        		var idf = $(this).parents('tr').attr('id');
+        		var idm = idf.substring(idf.indexOf('_')+1,idf.length);
+  		  		dt = dt+' '+idm+',';
+      		}    
+    	}); 
+    	if(dt==''){
+      		var c = false;
+    	} else {  	
+  	  		var c = confirm('Continue delete \n'+dt.substring(1,dt.length-1)+'?');
+    	}
+  		if(c) {
+  	  		ch.each(function(){
+  		 		var $this = $(this);
+  				if($this.is(':checked')) {
+  					sel = true;	//set to true if there is/are selected row
+  					$this.parents('tr').fadeOut(function(){
+  						$this.remove(); //remove row when animation is finished
+  					});     
+          			var idf = $(this).parents('tr').attr('id');
+          			var dataP = "idf="+idf;
+  					$.ajax({
+			            type: "POST",
+			            url: baseurl+"process/printer?p=delete",
+			            data: dataP,
+			            cache: false,
+			            success: function(result){  
+			            }
+			        });   
+  				}
+  	  		});
+  		  	if(!sel) alert('No data selected');	
+  		}
+  		return false;
+  	}); 
+  
+  	//masking
+ 	$(".ipv4").inputmask({
+		mask: "i[i[i]].i[i[i]].i[i[i]].i[i[i]]",
+		definitions: {
+			i: {
+				validator: function(chrs, maskset, pos) {
+				return pos - 1 > -1 && "." != maskset.buffer[pos - 1] ? (chrs = maskset.buffer[pos - 1] + chrs,
+				chrs = pos - 2 > -1 && "." != maskset.buffer[pos - 2] ? maskset.buffer[pos - 2] + chrs : "0" + chrs) : chrs = "00" + chrs,
+				new RegExp("25[0-5]|2[0-4][0-9]|[01][0-9][0-9]").test(chrs);
+			},
+				cardinality: 1
+			}
+		}
+	});
   
 });
   
+$(function(){
+  	$("#newprinter").validate({ 
+    	rules: {
+      		devices_mac: { 
+        		macadd: true 
+      		}
+		}
+  	});
+});         
+
+$.validator.setDefaults({
+    highlight: function(element) {
+        $(element).closest('.form-group').addClass('has-error');
+    },
+    unhighlight: function(element) {
+        $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+    },
+    errorElement: 'span',
+    errorClass: 'help-block',
+    errorPlacement: function(error, element) {
+        if(element.parent('.input-group').length) {
+            error.insertAfter(element.parent());
+        } else {
+            error.insertAfter(element);
+        }
+    }
+});  
 </script>
