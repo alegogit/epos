@@ -507,7 +507,7 @@ $(function(){
 	        	remote: "Please enter another username"
 	      	},
 	      	confirm: { 
-	        	equalTo:"the passwords aren't match"
+	        	equalTo:"The passwords don’t match"
 	      	}
 	    }
   });
@@ -524,7 +524,7 @@ $(function(){
     },
     messages:{ 
       pass2: { 
-        equalTo:"the passwords aren't match"
+        equalTo:"The passwords don’t match"
       }
     }
   });
