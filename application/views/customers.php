@@ -125,7 +125,7 @@
 	        <div class="form-group" style="margin-bottom:10px">
 	          <label for="name"></label> 
 	          <div class="input-group">      
-	            <div class="input-group-addon"><span class="glyphicon glyphicon-cutlery"></span></div> 
+	            <div class="input-group-addon"><span class="fa fa-credit-card"></span></div> 
 	            <input type="text" class="form-control" id="name" placeholder="Customer Name" name="name" required>
 	          </div>
 	        </div><br />

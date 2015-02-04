@@ -58,10 +58,10 @@
 						    <tr class="tablehead text3D">
 						        <th class="no-sort"><input type="checkbox" id="checkall" value="Check All"></th>
 						        <th>Menu Name</th>
-						        <th>Price</th>
+						        <th class="cin">Price</th>
 						        <th>Category</th>
 						        <th>Printer</th>
-						        <th>Tax</th>
+						        <th class="cin">Tax</th>
 						        <th data-field="crby" data-sortable="false">Created By</th>
 						        <th data-field="crdt" data-sortable="false">Created Date</th>
 						        <th data-field="upby"  data-sortable="false">Updated By</th>
@@ -77,8 +77,8 @@
                   <td style="">
                     <a id="NAME-<?=$row->ID?>" class="edit" tabindex><?=$row->NAME?></a>
                   </td>
-                  <td style="">
-                    <a id="PRICE-<?=$row->ID?>" class="edit" tabindex><?=$row->PRICE?></a>
+                  <td style="" class="cin">
+                    <?=$cur?> <a id="PRICE-<?=$row->ID?>" class="edit" tabindex><?=$row->PRICE?></a>
                   </td>
                   <td style="">
                     <a id="CATEGORY_ID-<?=$row->ID?>" class="edit" tabindex><?=$row->CAT_NAME?></a>
@@ -86,8 +86,8 @@
                   <td style="">
                     <a id="PRINTER-<?=$row->ID?>" class="edit" tabindex><?=$row->PRINT_NAME?></a>
                  </td>
-                  <td style="">
-                    <a id="TAX-<?=$row->ID?>" class="edit" tabindex><?=$row->TAX?></a>
+                  <td style="" class="cin">
+                    <a id="TAX-<?=$row->ID?>" class="edit" tabindex><?=$row->TAX?></a> %
                   </td>
                   <td style=""><span id="crby<?=$row->ID?>"><?=$this->setting->get_username($row->CREATED_BY)->USERNAME?></span></td>
                   <td style=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
@@ -116,25 +116,36 @@
       </div><!-- /.modal-header -->
       <div class="modal-body">
       <?php
-        $attributes = array('class' => 'form-inline', 'id' => 'newcat', 'role' => 'form');
+        $attributes = array('class' => 'form-inline', 'id' => 'newmenu', 'role' => 'form');
         echo form_open('setting/menu',$attributes)
       ?>                    		
-        <div class="form-group" style="margin-bottom:10px"> 
-          <div class="input-group">       
-            <label for="inputCaption">Menu Name</label>
-            <input type="text" class="form-control" id="inputCaption" placeholder="" name="menu_name" required>
+        <div class="form-group" style="margin-bottom:10px">  
+          <label for="menu_name"></label> 
+          <div class="input-group">         
+            <div class="input-group-addon"><span class="fa fa-coffee"></span></div>  
+            <input type="text" class="form-control" id="menu_name" placeholder="Menu Name" name="menu_name" required>
           </div>
         </div><br />
-        <div class="form-group" style="margin-bottom:10px"> 
-          <div class="input-group col-xs-5">       
-            <label for="inputCaption">Price</label>
-            <input type="text" class="form-control" id="inputCaption" placeholder="please fill in a number format" pattern="\d*" name="menu_price" required>
-          </div>
-        </div><br />     
-        <div class="form-group" style="margin-bottom:10px">
+        <div class="form-group" style="margin-bottom:10px">     
+          <label for="menu_price"></label>  
           <div class="input-group">       
-            <label for="inputDate">Category</label><br />  
-            <select name="menu_category" class="form-control">
+            <div class="input-group-addon"><span class="fa fa-cur"><?=$cur?></span></div>
+            <input type="text" class="form-control" id="menu_price" placeholder="Price" pattern="\d*" name="menu_price" required>
+          </div>
+        </div><br />    
+        <div class="form-group" style="margin-bottom:10px">     
+          <label for="menu_tax"></label>
+          <div class="input-group" style="width:150px">   
+            <div class="input-group-addon"><span class="fa fa-bank"></span></div>
+            <input type="text" class="form-control" id="menu_tax" placeholder="Tax" pattern="\d*" name="menu_tax" required>
+            <div class="input-group-addon"><span class="fa fa-percent">%</span></div>
+          </div>
+        </div><br /> 
+        <div class="form-group" style="margin-bottom:10px">   
+          <label for="menu_category">Category</label><br />  
+          <div class="input-group">   
+            <div class="input-group-addon"><span class="fa fa-quote-left"></span></div> 
+            <select id="menu_category" name="menu_category" class="form-control" required>
             <?php foreach($categories as $rowc){ ?>
               <option value="<?=$rowc->ID?>"><?=$rowc->NAME?></option>
             <?php } ?>
@@ -142,26 +153,21 @@
           </div>
         </div><br />     
         <div class="form-group" style="margin-bottom:10px">
-          <div class="input-group">       
-            <label for="inputDate">Printer</label><br />  
-            <select name="menu_printer" class="form-control">
+          <label for="menu_printer">Printer</label><br /> 
+          <div class="input-group">        
+            <div class="input-group-addon"><span class="fa fa-print"></span></div>
+            <select id="menu_printer" name="menu_printer" class="form-control" required>
             <?php foreach($printer as $rowp){ ?>
               <option value="<?=$rowp->ID?>"><?=$rowp->NAME?></option>
             <?php } ?>
             </select>
           </div>
         </div><br />  
-        <div class="form-group" style="margin-bottom:10px"> 
-          <div class="input-group col-xs-3">       
-            <label for="inputCaption">Tax</label>
-            <input type="text" class="form-control" id="inputCaption" placeholder="please fill in a number format" pattern="\d*" name="menu_tax" required>
-             %
-          </div>
-        </div><br />
-        <div class="form-group" style="margin-bottom:10px"> 
-          <div class="input-group">       
-            <label for="inputDate">Restaurant</label><br /> 
-            <select name="rest_id" class="form-control">
+        <div class="form-group" style="margin-bottom:10px">      
+          <label for="rest_id">Restaurant</label><br /> 
+          <div class="input-group">  
+            <div class="input-group-addon"><span class="fa fa-cutlery"></span></div>
+            <select id="rest_id" name="rest_id" class="form-control" required>
             <?php foreach($restaurants as $rows){ ?>
               <option value = "<?=$rows->REST_ID?>" <?= ($rows->REST_ID==$rest_id)?'selected':''?> ><?=$rows->NAME?></option>
             <?php } ?>
@@ -170,7 +176,7 @@
         </div><br />  
         <div class="form-group text-right" style="margin-bottom:10px">
           <div class="input-group">       
-            <button type="submit" class="btn btn-success">Submit</button>
+            <button type="submit" class="btn btn-success">Submit</button>&nbsp;
             <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
           </div>
         </div><br /> 
@@ -179,99 +185,104 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal fade -->
+<div id="baseurl" data-url="<?=base_url()?>"></div>
 <?php  
-  //editable script
-  $i = 0;
-  //$n = count($dtopcats);
-  $edit_script = "<script>"; 
-  $edit_script .= "$(document).ready(function(){";
-  $edit_script .= "  $.fn.editable.defaults.mode = 'inline';";
-  foreach ($menus as $row){
-  $edit_script .= "  $('#NAME-".$row->ID."').editable({
-                        url: '/process/menu?p=update',
-                        pk: ".$row->ID.", 
-                        validate: function(v) {
-                          if (!v) return 'don\'t leave it blank!';
-                        },
-                        success: function(result){  
-                          var data = result.split(',');
-                          $('#upby".$row->ID."').html(data[0]);
-                          $('#updt".$row->ID."').html(data[1]); 
-                      } 
-                    });";
-  $edit_script .= "  $('#PRICE-".$row->ID."').editable({
-                        url: '/process/menu?p=update',
-                        pk: ".$row->ID.", 
-                        validate: function(v) {
-                          if (!v) return 'don\'t leave it blank!'; 
-                          if (isNaN(v)) return 'please fill in a number format!';
-                        },
-                        success: function(result){  
-                          var data = result.split(',');
-                          $('#upby".$row->ID."').html(data[0]);
-                          $('#updt".$row->ID."').html(data[1]); 
-                      } 
-                    });";
-  $edit_script .= "  $('#CATEGORY_ID-".$row->ID."').editable({
-                        type: 'select',  
-                        value: '".$row->CATEGORY_ID."', 
-                        source: [ ";
-  $k = 1;
-  $q = count($categories);
-  foreach($categories as $rowc){
-    $edit_script .= "  {value: '".$rowc->ID."', text: '".$rowc->NAME."'}";
-    $edit_script .= ($k<$q)?", ":"";
-    $k++;
-  }
-  $edit_script .= "    ],
-                        url: '/process/menu?p=update',
-                        pk: ".$row->ID.",
-                        success: function(result){  
-                          var data = result.split(',');
-                          $('#upby".$row->ID."').html(data[0]);
-                          $('#updt".$row->ID."').html(data[1]); 
-                        }  
-                      });";
-  $edit_script .= "  $('#PRINTER-".$row->ID."').editable({
-                        type: 'select',  
-                        value: '".$row->PRINTER."', 
-                        source: [ ";
-  $i = 1;
-  $n = count($printer);
-  foreach($printer as $rowp){
-    $edit_script .= "  {value: '".$rowp->ID."', text: '".$rowp->NAME."'}";
-    $edit_script .= ($i<$n)?", ":"";
-    $i++;
-  }
-  $edit_script .= "    ],
-                        url: '/process/menu?p=update',
-                        pk: ".$row->ID.",
-                        success: function(result){  
-                          var data = result.split(',');
-                          $('#upby".$row->ID."').html(data[0]);
-                          $('#updt".$row->ID."').html(data[1]); 
-                        }  
-                      });";
-  $edit_script .= "  $('#TAX-".$row->ID."').editable({
-                        url: '/process/menu?p=update',
-                        pk: ".$row->ID.", 
-                        validate: function(v) {
-                          if (!v) return 'don\'t leave it blank!'; 
-                          if (isNaN(v)) return 'please fill in a number format!';
-                        },
-                        success: function(result){  
-                          var data = result.split(',');
-                          $('#upby".$row->ID."').html(data[0]);
-                          $('#updt".$row->ID."').html(data[1]); 
-                      } 
-                    });";
-  }
-  $edit_script .= "}); ";
+	//editable script
+  	$i = 0;
+  	$edit_script = "<script>"; 
+  	$edit_script .= "$(document).ready(function(){";
+	$edit_script .= "  $.fn.editable.defaults.mode = 'inline';";
+	$edit_script .= "  $.fn.editable.defaults.showbuttons = false;";
+  	$edit_script .= "  var updateurl = '".base_url()."process/menu?p=update';";
+  	foreach ($menus as $row){
+  		$edit_script .= "  $('#NAME-".$row->ID."').editable({
+		                        url: updateurl,
+		                        pk: ".$row->ID.", 
+		                        validate: function(v) {
+		                          if (!v) return 'don\'t leave it blank!';
+		                        },
+		                        success: function(result){  
+		                          var data = result.split(',');
+		                          $('#upby".$row->ID."').html(data[0]);
+		                          $('#updt".$row->ID."').html(data[1]); 
+		                      } 
+		                    });";
+  		$edit_script .= "  $('#PRICE-".$row->ID."').editable({
+		                        url: updateurl,
+		                        pk: ".$row->ID.", 
+		                        validate: function(v) {
+		                          if (!v) return 'don\'t leave it blank!'; 
+		                          if (isNaN(v)) return 'please fill in a number format!';
+		                        },
+		                        success: function(result){  
+		                          var data = result.split(',');
+		                          $('#upby".$row->ID."').html(data[0]);
+		                          $('#updt".$row->ID."').html(data[1]); 
+		                      } 
+		                    });";
+  		$edit_script .= "  $('#CATEGORY_ID-".$row->ID."').editable({
+		                        type: 'select',  
+		                        value: '".$row->CATEGORY_ID."', 
+		                        source: [ ";
+		$k = 1;
+		$q = count($categories);
+		foreach($categories as $rowc){
+			$edit_script .= "  {value: '".$rowc->ID."', text: '".$rowc->NAME."'}";
+		    $edit_script .= ($k<$q)?", ":"";
+		    $k++;
+		}
+		$edit_script .= "    ],
+		                        url: updateurl,
+		                        pk: ".$row->ID.",
+		                        success: function(result){  
+		                          var data = result.split(',');
+		                          $('#upby".$row->ID."').html(data[0]);
+		                          $('#updt".$row->ID."').html(data[1]); 
+		                        }  
+		                      });";
+  		$edit_script .= "  $('#PRINTER-".$row->ID."').editable({
+        						type: 'select',  
+		                        value: '".$row->PRINTER."', 
+		                        source: [ ";
+		$i = 1;
+		$n = count($printer);
+		foreach($printer as $rowp){
+		    $edit_script .= "  {value: '".$rowp->ID."', text: '".$rowp->NAME."'}";
+		    $edit_script .= ($i<$n)?", ":"";
+		    $i++;
+		}
+		$edit_script .= "    ],
+		                        url: updateurl,
+		                        pk: ".$row->ID.",
+		                        success: function(result){  
+		                          var data = result.split(',');
+		                          $('#upby".$row->ID."').html(data[0]);
+		                          $('#updt".$row->ID."').html(data[1]); 
+		                        }  
+		                      });";
+  		$edit_script .= "  $('#TAX-".$row->ID."').editable({
+		                        url: updateurl,
+		                        pk: ".$row->ID.", 
+		                        validate: function(v) {
+		                          	if (!v) return 'don\'t leave it blank!';
+		                          	if (isNaN(v)) return 'please fill in a number format!';
+                          			if (!isPercent(v)) return 'please fill in Up to 100%!'; 
+		                        },
+		                        success: function(result){  
+		                          var data = result.split(',');
+		                          $('#upby".$row->ID."').html(data[0]);
+		                          $('#updt".$row->ID."').html(data[1]); 
+		                      } 
+		                    });";
+  	}
+  	$edit_script .= "}); ";
 	$edit_script .= '</script>';
-  echo $edit_script;
+  	echo $edit_script;
 ?>
 <script>   
-$(document).ready(function(){                    
+$(document).ready(function(){ 
+	var baseurl = $("#baseurl").data('url');
+	                   
 	//make editable on focus  
   	$('.edit').focus(function(e) {
     	e.stopPropagation();
@@ -282,7 +293,7 @@ $(document).ready(function(){
     	columnDefs: [
       		{ targets: 'no-sort', orderable: false }
     	],
-    	"order": [[ 9, "desc" ]]
+    	"order": [[ 1, "asc" ]]
   	});
   
   	//check all
@@ -323,7 +334,7 @@ $(document).ready(function(){
           			var dataP = "idf="+idf;
   					$.ajax({
             			type: "POST",
-            			url: "/process/menu?p=delete",
+            			url: baseurl+"process/menu?p=delete",
             			data: dataP,
             			cache: false,
             			success: function(result){ 
@@ -343,5 +354,48 @@ $(document).ready(function(){
   		return false;
   	}); 
 });
+
+
+$(function(){
+	var baseurl = $("#baseurl").data('url');
+	$("#newmenu").validate({ 
+    	rules: {
+      		menu_price: { 
+        		number: true 
+      		},
+			menu_tax: {
+        		number: true, 
+				percent: true
+			} 
+	    }    
+  	});
+});
+
+$.validator.setDefaults({
+    highlight: function(element) {
+        $(element).closest('.form-group').addClass('has-error');
+    },
+    unhighlight: function(element) {
+        $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
+    },
+    errorElement: 'span',
+    errorClass: 'help-block',
+    errorPlacement: function(error, element) {
+        if(element.parent('.input-group').length) {
+            error.insertAfter(element.parent());
+        } else {
+            error.insertAfter(element);
+        }
+    }
+});
+
+jQuery.validator.addMethod("percent", function(value, element) {
+  return this.optional(element) || /^[0-9]\d{0,1}(\.\d{1,3})?%?$|^100$/.test(value);
+}, "Please fill in up to 100 %");
+
+function isPercent(percent) {
+  var regex = /^[0-9]\d{0,1}(\.\d{1,3})?%?$|^100$/;
+  return regex.test(percent);
+}  
   
 </script>

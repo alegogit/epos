@@ -44,7 +44,7 @@
 						        <th>Country</th>
 						        <!--<th>Geo Location</th>-->
 						        <th>Currency</th>
-						        <th class="cin">Service Charge<br/>(Up to 100%)</th>
+						        <th class="cin">Service Charge</th>
 						        <!--<th>Order No. Start</th>-->
 						        <th>Created By</th>
 						        <th>Created Date</th>

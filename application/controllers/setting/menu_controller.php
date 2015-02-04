@@ -28,14 +28,15 @@ class Menu_controller extends CI_Controller {
 			$data['rest_id'] = $rest_id;
 			$data['startdate'] = $start_date;
 			$data['enddate'] = $end_date; 
+		  	$data['cur'] = $this->setting->get_currency($rest_id);
 			                                 
-      if($this->input->post('menu_name')){               
-		    $this->setting->new_menu($this->input->post('menu_name'),$this->input->post('menu_category'),$this->input->post('menu_price'),$this->input->post('menu_printer'),$this->input->post('menu_tax'));
-      } 
+      		if($this->input->post('menu_name')){               
+		    	$this->setting->new_menu($this->input->post('menu_name'),$this->input->post('menu_category'),$this->input->post('menu_price'),$this->input->post('menu_printer'),$this->input->post('menu_tax'));
+      		} 
       
-		  $data['menus'] = $this->setting->get_rest_menus($rest_id);
-		  $data['printer'] = $this->setting->get_rest_printer($rest_id);
-		  $data['categories'] = $this->setting->get_rest_categories($rest_id);			                   
+		  	$data['menus'] = $this->setting->get_rest_menus($rest_id);
+		  	$data['printer'] = $this->setting->get_rest_printer($rest_id);
+		  	$data['categories'] = $this->setting->get_rest_categories($rest_id);			                   
 			
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);
