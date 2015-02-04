@@ -292,6 +292,10 @@
   //donut chart script
   $i = 0;
   $n = count($dtopcats);
+  $total = 0; 
+  foreach ($dtopcats as $tot){
+  	$total = $total + $tot->AMOUNT;
+  }
   $chart_script = "<script>"; 
   $chart_script .= "var doughnutData = [";
   if ($n!=0){
