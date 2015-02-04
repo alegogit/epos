@@ -34,6 +34,7 @@
 						    <tr class="tablehead text3D">
 						        <th class="no-sort"><input type="checkbox" id="checkall" value="Check All"></th>
 						        <th>Name</th>
+						        <th>Email Address</th>
 						        <th>Telephone</th>
 						        <th>FAX</th>
 						        <th>Address 1</th>
@@ -42,9 +43,8 @@
 						        <th>Postal Code</th>
 						        <th>Country</th>
 						        <!--<th>Geo Location</th>-->
-						        <th>Email Address</th>
 						        <th>Currency</th>
-						        <th>Service Charge</th>
+						        <th class="cin">Service Charge<br/>(Up to 100%)</th>
 						        <!--<th>Order No. Start</th>-->
 						        <th>Created By</th>
 						        <th>Created Date</th>
@@ -64,6 +64,9 @@
                     <?php } else { ?>                                                        
                     <span id="NAME__<?=$row->ID?>" tabindex="0"><?=$row->NAME?></span>
                     <?php } ?>
+                  </td>
+                  <td style="">
+                    <a id="EMAIL_ADDRESS__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->EMAIL_ADDRESS?></a>
                   </td>
                   <td style="">
                     <a id="TELEPHONE__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->TELEPHONE?></a>
@@ -90,13 +93,10 @@
                     <a id="GEOLOC__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->GEOLOC?></a>
                   </td>-->
                   <td style="">
-                    <a id="EMAIL_ADDRESS__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->EMAIL_ADDRESS?></a>
-                  </td>
-                  <td style="">
                     <a id="CURRENCY__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->CURRENCY_NAME?></a>
                   </td>
-                  <td style="">
-                    <a id="SERVICE_CHARGE__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->SERVICE_CHARGE?></a>
+                  <td style="" class="cin">
+                    <a id="SERVICE_CHARGE__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->SERVICE_CHARGE?></a> %
                   </td>
                   <!--<td style="">
                     <a id="ORDER_NUMBER_START__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->ORDER_NUMBER_START?></a>
@@ -132,113 +132,120 @@
         $attributes = array('class' => 'form-inline', 'id' => 'newresto', 'role' => 'form');
         echo form_open('setting/restaurant',$attributes)
       ?> 
-      <div class="col-md-6">                   		
-        <div class="form-group" style="margin-bottom:10px">                                         
-          <label for="name"></label><br>
-          <div class="input-group">       
-            <div class="input-group-addon"><span class="glyphicon glyphicon-cutlery"></span></div>
-            <input type="text" class="form-control" id="name" placeholder="Restaurant Name" name="name" required>    
-          </div>  
-        </div><br />           
-        <div class="form-group" style="margin-bottom:10px">
-          <label for="telephone"></label><br> 
-          <div class="input-group">              
-            <div class="input-group-addon"><span class="glyphicon glyphicon-phone-alt"></span></div>
-            <input type="text" class="form-control" id="telephone" placeholder="Telephone" name="telephone" required>
-          </div>
-        </div><br />
-        <div class="form-group" style="margin-bottom:10px">     
-          <label for="FAX"></label><br>
-          <div class="input-group">                                                                        
-            <div class="input-group-addon"><span class="fa fa-fax"></span></div>
-            <input type="text" class="form-control" id="FAX" placeholder="FAX" name="FAX" required>
-          </div>
-        </div><br />
+	  <div class="row">
+      	<div class="col-md-4">                   		
+        	<div class="form-group" style="margin-bottom:10px">                                         
+          		<label for="name"></label><br>
+          		<div class="input-group">       
+            		<div class="input-group-addon"><span class="glyphicon glyphicon-cutlery"></span></div>
+            		<input type="text" class="form-control" id="name" placeholder="Restaurant Name" name="name" required>    
+          		</div>  
+        	</div><br /> 
+        	<div class="form-group" style="margin-bottom:10px"> 
+          		<label for="email"></label><br>                   
+          		<div class="input-group">                                              
+            		<div class="input-group-addon"><span class="fa fa-envelope-o"></span></div>
+            		<input type="text" class="form-control" id="email" placeholder="E-mail Address" pattern="__([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$" name="email" required>
+          		</div>
+        	</div><br />          
+        	<div class="form-group" style="margin-bottom:10px">
+          		<label for="telephone"></label><br> 
+          		<div class="input-group">              
+            		<div class="input-group-addon"><span class="glyphicon glyphicon-phone-alt"></span></div>
+            		<input type="text" class="form-control" id="telephone" placeholder="Telephone" name="telephone" required>
+          		</div>
+        	</div><br />
+        	<div class="form-group" style="margin-bottom:10px">     
+          		<label for="FAX"></label><br>
+          		<div class="input-group">                                                                        
+            		<div class="input-group-addon"><span class="fa fa-fax"></span></div>
+            		<input type="text" class="form-control" id="FAX" placeholder="FAX" name="FAX" required>
+          		</div>
+        	</div><br />  		
+      	</div><!-- /.col-md-4 -->
+      	<div class="col-md-4">
+	        <div class="form-group" style="margin-bottom:10px"> 
+				<label for="address1"></label><br>
+		        <div class="input-group">                                                                                                
+		        	<div class="input-group-addon"><span class="glyphicon glyphicon-home"></span></div>
+		            <input type="text" class="form-control" id="address1" placeholder="Address Line 1" name="address1" required>
+				</div>
+	        </div><br />
+	        <div class="form-group" style="margin-bottom:10px"> 
+	          	<label for="address2"></label><br>
+	          	<div class="input-group">                                                                                                
+	            	<div class="input-group-addon"><span class="glyphicon glyphicon-home"></span></div>
+	            	<input type="text" class="form-control" id="address2" placeholder="Address Line 2" name="address2" required>
+	          	</div>
+	        </div><br />	
+	        <div class="form-group" style="margin-bottom:10px">
+	          	<label for="city"></label><br>
+	          	<div class="input-group">                                                                                                
+	            	<div class="input-group-addon"><span class="fa fa-building"></span></div>
+	            	<input type="text" class="form-control" id="city" placeholder="City" name="city" required>
+	          	</div>
+	        </div><br /> 
+	        <div class="form-group" style="margin-bottom:10px"> 
+	          	<label for="postalcode"></label><br>                         
+	          	<div class="input-group">                                                          
+	            	<div class="input-group-addon"><span class="fa fa-envelope"></span></div>
+	            	<input type="text" class="form-control" id="postalcode" placeholder="Postal Code" name="postalcode" required>
+	          	</div>
+	        </div><br />
+	        <div class="form-group" style="margin-bottom:10px">
+	          	<label for="country"></label><br>                                      
+	          	<div class="input-group">                                     
+	            	<div class="input-group-addon"><span class="fa fa-flag"></span></div>
+	            	<input type="text" class="form-control" id="country" placeholder="Country" name="country" required>
+	          	</div>
+	        </div><br />
+	        <!--<div class="form-group" style="margin-bottom:10px"> 
+	          	<label for="geoloc"></label><br>                             
+	          	<div class="input-group">                           
+	            	<div class="input-group-addon"><span class="fa fa-globe"></span></div>
+	            	<input type="text" class="form-control" id="geoloc" placeholder="Geo Location" name="geoloc" required>
+	          	</div>
+	        </div><br />-->		
+	        <!--<div class="form-group" style="margin-bottom:10px"> 
+	          	<div class="input-group">       
+	            	<label for="orderns">Order No. Start</label>
+	            	<input type="text" class="form-control" id="orderns" placeholder="" name="orderns" required>
+	            	<span class="errmsg"></span>
+	          	</div>
+	        </div><br />-->
+      </div><!-- /.col-md-4 -->
+      <div class="col-md-4">
+      	<div class="form-group" style="margin-bottom:10px;"> 
+        	<label for="currency">Default Currency</label><br>                                     
+          	<div class="input-group">                                        
+            	<div class="input-group-addon"><span class="fa fa-money"></span></div>
+            	<select name="currency" id="currency" class="form-control" title="Default Currency">
+            	<?php foreach($currencies as $rowc){ ?>
+              		<option value="<?=$rowc->CODE?>"><?=$rowc->VALUE?></option>
+            	<?php } ?>
+            	</select>
+          	</div>
+        </div><br/>        		
         <div class="form-group" style="margin-bottom:10px"> 
-          <label for="address1"></label><br>
-          <div class="input-group">                                                                                                
-            <div class="input-group-addon"><span class="glyphicon glyphicon-home"></span></div>
-            <input type="text" class="form-control" id="address1" placeholder="Address Line 1" name="address1" required>
-          </div>
+        	<label for="service">Service Charge</label><br>
+          	<div class="input-group" style="width:150px">                            
+            	<div class="input-group-addon"><span class="fa fa-star"></span></div>
+            	<input type="text" class="form-control" id="service" placeholder="" name="service" required>                          
+            	<div class="input-group-addon"><span class="fa fa-percent">%</span></div>
+          	</div>
+        </div><br />   
+	  </div><!-- /.col-md-4 -->
+	</div><!-- /.row -->
+	<div class="row">    		
+    	<div class="form-group text-right center-block" style="align:right;margin:10px">
+        	<div class="input-group">       
+            	<button type="submit" class="btn btn-success">Submit</button>&nbsp;
+            	<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+          	</div>
         </div><br />
-        <div class="form-group" style="margin-bottom:10px"> 
-          <label for="address2"></label><br>
-          <div class="input-group">                                                                                                
-            <div class="input-group-addon"><span class="glyphicon glyphicon-home"></span></div>
-            <input type="text" class="form-control" id="address2" placeholder="Address Line 2" name="address2" required>
-          </div>
-        </div><br />	
-        <div class="form-group" style="margin-bottom:10px">
-          <label for="city"></label><br>
-          <div class="input-group">                                                                                                
-            <div class="input-group-addon"><span class="fa fa-building"></span></div>
-            <input type="text" class="form-control" id="city" placeholder="City" name="city" required>
-          </div>
-        </div><br />
-      </div>
-      <div class="col-md-6"> 
-        <div class="form-group" style="margin-bottom:10px"> 
-          <label for="postalcode"></label><br>                         
-          <div class="input-group">                                                          
-            <div class="input-group-addon"><span class="fa fa-envelope"></span></div>
-            <input type="text" class="form-control" id="postalcode" placeholder="Postal Code" name="postalcode" required>
-          </div>
-        </div><br />
-        <div class="form-group" style="margin-bottom:10px">
-          <label for="country"></label><br>                                      
-          <div class="input-group">                                     
-            <div class="input-group-addon"><span class="fa fa-flag"></span></div>
-            <input type="text" class="form-control" id="country" placeholder="Country" name="country" required>
-          </div>
-        </div><br />
-        <div class="form-group" style="margin-bottom:10px"> 
-          <label for="geoloc"></label><br>                             
-          <div class="input-group">                           
-            <div class="input-group-addon"><span class="fa fa-globe"></span></div>
-            <input type="text" class="form-control" id="geoloc" placeholder="Geo Location" name="geoloc" required>
-          </div>
-        </div><br />
-        <div class="form-group" style="margin-bottom:10px"> 
-          <label for="email"></label><br>                   
-          <div class="input-group">                                              
-            <div class="input-group-addon"><span class="fa fa-envelope-o"></span></div>
-            <input type="text" class="form-control" id="email" placeholder="E-mail Address" pattern="__([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$" name="email" required>
-          </div>
-        </div><br />
-        <div class="form-group" style="margin-bottom:10px"> 
-          <label for="currency"></label><br>                                     
-          <div class="input-group">                                        
-            <div class="input-group-addon"><span class="fa fa-money"></span></div>
-            <select name="currency" id="currency" class="form-control" title="Select Default Currency">
-            <?php foreach($currencies as $rowc){ ?>
-              <option value="<?=$rowc->CODE?>"><?=$rowc->VALUE?></option>
-            <?php } ?>
-            </select>
-          </div>
-        </div><br />        		
-        <div class="form-group" style="margin-bottom:10px"> 
-          <label for="service"></label><br>
-          <div class="input-group">                            
-            <div class="input-group-addon"><span class="fa fa-star"></span></div>
-            <input type="text" class="form-control" id="service" placeholder="Service Charge" name="service" required>
-          </div>
-        </div><br />     				
-        <!--<div class="form-group" style="margin-bottom:10px"> 
-          <div class="input-group">       
-            <label for="orderns">Order No. Start</label>
-            <input type="text" class="form-control" id="orderns" placeholder="" name="orderns" required>
-            <span class="errmsg"></span>
-          </div>
-        </div><br />-->
-       </div>      		
-        <div class="form-group text-right center-block" style="align:right;margin-bottom:10px">
-          <div class="input-group">       
-            <button type="submit" class="btn btn-success">Submit</button>&nbsp;
-            <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-          </div>
-        </div><br />
-        <?=form_close()?>
-      </div><!-- /.modal-body -->
+	</div><!-- /.row -->
+    <?=form_close()?>
+</div><!-- /.modal-body -->
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal fade -->
@@ -248,7 +255,6 @@
 <?php  
   //editable script
   $i = 0;
-  //$n = count($dtopcats);
   $edit_script = "<script>"; 
   $edit_script .= "$(document).ready(function(){";        
   $edit_script .= "  $.fn.editable.defaults.mode = 'inline';";
@@ -418,6 +424,7 @@
                         pk: ".$row->ID.", 
                         validate: function(v) {
                           if (!v) return 'don\'t leave it blank!';
+                          if (!isPercent(v)) return 'please fill in Up to 100%!';
                         },
                         success: function(result){  
                           var data = result.split(',');
@@ -446,7 +453,7 @@ $(document).ready(function()
     columnDefs: [
       { targets: 'no-sort', orderable: false }
     ],
-    "order": [[ 15, "desc" ]]
+    "order": [[ 1, "asc" ]]
   });
   
   //check all
@@ -529,7 +536,8 @@ $(function(){
         phone: true 
       },       
       service: {       
-        number: true
+        number: true,   
+        percent: true
       }       
     },
     messages:{ 
@@ -569,6 +577,10 @@ $.validator.setDefaults({
 jQuery.validator.addMethod("phone", function(value, element) {
   return this.optional(element) || /(\D*\d){8}/.test(value);
 }, "Please fill in a Phone Number format");
+
+jQuery.validator.addMethod("percent", function(value, element) {
+  return this.optional(element) || /^[0-9]\d{0,1}(\.\d{1,3})?%?$|^100$/.test(value);
+}, "Please fill in up to 100 %");
   
 function isEmail(email) {
   var regex = /([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -578,6 +590,11 @@ function isEmail(email) {
 function isPhone(phone) {
   var regex = /(\D*\d){8}/;
   return regex.test(phone);
+}  
+
+function isPercent(percent) {
+  var regex = /^[0-9]\d{0,1}(\.\d{1,3})?%?$|^100$/;
+  return regex.test(percent);
 }  
 
 function isGeoLoc(geoloc) {
