@@ -44,7 +44,7 @@
 						        <th>Country</th>
 						        <!--<th>Geo Location</th>-->
 						        <th>Currency</th>
-						        <th class="cin">Service Charge</th>
+						        <th class="cin">Service Charge (%)</th>
 						        <!--<th>Order No. Start</th>-->
 						        <th>Created By</th>
 						        <th>Created Date</th>
@@ -96,7 +96,7 @@
                     <a id="CURRENCY__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->CURRENCY_NAME?></a>
                   </td>
                   <td style="" class="cin">
-                    <a id="SERVICE_CHARGE__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->SERVICE_CHARGE?></a> %
+                    <a id="SERVICE_CHARGE__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->SERVICE_CHARGE?></a>
                   </td>
                   <!--<td style="">
                     <a id="ORDER_NUMBER_START__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->ORDER_NUMBER_START?></a>
