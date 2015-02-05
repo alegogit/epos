@@ -61,6 +61,7 @@ $route['setting'] = "setting/restaurant_controller";
 $route['setting/restaurant'] = "setting/restaurant_controller";
 $route['setting/category'] = "setting/category_controller";   
 $route['setting/menu'] = "setting/menu_controller";            
+$route['setting/menuinventory'] = "setting/menuinventory_controller";            
 $route['setting/tableorder'] = "setting/tableorder_controller";
 $route['setting/users'] = "setting/users_controller";
 $route['setting/printer'] = "setting/printer_controller";

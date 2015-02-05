@@ -1,110 +1,111 @@
 <div id="page-content-wrapper">
 <!-- Page Content -->
-  <div class="container-fluid" style="font-size:90%;">
+	<div class="container-fluid" style="font-size:90%;">
   
-    <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
-      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/restaurant">Restaurant</a>                
-      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/category">Category</a>               
-      <a role="button" class="btn btn-primary" href="<?=base_url()?>setting/menu">Menu</a>                         
-      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/menuinventory">Menu - Inventory</a>            
-      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/tableorder">Table Order</a>        
-      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/users">Users</a>               
-      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/printer">Printer</a>       
-      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/devices">Devices</a>           
-    </div>       
+    	<div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
+      		<a role="button" class="btn btn-default" href="<?=base_url()?>setting/restaurant">Restaurant</a>                
+	      	<a role="button" class="btn btn-default" href="<?=base_url()?>setting/category">Category</a>               
+	      	<a role="button" class="btn btn-default" href="<?=base_url()?>setting/menu">Menu</a>                       
+	      	<a role="button" class="btn btn-primary" href="<?=base_url()?>setting/menuinventory">Menu - Inventory</a>             
+	      	<a role="button" class="btn btn-default" href="<?=base_url()?>setting/tableorder">Table Order</a>        
+	      	<a role="button" class="btn btn-default" href="<?=base_url()?>setting/users">Users</a>               
+	      	<a role="button" class="btn btn-default" href="<?=base_url()?>setting/printer">Printer</a>       
+	      	<a role="button" class="btn btn-default" href="<?=base_url()?>setting/devices">Devices</a>           
+	    </div>       
                                                                           
-    <hr style="margin-bottom:10px" />
+    	<hr style="margin-bottom:10px" />
     
-    <div class="row" style="padding-left: 15px">  
-      <?php
-        $attributes = array('class' => 'form-inline', 'id' => 'filter', 'role' => 'form');
-        echo form_open('setting/menu',$attributes)
-      ?>
-        <div class="form-group" style="margin-bottom:0px">
-          <div class="input-group">
-            <div class="input-group-addon"><span class="glyphicon glyphicon-cutlery"></span></div>
-            <select id = "myRestaurant" name="rest_id" title="Restaurant Name" class="form-control" style="display:inline">
-              <option value = "0">Select Restaurant</option>
-              <?php foreach($restaurants as $row){ ?>
-              <option value = "<?=$row->REST_ID?>" <?= ($row->REST_ID==$rest_id)?'selected':''?> ><?=$row->NAME?></option>
-              <?php } ?>
-            </select>   
-          </div>
-        </div>
-        <div class="form-group" style="margin-bottom:0px">
-          <div class="input-group">
-            <button type="submit" class="btn btn-success" style="display:inline">Filter</button>   
-          </div>
-        </div>
-      <?=form_close()?>     
-    </div>              
+    	<div class="row" style="padding-left: 15px">  
+      	<?php
+        	$attributes = array('class' => 'form-inline', 'id' => 'filter', 'role' => 'form');
+        	echo form_open('setting/menuinventory',$attributes)
+      	?>
+        	<div class="form-group" style="margin-bottom:0px">
+          		<div class="input-group">
+            		<div class="input-group-addon"><span class="glyphicon glyphicon-cutlery"></span></div>
+            		<select id = "myRestaurant" name="rest_id" title="Restaurant Name" class="form-control" style="display:inline">
+              			<option value = "0">Select Restaurant</option>
+              			<?php foreach($restaurants as $row){ ?>
+              			<option value = "<?=$row->REST_ID?>" <?= ($row->REST_ID==$rest_id)?'selected':''?> ><?=$row->NAME?></option>
+              			<?php } ?>
+            		</select>   
+          		</div>
+        	</div>
+        	<div class="form-group" style="margin-bottom:0px">
+          		<div class="input-group">
+            		<button type="submit" class="btn btn-success" style="display:inline">Filter</button>   
+          		</div>
+        	</div>
+      		<?=form_close()?>     
+    	</div>              
                                                      
-    <hr style="margin-bottom:10px;margin-top:10px" />
+    	<hr style="margin-bottom:10px;margin-top:10px" />
     
-    <div class="row">
+    	<div class="row">
 			<div class="col-lg-12">
 				<div class="panel panel-default">
-					<div class="panel-heading"><b>Add/Edit Menu</b></div>
+					<div class="panel-heading"><b>Menu - Inventory Setting</b></div>
 					<div class="panel-body">                 					                    
-			      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#bookModal">
-              <span class="glyphicon glyphicon-plus"></span> Add New Menu
-            </button>             
-            <button type="button" class="btn btn-danger">
-              <span class="glyphicon glyphicon-remove"></span> Delete Selected Menu(s)
-            </button>        
-            <div style="margin-bottom:15px"></div> 
-            <div class="table-responsive">
-						  <table id="setting" class="table table-striped dt-right compact">
+			      		<button type="button" class="btn btn-success" data-toggle="modal" data-target="#bookModal">
+              				<span class="glyphicon glyphicon-plus"></span> Add New Item
+            			</button>             
+            			<button type="button" class="btn btn-danger">
+              				<span class="glyphicon glyphicon-remove"></span> Delete Selected Item(s)
+            			</button>        
+            			<div style="margin-bottom:15px"></div> 
+            			<div class="table-responsive">
+							<table id="setting" class="table table-striped dt-right compact">
 						    <thead>
-						    <tr class="tablehead text3D">
-						        <th class="no-sort"><input type="checkbox" id="checkall" value="Check All"></th>
-						        <th>Menu Name</th>
-						        <th class="cin">Price (<?=$cur?>)</th>
-						        <th>Category</th>
-						        <th>Printer</th>
-						        <th class="cin">Tax (%)</th>
-						        <th data-field="crby" data-sortable="false">Created By</th>
-						        <th data-field="crdt" data-sortable="false">Created Date</th>
-						        <th data-field="upby"  data-sortable="false">Updated By</th>
-						        <th data-field="updt" data-sortable="false">Updated Date</th>
-						    </tr>
+						    	<tr class="tablehead text3D">
+						        	<th class="no-sort"><input type="checkbox" id="checkall" value="Check All"></th>
+						        	<th>Menu</th>
+						        	<th class="no-sort">Inventory</th>
+						        	<th class="no-sort">Quantity</th>
+						        	<th data-field="crby" data-sortable="false">Created By</th>
+						        	<th data-field="crdt" data-sortable="false">Created Date</th>
+						        	<th data-field="upby"  data-sortable="false">Updated By</th>
+						        	<th data-field="updt" data-sortable="false">Updated Date</th>
+						    	</tr>
 						    </thead>  
 						    <tbody>                    
-						    <?php $i = 0;  foreach ($menus as $row){ ?>
-                <tr data-index="<?=$i?>" class="datarow" id="<?=$row->ID.'_'.$row->NAME?>">
-                  <td class="">
-                    <input type="checkbox" class="case" tabindex="-1">
-                  </td>
-                  <td style="">
-                    <a id="NAME-<?=$row->ID?>" class="edit" tabindex><?=$row->NAME?></a>
-                  </td>
-                  <td style="" class="cin">
-                    <a id="PRICE-<?=$row->ID?>" class="edit" tabindex><?=$row->PRICE?></a>
-                  </td>
-                  <td style="">
-                    <a id="CATEGORY_ID-<?=$row->ID?>" class="edit" tabindex><?=$row->CAT_NAME?></a>
-                  </td>
-                  <td style="">
-                    <a id="PRINTER-<?=$row->ID?>" class="edit" tabindex><?=$row->PRINT_NAME?></a>
-                 </td>
-                  <td style="" class="cin">
-                    <a id="TAX-<?=$row->ID?>" class="edit" tabindex><?=$row->TAX?></a>
-                  </td>
-                  <td style=""><span id="crby<?=$row->ID?>"><?=$this->setting->get_username($row->CREATED_BY)->USERNAME?></span></td>
-                  <td style=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
-                  <td style=""><span id="upby<?=$row->ID?>"><?=$this->setting->get_username($row->LAST_UPDATED_BY)->USERNAME?></span></td>
-                  <td style=""><span id="updt<?=$row->ID?>"><?=$row->LAST_UPDATED_DATE?></span></td>
-                </tr>
-                <?php $i++; } ?>
+						    <?php $i = 1;  foreach ($menuinventory as $row){ ?>
+                				<tr data-index="<?=$i?>" class="datarow" id="<?=$row->ID.'_'.$row->MENU_NAME?>">
+				                  	<td class="">
+				                    	<input type="checkbox" class="case" tabindex="-1">
+				                  	</td>
+				                  	<td style="">
+				                    	<a id="MENU_ID-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->MENU_NAME?></a>
+				                  	</td>
+                  					<td style="">
+                    					<a id="INVENTORY_ID-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->INVENTORY_NAME?></a>
+                  					</td>
+                  					<td style="">
+										<table style="">
+										<tr>
+											<td align="right" style="text-align:right !important;background-color:<?=($i%2!=0)?'#f5f5f5':'none'?>">
+                    							<a id="QUANTITY-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->QUANTITY?></a>
+											</td>
+											<td align="left" style="text-align:left !important;background-color:<?=($i%2!=0)?'#f5f5f5':'none'?>">
+												<?=$this->setting->get_metric($row->INVENTORY_METRIC)?>
+											</td>
+										</tr>
+										</table>
+                  					</td>
+				                  	<td style=""><span id="crby<?=$row->ID?>"><?=$this->setting->get_username($row->CREATED_BY)->NAME?></span></td>
+				                  	<td style=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
+				                  	<td style=""><span id="upby<?=$row->ID?>"><?=$this->setting->get_username($row->LAST_UPDATED_BY)->NAME?></span></td>
+				                  	<td style=""><span id="updt<?=$row->ID?>"><?=$row->LAST_UPDATED_DATE?></span></td>
+				                </tr>
+				                <?php $i++; } ?>
 						    </tbody>
-						  </table>
-             </div> 
+						  	</table>
+             			</div> 
 					</div><!--/.panel-body-->
 				</div><!--/.panel-->
 			</div><!--/.col-lg-12-->
 		</div><!--/.row-->
   
-  </div><!-- /.container-fluid -->
+  	</div><!-- /.container-fluid -->
 </div><!-- /#page-content-wrapper -->
 
 <!-- Modal -->
@@ -117,8 +118,8 @@
       </div><!-- /.modal-header -->
       <div class="modal-body">
       <?php
-        $attributes = array('class' => 'form-inline', 'id' => 'newmenu', 'role' => 'form');
-        echo form_open('setting/menu',$attributes)
+        $attributes = array('class' => 'form-inline', 'id' => 'newmeninv', 'role' => 'form');
+        echo form_open('setting/menuinventory',$attributes)
       ?>                    		
         <div class="form-group" style="margin-bottom:10px">  
           <label for="menu_name"></label> 
@@ -194,9 +195,9 @@
   	$edit_script .= "$(document).ready(function(){";
 	$edit_script .= "  $.fn.editable.defaults.mode = 'inline';";
 	$edit_script .= "  $.fn.editable.defaults.showbuttons = false;";
-  	$edit_script .= "  var updateurl = '".base_url()."process/menu?p=update';";
-  	foreach ($menus as $row){
-  		$edit_script .= "  $('#NAME-".$row->ID."').editable({
+  	$edit_script .= "  var updateurl = '".base_url()."process/menuinventory?p=update';";
+  	foreach ($menuinventory as $row){
+  		$edit_script .= "  $('#MENU_ID-".$row->ID."').editable({
 		                        url: updateurl,
 		                        pk: ".$row->ID.", 
 		                        validate: function(v) {
@@ -208,7 +209,7 @@
 		                          $('#updt".$row->ID."').html(data[1]); 
 		                      } 
 		                    });";
-  		$edit_script .= "  $('#PRICE-".$row->ID."').editable({
+  		$edit_script .= "  $('#INVENTORY_ID-".$row->ID."').editable({
 		                        url: updateurl,
 		                        pk: ".$row->ID.", 
 		                        validate: function(v) {
@@ -221,53 +222,12 @@
 		                          $('#updt".$row->ID."').html(data[1]); 
 		                      } 
 		                    });";
-  		$edit_script .= "  $('#CATEGORY_ID-".$row->ID."').editable({
-		                        type: 'select',  
-		                        value: '".$row->CATEGORY_ID."', 
-		                        source: [ ";
-		$k = 1;
-		$q = count($categories);
-		foreach($categories as $rowc){
-			$edit_script .= "  {value: '".$rowc->ID."', text: '".$rowc->NAME."'}";
-		    $edit_script .= ($k<$q)?", ":"";
-		    $k++;
-		}
-		$edit_script .= "    ],
-		                        url: updateurl,
-		                        pk: ".$row->ID.",
-		                        success: function(result){  
-		                          var data = result.split(',');
-		                          $('#upby".$row->ID."').html(data[0]);
-		                          $('#updt".$row->ID."').html(data[1]); 
-		                        }  
-		                      });";
-  		$edit_script .= "  $('#PRINTER-".$row->ID."').editable({
-        						type: 'select',  
-		                        value: '".$row->PRINTER."', 
-		                        source: [ ";
-		$i = 1;
-		$n = count($printer);
-		foreach($printer as $rowp){
-		    $edit_script .= "  {value: '".$rowp->ID."', text: '".$rowp->NAME."'}";
-		    $edit_script .= ($i<$n)?", ":"";
-		    $i++;
-		}
-		$edit_script .= "    ],
-		                        url: updateurl,
-		                        pk: ".$row->ID.",
-		                        success: function(result){  
-		                          var data = result.split(',');
-		                          $('#upby".$row->ID."').html(data[0]);
-		                          $('#updt".$row->ID."').html(data[1]); 
-		                        }  
-		                      });";
-  		$edit_script .= "  $('#TAX-".$row->ID."').editable({
+  		$edit_script .= "  $('#QUANTITY-".$row->ID."').editable({
 		                        url: updateurl,
 		                        pk: ".$row->ID.", 
 		                        validate: function(v) {
 		                          	if (!v) return 'don\'t leave it blank!';
 		                          	if (isNaN(v)) return 'please fill in a number format!';
-                          			if (!isPercent(v)) return 'please fill in Up to 100%!'; 
 		                        },
 		                        success: function(result){  
 		                          var data = result.split(',');
@@ -359,7 +319,7 @@ $(document).ready(function(){
 
 $(function(){
 	var baseurl = $("#baseurl").data('url');
-	$("#newmenu").validate({ 
+	$("#newmeninv").validate({ 
     	rules: {
       		menu_price: { 
         		number: true 

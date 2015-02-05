@@ -5,7 +5,8 @@
     <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
       <a role="button" class="btn btn-default" href="<?=base_url()?>setting/restaurant">Restaurant</a>                
       <a role="button" class="btn btn-default" href="<?=base_url()?>setting/category">Category</a>               
-      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/menu">Menu</a>             
+      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/menu">Menu</a>                            
+      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/menuinventory">Menu - Inventory</a>         
       <a role="button" class="btn btn-primary" href="<?=base_url()?>setting/tableorder">Table Order</a>        
       <a role="button" class="btn btn-default" href="<?=base_url()?>setting/users">Users</a>               
       <a role="button" class="btn btn-default" href="<?=base_url()?>setting/printer">Printer</a>       
@@ -57,12 +58,12 @@
 						    <thead>
 						    	<tr class="tablehead text3D">
 						        	<th class="no-sort"><input type="checkbox" id="checkall" value="Check All"></th>
-							        <th data-field="name"  data-sortable="true">Table Number</th>
-							        <th data-field="name"  data-sortable="true">Position</th>
-							        <th data-field="crby" data-sortable="false">Created By</th>
-							        <th data-field="crdt" data-sortable="false">Created Date</th>
-							        <th data-field="upby"  data-sortable="false">Updated By</th>
-							        <th data-field="updt" data-sortable="false">Updated Date</th>
+							        <th class="cin">Table Number</th>
+							        <th class="cin">Position</th>
+							        <th>Created By</th>
+							        <th>Created Date</th>
+							        <th>Updated By</th>
+							        <th>Updated Date</th>
 							    </tr>
 						    </thead>  
 						    <tbody>                    
@@ -71,10 +72,10 @@
 				                  	<td class="">
 				                    	<input type="checkbox" class="case" tabindex="-1">
 				                  	</td>
-				                  	<td style="">
+				                  	<td class="cin" style="">
 				                    	<a id="TABLE_NUMBER-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->TABLE_NUMBER?></a>
 				                  	</td>
-				                  	<td style="">
+				                  	<td class="cin" style="">
 				                    	<a id="POSITION-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->POSITION?></a>
 				                  	</td>
 				                  	<td style=""><span id="crby<?=$row->ID?>"><?=$this->setting->get_username($row->CREATED_BY)->USERNAME?></span></td>

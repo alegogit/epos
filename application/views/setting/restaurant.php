@@ -1,112 +1,122 @@
 <div id="page-content-wrapper">
 <!-- Page Content -->
-  <div class="container-fluid" style="font-size:90%;">
+	<div class="container-fluid" style="font-size:90%;">
   
     <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
-      <a role="button" class="btn btn-primary" href="<?=base_url()?>setting/restaurant">Restaurant</a>                
-      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/category">Category</a>               
-      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/menu">Menu</a>             
-      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/tableorder">Table Order</a>        
-      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/users">Users</a>               
-      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/printer">Printer</a>       
-      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/devices">Devices</a>           
+    	<a role="button" class="btn btn-primary" href="<?=base_url()?>setting/restaurant">Restaurant</a>                
+      	<a role="button" class="btn btn-default" href="<?=base_url()?>setting/category">Category</a>               
+      	<a role="button" class="btn btn-default" href="<?=base_url()?>setting/menu">Menu</a>                            
+      	<a role="button" class="btn btn-default" href="<?=base_url()?>setting/menuinventory">Menu - Inventory</a>         
+      	<a role="button" class="btn btn-default" href="<?=base_url()?>setting/tableorder">Table Order</a>        
+      	<a role="button" class="btn btn-default" href="<?=base_url()?>setting/users">Users</a>               
+      	<a role="button" class="btn btn-default" href="<?=base_url()?>setting/printer">Printer</a>       
+      	<a role="button" class="btn btn-default" href="<?=base_url()?>setting/devices">Devices</a>           
     </div>       
                                                                           
     <hr style="margin-bottom:10px" />
     
     <div class="row">
-			<div class="col-lg-12">
-				<div class="panel panel-default">
-					<div class="panel-heading"><b>Restaurant Setting</b></div>
-					<div class="panel-body">               
-          <?php if ($role == 1) { ?>   					                    
-			      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#bookModal">
-              <span class="glyphicon glyphicon-plus"></span> Add New Restaurant
-            </button>             
-            <button type="button" class="btn btn-danger">
-              <span class="glyphicon glyphicon-remove"></span> Delete Selected Restaurant(s)
-            </button>
-            <div style="margin-bottom:15px"></div>        
-          <?php } ?> 
-            <div class="table-responsive">
-						  <table id="setting" class="table table-striped dt-right compact">
-						    <thead>
-						    <tr class="tablehead text3D">
-						        <th class="no-sort"><input type="checkbox" id="checkall" value="Check All"></th>
-						        <th>Name</th>
-						        <th>Email Address</th>
-						        <th>Telephone</th>
-						        <th>FAX</th>
-						        <th>Address 1</th>
-						        <th>Address 2</th>
-						        <th>City</th>
-						        <th>Postal Code</th>
-						        <th>Country</th>
-						        <!--<th>Geo Location</th>-->
-						        <th>Currency</th>
-						        <th class="cin">Service Charge (%)</th>
-						        <!--<th>Order No. Start</th>-->
-						        <th>Created By</th>
-						        <th>Created Date</th>
-						        <th>Updated By</th>
-						        <th>Updated Date</th>
-						    </tr>
-						    </thead>  
-						    <tbody>                    
-						    <?php $i = 0; $tab = 1; foreach ($restaurant as $row){ ?>
-                <tr data-index="<?=$i?>" class="datarow" id="<?=$row->ID.'_'.$row->NAME?>">
-                  <td class="">
-                    <input type="checkbox" class="case" tabindex="-1">
-                  </td>
-                  <td style="">
-                    <?php if ($role==1){ ?>
-                    <a id="NAME__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->NAME?></a>
-                    <?php } else { ?>                                                        
-                    <span id="NAME__<?=$row->ID?>" tabindex="0"><?=$row->NAME?></span>
-                    <?php } ?>
-                  </td>
-                  <td style="">
-                    <a id="EMAIL_ADDRESS__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->EMAIL_ADDRESS?></a>
-                  </td>
-                  <td style="">
-                    <a id="TELEPHONE__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->TELEPHONE?></a>
-                  </td>
-                  <td style="">
-                    <a id="FAX__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->FAX?></a>
-                  </td>
-                  <td style="">
-                    <a id="ADDRESS_LINE_1__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->ADDRESS_LINE_1?></a>
-                  </td>
-                  <td style="">
-                    <a id="ADDRESS_LINE_2__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->ADDRESS_LINE_2?></a>
-                  </td>             
-                  <td style="">
-                    <a id="CITY__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->CITY?></a>
-                  </td>
-                  <td style="">
-                    <a id="POSTAL_CODE__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->POSTAL_CODE?></a>
-                  </td>
-                  <td style="">
-                    <a id="COUNTRY__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->COUNTRY?></a>
-                  </td>
-                  <!--<td style="">
-                    <a id="GEOLOC__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->GEOLOC?></a>
-                  </td>-->
-                  <td style="">
-                    <a id="CURRENCY__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->CURRENCY_NAME?></a>
-                  </td>
-                  <td style="" class="cin">
-                    <a id="SERVICE_CHARGE__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->SERVICE_CHARGE?></a>
-                  </td>
-                  <!--<td style="">
-                    <a id="ORDER_NUMBER_START__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->ORDER_NUMBER_START?></a>
-                  </td>-->
-                  <td style=""><span id="crby<?=$row->ID?>"><?=$this->setting->get_username($row->CREATED_BY)->USERNAME?></span></td>
-                  <td style=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
-                  <td style=""><span id="upby<?=$row->ID?>"><?=$this->setting->get_username($row->LAST_UPDATED_BY)->USERNAME?></span></td>
-                  <td style=""><span id="updt<?=$row->ID?>"><?=$row->LAST_UPDATED_DATE?></span></td>
-                </tr>
-                <?php $i++; } ?>
+		<div class="col-lg-12">
+			<div class="panel panel-default">
+				<div class="panel-heading"><b>Restaurant Setting</b></div>
+				<div class="panel-body">               
+          		<?php if ($role == 1) { ?>   					                    
+			    	<button type="button" class="btn btn-success" data-toggle="modal" data-target="#bookModal">
+              			<span class="glyphicon glyphicon-plus"></span> Add New Restaurant
+            		</button>             
+            		<button type="button" class="btn btn-danger">
+              			<span class="glyphicon glyphicon-remove"></span> Delete Selected Restaurant(s)
+            		</button>
+            	<div style="margin-bottom:15px"></div>        
+          		<?php } ?> 
+            	<div class="table-responsive">
+					<table id="setting" class="table table-striped dt-right compact">
+						<thead>
+						<tr class="tablehead text3D">
+							<th class="no-sort"><input type="checkbox" id="checkall" value="Check All"></th>
+						    <th>Name</th>
+						    <th>Email Address</th>
+						    <th>Telephone</th>
+						    <th>FAX</th>
+						    <th>Address 1</th>
+						    <th>Address 2</th>
+						    <th>City</th>
+						    <th>Postal Code</th>
+						    <th>Country</th>
+						    <!--<th>Geo Location</th>-->
+						    <th>Currency</th>
+						    <th>Service Charge</th>
+						    <!--<th>Order No. Start</th>-->
+						    <th>Created By</th>
+						    <th>Created Date</th>
+						    <th>Updated By</th>
+						    <th>Updated Date</th
+						</tr>
+						</thead>  
+						<tbody>                    
+						<?php $i = 0; $tab = 1; foreach ($restaurant as $row){ ?>
+                		<tr data-index="<?=$i?>" class="datarow" id="<?=$row->ID.'_'.$row->NAME?>">
+                  			<td class="">
+                    			<input type="checkbox" class="case" tabindex="-1">
+                  			</td>
+                  			<td style="">
+                    		<?php if ($role==1){ ?>
+                    			<a id="NAME__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->NAME?></a>
+                    		<?php } else { ?>                                                        
+                    			<span id="NAME__<?=$row->ID?>" tabindex="0"><?=$row->NAME?></span>
+                    		<?php } ?>
+                  			</td>
+                  			<td style="">
+                    			<a id="EMAIL_ADDRESS__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->EMAIL_ADDRESS?></a>
+                  			</td>
+                  			<td style="">
+                    			<a id="TELEPHONE__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->TELEPHONE?></a>
+                  			</td>
+                  			<td style="">
+                    			<a id="FAX__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->FAX?></a>
+                  			</td>
+                  			<td style="">
+                    			<a id="ADDRESS_LINE_1__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->ADDRESS_LINE_1?></a>
+                  			</td>
+                  			<td style="">
+                    			<a id="ADDRESS_LINE_2__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->ADDRESS_LINE_2?></a>
+                  			</td>             
+                  			<td style="">
+                    			<a id="CITY__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->CITY?></a>
+                  			</td>
+                  			<td style="">
+                    			<a id="POSTAL_CODE__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->POSTAL_CODE?></a>
+                  			</td>
+                  			<td style="">
+                    			<a id="COUNTRY__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->COUNTRY?></a>
+                  			</td>
+		                  	<!--<td style="">
+		                    	<a id="GEOLOC__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->GEOLOC?></a>
+		                  	</td>-->
+		                  	<td style="">
+		                    	<a id="CURRENCY__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->CURRENCY_NAME?></a>
+		                  	</td>
+		                  	<td style="">
+								<table style="">
+								<tr>
+									<td align="right" style="text-align:right !important;background-color:<?=($i%2==0)?'#f5f5f5':'none'?>">
+                    					<a id="SERVICE_CHARGE__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->SERVICE_CHARGE?></a>
+									</td>
+									<td align="left" style="text-align:left !important;background-color:<?=($i%2==0)?'#f5f5f5':'none'?>">
+										%
+									</td>
+								</tr>
+								</table>
+		                  	</td>
+		                  	<!--<td style="">
+		                    	<a id="ORDER_NUMBER_START__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->ORDER_NUMBER_START?></a>
+		                  	</td>-->
+		                  	<td style=""><span id="crby<?=$row->ID?>"><?=$this->setting->get_username($row->CREATED_BY)->USERNAME?></span></td>
+		                  	<td style=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
+		                  	<td style=""><span id="upby<?=$row->ID?>"><?=$this->setting->get_username($row->LAST_UPDATED_BY)->USERNAME?></span></td>
+		                  	<td style=""><span id="updt<?=$row->ID?>"><?=$row->LAST_UPDATED_DATE?></span></td>
+		                </tr>
+		                <?php $i++; } ?>
 						    </tbody>
 						  </table>
              </div> 

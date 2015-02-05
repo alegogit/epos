@@ -5,7 +5,8 @@
     <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
       <a role="button" class="btn btn-default" href="<?=base_url()?>setting/restaurant">Restaurant</a>                
       <a role="button" class="btn btn-default" href="<?=base_url()?>setting/category">Category</a>               
-      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/menu">Menu</a>             
+      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/menu">Menu</a>                         
+      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/menuinventory">Menu - Inventory</a>            
       <a role="button" class="btn btn-default" href="<?=base_url()?>setting/tableorder">Table Order</a>        
       <a role="button" class="btn btn-primary" href="<?=base_url()?>setting/users">Users</a>               
       <a role="button" class="btn btn-default" href="<?=base_url()?>setting/printer">Printer</a>       
