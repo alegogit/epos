@@ -37,7 +37,7 @@ class Menu_model extends CI_Model {
   	}
     
 	function get_username($id){
-    	$query = $this->db->select('USERNAME')
+    	$query = $this->db->select('NAME,USERNAME')
                       ->from('USERS')
                       ->where('ID',$id)
                       ->get('');
@@ -52,8 +52,7 @@ class Menu_model extends CI_Model {
     	return $query->row();
   	}    
   
-	function get_rest_menus($rest_id){    
-    	$query = $this->db->get('MENU');                      
+	function get_rest_menus($rest_id){                       
     	$query = $this->db->select('MENU.*, CATEGORY.NAME AS CAT_NAME, PRINTER.NAME AS PRINT_NAME')
                       ->from('MENU')
                       ->join('CATEGORY', 'MENU.CATEGORY_ID = CATEGORY.ID')

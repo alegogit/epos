@@ -60,11 +60,12 @@
 						        	<th class="no-sort"><input type="checkbox" id="checkall" value="Check All"></th>
 						        	<th>Menu</th>
 						        	<th class="no-sort">Inventory</th>
-						        	<th class="no-sort">Quantity</th>
-						        	<th data-field="crby" data-sortable="false">Created By</th>
-						        	<th data-field="crdt" data-sortable="false">Created Date</th>
-						        	<th data-field="upby"  data-sortable="false">Updated By</th>
-						        	<th data-field="updt" data-sortable="false">Updated Date</th>
+						        	<th class="no-sort cin">Quantity</th>
+						        	<th class="no-sort"></th>
+						        	<th class="no-sort">Created By</th>
+						        	<th class="no-sort">Created Date</th>
+						        	<th class="no-sort">Updated By</th>
+						        	<th class="no-sort">Updated Date</th>
 						    	</tr>
 						    </thead>  
 						    <tbody>                    
@@ -79,17 +80,11 @@
                   					<td style="">
                     					<a id="INVENTORY_ID-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->INVENTORY_NAME?></a>
                   					</td>
+                  					<td class="cin" style="">
+                    					<a id="QUANTITY-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->QUANTITY?></a>
+                  					</td>
                   					<td style="">
-										<table style="">
-										<tr>
-											<td align="right" style="text-align:right !important;background-color:<?=($i%2!=0)?'#f5f5f5':'none'?>">
-                    							<a id="QUANTITY-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->QUANTITY?></a>
-											</td>
-											<td align="left" style="text-align:left !important;background-color:<?=($i%2!=0)?'#f5f5f5':'none'?>">
-												<?=$this->setting->get_metric($row->INVENTORY_METRIC)?>
-											</td>
-										</tr>
-										</table>
+										<?=$this->setting->get_metric($row->INVENTORY_METRIC)?>&nbsp;&nbsp;
                   					</td>
 				                  	<td style=""><span id="crby<?=$row->ID?>"><?=$this->setting->get_username($row->CREATED_BY)->NAME?></span></td>
 				                  	<td style=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
@@ -114,68 +109,43 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Add New Menu</h4>
+        <h4 class="modal-title" id="myModalLabel">Add New Menu - Inventory Item <?=$def_rest_name?></h4>
       </div><!-- /.modal-header -->
       <div class="modal-body">
       <?php
         $attributes = array('class' => 'form-inline', 'id' => 'newmeninv', 'role' => 'form');
         echo form_open('setting/menuinventory',$attributes)
-      ?>                    		
-        <div class="form-group" style="margin-bottom:10px">  
-          <label for="menu_name"></label> 
-          <div class="input-group">         
-            <div class="input-group-addon"><span class="fa fa-coffee"></span></div>  
-            <input type="text" class="form-control" id="menu_name" placeholder="Menu Name" name="menu_name" required>
+      ?>       
+        <div class="form-group" style="margin-bottom:10px">   
+          <label for="menu">Menu</label><br />  
+          <div class="input-group">   
+            <div class="input-group-addon"><span class="fa fa-coffee"></span></div> 
+            <select id="menu" name="menu" class="form-control" required>
+            <?php foreach($menus as $rowm){ ?>
+              <option value="<?=$rowm->ID?>"><?=$rowm->NAME?></option>
+            <?php } ?>
+            </select>
           </div>
-        </div><br />
-        <div class="form-group" style="margin-bottom:10px">     
-          <label for="menu_price"></label>  
-          <div class="input-group">       
-            <div class="input-group-addon"><span class="fa fa-cur"><?=$cur?></span></div>
-            <input type="text" class="form-control" id="menu_price" placeholder="Price" pattern="\d*" name="menu_price" required>
+        </div><br />      
+        <div class="form-group" style="margin-bottom:10px">   
+          <label for="inv">Inventory</label><br />  
+          <div class="input-group">   
+            <div class="input-group-addon"><span class="fa fa-cubes"></span></div> 
+            <select id="inv" name="inv" class="form-control" required>
+            <?php foreach($inventories as $rowi){ ?>
+              <option value="<?=$rowi->ID?>"><?=$rowi->NAME?></option>
+            <?php } ?>
+            </select>
           </div>
         </div><br />    
-        <div class="form-group" style="margin-bottom:10px">     
-          <label for="menu_tax"></label>
-          <div class="input-group" style="width:150px">   
-            <div class="input-group-addon"><span class="fa fa-bank"></span></div>
-            <input type="text" class="form-control" id="menu_tax" placeholder="Tax" pattern="\d*" name="menu_tax" required>
-            <div class="input-group-addon"><span class="fa fa-percent">%</span></div>
-          </div>
-        </div><br /> 
-        <div class="form-group" style="margin-bottom:10px">   
-          <label for="menu_category">Category</label><br />  
-          <div class="input-group">   
-            <div class="input-group-addon"><span class="fa fa-quote-left"></span></div> 
-            <select id="menu_category" name="menu_category" class="form-control" required>
-            <?php foreach($categories as $rowc){ ?>
-              <option value="<?=$rowc->ID?>"><?=$rowc->NAME?></option>
-            <?php } ?>
-            </select>
-          </div>
-        </div><br />     
-        <div class="form-group" style="margin-bottom:10px">
-          <label for="menu_printer">Printer</label><br /> 
-          <div class="input-group">        
-            <div class="input-group-addon"><span class="fa fa-print"></span></div>
-            <select id="menu_printer" name="menu_printer" class="form-control" required>
-            <?php foreach($printer as $rowp){ ?>
-              <option value="<?=$rowp->ID?>"><?=$rowp->NAME?></option>
-            <?php } ?>
-            </select>
-          </div>
-        </div><br />  
         <div class="form-group" style="margin-bottom:10px">      
-          <label for="rest_id">Restaurant</label><br /> 
-          <div class="input-group">  
-            <div class="input-group-addon"><span class="fa fa-cutlery"></span></div>
-            <select id="rest_id" name="rest_id" class="form-control" required>
-            <?php foreach($restaurants as $rows){ ?>
-              <option value = "<?=$rows->REST_ID?>" <?= ($rows->REST_ID==$rest_id)?'selected':''?> ><?=$rows->NAME?></option>
-            <?php } ?>
-            </select>
+          <label for="qty"></label>     
+          <div class="input-group" style="width:200px;"> 
+            <div class="input-group-addon"><span class="fa fa-cube"></span></div>
+            <input type="text" class="form-control" style="text-align:right;" id="qty" placeholder="Quantity" name="qty" required>
+            <div class="input-group-addon"><span class="">metric</span></div>
           </div>
-        </div><br />  
+        </div><br />
         <div class="form-group text-right" style="margin-bottom:10px">
           <div class="input-group">       
             <button type="submit" class="btn btn-success">Submit</button>&nbsp;
@@ -198,30 +168,45 @@
   	$edit_script .= "  var updateurl = '".base_url()."process/menuinventory?p=update';";
   	foreach ($menuinventory as $row){
   		$edit_script .= "  $('#MENU_ID-".$row->ID."').editable({
+		                        type: 'select',  
+		                        value: '".$row->MENU_ID."', 
+		                        source: [ ";
+		$k = 1;
+		$q = count($menus);
+		foreach($menus as $rowc){
+			$edit_script .= "  {value: '".$rowc->ID."', text: '".$rowc->NAME."'}";
+		    $edit_script .= ($k<$q)?", ":"";
+		    $k++;
+		}
+		$edit_script .= "    ],
 		                        url: updateurl,
-		                        pk: ".$row->ID.", 
-		                        validate: function(v) {
-		                          if (!v) return 'don\'t leave it blank!';
-		                        },
+		                        pk: ".$row->ID.",
 		                        success: function(result){  
 		                          var data = result.split(',');
 		                          $('#upby".$row->ID."').html(data[0]);
 		                          $('#updt".$row->ID."').html(data[1]); 
-		                      } 
-		                    });";
+		                        }  
+		                      });";
   		$edit_script .= "  $('#INVENTORY_ID-".$row->ID."').editable({
+		                        type: 'select',  
+		                        value: '".$row->INVENTORY_ID."', 
+		                        source: [ ";
+		$i = 1;
+		$j = count($inventories);
+		foreach($inventories as $rowi){
+			$edit_script .= "  {value: '".$rowi->ID."', text: '".$rowi->NAME."'}";
+		    $edit_script .= ($i<$j)?", ":"";
+		    $i++;
+		}
+		$edit_script .= "    ],
 		                        url: updateurl,
-		                        pk: ".$row->ID.", 
-		                        validate: function(v) {
-		                          if (!v) return 'don\'t leave it blank!'; 
-		                          if (isNaN(v)) return 'please fill in a number format!';
-		                        },
+		                        pk: ".$row->ID.",
 		                        success: function(result){  
 		                          var data = result.split(',');
 		                          $('#upby".$row->ID."').html(data[0]);
 		                          $('#updt".$row->ID."').html(data[1]); 
-		                      } 
-		                    });";
+		                        }  
+		                      });";
   		$edit_script .= "  $('#QUANTITY-".$row->ID."').editable({
 		                        url: updateurl,
 		                        pk: ".$row->ID.", 
@@ -295,7 +280,7 @@ $(document).ready(function(){
           			var dataP = "idf="+idf;
   					$.ajax({
             			type: "POST",
-            			url: baseurl+"process/menu?p=delete",
+            			url: baseurl+"process/menuinventory?p=delete",
             			data: dataP,
             			cache: false,
             			success: function(result){ 
@@ -321,13 +306,9 @@ $(function(){
 	var baseurl = $("#baseurl").data('url');
 	$("#newmeninv").validate({ 
     	rules: {
-      		menu_price: { 
+      		qty: { 
         		number: true 
-      		},
-			menu_tax: {
-        		number: true, 
-				percent: true
-			} 
+      		}
 	    }    
   	});
 });
@@ -349,14 +330,5 @@ $.validator.setDefaults({
         }
     }
 });
-
-jQuery.validator.addMethod("percent", function(value, element) {
-  return this.optional(element) || /^[0-9]\d{0,1}(\.\d{1,3})?%?$|^100$/.test(value);
-}, "Please fill in up to 100 %");
-
-function isPercent(percent) {
-  var regex = /^[0-9]\d{0,1}(\.\d{1,3})?%?$|^100$/;
-  return regex.test(percent);
-}  
   
 </script>

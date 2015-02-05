@@ -3,99 +3,101 @@
 	<div class="container-fluid" style="font-size:90%;">
   
 	    <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
-	      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/restaurant">Restaurant</a>                
-	      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/category">Category</a>               
-	      <a role="button" class="btn btn-primary" href="<?=base_url()?>setting/menu">Menu</a>                         
-	      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/menuinventory">Menu - Inventory</a>            
-	      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/tableorder">Table Order</a>        
-	      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/users">Users</a>               
-	      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/printer">Printer</a>       
-	      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/devices">Devices</a>           
+	      	<a role="button" class="btn btn-default" href="<?=base_url()?>setting/restaurant">Restaurant</a>                
+	      	<a role="button" class="btn btn-default" href="<?=base_url()?>setting/category">Category</a>               
+	      	<a role="button" class="btn btn-primary" href="<?=base_url()?>setting/menu">Menu</a>                         
+	      	<a role="button" class="btn btn-default" href="<?=base_url()?>setting/menuinventory">Menu - Inventory</a>            
+	      	<a role="button" class="btn btn-default" href="<?=base_url()?>setting/tableorder">Table Order</a>        
+	      	<a role="button" class="btn btn-default" href="<?=base_url()?>setting/users">Users</a>               
+	      	<a role="button" class="btn btn-default" href="<?=base_url()?>setting/printer">Printer</a>       
+	      	<a role="button" class="btn btn-default" href="<?=base_url()?>setting/devices">Devices</a>           
 	    </div>       
 	                                                                          
 	    <hr style="margin-bottom:10px" />
 	    
 	    <div class="row" style="padding-left: 15px">  
-	      <?php
-	        $attributes = array('class' => 'form-inline', 'id' => 'filter', 'role' => 'form');
+		<?php
+	    	$attributes = array('class' => 'form-inline', 'id' => 'filter', 'role' => 'form');
 	        echo form_open('setting/menu',$attributes)
-	      ?>
+		?>
 	        <div class="form-group" style="margin-bottom:0px">
-	          <div class="input-group">
-	            <div class="input-group-addon"><span class="glyphicon glyphicon-cutlery"></span></div>
-	            <select id = "myRestaurant" name="rest_id" title="Restaurant Name" class="form-control" style="display:inline">
-	              <option value = "0">Select Restaurant</option>
-	              <?php foreach($restaurants as $row){ ?>
-	              <option value = "<?=$row->REST_ID?>" <?= ($row->REST_ID==$rest_id)?'selected':''?> ><?=$row->NAME?></option>
-	              <?php } ?>
-	            </select>   
-	          </div>
+				<div class="input-group">
+	            	<div class="input-group-addon"><span class="glyphicon glyphicon-cutlery"></span></div>
+	            	<select id = "myRestaurant" name="rest_id" title="Restaurant Name" class="form-control" style="display:inline">
+	              		<option value = "0">Select Restaurant</option>
+						<?php foreach($restaurants as $row){ ?>
+				        <option value = "<?=$row->REST_ID?>" <?= ($row->REST_ID==$rest_id)?'selected':''?> ><?=$row->NAME?></option>
+				        <?php } ?>
+					</select>   
+	          	</div>
 	        </div>
 	        <div class="form-group" style="margin-bottom:0px">
-	          <div class="input-group">
-	            <button type="submit" class="btn btn-success" style="display:inline">Filter</button>   
-	          </div>
+	          	<div class="input-group">
+	            	<button type="submit" class="btn btn-success" style="display:inline">Filter</button>   
+	          	</div>
 	        </div>
-	      <?=form_close()?>     
+	      	<?=form_close()?>     
 	    </div>              
 	                                                     
 	    <hr style="margin-bottom:10px;margin-top:10px" />
 	    
 	    <div class="row">
-				<div class="col-lg-12">
-					<div class="panel panel-default">
-						<div class="panel-heading"><b>Add/Edit Menu</b></div>
-						<div class="panel-body">                 					                    
-				      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#bookModal">
-	              <span class="glyphicon glyphicon-plus"></span> Add New Menu
-	            </button>             
-	            <button type="button" class="btn btn-danger">
-	              <span class="glyphicon glyphicon-remove"></span> Delete Selected Menu(s)
-	            </button>        
-	            <div style="margin-bottom:15px"></div> 
-	            <div class="table-responsive">
-							  <table id="setting" class="table table-striped dt-right compact">
-							    <thead>
-							    <tr class="tablehead text3D">
-							        <th class="no-sort"><input type="checkbox" id="checkall" value="Check All"></th>
+			<div class="col-lg-12">
+				<div class="panel panel-default">
+					<div class="panel-heading"><b>Add/Edit Menu</b></div>
+					<div class="panel-body">                 					                    
+				    	<button type="button" class="btn btn-success" data-toggle="modal" data-target="#bookModal">
+	              			<span class="glyphicon glyphicon-plus"></span> Add New Menu
+	            		</button>             
+	            		<button type="button" class="btn btn-danger">
+	              			<span class="glyphicon glyphicon-remove"></span> Delete Selected Menu(s)
+	            		</button>        
+	            		<div style="margin-bottom:15px"></div> 
+	            		<div class="table-responsive">
+							<table id="setting" class="table table-striped dt-right compact">
+							<thead>
+								<tr class="tablehead text3D">
+							    	<th class="no-sort"><input type="checkbox" id="checkall" value="Check All"></th>
 							        <th>Menu Name</th>
 							        <th class="cin">Price (<?=$cur?>)</th>
 							        <th>Category</th>
 							        <th>Printer</th>
-							        <th class="cin">Tax (%)</th>
-							        <th data-field="crby" data-sortable="false">Created By</th>
-							        <th data-field="crdt" data-sortable="false">Created Date</th>
-							        <th data-field="upby"  data-sortable="false">Updated By</th>
-							        <th data-field="updt" data-sortable="false">Updated Date</th>
+							        <th class="cin">Tax</th>
+							        <th class="no-sort" style="text-align:left !important;"></th>
+							        <th>Created By</th>
+							        <th>Created Date</th>
+							        <th>Updated By</th>
+							        <th>Updated Date</th>
 							    </tr>
-							    </thead>  
-							    <tbody>                    
-							    <?php $i = 0;  foreach ($menus as $row){ ?>
-	                <tr data-index="<?=$i?>" class="datarow" id="<?=$row->ID.'_'.$row->NAME?>">
-	                  <td class="">
-	                    <input type="checkbox" class="case" tabindex="-1">
-	                  </td>
-	                  <td style="">
-	                    <a id="NAME-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->NAME?></a>
-	                  </td>
-	                  <td style="" class="cin">
-	                    <a id="PRICE-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->PRICE?></a>
-	                  </td>
-	                  <td style="">
-	                    <a id="CATEGORY_ID-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->CAT_NAME?></a>
-	                  </td>
-	                  <td style="">
-	                    <a id="PRINTER-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->PRINT_NAME?></a>
-	                 </td>
-	                  <td style="" class="cin">
-	                    <a id="TAX-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->TAX?></a>
-	                  </td>
-	                  <td style=""><span id="crby<?=$row->ID?>"><?=$this->setting->get_username($row->CREATED_BY)->USERNAME?></span></td>
-	                  <td style=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
-	                  <td style=""><span id="upby<?=$row->ID?>"><?=$this->setting->get_username($row->LAST_UPDATED_BY)->USERNAME?></span></td>
-	                  <td style=""><span id="updt<?=$row->ID?>"><?=$row->LAST_UPDATED_DATE?></span></td>
-	                </tr>
-	                <?php $i++; } ?>
+							</thead>  
+							<tbody>                    
+							<?php $i = 0;  foreach ($menus as $row){ ?>
+	                			<tr data-index="<?=$i?>" class="datarow" id="<?=$row->ID.'_'.$row->NAME?>">
+				                  	<td class="">
+				                    	<input type="checkbox" class="case" tabindex="-1">
+				                  	</td>
+				                  	<td style="">
+				                    	<a id="NAME-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->NAME?></a>
+				                  	</td>
+				                  	<td style="" class="cin">
+				                    	<a id="PRICE-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->PRICE?></a>
+				                  	</td>
+				                  	<td style="">
+				                    	<a id="CATEGORY_ID-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->CAT_NAME?></a>
+				                  	</td>
+				                  	<td style="">
+				                    	<a id="PRINTER-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->PRINT_NAME?></a>
+				                 	</td>
+                  					<td class="cin" style="">
+										<a id="TAX-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->TAX?></a>
+                  					</td>
+									<td style="text-align:left !important;">%&nbsp;&nbsp;</td>
+				                  	<td style=""><span id="crby<?=$row->ID?>"><?=$this->setting->get_username($row->CREATED_BY)->NAME?></span></td>
+				                  	<td style=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
+				                  	<td style=""><span id="upby<?=$row->ID?>"><?=$this->setting->get_username($row->LAST_UPDATED_BY)->NAME?></span></td>
+				                  	<td style=""><span id="updt<?=$row->ID?>"><?=$row->LAST_UPDATED_DATE?></span></td>
+				                </tr>
+				                <?php $i++; } ?>
 							    </tbody>
 							  </table>
 	             </div> 

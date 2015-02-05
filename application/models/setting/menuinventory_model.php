@@ -52,8 +52,7 @@ class Menuinventory_model extends CI_Model {
     	return $query->row();
   	}    
   
-	function get_rest_menuinventory($rest_id){    
-    	$query = $this->db->get('MENU_INVENTORY');                      
+	function get_rest_menuinventory($rest_id){                      
     	$query = $this->db->select('MENU_INVENTORY.*, MENU.NAME AS MENU_NAME, INVENTORY.NAME AS INVENTORY_NAME, INVENTORY.METRIC AS INVENTORY_METRIC')
                       ->from('MENU_INVENTORY')
                       ->join('MENU', 'MENU_INVENTORY.MENU_ID = MENU.ID')
@@ -73,6 +72,22 @@ class Menuinventory_model extends CI_Model {
     	return $query->row()->METRIC_NAME;
   	}    
   
+  	function get_rest_menus($rest_id){                    
+    	$query = $this->db->select('MENU.ID,MENU.NAME')
+                      ->from('MENU')
+                      ->join('CATEGORY', 'CATEGORY.ID = MENU.CATEGORY_ID')
+                      ->where('CATEGORY.REST_ID',$rest_id)
+                      ->get('');
+    	return $query->result();
+  	}    
+	
+	
+	function get_rest_inventories($rest_id){    
+    	$this->db->where('REST_ID',$rest_id);
+    	$query = $this->db->get('INVENTORY');
+    	return $query->result();
+  	}
+	
   	function get_rest_categories($rest_id){
     	$query = $this->db->select('ID,NAME')
                       ->from('CATEGORY')
@@ -81,13 +96,13 @@ class Menuinventory_model extends CI_Model {
     	return $query->result();
   	}    
 	
-	function new_menuinventory($NAME,$CATEGORY_ID,$PRICE,$PRINTER,$TAX){       
+	function new_menuinventory($MENU_ID,$INVENTORY_ID,$QUANTITY){       
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id'];
     	$query = $this->db->query('INSERT INTO MENU_INVENTORY
-      		(NAME,CATEGORY_ID,PRICE,PRINTER,TAX,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
+      		(MENU_ID,INVENTORY_ID,QUANTITY,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
       		VALUES 
-      		("'.$NAME.'",'.$CATEGORY_ID.','.$PRICE.','.$PRINTER.','.$TAX.','.$id.',NOW(),'.$id.',NOW());');
+      		('.$MENU_ID.','.$INVENTORY_ID.','.$QUANTITY.','.$id.',NOW(),'.$id.',NOW());');
 		//return $query->row();
   	}
   

@@ -17,9 +17,18 @@ class Menuinventory_controller extends CI_Controller {
 	{
 		if($this->session->userdata('logged_in'))
 		{
+			if($this->input->post('filter')){
+				$sess_array = array(
+					'def_rest' => $this->input->post('rest_id'),
+					'def_rest_name' => $this->setting->get_restaurant_name($this->input->post('rest_id'))
+			   	);
+				$this->session->set_userdata('filtered', $sess_array);
+			}
 			$data['menu'] = 'setting';         
 			$session_data = $this->session->userdata('logged_in');
-			$data['def_rest'] = $session_data['def_rest'];
+			$session_filt = $this->session->userdata('filtered');
+			$data['def_rest'] = ($session_filt['def_rest'])?$session_filt['def_rest']:$session_data['def_rest'];
+			$data['def_rest_name'] = $session_filt['def_rest_name'];
 			$data['def_start_date'] = date('d M Y', time() - 30 * 60 * 60 * 24);
 			$data['def_end_date'] = date('d M Y', time());
 			$rest_id = (!($this->input->post('rest_id')))?$data['def_rest']:$this->input->post('rest_id'); 
@@ -30,11 +39,13 @@ class Menuinventory_controller extends CI_Controller {
 			$data['enddate'] = $end_date; 
 		  	$data['cur'] = $this->setting->get_currency($rest_id);
 			                                 
-      		if($this->input->post('menu_name')){               
-		    	$this->setting->new_menu($this->input->post('menu_name'),$this->input->post('menu_category'),$this->input->post('menu_price'),$this->input->post('menu_printer'),$this->input->post('menu_tax'));
+      		if($this->input->post('qty')){               
+		    	$this->setting->new_menuinventory($this->input->post('menu'),$this->input->post('inv'),$this->input->post('qty'));
       		} 
       
 		  	$data['menuinventory'] = $this->setting->get_rest_menuinventory($rest_id);
+		  	$data['menus'] = $this->setting->get_rest_menus($rest_id);
+		  	$data['inventories'] = $this->setting->get_rest_inventories($rest_id);
 			
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);
