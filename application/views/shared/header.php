@@ -13,7 +13,7 @@
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery-ui.js"></script>  
 
-<?php if ( ($menu == 'setting') || ($menu == 'inventory') || ($menu == 'customers') ) { ?>
+<?php if ( ($menu == 'setting') || ($menu == 'inventory') || ($menu == 'customers') || ($menu == 'profile') ) { ?>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap-editable.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap-select.min.js"></script> 
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.validate.js"></script> 
@@ -26,6 +26,10 @@
     overflow-y: scroll;
 }
 </style>
+<?php } ?>  
+<?php if ( ($menu == 'profile') ) { ?>
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/upload/jasny-bootstrap.min.js"></script>
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jasny-bootstrap.min.css"/> 
 <?php } ?>  
 
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap.css"/>

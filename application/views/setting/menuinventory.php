@@ -33,7 +33,7 @@
         	</div>
         	<div class="form-group" style="margin-bottom:0px">
           		<div class="input-group">
-            		<button type="submit" class="btn btn-success" style="display:inline">Filter</button>   
+            		<input type="submit" class="btn btn-success" style="display:inline" value="Filter" name="filter">
           		</div>
         	</div>
       		<?=form_close()?>     
@@ -109,13 +109,20 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Add New Menu - Inventory Item <?=$def_rest_name?></h4>
+        <h4 class="modal-title" id="myModalLabel">Add New Menu - Inventory Item</h4>
       </div><!-- /.modal-header -->
       <div class="modal-body">
       <?php
         $attributes = array('class' => 'form-inline', 'id' => 'newmeninv', 'role' => 'form');
         echo form_open('setting/menuinventory',$attributes)
-      ?>       
+      ?>        
+        <div class="form-group" style="margin-bottom:10px">      
+          <label for="resto"></label>     
+          <div class="input-group"> 
+            <div class="input-group-addon"><span class="fa fa-cutlery"></span></div>
+            <input type="text" class="form-control" id="resto" placeholder="" name="resto" value="<?=$def_rest_name?>" disabled>
+          </div>
+        </div><br />
         <div class="form-group" style="margin-bottom:10px">   
           <label for="menu">Menu</label><br />  
           <div class="input-group">   

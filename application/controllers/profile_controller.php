@@ -1,33 +1,25 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Menuinventory_controller extends CI_Controller {
+class Profile_controller extends CI_Controller {
 	
 	function __construct()
 	{
 		parent::__construct();	
-		$this->load->model('setting/menuinventory_model','setting',TRUE);  
+		$this->load->model('profile_model','profile',TRUE);  
     	$this->load->helper(array('form', 'url','html'));
 		$session_data = $this->session->userdata('logged_in');  
-		$this->data['menu'] = 'setting';      
-		$this->data['user'] = $this->setting->get_profile();
-		$this->data['restaurants'] = $this->setting->get_restaurant(); 
+		$this->data['menu'] = 'profile';      
+		$this->data['user'] = $this->profile->get_profile();
+		$this->data['restaurants'] = $this->profile->get_restaurant(); 
 	}
 
 	public function index()
 	{
 		if($this->session->userdata('logged_in'))
 		{
-			if($this->input->post('filter')){
-				$sess_array = array(
-					'def_rest' => $this->input->post('rest_id')
-			   	);
-				$this->session->set_userdata('filtered', $sess_array);
-			}
-			$data['menu'] = 'setting';         
+			$data['menu'] = 'profile';         
 			$session_data = $this->session->userdata('logged_in');
-			$session_filt = $this->session->userdata('filtered');
-			$data['def_rest'] = ($session_filt['def_rest'])?$session_filt['def_rest']:$session_data['def_rest'];
-			$data['def_rest_name'] = ($session_filt['def_rest'])?$this->setting->get_restaurant_name($session_filt['def_rest']):$this->setting->get_restaurant_name($session_data['def_rest']);
+			$data['def_rest'] = $session_data['def_rest'];
 			$data['def_start_date'] = date('d M Y', time() - 30 * 60 * 60 * 24);
 			$data['def_end_date'] = date('d M Y', time());
 			$rest_id = (!($this->input->post('rest_id')))?$data['def_rest']:$this->input->post('rest_id'); 
@@ -36,19 +28,22 @@ class Menuinventory_controller extends CI_Controller {
 			$data['rest_id'] = $rest_id;
 			$data['startdate'] = $start_date;
 			$data['enddate'] = $end_date; 
-		  	$data['cur'] = $this->setting->get_currency($rest_id);
-			                                 
-      		if($this->input->post('qty')){               
-		    	$this->setting->new_menuinventory($this->input->post('menu'),$this->input->post('inv'),$this->input->post('qty'));
-      		} 
       
-		  	$data['menuinventory'] = $this->setting->get_rest_menuinventory($rest_id);
-		  	$data['menus'] = $this->setting->get_rest_menus($rest_id);
-		  	$data['inventories'] = $this->setting->get_rest_inventories($rest_id);
+		    if($this->input->post('spro')){         
+				if($this->input->post('name')){$this->profile->update_name($this->input->post('name'));}       
+				if($this->input->post('email')){$this->profile->update_email($this->input->post('email'));}     
+				if($this->input->post('user')){$this->profile->update_username($this->input->post('user'));}   
+				if($this->input->post('rest_id')){$this->profile->update_def_rest($this->input->post('rest_id'));}       
+				if($this->input->post('photo')){$this->profile->update_photo($this->input->post('photo'));}
+				if($this->input->post('pass2')&&($this->input->post('pass2')==$this->input->post('pass1'))){$this->profile->update_pass($this->input->post('pass2'));}
+		    } 	
+			   
+		  	$data['profile'] = $this->profile->get_rest_profile($rest_id);
+		  	$data['default'] = $this->profile->get_default_rest();	                
 			
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);
-			$this->load->view('setting/menuinventory',$data);
+			$this->load->view('profile',$data);
 			$this->load->view('shared/footer');
 		}
 		else
@@ -61,7 +56,7 @@ class Menuinventory_controller extends CI_Controller {
 	
 	public function profile()
 	{
-		$data['profile'] = $this->setting->get_profile();
+		$data['profile'] = $this->profile->get_profile();
 		
 		$this->load->view('shared/header',$this->data);
 		$this->load->view('shared/left_menu');

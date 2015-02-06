@@ -133,7 +133,7 @@
           <div class="form-group" style="margin-bottom:10px">   
             <label for="name"></label>
             <div class="input-group">                     
-              <div class="input-group-addon"><span class="fa fa-user"></span></div>
+              <div class="input-group-addon"><span class="fa fa-meh-o"></span></div>
               <input type="text" class="form-control" id="name" placeholder="Name" name="name" required>
               <span class="errmsg"></span>
             </div>
@@ -149,7 +149,7 @@
           <div class="form-group" style="margin-bottom:10px">       
             <label for="username"></label>
             <div class="input-group">     
-              <div class="input-group-addon"><span class="fa fa-meh-o"></span></div>                            
+              <div class="input-group-addon"><span class="fa fa-user"></span></div>                            
               <input type="text" class="form-control" id="username" placeholder="Username" name="username" required>
               <span class="errmsg"></span>
             </div>

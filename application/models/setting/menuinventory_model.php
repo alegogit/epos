@@ -48,8 +48,9 @@ class Menuinventory_model extends CI_Model {
     	$query = $this->db->select('NAME AS REST_NAME')
                       ->from('RESTAURANTS')
                       ->where('ID',$id)
+                      ->limit(1)
                       ->get('');
-    	return $query->row();
+    	return $query->row()->REST_NAME;
   	}    
   
 	function get_rest_menuinventory($rest_id){                      
