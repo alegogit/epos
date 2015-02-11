@@ -110,27 +110,25 @@ class Profile_model extends CI_Model {
 	}
 	
 	function update_def_rest($rest_id){
-    if($rest_id != $this->profile->get_default_rest()->REST_ID){
-      date_default_timezone_set('Asia/Jakarta');
-  		$dt = date('Y-m-d H:i:s');
-  		$session_data = $this->session->userdata('logged_in');
-  		$id = $session_data['id'];
-  		$data0 = array(
-                 'DEFAULT_REST' => 0,
-                 'LAST_UPDATED_BY' => $id,
-                 'LAST_UPDATED_DATE' => $dt
-              );
-  		$this->db->where('USER_ID', $id);
-  		$this->db->update('USERS_RESTAURANTS', $data0);
-  		$data = array(
-                 'DEFAULT_REST' => 1,
-                 'LAST_UPDATED_BY' => $id,
-                 'LAST_UPDATED_DATE' => $dt
-              );
-  		$this->db->where('USER_ID', $id);
-  		$this->db->where('REST_ID', $rest_id);
-  		$this->db->update('USERS_RESTAURANTS', $data);
-  	}
+	  	date_default_timezone_set('Asia/Jakarta');
+		$dt = date('Y-m-d H:i:s');
+		$session_data = $this->session->userdata('logged_in');
+		$id = $session_data['id'];
+		$data0 = array(
+               'DEFAULT_REST' => 0,
+               'LAST_UPDATED_BY' => $id,
+               'LAST_UPDATED_DATE' => $dt
+            );
+		$this->db->where('USER_ID', $id);
+		$this->db->update('USERS_RESTAURANTS', $data0);
+		$data = array(
+               'DEFAULT_REST' => 1,
+               'LAST_UPDATED_BY' => $id,
+               'LAST_UPDATED_DATE' => $dt
+            );
+		$this->db->where('USER_ID', $id);
+		$this->db->where('REST_ID', $rest_id);
+		$this->db->update('USERS_RESTAURANTS', $data);
 	}
     
 	function get_username($id){
@@ -149,29 +147,39 @@ class Profile_model extends CI_Model {
     	return $query->row();
   	}    
   
-	function gettyimg(){                            
-    date_default_timezone_set('Asia/Jakarta');
+	function get_rest_profile($rest_id){    
+    	$this->db->where('REST_ID',$rest_id);
+    	$query = $this->db->get('INVENTORY');
+    	return $query->result();
+  	}
+	
+	function get_metrics(){
+    	$query = $this->db->select('CODE,VALUE')
+                      ->from('REF_VALUES')
+                      ->where('LOOKUP_NAME', 'METRIC')
+                      ->get('');
+    	return $query->result();
+	} 
+	
+	function get_metric_name($metric_id){
+    	$query = $this->db->select('VALUE')
+                      ->from('REF_VALUES')
+                      ->where('LOOKUP_NAME', 'METRIC')
+                      ->where('CODE', $metric_id)
+                      ->limit(1)
+                      ->get('');
+    	return $query->row();
+	} 
+   
+	function new_profile($NAME,$QTY,$METRIC,$MINQ,$REST_ID){       
 		$session_data = $this->session->userdata('logged_in');
-		$id = strval($session_data['id']);
-    $iddt = strval(date('Ym')).$id.strval(date('dH'));
-    $num2c = array(
-               "1" => "q",
-               "2" => "w",
-               "3" => "e",
-               "4" => "r",
-               "5" => "t",
-               "6" => "y",
-               "7" => "u",
-               "8" => "i",
-               "9" => "o",
-               "0" => "p"
-            );
-    $gembok = "";
-    for($i=0;$i<strlen($iddt);$i++){  
-      $gembok .= $num2c[$iddt[$i]];
-    }  
-    return $gembok;
-  }
+		$id = $session_data['id'];
+    	$query = $this->db->query('INSERT INTO profile
+      		(NAME,QUANTITY,METRIC,MIN_QUANTITY,REST_ID,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
+      		VALUES 
+      		("'.$NAME.'",'.$QTY.',"'.$METRIC.'","'.$MINQ.'",'.$REST_ID.','.$id.',NOW(),'.$id.',NOW());');
+		//return $query->row();
+  	}
 	
 	function set_class($qty,$std){
 		if($qty>$std){

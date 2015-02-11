@@ -16,8 +16,8 @@ date_default_timezone_set('Asia/Jakarta');
 | path to your installation.
 |
 */
-$config['base_url']	= 'http://192.168.1.8/epos/';
-//$config['base_url']	= 'http://localhost/';
+//$config['base_url']	= 'http://192.168.1.8/epos/';
+$config['base_url']	= 'http://localhost/epos/';
 
 /*
 |--------------------------------------------------------------------------

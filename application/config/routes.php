@@ -54,6 +54,8 @@ $route['dashboard/sales'] = "dashboard/sales_controller";
 $route['dashboard/inventory'] = "dashboard/inventory_controller";
 
 $route['profile'] = "profile_controller";
+$route['profile/pic/(:any)'] = "profile_controller";
+
 $route['inventory'] = "inventory_controller";
 $route['customers'] = "customers_controller";
 

@@ -4,23 +4,21 @@
   		<h1 class="page-header"><span class="fa fa-user"></span> My Pr</b><span class="fa fa-meh-o" style="font-size:70%;font-weight:bold;"></span>file</h1>
   		<div class="row">
 		<?php
-			$attributes = array('class' => 'form-horizontal', 'id' => 'profile', 'role' => 'form', 'enctype' => 'multipart/form-data');
+			$attributes = array('class' => 'form-horizontal', 'id' => 'profile', 'role' => 'form');
 			echo form_open('profile',$attributes)
 		?>
     		<!-- left column -->
     		<div class="col-md-4 col-sm-6 col-xs-12">
       			<div class="text-center">
 					<div class="fileinput fileinput-new" data-provides="fileinput">
-						<div class="fileinput-new">
-		    				<img src="<?=$profpic?>" class="avatar img-circle img-thumbnail" alt="avatar" style="width: 210px; height: 210px;">
+						<div class="fileinput-new" style="">
+		    				<img src="http://lorempixel.com/200/200/people/9/" class="avatar img-circle img-thumbnail" alt="avatar">
 		  				</div><br/>
 		  				<div class="fileinput-preview fileinput-exists avatar img-circle img-thumbnail thumbnail" style="max-width: 210px; max-height: 210px; border-radius: 50% !important; padding: 4px !important"></div>
-		  				<div class="fileinput-error alert-danger" style="width: 210px; height: 210px; border-radius: 50% !important; padding: 4px !important; display:none;"></div>
 		  				<div>
 		    				<span class="btn btn-default btn-file">
-								<span class="fileinput-new">Change Profile Photo</span><span class="fileinput-exists">Change</span>  
-                <input name="MAX_FILE_SIZE" value="307200" type="hidden">
-								<input type="file" accept="image/jpeg" name="photo" id="myFile">
+								<span class="fileinput-new">Change Profile Photo</span><span class="fileinput-exists">Change</span>
+								<input type="file" name="photo" id="myFile">
 							</span>
 		    				<a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
 		  				</div><br/>
@@ -104,15 +102,9 @@
 
 <script>
 $('#myFile').bind('change', function() {
-  var filesize = this.files[0].size / 1024;
-  var filetype = this.files[0].type.substring(0,5);
-  if((filesize>300)||(filetype!="image")){
-    $(".fileinput-preview").hide();  
-    $(".fileinput-error").show().html("<span style='display:inline-block;padding:35px;'>You were trying to upload a <b>"+parseInt(filesize)+" kb "+filetype+"</b> file. Please upload a <b>Maximum 300 kb image</b> file</span>"); 
-  } else {              
-    $(".fileinput-error").hide(); 
-    $(".fileinput-preview").show(); 
-  }
+
+  //this.files[0].size gets the size of your file.
+  //alert(this.files[0].size);
 
 });
 
