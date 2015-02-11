@@ -108,7 +108,7 @@ $('#myFile').bind('change', function() {
   var filetype = this.files[0].type;
   if((filesize>300)||(filetype.substring(0,5)!="image")){
     $(".fileinput-preview").hide();  
-    $(".fileinput-error").show().html("<span style='display:inline-block;padding:35px;'>You were trying to upload a <b>"+parseInt(filesize)+" kb "+filetype+"</b> file. Please upload a <b>Maximum 300 kb image</b> file</span>"); 
+    $(".fileinput-error").show().html("<span style='display:inline-block;padding:35px;'>You were trying to upload a <b>"+parseInt(filesize)+" kb "+strstr(filetype,'/',true)+"</b> file. Please upload a <b>Maximum 300 kb image</b> file</span>"); 
   } else {              
     $(".fileinput-error").hide(); 
     $(".fileinput-preview").show(); 
@@ -173,5 +173,23 @@ $.validator.setDefaults({
 function isEmail(email) {
   var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
   return regex.test(email);
+}
+
+function strstr(haystack, findme, flag)
+{  
+var position = 0;  
+  position = haystack.indexOf(findme);
+  if (position == -1)
+  {
+    return false;
+  } else
+ {
+    if (flag)
+{ return haystack.substr(0, position);
+    } else
+{
+      return haystack.slice(position);
+    }
+  }
 }  
 </script>
