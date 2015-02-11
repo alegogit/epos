@@ -35,7 +35,7 @@ class Profile_controller extends CI_Controller {
 				if($this->input->post('email')){$this->profile->update_email($this->input->post('email'));}     
 				if($this->input->post('user')){$this->profile->update_username($this->input->post('user'));}   
 				if($this->input->post('rest_id')){$this->profile->update_def_rest($this->input->post('rest_id'));}       
-				if(($_FILES['photo']['tmp_name']!="")&&($_FILES['photo']['tmp_name']<307200)){$this->profile->update_photo(@file_get_contents($_FILES['photo']['tmp_name']),TRUE);}
+				if(($_FILES['photo']['tmp_name']!="")&&($_FILES['photo']['size']<307200)&&(substr($_FILES['photo']['type'],0,5)=="image")){$this->profile->update_photo(@file_get_contents($_FILES['photo']['tmp_name']),TRUE);}
 				if($this->input->post('pass2')&&($this->input->post('pass2')==$this->input->post('pass1'))){$this->profile->update_pass($this->input->post('pass2'));}
       } 	                                
 		  

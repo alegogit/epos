@@ -37,7 +37,7 @@
       			<div class="alert alert-info alert-dismissable">
         			<a class="panel-close close" data-dismiss="alert">×</a> 
         			<i class="fa fa-coffee"></i>
-        			This is an <strong>.alert</strong>. Use this to show important messages to the user.
+        			This is an <strong>.alert</strong>. Use this to show important messages to the user. 
       			</div>
       			<h3>Personal info</h3>
         		<div class="form-group">
@@ -105,8 +105,8 @@
 <script>
 $('#myFile').bind('change', function() {
   var filesize = this.files[0].size / 1024;
-  var filetype = this.files[0].type.substring(0,5);
-  if((filesize>300)||(filetype!="image")){
+  var filetype = this.files[0].type;
+  if((filesize>300)||(filetype.substring(0,5)!="image")){
     $(".fileinput-preview").hide();  
     $(".fileinput-error").show().html("<span style='display:inline-block;padding:35px;'>You were trying to upload a <b>"+parseInt(filesize)+" kb "+filetype+"</b> file. Please upload a <b>Maximum 300 kb image</b> file</span>"); 
   } else {              
