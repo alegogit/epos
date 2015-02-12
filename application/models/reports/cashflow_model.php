@@ -41,7 +41,7 @@ class Cashflow_model extends CI_Model {
     return $query->row();
   }
   	
-	function get_cashflow($rest_id,$startdate,$enddate)
+	function get_cashflow0($rest_id,$startdate,$enddate)
 	{
 	    $query = $this->db->query("SELECT	R.NAME REST_NAME, D.NAME DEVICE_NAME,	SUM(PH.CASH_CLOSING - CASH_OPENING) CASH_FROM_REGISTER, 
 		                                    CASH_FROM_ORDERS.TOTAL CASH_FROM_ORDER, 
@@ -69,6 +69,37 @@ class Cashflow_model extends CI_Model {
 	                               GROUP BY D.ID;");
 		    return $query->result();
 	}
+	
+	function get_cashflow($rest_id,$startdate,$enddate)
+	{
+	    $query = $this->db->query("SELECT R.NAME REST_NAME, D.NAME DEVICE_NAME, 
+										SUM(PH.CASH_CLOSING - CASH_OPENING) CASH_FROM_REGISTER, 
+										CASH_FROM_ORDERS.TOTAL CASH_FROM_ORDER, 
+        								DEBIT_FROM_ORDERS.TOTAL DEBIT_FROM_ORDERS,
+										CREDIT_FROM_ORDERS.TOTAL CREDIT_FROM_ORDERS, 
+        								DATE(PH.DATE) TERMINAL_DATE
+									FROM DEVICES D
+									INNER JOIN RESTAURANTS R ON D.REST_ID = R.ID
+									LEFT OUTER JOIN PAYMENT_HISTORY PH ON PH.TERMINAL_ID = D.ID
+									LEFT OUTER JOIN (
+										SELECT DATE(STARTED) ORDER_DATE, SUM(TOTAL) TOTAL,  TERMINAL_ID FROM ORDERS 
+										WHERE PAYMENT_METHOD = 'CASH'
+										GROUP BY TERMINAL_ID, DATE(STARTED)
+									) CASH_FROM_ORDERS ON CASH_FROM_ORDERS.ORDER_DATE = DATE(PH.DATE) AND PH.TERMINAL_ID = D.ID
+									LEFT OUTER JOIN (
+										SELECT DATE(STARTED) ORDER_DATE, SUM(TOTAL) TOTAL,  TERMINAL_ID FROM ORDERS 
+										WHERE PAYMENT_METHOD = 'CREDIT'
+										GROUP BY TERMINAL_ID, DATE(STARTED)
+								    ) CREDIT_FROM_ORDERS ON CREDIT_FROM_ORDERS.ORDER_DATE = DATE(PH.DATE) AND PH.TERMINAL_ID = D.ID
+								    LEFT OUTER JOIN (
+										SELECT DATE(STARTED) ORDER_DATE, SUM(TOTAL) TOTAL,  TERMINAL_ID FROM ORDERS 
+										WHERE PAYMENT_METHOD = 'DEBIT'
+										GROUP BY TERMINAL_ID, DATE(STARTED)
+								    ) DEBIT_FROM_ORDERS ON DEBIT_FROM_ORDERS.ORDER_DATE = DATE(PH.DATE) AND PH.TERMINAL_ID = D.ID
+									WHERE D.REGISTERED = 1 AND PH.DATE BETWEEN '".$startdate."' AND '".$enddate."' AND R.ID = ".$rest_id."
+									GROUP BY D.ID, DATE(PH.DATE);");
+		    return $query->result();
+	}	
 	
 	function inv_status_color($status){
     if ($status=="NONE"){
