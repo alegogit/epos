@@ -86,20 +86,22 @@
 						  <?php 
                 $total['CASH_FROM_REGISTER'] = $total['CASH_FROM_REGISTER']+$row->CASH_FROM_REGISTER;  
                 $total['CASH_FROM_ORDER'] = $total['CASH_FROM_ORDER']+$row->CASH_FROM_ORDER;  
-                $total['DEBIT_FROM_ORDER'] = $total['DEBIT_FROM_ORDER']+$row->DEBIT_FROM_ORDERS;  
-                $total['CREDIT_FROM_ORDER'] = $total['CREDIT_FROM_ORDER']+$row->CREDIT_FROM_ORDERS;  
+                $total['DEBIT_FROM_ORDERS'] = $total['DEBIT_FROM_ORDERS']+$row->DEBIT_FROM_ORDERS;  
+                $total['CREDIT_FROM_ORDERS'] = $total['CREDIT_FROM_ORDERS']+$row->CREDIT_FROM_ORDERS;  
                 $i++; 
               } ?>
+						</tbody>
+						<tfoot>
 						  <tr class="tablefoot text3D">
-						    <th class="no-sort"></th>
+						    <th class="no-sort">Grand Total</th>
 						    <!--<th>Restaurant</th>-->
-						    <th class="no-sort">Total</th>
+						    <th class="no-sort"></th>
 						    <th class="cin no-sort"><?=number_format($total['CASH_FROM_REGISTER'], 0, '', '.')?></th>
 						    <th class="cin no-sort"><?=number_format($total['CASH_FROM_ORDER'], 0, '', '.')?></th>
 						    <th class="cin no-sort"><?=number_format($total['DEBIT_FROM_ORDERS'], 0, '', '.')?></th>
 						    <th class="cin no-sort"><?=number_format($total['CREDIT_FROM_ORDERS'], 0, '', '.')?></th>
 						  </tr>
-						</tbody>
+						</tfoot>
 					</table>      
 			  </div>
 			</div>

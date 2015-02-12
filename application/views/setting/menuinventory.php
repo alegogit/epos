@@ -99,7 +99,7 @@
 				</div><!--/.panel-->
 			</div><!--/.col-lg-12-->
 		</div><!--/.row-->
-  
+		
   	</div><!-- /.container-fluid -->
 </div><!-- /#page-content-wrapper -->
 
@@ -176,12 +176,12 @@
   	foreach ($menuinventory as $row){
   		$edit_script .= "  $('#MENU_ID-".$row->ID."').editable({
 		                        type: 'select',  
-		                        value: '".$row->MENU_ID."', 
+		                        value: ".$row->MENU_ID.", 
 		                        source: [ ";
 		$k = 1;
 		$q = count($menus);
 		foreach($menus as $rowc){
-			$edit_script .= "  {value: '".$rowc->ID."', text: '".$rowc->NAME."'}";
+			$edit_script .= "  {value: ".$rowc->ID.", text: '".$rowc->NAME."'}";
 		    $edit_script .= ($k<$q)?", ":"";
 		    $k++;
 		}
@@ -196,12 +196,12 @@
 		                      });";
   		$edit_script .= "  $('#INVENTORY_ID-".$row->ID."').editable({
 		                        type: 'select',  
-		                        value: '".$row->INVENTORY_ID."', 
+		                        value: ".$row->INVENTORY_ID.", 
 		                        source: [ ";
 		$i = 1;
 		$j = count($inventories);
 		foreach($inventories as $rowi){
-			$edit_script .= "  {value: '".$rowi->ID."', text: '".$rowi->NAME."'}";
+			$edit_script .= "  {value: ".$rowi->ID.", text: '".$rowi->NAME."'}";
 		    $edit_script .= ($i<$j)?", ":"";
 		    $i++;
 		}
