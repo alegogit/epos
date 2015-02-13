@@ -6,82 +6,80 @@ class Sales_model extends CI_Model {
     var $password = '';
     var $date    = '';
 
-    function __construct()
-    {
+    function __construct(){
         // Call the Model constructor
         parent::__construct();
     }
 	 
-	function get_profile()
-    {
+	function get_profile(){
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id'];
 		$this->db->where('ID',$id);
-          $query = $this->db->get('USERS');
-          return $query->row();
+		$query = $this->db->get('USERS');
+		return $query->row();
     }
 	
-	function get_restaurant()
-    {
+	function get_restaurant(){
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id'];
 		$this->db->where('USERS_RESTAURANTS.USER_ID',$id);
-    //$query = $this->db->get('restaurants');
-    $query = $this->db->select('*')
+		$query = $this->db->select('*')
                       ->from('RESTAURANTS')
                       ->join('USERS_RESTAURANTS', 'RESTAURANTS.ID = USERS_RESTAURANTS.REST_ID')
                       ->get('');
-    return $query->result();
+		return $query->result();
     }
     
-  function get_currency($rest_id){
-    $query = $this->db->select('RESTAURANTS.CURRENCY, REF_VALUES.VALUE AS CUR')
+	function get_currency($rest_id){
+  		$query = $this->db->select('RESTAURANTS.CURRENCY, REF_VALUES.VALUE AS CUR')
                       ->from('RESTAURANTS')
                       ->join('REF_VALUES', 'REF_VALUES.CODE = RESTAURANTS.CURRENCY')
                       ->where('RESTAURANTS.ID',$rest_id)
                       ->where('REF_VALUES.LOOKUP_NAME','CURRENCY')
                       ->limit(1)
                       ->get('');
-    return $query->row()->CUR;
-  }
-
-	function num_transactions_today($rest_id)
-	{
-	     $query = $this->db->query('SELECT IFNULL(COUNT(ID),0) AS RES FROM ORDERS WHERE DATE(ENDED) = DATE(SYSDATE()) AND REST_ID = '.$rest_id.';');
-		//return $query->result();  
-          return $query->row();
+		return $query->row()->CUR;
 	}
-     
-     function percentage_increase_from_yesterday($rest_id)
-	{
-	     $query = $this->db->query('SELECT
+	
+	function total_sales_today($rest_id){
+		//$query = $this->db->query('SELECT IFNULL(SUM(TOTAL),0) AS RES FROM ORDERS WHERE DATE(ENDED) = DATE(SYSDATE()) AND REST_ID ='.$rest_id.';');
+		$query = $this->db->query('SELECT IFNULL(SUM(TOTAL),0) AS RES FROM ORDERS WHERE DATE(ENDED) = DATE(SYSDATE()) AND REST_ID = '.$rest_id.' AND ACTIVE =0;');
+		return $query->row();
+	}
+
+	function percentage_increase_from_yesterday($rest_id){
+	     /*
+		 $query = $this->db->query('SELECT
 			IFNULL((((
 				(SELECT IFNULL(SUM(TOTAL),0) FROM ORDERS WHERE DATE(ENDED) = DATE(SYSDATE()) AND REST_ID ='.$rest_id.')
 				/ 
 				(SELECT IFNULL(SUM(TOTAL),0) FROM ORDERS WHERE DATE(ENDED) = DATE(SUBDATE(SYSDATE(),1)) AND REST_ID ='.$rest_id.')
 			) -1 ) *100 ) ,0)
 			AS PERCENTAGE
-		FROM DUAL;');
-		//return $query->result();  
+			FROM DUAL;');
+		*/
+		$query = $this->db->query('SELECT
+										IFNULL((((
+											(SELECT IFNULL(SUM(TOTAL),0) FROM ORDERS WHERE DATE(ENDED) = DATE(SYSDATE()) AND REST_ID = '.$rest_id.' AND ACTIVE =0)
+											/ 
+											(SELECT IFNULL(SUM(TOTAL),0) FROM ORDERS WHERE (DATE(ENDED) = DATE(SYSDATE())) 
+																					AND (DATE(ENDED) < DATE(SUBDATE(SYSDATE(),1))) 
+																					AND REST_ID = '.$rest_id.' AND ACTIVE =0)
+										) -1 ) *100 ) ,0)
+										AS PERCENTAGE
+									FROM DUAL;');
+		 
           return $query->row();
 	}
-	
-	function total_sales_today($rest_id)
-	{
-	     $query = $this->db->query('SELECT IFNULL(SUM(TOTAL),0) AS RES FROM ORDERS WHERE DATE(ENDED) = DATE(SYSDATE()) AND REST_ID ='.$rest_id.';');
-		//return $query->result();  
-          return $query->row();
+
+	function num_transactions_today($rest_id){
+	     //$query = $this->db->query('SELECT IFNULL(COUNT(ID),0) AS RES FROM ORDERS WHERE DATE(ENDED) = DATE(SYSDATE()) AND REST_ID = '.$rest_id.';')
+	     $query = $this->db->query('SELECT IFNULL(COUNT(ID),0) AS RES FROM ORDERS WHERE DATE(ENDED) = DATE(SYSDATE()) AND REST_ID = '.$rest_id.' AND ACTIVE =0;');
+		 return $query->row();
 	}
      
-     function num_transactions_this_year($rest_id)
-	{
-	     $query = $this->db->query('SELECT IFNULL(COUNT(ID),0) AS RES FROM ORDERS WHERE YEAR(ENDED) = YEAR(SYSDATE()) AND REST_ID ='.$rest_id.';');
-		//return $query->result();  
-          return $query->row();
-	}
-     
-     function percentage_increase_from_last_week($rest_id)
-	{
+	function percentage_increase_from_last_week($rest_id){
+		/*
 	     $query = $this->db->query('SELECT
 			IFNULL((((
 				(SELECT IFNULL(SUM(TOTAL),0) FROM ORDERS WHERE YEAR(ENDED) = YEAR(SYSDATE()) AND REST_ID = '.$rest_id.')
@@ -91,13 +89,28 @@ class Sales_model extends CI_Model {
 														AND REST_ID = '.$rest_id.')
 			) -1 ) *100 ) ,0)
 			AS PERCENTAGE
-		FROM DUAL;');
-		//return $query->result();  
-          return $query->row();
+			FROM DUAL;');  
+		*/
+		$query = $this->db->query('SELECT
+										IFNULL((((
+											(SELECT IFNULL(SUM(TOTAL),0) FROM ORDERS WHERE YEAR(ENDED) = YEAR(SYSDATE()) AND REST_ID = '.$rest_id.' AND ACTIVE =0)
+											/ 
+											(SELECT IFNULL(SUM(TOTAL),0) FROM ORDERS WHERE (YEAR(ENDED) = YEAR(SYSDATE())) 
+																					AND (DATE(ENDED) < DATE(SUBDATE(SYSDATE(),7))) 
+																					AND REST_ID = '.$rest_id.' AND ACTIVE =0)
+										) -1 ) *100 ) ,0)
+										AS PERCENTAGE
+									FROM DUAL ');  
+		return $query->row();
 	}
 	
-	function percentage_increase_this_year($rest_id)
-	{                                                                   
+	function total_sales_this_year($rest_id){
+		//$query = $this->db->query('SELECT IFNULL(SUM(TOTAL),0) AS RES FROM ORDERS WHERE YEAR(ENDED) = YEAR(SYSDATE()) AND REST_ID ='.$rest_id.'');
+		$query = $this->db->query('SELECT IFNULL(SUM(TOTAL),0) AS RES FROM ORDERS WHERE YEAR(ENDED) = YEAR(SYSDATE()) AND REST_ID = '.$rest_id.' AND ACTIVE = 0;');
+		return $query->row();
+	}
+	
+	function percentage_increase_this_year($rest_id){                                                                   
 	     $query = $this->db->query('SELECT
 			IFNULL((((
 				(SELECT IFNULL(SUM(TOTAL),0) FROM ORDERS WHERE YEAR(ENDED) = YEAR(SYSDATE()) AND REST_ID = '.$rest_id.')
@@ -113,22 +126,19 @@ class Sales_model extends CI_Model {
           return $query->row();
 	}
 	
-	function total_sales_this_year($rest_id)
-	{
-	     $query = $this->db->query('SELECT IFNULL(SUM(TOTAL),0) AS RES FROM ORDERS WHERE YEAR(ENDED) = YEAR(SYSDATE()) AND REST_ID ='.$rest_id.'');
-		//return $query->result();  
-          return $query->row();
+	function num_transactions_this_year($rest_id){
+		//$query = $this->db->query('SELECT IFNULL(COUNT(ID),0) AS RES FROM ORDERS WHERE YEAR(ENDED) = YEAR(SYSDATE()) AND REST_ID ='.$rest_id.';');
+		$query = $this->db->query('SELECT IFNULL(COUNT(ID),0) AS RES  FROM ORDERS WHERE YEAR(ENDED) = YEAR(SYSDATE()) AND REST_ID = '.$rest_id.' AND ACTIVE = 0;');
+		return $query->row();
 	}
-     
-  function num_customers_30day($rest_id)
-	{
-	     $query = $this->db->query('SELECT COUNT(C.ID) AS RES 
-          FROM CUSTOMERS C
-			INNER JOIN ORDERS O ON O.CUSTOMER_ID = C.ID
-            WHERE O.REST_ID = '.$rest_id.'
-				AND O.ENDED > SUBDATE(SYSDATE(), 30);');
-		//return $query->result();  
-          return $query->row();
+	     
+	function num_customers_30day($rest_id){
+		$query = $this->db->query('SELECT COUNT(C.ID) AS RES 
+        							FROM CUSTOMERS C
+									INNER JOIN ORDERS O ON O.CUSTOMER_ID = C.ID
+            						WHERE O.REST_ID = '.$rest_id.'
+									AND O.ENDED > SUBDATE(SYSDATE(), 30);');
+		return $query->row();
 	}
 	
 	function dash_payment_method($start_date,$end_date,$rest_id)

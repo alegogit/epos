@@ -42,7 +42,7 @@ class Inventory_controller extends CI_Controller {
 			$data['percent_today'] = $this->dash_inv->percentage_increase_from_yesterday($rest_id);
 			$data['trans_this_year'] = $this->dash_inv->num_transactions_this_year($rest_id);
 			$data['sales_this_year'] = $this->dash_inv->total_sales_this_year($rest_id);
-			$data['percent_this_year'] = $this->dash_inv->percentage_increase_this_year($rest_id);       
+			//$data['percent_this_year'] = $this->dash_inv->percentage_increase_this_year($rest_id);       
 			$data['percent_this_week'] = $this->dash_inv->percentage_increase_from_last_week($rest_id); 
 			$data['num_cust_30day'] = $this->dash_inv->num_customers_30day($rest_id);
 			$data['nonmovitm'] = $this->dash_inv->non_moving_items($rest_id);
