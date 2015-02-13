@@ -6352,15 +6352,16 @@ button.close {
 }
 
 .menu-toggle {
-  position:fixed; 
-  left:auto;  
-  background-color:#E0E0E0; 
-  z-index:999; 
-  height:100%;
-  border-bottom-right-radius:5px;
-  -webkit-box-shadow: 5px 0 10px #888888;
-		box-shadow: 5px 0 10px #888888;
-
+  	position:fixed; 
+  	left:auto;  
+  	background-color:#E0E0E0; 
+  	z-index:999; 
+  	height:100%;
+  	border-bottom-right-radius:5px;
+  	/*
+	-webkit-box-shadow: 5px 0 10px #888888;
+	box-shadow: 5px 0 10px #888888;
+	*/
 }
 .menu-toggle a {
     display: block;
@@ -6376,8 +6377,10 @@ button.close {
     text-decoration: none;
     color: #fff;
     background-color: #E0E0E0;
-  -webkit-box-shadow: 5px 0 5px #888888;
-		box-shadow: 5px 0 5px #888888;
+  	/*
+	-webkit-box-shadow: 5px 0 5px #888888;
+	box-shadow: 5px 0 5px #888888;
+	*/
 }
 /*# sourceMappingURL=bootstrap.css.map */
 
