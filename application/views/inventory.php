@@ -248,7 +248,7 @@ $(document).ready(function(){
     	columnDefs: [
       		{ targets: 'no-sort', orderable: false }
     	],
-    	"order": [[ 7, "desc" ]]
+    	"order": [[ 1, "asc" ]]
   	});
   
   	//check all
