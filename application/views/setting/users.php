@@ -62,7 +62,7 @@
                     <a id="USERNAME-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->USERNAME?></a>
                   </td>
                   <td style="">
-                    <a id="PASSWORD-<?=$row->ID?>" class="epop" tabindex="0" data-toggle="modal" data-target="#passModal" data-uid="<?=$row->ID?>" data-unm="<?=$row->USERNAME?>" style="font-size:70%">
+                    <a id="PASSWORD-<?=$row->ID?>" class="epop" tabindex="-1" data-toggle="modal" data-target="#passModal" data-uid="<?=$row->ID?>" data-unm="<?=$row->USERNAME?>" style="font-size:70%">
                       <i class="fa fa-circle"></i>
                       <i class="fa fa-circle"></i>
                       <i class="fa fa-circle"></i>
@@ -90,7 +90,7 @@
 						    }         
 							$assval .= "]";
 					?>
-                    <a id="ASS_REST-<?=$row->ID?>" class="epop" tabindex="0" data-toggle="modal" data-target="#restModal" data-uid="<?=$row->ID?>" data-unm="<?=$row->USERNAME?>" data-def="<?=$assval?>" style="">
+                    <a id="ASS_REST-<?=$row->ID?>" class="epop" tabindex="-1" data-toggle="modal" data-target="#restModal" data-uid="<?=$row->ID?>" data-unm="<?=$row->USERNAME?>" data-def="<?=$assval?>" style="">
 						<?=($asstxt!="")?$asstxt:"click to assign restaurant(s)"?>
 					</a>
                   </td>
@@ -390,7 +390,7 @@ $(document).ready(function(){
 	var baseurl = $("#baseurl").data('url');
   
   	//make editable on focus  
-  	$('.edit0').focus(function(e) {
+  	$('.edit').focus(function(e) {
     	e.stopPropagation();
     	$(this).editable('toggle');
   	});

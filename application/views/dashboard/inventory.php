@@ -32,18 +32,6 @@
           ?>   
             <div class="form-group" style="margin-bottom:0px">
               <div class="input-group">
-                <div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
-                <input id="startdate" name="startdate" type="text" value="<?=$startdate?>" class="form-control datepicker" style="display:inline;padding-left:10px;padding-right:-20px" title="Start Date">
-              </div>                                                                                                                                                              
-            </div>
-            <div class="form-group" style="margin-bottom:0px">
-              <div class="input-group">       
-                <div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
-                <input id="enddate" name="enddate" type="text" value="<?=$enddate?>" class="form-control datepicker" style="display:inline;padding-left:10px;padding-right:-20px" title="End Date">
-              </div>
-            </div>
-            <div class="form-group" style="margin-bottom:0px">
-              <div class="input-group">
                 <div class="input-group-addon"><span class="glyphicon glyphicon-cutlery"></span></div>
                 <select id = "myRestaurant" name="rest_id" title="Restaurant Name" class="form-control" style="display:inline">
                   <option value = "0">ALL Restaurants</option>
