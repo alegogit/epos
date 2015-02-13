@@ -1,156 +1,217 @@
 <div id="page-content-wrapper">
 <!-- Page Content -->
-	<div class="container-fluid" style="font-size:90%;">
-  		<h1 class="page-header"><span class="fa fa-user"></span> My Pr</b><span class="fa fa-meh-o" style="font-size:70%;font-weight:bold;"></span>file</h1>
-  		<div class="row">
-		<?php
-			$attributes = array('class' => 'form-horizontal', 'id' => 'profile', 'role' => 'form', 'enctype' => 'multipart/form-data');
-			echo form_open('profile',$attributes)
-		?>
-    		<!-- left column -->
-    		<div class="col-md-4 col-sm-6 col-xs-12">
-      			<div class="text-center">
-					<div class="fileinput fileinput-new" data-provides="fileinput">
-						<div class="fileinput-new">
-		    				<img src="<?=$profpic?>" class="avatar img-circle img-thumbnail" alt="avatar" style="width: 210px; height: 210px;">
-		  				</div><br/>
-		  				<div class="fileinput-preview fileinput-exists avatar img-circle img-thumbnail thumbnail" style="max-width: 210px; max-height: 210px; border-radius: 50% !important; padding: 4px !important"></div>
-		  				<div class="fileinput-error alert-danger" style="width: 210px; height: 210px; border-radius: 50% !important; padding: 4px !important; display:none;"></div>
-		  				<div>
-		    				<span class="btn btn-default btn-file">
-								<span class="fileinput-new">Change Profile Photo</span><span class="fileinput-exists">Change</span>  
-                <input name="MAX_FILE_SIZE" value="307200" type="hidden">
-								<input type="file" accept="image/jpeg" name="photo" id="myFile">
-							</span>
-		    				<a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
-		  				</div><br/>
-	      				<div class="alert alert-info alert-dismissable" style="max-width: 250px;">
-	        				<a class="panel-close close" data-dismiss="alert">×</a> 
-	        				<i class="fa fa-info-circle"></i>
-	        				Max <strong>300 kb</strong> image file.
-	      				</div>
-					</div>
-      			</div>
-    		</div>
-    		<!-- edit form column -->
-    		<div class="col-md-8 col-sm-6 col-xs-12 personal-info">
-      			<div class="alert alert-info alert-dismissable">
-        			<a class="panel-close close" data-dismiss="alert">×</a> 
-        			<i class="fa fa-coffee"></i>
-        			This is an <strong>.alert</strong>. Use this to show important messages to the user. 
-      			</div>
-      			<h3>Personal info</h3>
-        		<div class="form-group">
-          			<label class="col-lg-3 control-label" for="name">Name:</label>
-          			<div class="col-lg-8 input-group">              
-              			<div class="input-group-addon"><span class="fa fa-meh-o"></span></div>
-            			<input class="form-control" placeholder="<?=$user->NAME?>" type="text" name="name" id="name">
-          			</div>
-        		</div>
-			    <div class="form-group">
-			    	<label class="col-lg-3 control-label" for="email">Email:</label>
-			        <div class="col-lg-8 input-group">           
-              			<div class="input-group-addon"><span class="fa fa-envelope"></span></div>
-			            <input class="form-control" placeholder="<?=$user->EMAIL_ADDRESS?>" type="text" name="email" id="email">
-			    	</div>
-			    </div>
-        		<div class="form-group">
-          			<label class="col-lg-3 control-label" for="rest_id">Default Restaurant:</label>
-          			<div class="col-lg-8 input-group">
-              			<div class="input-group-addon"><span class="fa fa-cutlery"></span></div>
-            			<div class="ui-select"> 
-				        	<select id="rest_id" name="rest_id" class="form-control">
-				            <?php foreach($restaurants as $rows){ ?>
-				            	<option value = "<?=$rows->REST_ID?>" <?=($rows->REST_ID==$default->REST_ID)?'selected':''?> ><?=$rows->NAME?></option>
-				            <?php } ?>
-				            </select>
-            			</div>			
-          			</div>
-        		</div>
-			    <div class="form-group">
-			    	<label class="col-md-3 control-label" for="user">Username:</label>
-			        <div class="col-md-8 input-group">
-              			<div class="input-group-addon"><span class="fa fa-user"></span></div>
-			            <input class="form-control" placeholder="<?=$user->USERNAME?>" type="text" name="user" id="user">
-			        </div>
-			    </div>
-			    <div class="form-group">
-			    	<label class="col-md-3 control-label" for="pass1">Password:</label>
-			        <div class="col-md-8 input-group">
-              			<div class="input-group-addon"><span class="fa fa-lock"></span></div>
-			            <input class="form-control" placeholder="*******" type="password" name="pass1" id="pass1">
-			        </div>
-				</div>
-			    <div class="form-group">
-			    	<label class="col-md-3 control-label" for="pass2">Confirm password:</label>
-			        <div class="col-md-8 input-group">
-              			<div class="input-group-addon"><span class="fa fa-lock"></span></div>
-			            <input class="form-control" placeholder="*******" type="password" name="pass2" id="pass2">
-					</div>
-				</div>
-        		<div class="form-group">
-          			<label class="col-md-3 control-label"></label>
-          			<div class="col-md-8">
-            			<input class="btn btn-success" value="Save Changes" type="submit" name="spro">
-            			<span></span>
-            			<input class="btn btn-warning" value="Cancel" type="reset">
-          			</div>
-        		</div>
-    		<?=form_close()?>
-		</div>
-  	</div>
-</div>
-<div id="baseurl" data-url="<?=base_url()?>"></div>
-
-<script>
-$('#myFile').bind('change', function() {
-  var filesize = this.files[0].size / 1024;
-  var filetype = this.files[0].type;
-  if((filesize>300)||(filetype.substring(0,5)!="image")){
-    $(".fileinput-preview").hide();  
-    $(".fileinput-error").show().html("<span style='display:inline-block;padding:35px;'>You were trying to upload a <b>"+parseInt(filesize)+" kb "+strstr(filetype,'/',true)+"</b> file. Please upload a <b>Maximum 300 kb image</b> file</span>"); 
-  } else {              
-    $(".fileinput-error").hide(); 
-    $(".fileinput-preview").show(); 
-  }
-
-});
-
-$(function(){
-	var baseurl = $("#baseurl").data('url');
-  	//pass validation
-  	$("#profile").validate({ 
-    	rules: {
-      		email: { 
-        		email: true,
-        		remote: baseurl+"process/users?p=takene" 
-      		}, 
-	      	user: {
-	        	minlength: 3,
-	        	remote: baseurl+"process/users?p=takenu"
-	      	},
-	     	pass1: { 
-	        	minlength: 6 
-	      	}, 
-	      	pass2: { 
-	        	equalTo: "#pass1",
-	        	minlength: 6
-	      	}      
-    	},
-	    messages:{ 
-	      	email: {
-	        	remote: "Please enter another email"
-	      	},
-	      	user: {
-	        	remote: "Please enter another username"
-	      	},
-	      	pass2: { 
-	        	equalTo:"The passwords don’t match"
-	      	}
-	    }
-  });
+  <div class="container-fluid" style="font-size:90%;">
+                                       
+    <hr style="margin-bottom:10px" />
     
-});         
+    <div class="row" style="padding-left: 15px">  
+      <?php
+        $attributes = array('class' => 'form-inline', 'id' => 'filter', 'role' => 'form');
+        echo form_open('sync',$attributes)
+      ?>
+        <div class="form-group" style="margin-bottom:0px">
+          <div class="input-group">
+            <div class="input-group-addon"><span class="glyphicon glyphicon-cutlery"></span></div>
+            <select id = "myRestaurant" name="rest_id" title="Restaurant Name" class="form-control" style="display:inline">
+              <option value = "0">Select Restaurant</option>
+              <?php foreach($restaurants as $row){ ?>
+              <option value = "<?=$row->REST_ID?>" <?= ($row->REST_ID==$rest_id)?'selected':''?> ><?=$row->NAME?></option>
+              <?php } ?>
+            </select>   
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:0px">
+          <div class="input-group">
+            <button type="submit" class="btn btn-success" style="display:inline">Filter</button>   
+          </div>
+        </div>
+      <?=form_close()?>     
+    </div>              
+                                                     
+    <hr style="margin-bottom:10px;margin-top:10px" />
+    
+    <div class="row">
+		<div class="col-lg-12">
+			<div class="panel panel-default">
+				<div class="panel-heading"><b>Sync History</b></div>
+				<div class="panel-body"> 
+            		<div class="table-responsive">
+						<table id="sync" class="table table-striped dt-right compact">
+						    <thead>
+						    <tr class="tablehead text3D">
+						        <th>Device</th>
+						        <th>Last Sync</th>
+						        <th data-field="crby" data-sortable="false">Created By</th>
+						        <th data-field="crdt" data-sortable="false">Created Date</th>
+						        <th data-field="upby"  data-sortable="false">Updated By</th>
+						        <th data-field="updt" data-sortable="false">Updated Date</th>
+						    </tr>
+						    </thead>  
+						    <tbody>                    
+						    <?php $i = 0;  foreach ($synchist as $row){ ?>
+                			<tr data-index="<?=$i?>" class="datarow" id="<?=$row->ID.'_'.$row->NAME?>">
+			                  	<td class="">
+			                    	<a id="NAME-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->NAME?></a>
+			                  	</td>
+			                  	<td class="">
+			                    	<a id="LASY_SYNC-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->LAST_SYNC?></a>
+			                  	</td>
+			                  	<td class=""><span id="crby<?=$row->ID?>"><?=$this->sync->get_username($row->CREATED_BY)->NAME?></span></td>
+			                  	<td class=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
+			                  	<td class=""><span id="upby<?=$row->ID?>"><?=$this->sync->get_username($row->LAST_UPDATED_BY)->NAME?></span></td>
+			                  	<td class=""><span id="updt<?=$row->ID?>"><?=$row->LAST_UPDATED_DATE?></span></td>
+			                </tr>
+			                <?php $i++; } ?>
+						    </tbody>
+						</table>
+					</div><!--/.table-responsive--> 
+				</div><!--/.panel-body-->
+			</div><!--/.panel-->
+		</div><!--/.col-lg-12-->
+	</div><!--/.row-->       
+	                                
+    <hr style="margin-bottom:10px;margin-top:10px" />
+	
+	<div class="row" style="padding-left: 15px">
+		<a class="btn btn-lg btn-success" href=""><i class="fa fa-refresh"></i> Sync Now</a>
+	</div>
+	                                
+    <hr style="margin-bottom:10px;margin-top:10px" />
+  
+</div><!-- /.container-fluid -->
+</div><!-- /#page-content-wrapper -->
+
+<div id="baseurl" data-url="<?=base_url()?>"></div>
+<?php  
+  	//editable script
+  	$i = 0;
+  	$edit_script = "<script>"; 
+  	$edit_script .= "$(document).ready(function(){";
+  	$edit_script .= "  $.fn.editable.defaults.mode = 'inline';";
+  	$edit_script .= "  $.fn.editable.defaults.showbuttons = false;";
+  	$edit_script .= "  var updateurl = '".base_url()."process/sync?p=update';";
+  	foreach ($synchist as $row){
+  		$edit_script .= "  $('#NAME-".$row->ID."').editable({
+		                        url: updateurl,
+		                        pk: ".$row->ID.", 
+		                        validate: function(v) {
+		                          if (!v) return 'don\'t leave it blank!';
+		                        },
+		                        success: function(result){  
+		                          var data = result.split(',');
+		                          $('#upby".$row->ID."').html(data[0]);
+		                          $('#updt".$row->ID."').html(data[1]); 
+		                      } 
+		                    });";						
+  		$edit_script .= "  $('#LAST_SYNC-".$row->ID."').editable({
+	                        url: updateurl,
+	                        pk: ".$row->ID.", 
+	                        validate: function(v) {
+	                          	if (!v) return 'don\'t leave it blank!';
+                          		if (isNaN(v)) return 'please fill in a number format!';
+	                        },
+	                        success: function(result){  
+	                          	var data = result.split(',');
+	                          	$('#upby".$row->ID."').html(data[0]);
+	                          	$('#updt".$row->ID."').html(data[1]); 
+	                      } 
+	                    });";
+  	}
+  	$edit_script .= "}); ";
+	$edit_script .= '</script>';
+  	echo $edit_script;
+?>
+<script>   
+$(document).ready(function(){     
+	var baseurl = $("#baseurl").data('url');
+  
+  	//make editable on focus  
+  	$('.edit').focus(function(e) {
+    	e.stopPropagation();
+    	$(this).editable('toggle');
+  	});
+  
+  	//inititate datatable
+  	var table = $('#sync').DataTable({
+    	columnDefs: [
+      		{ targets: 'no-sort', orderable: false }
+    	],
+    	"order": [[ 1, "asc" ]]
+  	});
+  
+  	//check all
+  	$("#checkall").click(function(){
+    	$('.case').prop('checked',this.checked);
+  	});
+ 	$(".case").click(function(){
+    	if($(".case").length==$(".case:checked").length){
+      		$("#selectall").prop("checked","checked");
+    	}else{
+      		$("#selectall").removeAttr("checked");
+    	}
+  	}); 
+  
+  	//function to delete selected row
+  	$('.btn-danger').on("click", function(event){
+  		var sel = false;	
+  		var ch = $('#inventory').find('tbody input[type=checkbox]');
+    	var dt = '';	
+  		ch.each(function(){  
+      		if($(this).is(':checked')) { 
+        		var idf = $(this).parents('tr').attr('id');
+        		var idm = idf.substring(idf.indexOf('_')+1,idf.length);
+  		  		dt = dt+' '+idm+',';
+      		}    
+    	}); 
+    	if(dt==''){
+      		var c = false;
+    	} else {  	
+  	  		var c = confirm('Continue delete \n'+dt.substring(1,dt.length-1)+'?');
+    	}
+  		if(c) {
+  	  		ch.each(function(){
+  		 		var $this = $(this);
+  				if($this.is(':checked')) {
+  					sel = true;	//set to true if there is/are selected row
+          			var idf = $(this).parents('tr').attr('id');
+          			var dataP = "idf="+idf;
+  					$.ajax({
+            			type: "POST",
+            			url: baseurl+"process/inventory?p=delete",
+            			data: dataP,
+            			cache: false,
+            			success: function(result){ 
+              				if(result.trim()!='OK'){    
+                				alert(result); 
+              				} else {    
+        						$this.parents('tr').fadeOut(function(){
+        							$this.remove(); //remove row when animation is finished
+        						});     
+              				}   
+            			}
+          			});   
+  				}
+  	  		});
+  		  	if(!sel) alert('No data selected');	
+  		}
+  		return false;
+  	}); 
+});                                           
+  
+  
+$(function(){
+  //pass validation
+  $("#newinv").validate({ 
+    rules: {
+      qty: { 
+        number: true 
+      },      
+      minq: {       
+        number: true
+      }       
+    }      
+  });
+});
 
 $.validator.setDefaults({
     highlight: function(element) {
@@ -169,27 +230,5 @@ $.validator.setDefaults({
         }
     }
 });
-
-function isEmail(email) {
-  var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-  return regex.test(email);
-}
-
-function strstr(haystack, findme, flag)
-{  
-var position = 0;  
-  position = haystack.indexOf(findme);
-  if (position == -1)
-  {
-    return false;
-  } else
- {
-    if (flag)
-{ return haystack.substr(0, position);
-    } else
-{
-      return haystack.slice(position);
-    }
-  }
-}  
+  
 </script>
