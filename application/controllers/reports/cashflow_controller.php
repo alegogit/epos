@@ -5,12 +5,14 @@ class Cashflow_controller extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();	
-		$this->load->model('reports/cashflow_model','cashflow',TRUE); 
-    	$this->load->helper(array('form', 'url','html'));
+		$this->load->model('reports/cashflow_model','cashflow',TRUE);
+    $this->load->helper(array('form', 'url','html'));
 		$session_data = $this->session->userdata('logged_in');
 		$this->data['user'] = $this->cashflow->get_profile();
-		$this->data['restaurants'] = $this->cashflow->get_restaurant(); 
-	}
+		$this->data['restaurants'] = $this->cashflow->get_restaurant();  
+    $this->load->library('picture');   
+    @$this->data['profpic'] = ($this->data['user']->IMAGE=="")?base_url()."assets/img/no-photo.jpg":base_url()."profile/pic/".$this->picture->gettyimg($session_data['id']).".jpg";
+  }
 
 	public function index()
 	{
@@ -30,7 +32,7 @@ class Cashflow_controller extends CI_Controller {
 			$data['cashflow'] = $this->cashflow->get_cashflow($rest_id,date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date))); 
 			
 			$data['deleteId'] = (!($this->input->post('invid')))?'invid':$this->input->post('invid');
-      		$data['deleteIdStr'] = (!($this->input->post('invid')))?'invidstr':implode(',', $deleteId);
+      $data['deleteIdStr'] = (!($this->input->post('invid')))?'invidstr':implode(',', $deleteId);
       		//$sql = "delete from usertable where userid in ($deleteIdStr)";
 
 			$this->load->view('shared/header',$this->data);

@@ -10,10 +10,10 @@ class Ordersdata_controller extends CI_Controller {
     $this->load->library('excel');
     $session_data = $this->session->userdata('logged_in');
 		$this->data['user'] = $this->extracts->get_profile();
-		$this->data['restaurants'] = $this->extracts->get_restaurant(); 
-			//echo "&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>";
-			//echo "<pre>" . var_dump($this->data['restaurants']) . "</pre>";
-	}
+		$this->data['restaurants'] = $this->extracts->get_restaurant();  
+    $this->load->library('picture');   
+    @$this->data['profpic'] = ($this->data['user']->IMAGE=="")?base_url()."assets/img/no-photo.jpg":base_url()."profile/pic/".$this->picture->gettyimg($session_data['id']).".jpg";
+  }
 
 	public function index()
 	{

@@ -5,21 +5,30 @@ class Inventory_controller extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();	
-		$this->load->model('inventory_model','inventory',TRUE);  
-    	$this->load->helper(array('form', 'url','html'));
+		$this->load->model('inventory_model','inventory',TRUE);
+    $this->load->helper(array('form', 'url','html'));
 		$session_data = $this->session->userdata('logged_in');  
 		$this->data['menu'] = 'inventory';      
 		$this->data['user'] = $this->inventory->get_profile();
-		$this->data['restaurants'] = $this->inventory->get_restaurant(); 
-	}
+		$this->data['restaurants'] = $this->inventory->get_restaurant();  
+    $this->load->library('picture');   
+    @$this->data['profpic'] = ($this->data['user']->IMAGE=="")?base_url()."assets/img/no-photo.jpg":base_url()."profile/pic/".$this->picture->gettyimg($session_data['id']).".jpg";
+  }
 
 	public function index()
 	{
 		if($this->session->userdata('logged_in'))
 		{
+			if($this->input->post('filter')){
+				$sess_array = array(
+					'def_rest' => $this->input->post('rest_id')
+			   	);
+				$this->session->set_userdata('filtered', $sess_array);
+			}
 			$data['menu'] = 'inventory';         
 			$session_data = $this->session->userdata('logged_in');
-			$data['def_rest'] = $session_data['def_rest'];
+			$session_filt = $this->session->userdata('filtered');
+			$data['def_rest'] = ($session_filt['def_rest'])?$session_filt['def_rest']:$session_data['def_rest'];
 			$data['def_start_date'] = date('d M Y', time() - 30 * 60 * 60 * 24);
 			$data['def_end_date'] = date('d M Y', time());
 			$rest_id = (!($this->input->post('rest_id')))?$data['def_rest']:$this->input->post('rest_id'); 

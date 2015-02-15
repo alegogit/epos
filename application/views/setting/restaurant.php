@@ -459,11 +459,14 @@ $(document).ready(function()
   	});
   
   //inititate datatable
-  var table = $('#setting').DataTable({
+  var table = $('#setting').DataTable({ 
     columnDefs: [
       { targets: 'no-sort', orderable: false }
     ],
-    "order": [[ 1, "asc" ]]
+    "order": [[ 1, "asc" ]],
+    pageLength: 5,
+    "aLengthMenu": [[5, 35, 100, -1], [5, 35, 100, "All"]],
+    "bAutoWidth": false
   });
   
   //check all

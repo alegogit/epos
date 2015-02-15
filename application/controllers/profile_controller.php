@@ -11,7 +11,9 @@ class Profile_controller extends CI_Controller {
 		$this->data['menu'] = 'profile';      
 		$this->data['user'] = $this->profile->get_profile();
 		$this->data['restaurants'] = $this->profile->get_restaurant(); 
-	}
+    $this->load->library('picture');   
+    @$this->data['profpic'] = ($this->data['user']->IMAGE=="")?base_url()."assets/img/no-photo.jpg":base_url()."profile/pic/".$this->picture->gettyimg($session_data['id']).".jpg";
+  }
 
 	public function index()
 	{

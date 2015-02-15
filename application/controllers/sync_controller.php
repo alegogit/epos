@@ -10,8 +10,10 @@ class Sync_controller extends CI_Controller {
 		$session_data = $this->session->userdata('logged_in');  
 		$this->data['menu'] = 'sync';      
 		$this->data['user'] = $this->sync->get_profile();
-		$this->data['restaurants'] = $this->sync->get_restaurant(); 
-	}
+		$this->data['restaurants'] = $this->sync->get_restaurant();   
+    $this->load->library('picture');   
+    @$this->data['profpic'] = ($this->data['user']->IMAGE=="")?base_url()."assets/img/no-photo.jpg":base_url()."profile/pic/".$this->picture->gettyimg($session_data['id']).".jpg";
+  }
 
 	public function index()
 	{

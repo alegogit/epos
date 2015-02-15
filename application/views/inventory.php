@@ -22,7 +22,7 @@
         </div>
         <div class="form-group" style="margin-bottom:0px">
           <div class="input-group">
-            <button type="submit" class="btn btn-success" style="display:inline">Filter</button>   
+            <input type="submit" class="btn btn-success" style="display:inline" name="filter" value="Filter">
           </div>
         </div>
       <?=form_close()?>     
@@ -248,9 +248,11 @@ $(document).ready(function(){
     	columnDefs: [
       		{ targets: 'no-sort', orderable: false }
     	],
-    	"order": [[ 1, "asc" ]]
-  	});
-  
+    	"order": [[ 1, "asc" ]],
+      pageLength: 15,    
+      "aLengthMenu": [[15, 35, 100, -1], [15, 35, 100, "All"]]
+  	}); 
+  	
   	//check all
   	$("#checkall").click(function(){
     	$('.case').prop('checked',this.checked);
@@ -264,7 +266,7 @@ $(document).ready(function(){
   	}); 
   
   	//function to delete selected row
-  	$('.btn-danger').on("click", function(event){
+  	$('.btn-danger').on("click", function(event){  
   		var sel = false;	
   		var ch = $('#inventory').find('tbody input[type=checkbox]');
     	var dt = '';	
@@ -295,10 +297,12 @@ $(document).ready(function(){
             			success: function(result){ 
               				if(result.trim()!='OK'){    
                 				alert(result); 
-              				} else {    
-        						$this.parents('tr').fadeOut(function(){
-        							$this.remove(); //remove row when animation is finished
-        						});     
+              				} else { 
+                        $this.parents('tr').fadeOut(function(){
+                          $this.remove(); //remove row when animation is finished 
+                        });       
+                        var page = window.location.href;
+                        window.location.assign(page);  
               				}   
             			}
           			});   
@@ -322,7 +326,7 @@ $(function(){
         number: true
       }       
     }      
-  });
+  });  
 });
 
 $.validator.setDefaults({

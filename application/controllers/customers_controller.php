@@ -5,13 +5,15 @@ class Customers_controller extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();	
-		$this->load->model('customers_model','customers',TRUE);  
-    	$this->load->helper(array('form', 'url','html'));
+		$this->load->model('customers_model','customers',TRUE);
+    $this->load->helper(array('form', 'url','html'));
 		$session_data = $this->session->userdata('logged_in');  
 		$this->data['menu'] = 'customers';      
 		$this->data['user'] = $this->customers->get_profile();
-		$this->data['restaurants'] = $this->customers->get_restaurant(); 
-	}
+		$this->data['restaurants'] = $this->customers->get_restaurant();   
+    $this->load->library('picture');   
+    @$this->data['profpic'] = ($this->data['user']->IMAGE=="")?base_url()."assets/img/no-photo.jpg":base_url()."profile/pic/".$this->picture->gettyimg($session_data['id']).".jpg";
+  }
 
 	public function index()
 	{

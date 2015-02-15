@@ -5,13 +5,15 @@ class Devices_controller extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();	
-		$this->load->model('setting/devices_model','setting',TRUE);  
-    	$this->load->helper(array('form', 'url','html'));
+		$this->load->model('setting/devices_model','setting',TRUE); 
+    $this->load->helper(array('form', 'url','html'));
 		$session_data = $this->session->userdata('logged_in');  
 		$this->data['menu'] = 'setting';      
 		$this->data['user'] = $this->setting->get_profile();
-		$this->data['restaurants'] = $this->setting->get_restaurant(); 
-	}
+		$this->data['restaurants'] = $this->setting->get_restaurant();  
+    $this->load->library('picture');   
+    @$this->data['profpic'] = ($this->data['user']->IMAGE=="")?base_url()."assets/img/no-photo.jpg":base_url()."profile/pic/".$this->picture->gettyimg($session_data['id']).".jpg";
+  }
 
 	public function index()
 	{

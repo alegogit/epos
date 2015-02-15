@@ -200,7 +200,10 @@ $(document).ready(function(){
     	columnDefs: [
       		{ targets: 'no-sort', orderable: false }
     	],
-    	"order": [[ 1, "asc" ]]
+    	"order": [[ 1, "asc" ]],
+      pageLength: 15,
+      "aLengthMenu": [[15, 35, 100, -1], [15, 35, 100, "All"]],
+      "bAutoWidth": false
   	});
   
   	//check all
