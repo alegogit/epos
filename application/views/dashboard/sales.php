@@ -188,7 +188,7 @@
                     foreach ($dpayment as $row){
                       $chart_legend .= "<tr><td class='col-md-1' style='padding-left:5px;padding-right:5px;'><span class='glyphicon glyphicon-tint' style='color:".$donut_color[$i]."'></span></td>";  
                       $chart_legend .= "<td class='col-md-4' style='padding-left:5px;padding-right:5px;'>".ucwords(strtolower($row->PAYMENT_METHOD))."</td> <td class='col-md-1' style='padding-left:10px;padding-right:5px;'>".$cur."</td>";
-                      $chart_legend .= "<td class='col-md-6' style='padding-left:5px;padding-right:5px;'><span style='float:right;display:inline-block'>".number_format($row->AMOUNT, 0, '', '.')."</span></td></tr>";
+                      $chart_legend .= "<td class='col-md-6' style='padding-left:5px;padding-right:5px;'><span style='float:right;display:inline-block'>".$this->currency->format($row->AMOUNT,$cur)."</span></td></tr>";
                       $i++;  
                     }
                     
@@ -199,7 +199,7 @@
                         <td class='col-md-1' style='padding-left:5px;padding-right:5px;'><b><i class='fa fa-money'></i></b></td> 
                         <td class='col-md-4' style='padding-left:5px;padding-right:5px;'><b>Total</b></td>
                         <td class='col-md-1' style='padding-left:10px;padding-right:5px;'><b>".$cur."</b></td>
-                        <td class='col-md-6' style='padding-left:5px;padding-right:5px;'><b><span style='float:right;display:inline-block'>".number_format($total, 0, '', '.')."</span></b></td>";
+                        <td class='col-md-6' style='padding-left:5px;padding-right:5px;'><b><span style='float:right;display:inline-block'>".$this->currency->format($total,$cur)."</span></b></td>";
                     $chart_legend .= "</tr></table>";
                     if($total!=0){    
                       echo $chart_legend;
@@ -252,7 +252,7 @@
           <div class="rdtitle">Sales Today</div>
           <!--<a href="#" class="pull-right">See all</a>-->
           <span class="list-group-item orgbg noborder pad30">
-            <span class="text270"><?=$cur?> <span id="salesd" value="<?=$sales_today->RES?>"></span></span>
+            <span class="text270"><?=$cur?> <span id="salesd" value="<?=$this->currency->decimal($sales_today->RES,$cur)?>" data-cur="<?=$cur?>"></span></span>
             <br><span class="glyphicon glyphicon-info-sign"></span>&nbsp;<?=round((float)$percent_today->PERCENTAGE * 100 ) . '%'?> From Yesterday
           </span>      
           <div class="rdinfo"><?=$trans_today->RES?> Transactions</div>
@@ -262,7 +262,7 @@
           <div class="rdtitle">Sales This Year</div>
           <!--<a href="#" class="pull-right">See all</a>-->
           <span class="list-group-item teabg noborder pad30">
-            <span class="text270"><?=$cur?> <span id="salesy" value="<?=$sales_this_year->RES?>"></span></span>   
+            <span class="text270"><?=$cur?> <span id="salesy" value="<?=$this->currency->decimal($sales_this_year->RES,$cur)?>" data-cur="<?=$cur?>"></span></span>   
             <br><span class="glyphicon glyphicon-info-sign"></span>&nbsp;<?=round((float)$percent_last_week->PERCENTAGE * 100 ) . '%'?> From Last Week
             <!--<br><span class="glyphicon glyphicon-info-sign"></span>&nbsp;<?=round((float)$percent_this_year->PERCENTAGE * 100 ) . '%'?> From Beginning Of The Year -->
           </span>   
@@ -365,7 +365,7 @@
     tooltipFontSize : 12,
     maintainAspectRatio: false,";
   $chart_script .= ($total!=0)?" 
-    tooltipTemplate: '<%if (label){%><%=label%>: ".$cur." <%}%><%= currencyFormat(value) %>'":"tooltipTemplate: '<%if (label){%><%=label%> <%}%>'";
+    tooltipTemplate: '<%if (label){%><%=label%>: ".$cur." <%}%><%= ".$this->currency->jsformat($cur)." %>'":"tooltipTemplate: '<%if (label){%><%=label%> <%}%>'";
   $chart_script .= "  });"; 
 	$chart_script .= '</script>';                       
   echo $chart_script;
@@ -404,7 +404,7 @@
 	$chart_script .= "window.myLine1 = new Chart(chart3).Line(lineChartData, { ";
 	$chart_script .= "	responsive: true, tooltipFontSize : 12,";
 	$chart_script .= "	legendTemplate: '<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%>eek<%=datasets[i].label%><%}%></li><%}%></ul>', ";
-	$chart_script .= "	tooltipTemplate: '<%if (label){%><%=label%>: ".$cur."<%}%> <%= currencyFormat(value) %>' ";  
+	$chart_script .= "	tooltipTemplate: '<%if (label){%><%=label%>: ".$cur."<%}%> <%= ".$this->currency->jsformat($cur)." %>' ";  
 	$chart_script .= "}); ";
 	$chart_script .= '</script>';
   echo $chart_script;
@@ -437,12 +437,12 @@
 	$chart_script .= "				data : [".$data."]";
 	$chart_script .= "			}";
 	$chart_script .= "		]";
-  $chart_script .= "	};";
+  	$chart_script .= "	};";
 	$chart_script .= "var chart5 = document.getElementById('weekly-line-chart').getContext('2d');";    
-  $chart_script .= "chart5.canvas.height = 175;";
+  	$chart_script .= "chart5.canvas.height = 175;";
 	$chart_script .= "window.myLine2 = new Chart(chart5).Line(lineChartData, { ";
 	$chart_script .= "	responsive: true, tooltipFontSize : 12,";
-	$chart_script .= "	tooltipTemplate: '<%if (label){%><%=label%>: ".$cur." <%}%><%= currencyFormat(value) %>' ";
+	$chart_script .= "	tooltipTemplate: '<%if (label){%><%=label%>: ".$cur." <%}%><%= ".$this->currency->jsformat($cur)." %>' ";
 	$chart_script .= "});  ";
 	$chart_script .= '</script>';
   echo $chart_script;
@@ -499,7 +499,7 @@ $(document).ready(function(){
       animateNumbers("#cust30");
     });
            
-    function animateNumbers(ale) {    
+    function animateNumbers0(ale) {    
         var num = $(ale).attr("value");
         $(ale).countTo({
             from: 0,
@@ -513,10 +513,36 @@ $(document).ready(function(){
         });
     }
            
+    function animateNumbers(ale) {    
+        var num = $(ale).attr("value"); 
+        var cur = $(ale).data("cur");
+        $(ale).countTo({
+            from: 0,
+            to: num,
+            speed: 1000,
+            refreshInterval: 50,
+            onComplete: function(value) {
+				if(cur.toLowerCase() == "RP".toLowerCase()){
+                	$(ale).html(currencyFormat(num));
+				} else {
+					$(ale).html(numberWithCommas(num));
+				}
+                //console.debug(this);
+            }
+        });
+    }
+           
     function currencyFormat(number){
-        return (number + "").replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+        //return (number + "").replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+		return (number + "").replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
     }          
     
+	function numberWithCommas(x) {
+    	var parts = x.toString().split(".");
+    	parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    	return parts.join(".");
+	}
+	
     (function($) {
       $.fn.countTo = function(options) { 
         // merge the default plugin settings with the custom options
