@@ -212,140 +212,125 @@ class Sales_model extends CI_Model {
   
   function dash_monthly_revenue($rest_id)
 	{
-	     $query = $this->db->query("SELECT IFNULL(AMT,0) AS REVENUE, REC_MONTH FROM (
-									    -- This month
-									    SELECT SUM(TOTAL) AMT, DATE_FORMAT(NOW() ,'%Y-%m-01') REC_MONTH FROM ORDERS O
-											WHERE O.ENDED BETWEEN DATE_FORMAT(NOW() ,'%Y-%m-01') AND NOW()
-												AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
-									    ) A UNION ALL
-									    
-									    SELECT IFNULL(AMT,0), REC_MONTH FROM (
-									    -- Last month
-									    SELECT SUM(TOTAL) AMT, (DATE_FORMAT(NOW() ,'%Y-%m-01') - INTERVAL 1 MONTH) REC_MONTH FROM ORDERS O
-											WHERE O.ENDED BETWEEN (DATE_FORMAT(NOW() ,'%Y-%m-01') - INTERVAL 1 MONTH) AND SUBDATE(DATE_FORMAT(NOW() ,'%Y-%m-01'), 1)
-									    		AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
-									    ) B UNION ALL
-									    
-									    SELECT IFNULL(AMT,0), REC_MONTH FROM (
-									    -- 2 months ago 
-									    SELECT SUM(TOTAL) AMT, (DATE_FORMAT(NOW() ,'%Y-%m-01') - INTERVAL 2 MONTH) REC_MONTH FROM ORDERS O
-											WHERE O.ENDED BETWEEN (DATE_FORMAT(NOW() ,'%Y-%m-01') - INTERVAL 2 MONTH) AND SUBDATE((DATE_FORMAT(NOW() ,'%Y-%m-01') - INTERVAL 1 MONTH), 1)
-									    		AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
-									    ) C UNION ALL
-									    
-									    SELECT IFNULL(AMT,0), REC_MONTH FROM (
-									    -- 3 months ago 
-									    SELECT SUM(TOTAL) AMT, (DATE_FORMAT(NOW() ,'%Y-%m-01') - INTERVAL 3 MONTH) REC_MONTH FROM ORDERS O
-											WHERE O.ENDED BETWEEN (DATE_FORMAT(NOW() ,'%Y-%m-01') - INTERVAL 3 MONTH) AND SUBDATE((DATE_FORMAT(NOW() ,'%Y-%m-01') - INTERVAL 2 MONTH), 1)
-									    		AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
-										) D UNION ALL
-									        
-									    SELECT IFNULL(AMT,0), REC_MONTH FROM (
-									    -- 4 months ago 
-									    SELECT SUM(TOTAL) AMT, (DATE_FORMAT(NOW() ,'%Y-%m-01') - INTERVAL 4 MONTH) REC_MONTH FROM ORDERS O
-											WHERE O.ENDED BETWEEN (DATE_FORMAT(NOW() ,'%Y-%m-01') - INTERVAL 4 MONTH) AND SUBDATE((DATE_FORMAT(NOW() ,'%Y-%m-01') - INTERVAL 3 MONTH), 1)
-									    		AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
-									    ) E UNION ALL
-									     
-									    SELECT IFNULL(AMT,0), REC_MONTH FROM (
-									    -- 5 months ago 
-									    SELECT SUM(TOTAL) AMT, (DATE_FORMAT(NOW() ,'%Y-%m-01') - INTERVAL 5 MONTH) REC_MONTH FROM ORDERS O
-											WHERE O.ENDED BETWEEN (DATE_FORMAT(NOW() ,'%Y-%m-01') - INTERVAL 5 MONTH) AND SUBDATE((DATE_FORMAT(NOW() ,'%Y-%m-01') - INTERVAL 4 MONTH), 1)
-									    		AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
-									    ) F 
-          							ORDER BY REC_MONTH;");
+	     $query = $this->db->query('SELECT IFNULL(AMT,0) AS REVENUE, REC_MONTH FROM (
+          -- This month
+          SELECT SUM(PAID_AMOUNT) AMT, DATE_FORMAT(NOW() ,"%Y-%m-01") REC_MONTH FROM ORDERS O
+          WHERE O.ENDED BETWEEN DATE_FORMAT(NOW() ,"%Y-%m-01") AND NOW()
+          AND O.REST_ID = '.$rest_id.' AND O.ACTIVE = 0
+          ) A UNION ALL
+          SELECT IFNULL(AMT,0), REC_MONTH FROM (
+          -- Last month
+          SELECT SUM(PAID_AMOUNT) AMT, (DATE_FORMAT(NOW() ,"%Y-%m-01") - INTERVAL 1 MONTH) REC_MONTH FROM ORDERS O
+          WHERE O.ENDED BETWEEN (DATE_FORMAT(NOW() ,"%Y-%m-01") - INTERVAL 1 MONTH) AND SUBDATE(DATE_FORMAT(NOW() ,"%Y-%m-01"), 1)
+          AND O.REST_ID = '.$rest_id.' AND O.ACTIVE = 0
+          ) B UNION ALL
+          SELECT IFNULL(AMT,0), REC_MONTH FROM (
+          -- 2 months ago
+          SELECT SUM(PAID_AMOUNT) AMT, (DATE_FORMAT(NOW() ,"%Y-%m-01") - INTERVAL 2 MONTH) REC_MONTH FROM ORDERS O
+          WHERE O.ENDED BETWEEN (DATE_FORMAT(NOW() ,"%Y-%m-01") - INTERVAL 2 MONTH) AND SUBDATE((DATE_FORMAT(NOW() ,"%Y-%m-01") - INTERVAL 1 MONTH), 1)
+          AND O.REST_ID = '.$rest_id.' AND O.ACTIVE = 0
+          ) C UNION ALL
+          SELECT IFNULL(AMT,0), REC_MONTH FROM (
+          -- 3 months ago
+          SELECT SUM(PAID_AMOUNT) AMT, (DATE_FORMAT(NOW() ,"%Y-%m-01") - INTERVAL 3 MONTH) REC_MONTH FROM ORDERS O
+          WHERE O.ENDED BETWEEN (DATE_FORMAT(NOW() ,"%Y-%m-01") - INTERVAL 3 MONTH) AND SUBDATE((DATE_FORMAT(NOW() ,"%Y-%m-01") - INTERVAL 2 MONTH), 1)
+          AND O.REST_ID = '.$rest_id.' AND O.ACTIVE = 0
+          ) D UNION ALL
+          SELECT IFNULL(AMT,0), REC_MONTH FROM (
+          -- 4 months ago
+          SELECT SUM(PAID_AMOUNT) AMT, (DATE_FORMAT(NOW() ,"%Y-%m-01") - INTERVAL 4 MONTH) REC_MONTH FROM ORDERS O
+          WHERE O.ENDED BETWEEN (DATE_FORMAT(NOW() ,"%Y-%m-01") - INTERVAL 4 MONTH) AND SUBDATE((DATE_FORMAT(NOW() ,"%Y-%m-01") - INTERVAL 3 MONTH), 1)
+          AND O.REST_ID = '.$rest_id.' AND O.ACTIVE = 0
+          ) E UNION ALL
+          SELECT IFNULL(AMT,0), REC_MONTH FROM (
+          -- 5 months ago
+          SELECT SUM(PAID_AMOUNT) AMT, (DATE_FORMAT(NOW() ,"%Y-%m-01") - INTERVAL 5 MONTH) REC_MONTH FROM ORDERS O
+          WHERE O.ENDED BETWEEN (DATE_FORMAT(NOW() ,"%Y-%m-01") - INTERVAL 5 MONTH) AND SUBDATE((DATE_FORMAT(NOW() ,"%Y-%m-01") - INTERVAL 4 MONTH), 1)
+          AND O.REST_ID = '.$rest_id.' AND O.ACTIVE = 0
+          ) F 
+          ORDER BY REC_MONTH;');
 		    return $query->result();  
 	}
   
   function dash_weekly_revenue($rest_id)
 	{
-	     $query = $this->db->query("SELECT IFNULL(AMT,0) AS REVENUE, REC_WEEK FROM (
-									    -- This Week
-									    SELECT SUM(TOTAL) AMT, DATE_FORMAT(NOW() ,'%Y-%m-01') REC_WEEK FROM ORDERS O
-											WHERE O.ENDED BETWEEN DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d') AND NOW()
-												AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
-									    ) A UNION ALL
-									    
-									    SELECT IFNULL(AMT,0), REC_WEEK FROM (
-									    -- Last week
-									    SELECT SUM(TOTAL) AMT, SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d'),7) REC_WEEK FROM ORDERS O
-											WHERE O.ENDED BETWEEN SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d'),7) AND 
-																	DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d')
-									    		AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
-									    ) B UNION ALL
-									    
-									    SELECT IFNULL(AMT,0), REC_WEEK FROM (
-									    -- 2 Weeks ago 
-									    SELECT SUM(TOTAL) AMT, SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d'),14) REC_WEEK FROM ORDERS O
-											WHERE O.ENDED BETWEEN SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d'),14) AND 
-																SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d'),7)
-									    		AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
-									    ) C UNION ALL
-									    
-									    SELECT IFNULL(AMT,0), REC_WEEK FROM (
-									    -- 3 weeks ago 
-									    SELECT SUM(TOTAL) AMT, SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d'),21) REC_WEEK FROM ORDERS O
-											WHERE O.ENDED BETWEEN SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d'),21) AND 
-																SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d'),14)
-									    		AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
-										) D UNION ALL
-									        
-									    SELECT IFNULL(AMT,0), REC_WEEK FROM (
-									    -- 4 weeks ago 
-									    SELECT SUM(TOTAL) AMT, SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d'),28) REC_WEEK FROM ORDERS O
-											WHERE O.ENDED BETWEEN SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d'),28) AND 
-																SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d'),21)
-									    		AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
-									    ) E UNION ALL
-									     
-									    SELECT IFNULL(AMT,0), REC_WEEK FROM (
-									    -- 5 weeks ago 
-									    SELECT SUM(TOTAL) AMT, SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d'),35) REC_WEEK FROM ORDERS O
-											WHERE O.ENDED BETWEEN SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d'),35) AND 
-																SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d'),28)
-									    		AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
-									    ) F UNION ALL
-										
-									    SELECT IFNULL(AMT,0), REC_WEEK FROM (
-									    -- 6 weeks ago 
-									    SELECT SUM(TOTAL) AMT, SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d'),42) REC_WEEK FROM ORDERS O
-											WHERE O.ENDED BETWEEN SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d'),42) AND 
-																SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d'),35)
-									    		AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
-									    ) G UNION ALL
-									    
-									    SELECT IFNULL(AMT,0), REC_WEEK FROM (
-									    -- 7 Weeks ago 
-									    SELECT SUM(TOTAL) AMT, SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d'),49) REC_WEEK FROM ORDERS O
-											WHERE O.ENDED BETWEEN SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d'),49) AND 
-																SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d'),42)
-									    		AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
-									    ) H UNION ALL
-									    
-									    SELECT IFNULL(AMT,0), REC_WEEK FROM (
-									    -- 8 Weeks ago 
-									    SELECT SUM(TOTAL) AMT, SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d'),56) REC_WEEK FROM ORDERS O
-											WHERE O.ENDED BETWEEN SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d'),56) AND 
-																SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d'),49)
-									    		AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
-									    ) I UNION ALL
-									    
-									    SELECT IFNULL(AMT,0), REC_WEEK FROM (
-									    -- 9 Weeks ago 
-									    SELECT SUM(TOTAL) AMT, SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d'),63) REC_WEEK FROM ORDERS O
-											WHERE O.ENDED BETWEEN SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d'),63) AND 
-																SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d'),56)
-									    		AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
-									    ) J UNION ALL
-									    
-									    SELECT IFNULL(AMT,0), REC_WEEK FROM (
-									    -- 10 Weeks ago 
-									    SELECT SUM(TOTAL) AMT, SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d'),70) REC_WEEK FROM ORDERS O
-											WHERE O.ENDED BETWEEN SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d'),70) AND 
-																SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d'),63)
-									    		AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
-									    ) K
-          							ORDER BY REC_WEEK;");
+	     $query = $this->db->query('SELECT IFNULL(AMT,0) AS REVENUE, REC_WEEK FROM (
+          -- This Week
+          SELECT SUM(PAID_AMOUNT) AMT, DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), "%Y-%m-%d") REC_WEEK FROM ORDERS O
+          WHERE O.ENDED BETWEEN DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), "%Y-%m-%d") AND NOW()
+          AND O.REST_ID = '.$rest_id.' AND O.ACTIVE = 0
+          ) A UNION ALL
+          SELECT IFNULL(AMT,0), REC_WEEK FROM (
+          -- Last week
+          SELECT SUM(PAID_AMOUNT) AMT, SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), "%Y-%m-%d"),7) REC_WEEK FROM ORDERS O
+          WHERE O.ENDED BETWEEN SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), "%Y-%m-%d"),7) AND
+          DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), "%Y-%m-%d")
+          AND O.REST_ID = '.$rest_id.' AND O.ACTIVE = 0
+          ) B UNION ALL
+          SELECT IFNULL(AMT,0), REC_WEEK FROM (
+          -- 2 Weeks ago
+          SELECT SUM(PAID_AMOUNT) AMT, SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), "%Y-%m-%d"),14) REC_WEEK FROM ORDERS O
+          WHERE O.ENDED BETWEEN SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), "%Y-%m-%d"),14) AND
+          SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), "%Y-%m-%d"),7)
+          AND O.REST_ID = '.$rest_id.' AND O.ACTIVE = 0
+          ) C UNION ALL
+          SELECT IFNULL(AMT,0), REC_WEEK FROM (
+          -- 3 weeks ago
+          SELECT SUM(PAID_AMOUNT) AMT, SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), "%Y-%m-%d"),21) REC_WEEK FROM ORDERS O
+          WHERE O.ENDED BETWEEN SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), "%Y-%m-%d"),21) AND
+          SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), "%Y-%m-%d"),14)
+          AND O.REST_ID = '.$rest_id.' AND O.ACTIVE = 0
+          ) D UNION ALL
+          SELECT IFNULL(AMT,0), REC_WEEK FROM (
+          -- 4 weeks ago
+          SELECT SUM(PAID_AMOUNT) AMT, SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), "%Y-%m-%d"),28) REC_WEEK FROM ORDERS O
+          WHERE O.ENDED BETWEEN SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), "%Y-%m-%d"),28) AND
+          SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), "%Y-%m-%d"),21)
+          AND O.REST_ID = '.$rest_id.' AND O.ACTIVE = 0
+          ) E UNION ALL
+          SELECT IFNULL(AMT,0), REC_WEEK FROM (
+          -- 5 weeks ago
+          SELECT SUM(PAID_AMOUNT) AMT, SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), "%Y-%m-%d"),35) REC_WEEK FROM ORDERS O
+          WHERE O.ENDED BETWEEN SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), "%Y-%m-%d"),35) AND
+          SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), "%Y-%m-%d"),28)
+          AND O.REST_ID = '.$rest_id.' AND O.ACTIVE = 0
+          ) F UNION ALL
+          SELECT IFNULL(AMT,0), REC_WEEK FROM (
+          -- 6 weeks ago
+          SELECT SUM(PAID_AMOUNT) AMT, SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), "%Y-%m-%d"),42) REC_WEEK FROM ORDERS O
+          WHERE O.ENDED BETWEEN SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), "%Y-%m-%d"),42) AND
+          SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), "%Y-%m-%d"),35)
+          AND O.REST_ID = '.$rest_id.' AND O.ACTIVE = 0
+          ) G UNION ALL
+          SELECT IFNULL(AMT,0), REC_WEEK FROM (
+          -- 7 Weeks ago
+          SELECT SUM(PAID_AMOUNT) AMT, SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), "%Y-%m-%d"),49) REC_WEEK FROM ORDERS O
+          WHERE O.ENDED BETWEEN SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), "%Y-%m-%d"),49) AND
+          SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), "%Y-%m-%d"),42)
+          AND O.REST_ID = '.$rest_id.' AND O.ACTIVE = 0
+          ) H UNION ALL
+          SELECT IFNULL(AMT,0), REC_WEEK FROM (
+          -- 8 Weeks ago
+          SELECT SUM(PAID_AMOUNT) AMT, SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), "%Y-%m-%d"),56) REC_WEEK FROM ORDERS O
+          WHERE O.ENDED BETWEEN SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), "%Y-%m-%d"),56) AND
+          SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), "%Y-%m-%d"),49)
+          AND O.REST_ID = '.$rest_id.' AND O.ACTIVE = 0
+          ) I UNION ALL
+          SELECT IFNULL(AMT,0), REC_WEEK FROM (
+          -- 9 Weeks ago
+          SELECT SUM(PAID_AMOUNT) AMT, SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), "%Y-%m-%d"),63) REC_WEEK FROM ORDERS O
+          WHERE O.ENDED BETWEEN SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), "%Y-%m-%d"),63) AND
+          SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), "%Y-%m-%d"),56)
+          AND O.REST_ID = '.$rest_id.' AND O.ACTIVE = 0
+          ) J UNION ALL
+          SELECT IFNULL(AMT,0), REC_WEEK FROM (
+          -- 10 Weeks ago
+          SELECT SUM(PAID_AMOUNT) AMT, SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), "%Y-%m-%d"),70) REC_WEEK FROM ORDERS O
+          WHERE O.ENDED BETWEEN SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), "%Y-%m-%d"),70) AND
+          SUBDATE(DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), "%Y-%m-%d"),63)
+          AND O.REST_ID = '.$rest_id.' AND O.ACTIVE = 0
+          ) K
+          ORDER BY REC_WEEK;');
 		    return $query->result();  
 	}
 			

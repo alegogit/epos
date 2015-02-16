@@ -62,7 +62,7 @@ class Inventory_model extends CI_Model {
 										IFNULL((((
 											(SELECT IFNULL(SUM(TOTAL),0) FROM ORDERS WHERE DATE(ENDED) = DATE(SYSDATE()) AND REST_ID = '.$rest_id.' AND ACTIVE =0)
 											/ 
-											(SELECT IFNULL(SUM(TOTAL),0) FROM ORDERS WHERE (DATE(ENDED) = DATE(SYSDATE())) 
+											(SELECT IFNULL(SUM(TOTAL),0) FROM ORDERS WHERE (YEAR(ENDED) = YEAR(SYSDATE())) 
 																					AND (DATE(ENDED) < DATE(SUBDATE(SYSDATE(),1))) 
 																					AND REST_ID = '.$rest_id.' AND ACTIVE =0)
 										) -1 ) *100 ) ,0)
