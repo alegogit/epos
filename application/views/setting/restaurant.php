@@ -45,7 +45,8 @@
 						    <th>Country</th>
 						    <!--<th>Geo Location</th>-->
 						    <th>Currency</th>
-						    <th>Service Charge</th>
+						    <th class="cin">Service Charge</th>
+							<th class="no-sort" style="text-align:left !important;"></th>
 						    <!--<th>Order No. Start</th>-->
 						    <th>Created By</th>
 						    <th>Created Date</th>
@@ -96,18 +97,10 @@
 		                  	<td style="">
 		                    	<a id="CURRENCY__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->CURRENCY_NAME?></a>
 		                  	</td>
-		                  	<td style="">
-								<table style="">
-								<tr>
-									<td align="right" style="text-align:right !important;background-color:<?=($i%2==0)?'#f5f5f5':'none'?>">
-                    					<a id="SERVICE_CHARGE__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->SERVICE_CHARGE?></a>
-									</td>
-									<td align="left" style="text-align:left !important;background-color:<?=($i%2==0)?'#f5f5f5':'none'?>">
-										%
-									</td>
-								</tr>
-								</table>
+		                  	<td style="" class="cin">
+								<a id="SERVICE_CHARGE__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->SERVICE_CHARGE?></a>
 		                  	</td>
+							<td style="text-align:left !important;">%&nbsp;&nbsp;</td>
 		                  	<!--<td style="">
 		                    	<a id="ORDER_NUMBER_START__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->ORDER_NUMBER_START?></a>
 		                  	</td>-->
