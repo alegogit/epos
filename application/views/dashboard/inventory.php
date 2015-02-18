@@ -34,7 +34,8 @@
               <div class="input-group">
                 <div class="input-group-addon"><span class="glyphicon glyphicon-cutlery"></span></div>
                 <select id = "myRestaurant" name="rest_id" title="Restaurant Name" class="form-control" style="display:inline">
-                  <option value = "0">ALL Restaurants</option>
+                  <!--<option value = "0">ALL Restaurants</option>-->
+                  <option value = "0">Select Restaurant</option>
                   <?php foreach($restaurants as $row){ ?>
                   <option value = "<?=$row->REST_ID?>" <?= ($row->REST_ID==$rest_id)?'selected':''?> ><?=$row->NAME?></option>
                   <?php } ?>
