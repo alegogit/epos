@@ -29,7 +29,7 @@
             		</button>
             	<div style="margin-bottom:15px"></div>        
           		<?php } ?> 
-            	<div class="table-responsive">
+            	<div class="table-responsive" style="overflow:scroll;">
 					<table id="setting" class="table table-striped dt-right compact">
 						<thead>
 						<tr class="tablehead text3D">
