@@ -43,7 +43,8 @@ class Inventory_controller extends CI_Controller {
 		    } 
       
 		  	$data['inventory'] = $this->inventory->get_rest_inventory($rest_id);
-		  	$data['metrics'] = $this->inventory->get_metrics();			                   
+		  	$data['metrics'] = $this->inventory->get_metrics();			           
+		  	$data['waste_freq'] = $this->inventory->get_waste_freq_list();			                   
 			
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);

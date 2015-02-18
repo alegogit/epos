@@ -64,6 +64,24 @@ class Inventory_model extends CI_Model {
                       ->get('');
     	return $query->row();
 	} 
+	
+	function get_waste_freq($waste_fr){
+    	$query = $this->db->select('VALUE')
+                      ->from('REF_VALUES')
+                      ->where('LOOKUP_NAME', 'WASTAGE_FREQ')
+                      ->where('CODE', $waste_fr)
+                      ->limit(1)
+                      ->get('');
+    	return $query->row();
+	} 
+	
+	function get_waste_freq_list(){
+    	$query = $this->db->select('CODE,VALUE')
+                      ->from('REF_VALUES')
+                      ->where('LOOKUP_NAME', 'WASTAGE_FREQ')
+                      ->get('');
+    	return $query->result();
+	} 
    
 	function new_inventory($NAME,$QTY,$METRIC,$MINQ,$REST_ID){       
 		$session_data = $this->session->userdata('logged_in');

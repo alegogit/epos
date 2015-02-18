@@ -51,6 +51,9 @@
 						        <th class="cin">QTY</th>
 						        <th>Metric</th>
 						        <th class="cin">Min QTY</th>
+						        <th class="cin">Wastage Percentage</th>
+						        <th></th>
+						        <th>Wastage Frequency</th>
 						        <th data-field="crby" data-sortable="false">Created By</th>
 						        <th data-field="crdt" data-sortable="false">Created Date</th>
 						        <th data-field="upby"  data-sortable="false">Updated By</th>
@@ -74,6 +77,13 @@
                   </td>
                   <td class="cin">
                     <a id="MIN_QUANTITY-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->MIN_QUANTITY?></a>
+                  </td>
+                  <td class="cin">
+                    <a id="WASTAGE_PERCENT-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->WASTAGE_PERCENT?></a>
+                  </td>
+                  <td>%</td>
+                  <td>
+                    <a id="WASTAGE_FREQ-<?=$row->ID?>" class="edit" tabindex="0"><?=$this->inventory->get_waste_freq($row->WASTAGE_FREQ)->VALUE?></a>
                   </td>
                   <td class=""><span id="crby<?=$row->ID?>"><?=$this->inventory->get_username($row->CREATED_BY)->USERNAME?></span></td>
                   <td class=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
@@ -204,6 +214,39 @@
     	$m = 1; 
     	$t = count($metrics);                   
     	foreach($metrics as $rowm){      
+      		$edit_script .= "  {value: '".$rowm->CODE."', text: '".$rowm->VALUE."'}";
+      		$edit_script .= ($m<$t)?", ":"";
+      		$m++;
+    	}                      
+  		$edit_script .= "     ],
+                        		success: function(result){  
+                          			var data = result.split(',');
+                          			$('#upby".$row->ID."').html(data[0]);
+                          			$('#updt".$row->ID."').html(data[1]); 
+                      			} 
+                    		});";		
+  		$edit_script .= "  $('#WASTAGE_PERCENT-".$row->ID."').editable({
+		                        url: updateurl,
+		                        pk: ".$row->ID.", 
+		                        validate: function(v) {
+		                          	if (!v) return 'don\'t leave it blank!';
+                          			if (!isPercent(v)) return 'please fill in Up to 100%!';
+		                        },
+		                        success: function(result){  
+		                          	var data = result.split(',');
+		                          	$('#upby".$row->ID."').html(data[0]);
+		                          	$('#updt".$row->ID."').html(data[1]); 
+		                      } 
+		                    });";
+  		$edit_script .= "  $('#WASTAGE_FREQ-".$row->ID."').editable({    
+                        		type: 'select',  
+                        		url: updateurl,
+                        		pk: ".$row->ID.", 
+                        		value: '".$row->WASTAGE_FREQ."', 
+                        		source: [ ";
+    	$m = 1; 
+    	$t = count($waste_freq);                   
+    	foreach($waste_freq as $rowm){      
       		$edit_script .= "  {value: '".$rowm->CODE."', text: '".$rowm->VALUE."'}";
       		$edit_script .= ($m<$t)?", ":"";
       		$m++;
@@ -347,4 +390,12 @@ $.validator.setDefaults({
     }
 });
   
+jQuery.validator.addMethod("percent", function(value, element) {
+  return this.optional(element) || /^[0-9]\d{0,1}(\.\d{1,3})?%?$|^100$/.test(value);
+}, "Please fill in up to 100 %");
+
+function isPercent(percent) {
+  var regex = /^[0-9]\d{0,1}(\.\d{1,3})?%?$|^100$/;
+  return regex.test(percent);
+}  
 </script>
