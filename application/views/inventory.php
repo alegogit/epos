@@ -85,9 +85,9 @@
                   <td>
                     <a id="WASTAGE_FREQ-<?=$row->ID?>" class="edit" tabindex="0"><?=$this->inventory->get_waste_freq($row->WASTAGE_FREQ)->VALUE?></a>
                   </td>
-                  <td class=""><span id="crby<?=$row->ID?>"><?=$this->inventory->get_username($row->CREATED_BY)->USERNAME?></span></td>
+                  <td class=""><span id="crby<?=$row->ID?>"><?=$this->inventory->get_name($row->CREATED_BY)->NAME?></span></td>
                   <td class=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
-                  <td class=""><span id="upby<?=$row->ID?>"><?=$this->inventory->get_username($row->LAST_UPDATED_BY)->USERNAME?></span></td>
+                  <td class=""><span id="upby<?=$row->ID?>"><?=$this->inventory->get_name($row->LAST_UPDATED_BY)->NAME?></span></td>
                   <td class=""><span id="updt<?=$row->ID?>"><?=$row->LAST_UPDATED_DATE?></span></td>
                 </tr>
                 <?php $i++; } ?>

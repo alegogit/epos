@@ -58,6 +58,7 @@
 						<thead>
 							<tr class="tablehead text3D">
 						        <th class="no-sort"><input type="checkbox" id="checkall" value="Check All"></th>
+						        <th>Name</th>
 						        <th>Type</th>
 						        <th>Manufacturer</th>
 						        <th>Model</th>
@@ -76,6 +77,9 @@
 			                    	<input type="checkbox" class="case" tabindex="-1">
 			                  	</td>
 			                  	<td style="">
+			                    	<a id="NAME-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->NAME?></a>
+			                  	</td>
+			                  	<td style="">
 			                    	<a id="TYPE-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->TYPE?></a>
 			                  	</td>
 			                  	<td style="">
@@ -90,9 +94,9 @@
 			                  	<td style="">
 			                    	<?=$row->LAST_SYNC?>
 			                  	</td>
-			                  	<td style=""><span id="crby<?=$row->ID?>"><?=$this->setting->get_username($row->CREATED_BY)->USERNAME?></span></td>
+			                  	<td style=""><span id="crby<?=$row->ID?>"><?=$this->setting->get_username($row->CREATED_BY)->NAME?></span></td>
 			                  	<td style=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
-			                  	<td style=""><span id="upby<?=$row->ID?>"><?=$this->setting->get_username($row->LAST_UPDATED_BY)->USERNAME?></span></td>
+			                  	<td style=""><span id="upby<?=$row->ID?>"><?=$this->setting->get_username($row->LAST_UPDATED_BY)->NAME?></span></td>
 			                  	<td style=""><span id="updt<?=$row->ID?>"><?=$row->LAST_UPDATED_DATE?></span></td>
 			                </tr>
 			                <?php $i++; } ?>
@@ -120,6 +124,13 @@
         $attributes = array('class' => 'form-inline', 'id' => 'newdev', 'role' => 'form');
         echo form_open('setting/devices',$attributes)
       ?>                    		
+        <div class="form-group" style="margin-bottom:10px">  
+          <label for="Name"></label>
+          <div class="input-group">          
+            <div class="input-group-addon"><span class="fa fa-tablet"></span></div>
+            <input type="text" class="form-control" id="Name" placeholder="Name" name="devices_name" required>
+          </div>
+        </div><br />         		
         <div class="form-group" style="margin-bottom:10px">  
           <label for="Type"></label>
           <div class="input-group">          
@@ -180,6 +191,18 @@
   $edit_script .= "  $.fn.editable.defaults.showbuttons = false;";
   $edit_script .= "  var updateurl = '".base_url()."process/devices?p=update';";
   foreach ($devices as $row){
+  $edit_script .= "  $('#NAME-".$row->ID."').editable({
+                        url: updateurl,
+                        pk: ".$row->ID.", 
+                        validate: function(v) {
+                          if (!v) return 'don\'t leave it blank!';
+                        },
+                        success: function(result){  
+                          var data = result.split(',');
+                          $('#upby".$row->ID."').html(data[0]);
+                          $('#updt".$row->ID."').html(data[1]); 
+                      } 
+                    });";
   $edit_script .= "  $('#TYPE-".$row->ID."').editable({
                         url: updateurl,
                         pk: ".$row->ID.", 

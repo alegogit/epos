@@ -50,6 +50,7 @@ class Sync_model extends CI_Model {
     	$query = $this->db->select('NAME,USERNAME')
                       ->from('USERS')
                       ->where('ID',$id)
+                      ->limit(1)
                       ->get('');
     	return $query->row();
   	}

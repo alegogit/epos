@@ -27,7 +27,7 @@ class Inventoryprocess_model extends CI_Model {
             ); 
 		$this->db->where('ID',$arrin[0]);
     	$query = $this->db->update('INVENTORY',$data);
-    	$output[0] = $this->process->get_username($this->process->get_inventory($arrin[0])->LAST_UPDATED_BY);
+    	$output[0] = $this->process->get_name($this->process->get_inventory($arrin[0])->LAST_UPDATED_BY);
     	$output[1] = $this->process->get_inventory($arrin[0])->LAST_UPDATED_DATE;
     	$outputs = implode(",",$output);   
     	return $outputs;
@@ -80,8 +80,18 @@ class Inventoryprocess_model extends CI_Model {
   	function get_username($id){
     	$query = $this->db->select('USERNAME')
                       ->from('USERS')
-                      ->where('ID',$id)
+                      ->where('ID',$id) 
+                      ->limit(1)
                       ->get('');
     	return $query->row()->USERNAME;
+  	}
+  	
+  	function get_name($id){
+    	$query = $this->db->select('NAME')
+                      ->from('USERS')
+                      ->where('ID',$id)
+                      ->limit(1)
+                      ->get('');
+    	return $query->row()->NAME;
   	}
 }

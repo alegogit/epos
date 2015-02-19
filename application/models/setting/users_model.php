@@ -33,11 +33,12 @@ class Users_model extends CI_Model {
   	}
     
 	function get_username($id){
-    	$query = $this->db->select('USERNAME')
+    $query = $this->db->select('NAME,USERNAME')
                       ->from('USERS')
                       ->where('ID',$id)
+                      ->limit(1)
                       ->get('');
-    	return $query->row();
+    return $query->row();
   	}
   
 	function get_restaurant_name($id){

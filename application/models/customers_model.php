@@ -29,6 +29,16 @@ class Customers_model extends CI_Model {
     $query = $this->db->select('USERNAME')
                       ->from('USERS')
                       ->where('ID',$id)
+                      ->limit(1)
+                      ->get('');
+    return $query->row();
+  }
+  
+	function get_name($id){
+    $query = $this->db->select('NAME')
+                      ->from('USERS')
+                      ->where('ID',$id)
+                      ->limit(1)
                       ->get('');
     return $query->row();
   }
