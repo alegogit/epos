@@ -78,6 +78,7 @@ $route['reports/cashflow'] = "reports/cashflow_controller";
 $route['extracts'] = "extracts/ordersdata_controller";
 
 $route['sync'] = "sync_controller";
+$route['sync/exec'] = "sync_controller/exec";
                                                           
 $route['process/restaurant'] = "process/restaurantsetting_controller";   
 $route['process/category'] = "process/categorysetting_controller";

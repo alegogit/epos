@@ -60,6 +60,37 @@ class Sync_model extends CI_Model {
                       ->where('ID',$id)
                       ->get('');
     	return $query->row();
-  	}    
-    
+  	}  
+  
+  function send_notification($registatoin_ids, $message) {
+    $config = $this->config->config;
+    $url = $config['notif_url'];       
+
+        $fields = array(
+            'registration_ids' => $registatoin_ids,
+            'data' => array("message" => json_encode($message)),
+        );
+
+        $headers = array(
+            'Authorization: key=' . $config['google_api_key'],
+            'Content-Type: application/json'
+        );
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+
+        $result = curl_exec($ch);
+        if ($result === FALSE) {
+            die('Curl failed: ' . curl_error($ch));
+        }
+
+        curl_close($ch);
+        return $result;
+    }
 }

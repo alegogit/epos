@@ -41,14 +41,12 @@ class Sync_controller extends CI_Controller {
 		
 	}
 	
-	public function profile()
-	{
-		$data['profile'] = $this->sync->get_profile();
-		
-		$this->load->view('shared/header',$this->data);
-		$this->load->view('shared/left_menu');
-		$this->load->view('contents/profile', $data);
-		$this->load->view('shared/footer');
+	public function exec() {
+    $registatoin_ids = array("ABC");
+    $message = array(
+                  "sync" => "1"
+                );
+		echo $this->sync->send_notification($registatoin_ids, $message);
 	}
 	
 	public function logOn()

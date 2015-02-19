@@ -73,64 +73,44 @@
     <hr style="margin-bottom:10px;margin-top:10px" />
 	
 	<div class="row" style="padding-left: 15px">
-		<a class="btn btn-lg btn-success" href=""><i class="fa fa-refresh"></i> Sync Now</a>
+		<a id="syncer" class="btn btn-lg btn-success" href="#syncer"><i class="fa fa-refresh"></i> Sync Now</a>
 	</div>
-	                                
-    <hr style="margin-bottom:10px;margin-top:10px" />
+	
+	<div id="gcmresp" class="alert alert-info alert-dismissable" style="margin-top:10px;display:none;"> 
+    <a class="panel-close close" data-dismiss="alert">x</a>
+    <span id="syncout"></span>
+	</div>
+  
+  <hr style="margin-bottom:10px;margin-top:10px" />
   
 </div><!-- /.container-fluid -->
 </div><!-- /#page-content-wrapper -->
 
 <div id="baseurl" data-url="<?=base_url()?>"></div>
-<?php  
-  	//editable script
-  	$i = 0;
-  	$edit_script = "<script>"; 
-  	$edit_script .= "$(document).ready(function(){";
-  	$edit_script .= "  $.fn.editable.defaults.mode = 'inline';";
-  	$edit_script .= "  $.fn.editable.defaults.showbuttons = false;";
-  	$edit_script .= "  var updateurl = '".base_url()."process/sync?p=update';";
-  	foreach ($synchist as $row){
-  		$edit_script .= "  $('#NAME-".$row->ID."').editable({
-		                        url: updateurl,
-		                        pk: ".$row->ID.", 
-		                        validate: function(v) {
-		                          if (!v) return 'don\'t leave it blank!';
-		                        },
-		                        success: function(result){  
-		                          var data = result.split(',');
-		                          $('#upby".$row->ID."').html(data[0]);
-		                          $('#updt".$row->ID."').html(data[1]); 
-		                      } 
-		                    });";						
-  		$edit_script .= "  $('#LAST_SYNC-".$row->ID."').editable({
-	                        url: updateurl,
-	                        pk: ".$row->ID.", 
-	                        validate: function(v) {
-	                          	if (!v) return 'don\'t leave it blank!';
-                          		if (isNaN(v)) return 'please fill in a number format!';
-	                        },
-	                        success: function(result){  
-	                          	var data = result.split(',');
-	                          	$('#upby".$row->ID."').html(data[0]);
-	                          	$('#updt".$row->ID."').html(data[1]); 
-	                      } 
-	                    });";
-  	}
-  	$edit_script .= "}); ";
-	$edit_script .= '</script>';
-  	echo $edit_script;
-?>
 <script>   
 $(document).ready(function(){     
 	var baseurl = $("#baseurl").data('url');
   
-  	//make editable on focus  
-  	$('.edit').focus(function(e) {
-    	e.stopPropagation();
-    	$(this).editable('toggle');
-  	});
-  
+  //sync
+  $("#syncer").click(function(){
+    $.ajax({
+      type: "POST",
+      url: baseurl+"sync/exec",
+      cache: false,
+      success: function(result){
+        $("#gcmresp").show(); 
+        if(result.trim()!=''){    
+          $("#syncout").html(startTyping(result,50, "syncout")); 
+        } else {    
+          $("#syncout").html('eek');
+        }   
+      }
+    });   
+  });
+  	
+  //typer
+  //startTyping(text, 50, "syncout");
+  	
   	//inititate datatable
   	var table = $('#sync').DataTable({
     	columnDefs: [
@@ -196,39 +176,41 @@ $(document).ready(function(){
   		}
   		return false;
   	}); 
-});                                           
-  
-  
-$(function(){
-  //pass validation
-  $("#newinv").validate({ 
-    rules: {
-      qty: { 
-        number: true 
-      },      
-      minq: {       
-        number: true
-      }       
-    }      
-  });
-});
+});      
 
-$.validator.setDefaults({
-    highlight: function(element) {
-        $(element).closest('.form-group').addClass('has-error');
-    },
-    unhighlight: function(element) {
-        $(element).closest('.form-group').removeClass('has-error').addClass('has-success');
-    },
-    errorElement: 'span',
-    errorClass: 'help-block',
-    errorPlacement: function(error, element) {
-        if(element.parent('.input-group').length) {
-            error.insertAfter(element.parent());
-        } else {
-            error.insertAfter(element);
-        }
+
+function type()
+{
+  if (document.getElementById)
+  {
+    var dest=document.getElementById(destination);
+    if (dest)
+    {
+      dest.innerHTML=text.substr(0, currentChar);
+      if (currentChar<text.length){  
+        currentChar++
+      } 
+      if (currentChar>text.length)
+      {
+        currentChar=1;
+        setTimeout("type()", 5000);
+      }
+      else
+      {
+        setTimeout("type()", delay);
+      }
     }
-});
-  
-</script>
+  }
+}
+
+function startTyping(textParam, delayParam, destinationParam)
+{
+  text=textParam;
+  delay=delayParam;
+  currentChar=1;
+  destination=destinationParam;
+  type();
+}
+                                     
+
+</script> 
