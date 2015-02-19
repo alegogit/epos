@@ -51,7 +51,7 @@ class Category_model extends CI_Model {
 	function new_category($NAME,$REST_ID){       
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id'];
-    $query = $this->db->query('INSERT IGNORE INTO CATEGORY 
+    $query = $this->db->query('INSERT INTO CATEGORY 
       (NAME,REST_ID,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
       VALUES 
       ("'.$NAME.'",'.$REST_ID.','.$id.',NOW(),'.$id.',NOW());');

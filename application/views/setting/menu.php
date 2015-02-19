@@ -230,7 +230,7 @@
 		$k = 1;
 		$q = count($categories);
 		foreach($categories as $rowc){
-			$edit_script .= "  {value: '".$rowc->ID."', text: '".$rowc->NAME."'}";
+			$edit_script .= "  {value: '".$rowc->ID."', text: '".addslashes($rowc->NAME)."'}";
 		    $edit_script .= ($k<$q)?", ":"";
 		    $k++;
 		}
@@ -250,7 +250,7 @@
 		$i = 1;
 		$n = count($printer);
 		foreach($printer as $rowp){
-		    $edit_script .= "  {value: '".$rowp->ID."', text: '".$rowp->NAME."'}";
+		    $edit_script .= "  {value: '".$rowp->ID."', text: '".addslashes($rowp->NAME)."'}";
 		    $edit_script .= ($i<$n)?", ":"";
 		    $i++;
 		}
