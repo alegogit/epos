@@ -42,8 +42,8 @@ class Sync_controller extends CI_Controller {
 	}
 	
 	public function exec() {
-    $registatoin_ids = array("ABC");
-    $message = array(
+    	$registatoin_ids = array("APA91bFV52QJffsTCVZJcDqP923hiwh_jBkt-p8epifAhTHfk7bzERngujrlhdKEPcMjdoJZEsXQoELSAKMhqGSyz2IISq--h_NxMmiPrdlfRiu6Rw_yvWFsnA-ss-8oZ97G-qj20jPp0FrOC5UNzs3zhpSNZuA1bg","APA91bFV52QJffsTCVZJcDqP923hiwh_jBkt-p8epifAhTHfk7bzERngujrlhdKEPcMjdoJZEsXQoELSAKMhqGSyz2IISq--h_NxMmiPrdlfRiu6Rw_yvWFsnA-ss-8oZ97G-qj20jPp0FrOC5UNzs3zhpSNZuA1bg");
+    	$message = array(
                   "sync" => "1"
                 );
 		echo $this->sync->send_notification($registatoin_ids, $message);

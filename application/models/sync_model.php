@@ -69,7 +69,7 @@ class Sync_model extends CI_Model {
 
         $fields = array(
             'registration_ids' => $registatoin_ids,
-            'data' => array("message" => json_encode($message)),
+            'data' => array("message" => array($message)),
         );
 
         $headers = array(
@@ -92,6 +92,6 @@ class Sync_model extends CI_Model {
         }
 
         curl_close($ch);
-        return $result;
+        return $result.'<br>'.json_encode($fields);
     }
 }
