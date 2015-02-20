@@ -161,7 +161,7 @@ $(function() {
             <li class="dropdown">
               <a href="#" style="padding:5px 15px;" class="dropdown-toggle" data-toggle="dropdown">
                 <img class="img-circle img-thumbnail" style="width:40px;padding:1px !important;" src="<?=$profpic?>" />
-                <span style="padding-left:6px;padding-right:6px"><?php echo $user->USERNAME; ?></span><span class="caret"></span>
+                <span style="padding-left:6px;padding-right:6px"><?php echo $user->NAME; ?></span><span class="caret"></span>
               </a>
               <ul class="dropdown-menu" role="menu" style="min-width:100% !important;">
                 <li><a href="<?php echo site_url(); ?>profile"><span style="margin-right:10px;" class="glyphicon glyphicon-user"></span>My Profile</a></li>
