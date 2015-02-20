@@ -94,4 +94,20 @@ class Sync_model extends CI_Model {
         curl_close($ch);
         return $result.'<br>'.json_encode($fields);
     }
+	
+	function get_updated_records($table,$last_sync){
+    	$query = $this->db->select('ID')
+	                      ->from($table)
+	                      ->where('LAST_UPDATED_DATE > "'.$last_sync.'"')
+	                      ->get('');
+    	//return $query->row()->ID;
+    	return $query->result();
+	}
+	
+	function get_last_sync(){
+    	$query = $this->db->get('LAST_SYNC')
+                      ->from('DEVICES')
+                      ->get('');
+    	return $query->result();
+	}
 }

@@ -6,13 +6,13 @@ class Sync_controller extends CI_Controller {
 	{
 		parent::__construct();	
 		$this->load->model('sync_model','sync',TRUE);  
-    $this->load->helper(array('form', 'url','html'));
+    	$this->load->helper(array('form', 'url','html'));
 		$session_data = $this->session->userdata('logged_in');  
 		$this->data['menu'] = 'sync';      
 		$this->data['user'] = $this->sync->get_profile();
 		$this->data['restaurants'] = $this->sync->get_restaurant();   
-    $this->load->library('picture');   
-    @$this->data['profpic'] = ($this->data['user']->IMAGE=="")?base_url()."assets/img/no-photo.jpg":base_url()."profile/pic/".$this->picture->gettyimg($session_data['id']).".jpg";
+    	$this->load->library('picture');   
+    	@$this->data['profpic'] = ($this->data['user']->IMAGE=="")?base_url()."assets/img/no-photo.jpg":base_url()."profile/pic/".$this->picture->gettyimg($session_data['id']).".jpg";
   }
 
 	public function index()
@@ -41,12 +41,53 @@ class Sync_controller extends CI_Controller {
 		
 	}
 	
-	public function exec() {
-    	$registatoin_ids = array("APA91bFV52QJffsTCVZJcDqP923hiwh_jBkt-p8epifAhTHfk7bzERngujrlhdKEPcMjdoJZEsXQoELSAKMhqGSyz2IISq--h_NxMmiPrdlfRiu6Rw_yvWFsnA-ss-8oZ97G-qj20jPp0FrOC5UNzs3zhpSNZuA1bg","APA91bFV52QJffsTCVZJcDqP923hiwh_jBkt-p8epifAhTHfk7bzERngujrlhdKEPcMjdoJZEsXQoELSAKMhqGSyz2IISq--h_NxMmiPrdlfRiu6Rw_yvWFsnA-ss-8oZ97G-qj20jPp0FrOC5UNzs3zhpSNZuA1bg");
+	public function exec() { 
+		$restid = $this->input->post('restid');
+		$synchist = $this->sync->get_sync_history($restid);
+		foreach ($synchist as $row){
+			$MENU = $this->sync->get_updated_records('MENU',$row->LAST_SYNC);
+			$CATEGORY = $this->sync->get_updated_records('CATEGORY',$row->LAST_SYNC);
+			$PRINTER = $this->sync->get_updated_records('PRINTER',$row->LAST_SYNC);
+			$USERS = $this->sync->get_updated_records('USERS',$row->LAST_SYNC);
+			$TABLES = $this->sync->get_updated_records('TABLES',$row->LAST_SYNC);
+			$RESTAURANTS = $this->sync->get_updated_records('RESTAURANTS',$row->LAST_SYNC);
+			$REF_VALUES = $this->sync->get_updated_records('REF_VALUES',$row->LAST_SYNC);
+		}
+		$upd = array('MENU' => array(),'CATEGORY' => array(),'PRINTER' => array(),'USER' => array(),'TABLES' => array(),'RESTAURANTS' => array(),'REF_VALUES' => array());
+		foreach($MENU as $mn){
+			$upd['MENU'] = $mn->ID;
+		} 
+		foreach($CATEGORY as $ct){
+			$upd['CATEGORY'] = $ct->ID;
+		} 
+		foreach($PRINTER as $pr){
+			$upd['PRINTER'] = $pr->ID;
+		} 
+		foreach($USERS as $us){
+			$upd['USERS'] = $us->ID;
+		} 
+		foreach($TABLES as $tb){
+			$upd['TABLES'] = $tb->ID;
+		} 
+		foreach($RESTAURANTS as $rs){
+			$upd['RESTAURANTS'] = $rs->ID;
+		} 
+		foreach($REF_VALUES as $rv){
+			$upd['REF_VALUES'] = $rv->ID;
+		} 
+    	$registatoin_ids = array("APA91bFV52QJffsTCVZJcDqP923hiwh_jBkt-p8epifAhTHfk7bzERngujrlhdKEPcMjdoJZEsXQoELSAKMhqGSyz2IISq--h_NxMmiPrdlfRiu6Rw_yvWFsnA-ss-8oZ97G-qj20jPp0FrOC5UNzs3zhpSNZuA1bg");
     	$message = array(
-                  "sync" => "1"
+                  "sync" => "1",
+				  "MENU" => array($upd['MENU']),
+				  "CATEGORY" => array($upd['CATEGORY']),
+				  "PRINTER" => array($upd['PRINTER']),
+				  "USERS" => array($upd['USERS']),
+				  "TABLES" => array($upd['TABLES']),
+				  "RESTAURANTS" => array($upd['RESTAURANTS']),
+				  "REF_VALUES" => array($upd['REF_VALUES'])
                 );
-		echo $this->sync->send_notification($registatoin_ids, $message);
+		//echo $this->sync->send_notification($registatoin_ids, $message); 
+		var_dump($upd);
 	}
 	
 	public function logOn()

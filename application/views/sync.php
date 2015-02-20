@@ -87,15 +87,19 @@
 </div><!-- /#page-content-wrapper -->
 
 <div id="baseurl" data-url="<?=base_url()?>"></div>
+<div id="restid" data-id="<?=$rest_id?>"></div>
 <script>   
 $(document).ready(function(){     
-	var baseurl = $("#baseurl").data('url');
+	var baseurl = $("#baseurl").data('url'); 
+	var restid = $("#restid").data('id');
   
   //sync
   $("#syncer").click(function(){
+    var dataP = "restid="+restid;
     $.ajax({
       type: "POST",
       url: baseurl+"sync/exec",
+	  data: dataP,
       cache: false,
       success: function(result){
         $("#gcmresp").show(); 
