@@ -209,12 +209,12 @@
                         		type: 'select',  
                         		url: updateurl,
                         		pk: ".$row->ID.", 
-                        		value: '".$row->METRIC."', 
+                        		value: '".addslashes($row->METRIC)."', 
                         		source: [ ";
     	$m = 1; 
     	$t = count($metrics);                   
     	foreach($metrics as $rowm){      
-      		$edit_script .= "  {value: '".$rowm->CODE."', text: '".$rowm->VALUE."'}";
+      		$edit_script .= "  {value: '".addslashes($rowm->CODE)."', text: '".addslashes($rowm->VALUE)."'}";
       		$edit_script .= ($m<$t)?", ":"";
       		$m++;
     	}                      
@@ -242,12 +242,12 @@
                         		type: 'select',  
                         		url: updateurl,
                         		pk: ".$row->ID.", 
-                        		value: '".$row->WASTAGE_FREQ."', 
+                        		value: '".addslashes($row->WASTAGE_FREQ)."', 
                         		source: [ ";
     	$m = 1; 
     	$t = count($waste_freq);                   
     	foreach($waste_freq as $rowm){      
-      		$edit_script .= "  {value: '".$rowm->CODE."', text: '".$rowm->VALUE."'}";
+      		$edit_script .= "  {value: '".addslashes($rowm->CODE)."', text: '".addslashes($rowm->VALUE)."'}";
       		$edit_script .= ($m<$t)?", ":"";
       		$m++;
     	}                      

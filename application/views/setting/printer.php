@@ -252,12 +252,12 @@
 							});";
 	  	$edit_script .= "  $('#PRINTER_CONNECTION-".$row->ID."').editable({
 		                        type: 'select',  
-		                        value: '".$row->PRINTER_CONNECTION."', 
+		                        value: '".addslashes($row->PRINTER_CONNECTION)."', 
 		                        source: [ ";
 	    $k = 1;
 	    $q = count($connectivity);
 	    foreach($connectivity as $rowc){
-	      	$edit_script .= "  {value: '".$rowc->CODE."', text: '".$rowc->VALUE."'}";
+	      	$edit_script .= "  {value: '".addslashes($rowc->CODE)."', text: '".addslashes($rowc->VALUE)."'}";
 	      	$edit_script .= ($k<$q)?", ":"";
 	      	$k++;
 	    }

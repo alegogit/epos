@@ -347,7 +347,7 @@
 	    $r = 1; 
 	    $t = count($roles);                   
 	    foreach($roles as $rowr){      
-	      	$edit_script .= "  {value: ".$rowr->ID.", text: '".$rowr->NAME."'}";
+	      	$edit_script .= "  {value: ".$rowr->ID.", text: '".addslashes($rowr->NAME)."'}";
 	      	$edit_script .= ($r<$t)?", ":"";
 	      	$r++;
 	    }                      
@@ -368,7 +368,7 @@
 		$a = 1;
 		$b = count($assigned);
 		foreach($assigned as $rowa){   
-			$edit_script .= "  {value: ".$rowa->REST_ID.", text: '".$rowa->NAME."'}";
+			$edit_script .= "  {value: ".$rowa->REST_ID.", text: '".addslashes($rowa->NAME)."'}";
       		$edit_script .= ($a<$b)?", ":"";
       		$a++;
     	}

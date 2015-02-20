@@ -406,12 +406,12 @@
                         type: 'select',  
                         url: updateurl,
                         pk: ".$row->ID.", 
-                        value: '".$row->CURRENCY."', 
+                        value: '".addslashes($row->CURRENCY)."', 
                         source: [ ";
     $r = 1; 
     $t = count($currencies);                   
     foreach($currencies as $rowc){      
-      $edit_script .= "  {value: '".$rowc->CODE."', text: '".$rowc->VALUE."'}";
+      $edit_script .= "  {value: '".addslashes($rowc->CODE)."', text: '".addslashes($rowc->VALUE)."'}";
       $edit_script .= ($r<$t)?", ":"";
       $t++;
     }                      

@@ -181,7 +181,7 @@
 		$k = 1;
 		$q = count($menus);
 		foreach($menus as $rowc){
-			$edit_script .= "  {value: ".$rowc->ID.", text: '".$rowc->NAME."'}";
+			$edit_script .= "  {value: ".$rowc->ID.", text: '".addslashes($rowc->NAME)."'}";
 		    $edit_script .= ($k<$q)?", ":"";
 		    $k++;
 		}
@@ -201,7 +201,7 @@
 		$i = 1;
 		$j = count($inventories);
 		foreach($inventories as $rowi){
-			$edit_script .= "  {value: ".$rowi->ID.", text: '".$rowi->NAME."'}";
+			$edit_script .= "  {value: ".$rowi->ID.", text: '".addslashes($rowi->NAME)."'}";
 		    $edit_script .= ($i<$j)?", ":"";
 		    $i++;
 		}
