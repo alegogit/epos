@@ -92,7 +92,7 @@ class Sync_model extends CI_Model {
         }
 
         curl_close($ch);
-        return $result.'<br>'.json_encode($fields);
+        return 'sent: '.json_encode($fields).'<br>receive: '.$result;
     }
 	
 	function get_updated_records($table,$last_sync){

@@ -53,41 +53,47 @@ class Sync_controller extends CI_Controller {
 			$RESTAURANTS = $this->sync->get_updated_records('RESTAURANTS',$row->LAST_SYNC);
 			$REF_VALUES = $this->sync->get_updated_records('REF_VALUES',$row->LAST_SYNC);
 		}
-		$upd = array('MENU' => array(),'CATEGORY' => array(),'PRINTER' => array(),'USER' => array(),'TABLES' => array(),'RESTAURANTS' => array(),'REF_VALUES' => array());
+		$upd = array('MENU' => array(),'CATEGORY' => array(),'PRINTER' => array(),'USERS' => array(),'TABLES' => array(),'RESTAURANTS' => array(),'REF_VALUES' => array());
 		foreach($MENU as $mn){
-			$upd['MENU'] = $mn->ID;
+			array_push($upd['MENU'], $mn->ID);
 		} 
 		foreach($CATEGORY as $ct){
-			$upd['CATEGORY'] = $ct->ID;
+			array_push($upd['CATEGORY'], $ct->ID);
 		} 
 		foreach($PRINTER as $pr){
-			$upd['PRINTER'] = $pr->ID;
+			array_push($upd['PRINTER'], $pr->ID);
 		} 
 		foreach($USERS as $us){
-			$upd['USERS'] = $us->ID;
+			array_push($upd['USERS'], $us->ID);
 		} 
 		foreach($TABLES as $tb){
-			$upd['TABLES'] = $tb->ID;
+			array_push($upd['TABLES'], $tb->ID);
 		} 
 		foreach($RESTAURANTS as $rs){
-			$upd['RESTAURANTS'] = $rs->ID;
+			array_push($upd['RESTAURANTS'], $rs->ID);
 		} 
 		foreach($REF_VALUES as $rv){
-			$upd['REF_VALUES'] = $rv->ID;
-		} 
-    	$registatoin_ids = array("APA91bFV52QJffsTCVZJcDqP923hiwh_jBkt-p8epifAhTHfk7bzERngujrlhdKEPcMjdoJZEsXQoELSAKMhqGSyz2IISq--h_NxMmiPrdlfRiu6Rw_yvWFsnA-ss-8oZ97G-qj20jPp0FrOC5UNzs3zhpSNZuA1bg");
-    	$message = array(
-                  "sync" => "1",
-				  "MENU" => array($upd['MENU']),
-				  "CATEGORY" => array($upd['CATEGORY']),
-				  "PRINTER" => array($upd['PRINTER']),
-				  "USERS" => array($upd['USERS']),
-				  "TABLES" => array($upd['TABLES']),
-				  "RESTAURANTS" => array($upd['RESTAURANTS']),
-				  "REF_VALUES" => array($upd['REF_VALUES'])
+			array_push($upd['REF_VALUES'], $rv->ID);
+		}
+    $registatoin_ids = array("APA91bFV52QJffsTCVZJcDqP923hiwh_jBkt-p8epifAhTHfk7bzERngujrlhdKEPcMjdoJZEsXQoELSAKMhqGSyz2IISq--h_NxMmiPrdlfRiu6Rw_yvWFsnA-ss-8oZ97G-qj20jPp0FrOC5UNzs3zhpSNZuA1bg");
+    $message = array(
+				  "MENU" => $upd['MENU'],
+				  "CATEGORY" => $upd['CATEGORY'],
+				  "PRINTER" => $upd['PRINTER'],
+				  "USERS" => $upd['USERS'],
+				  "TABLES" => $upd['TABLES'],
+				  "RESTAURANTS" => $upd['RESTAURANTS'],
+				  "REF_VALUES" => $upd['REF_VALUES']
                 );
-		//echo $this->sync->send_notification($registatoin_ids, $message); 
-		var_dump($upd);
+		echo $this->sync->send_notification($registatoin_ids, $message); 
+		//var_dump($message); 
+    /*   
+        $fields = array(
+            'registration_ids' => $registatoin_ids,
+            'data' => array("message" => array($message)),
+        );
+        echo json_encode($fields);
+    */
 	}
 	
 	public function logOn()
