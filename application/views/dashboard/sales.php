@@ -147,8 +147,9 @@
                       foreach ($dbestsells as $row){
                         $chart_legend .= "<tr>
                           <td><b>".($i+1)."</b>&nbsp;</td>";  
-                        $chart_legend .= "<td><b>".ucwords(strtolower($row->ITEMS))."</b>&nbsp;</td><td style='text-align:right'><span style='padding-left:10px;'>&nbsp;</span>".$cur."&nbsp;</td>";
-                        $chart_legend .= "<td style='text-align:right'><b>".number_format($row->AMOUNT, 0, '', '.')."</b>&nbsp;</td>";
+                        $chart_legend .= "<td><b>".ucwords(strtolower($row->ITEMS))."</b>&nbsp;</td>
+                                          <td class='cin'><span style='padding-left:10px;'>&nbsp;</span>".$cur."&nbsp;</td>";
+                        $chart_legend .= "<td class='cin cur'><b>".$row->AMOUNT."</b>&nbsp;</td>";
                         $chart_legend .= "<td style='text-align:right'><span style='padding-left:10px;'>&nbsp;</span>".$row->QTY."</td>
                           </tr>
                           <tr><td colspan='5'><hr style='margin-top:5px;margin-bottom:5px'></td></tr>";
@@ -188,8 +189,9 @@
                     $chart_legend .= "<table>";
                     foreach ($dpayment as $row){
                       $chart_legend .= "<tr><td class='col-md-1' style='padding-left:5px;padding-right:5px;'><span class='glyphicon glyphicon-tint' style='color:".$donut_color[$i]."'></span></td>";  
-                      $chart_legend .= "<td class='col-md-4' style='padding-left:5px;padding-right:5px;'>".ucwords(strtolower($row->PAYMENT_METHOD))."</td> <td class='col-md-1' style='padding-left:10px;padding-right:5px;'>".$cur."</td>";
-                      $chart_legend .= "<td class='col-md-6' style='padding-left:5px;padding-right:5px;'><span style='float:right;display:inline-block'>".$this->currency->format($row->AMOUNT,$cur)."</span></td></tr>";
+                      $chart_legend .= "<td class='col-md-4' style='padding-left:5px;padding-right:5px;'>".ucwords(strtolower($row->PAYMENT_METHOD))."</td> 
+                                        <td class='col-md-1' style='padding-left:10px;padding-right:5px;'>".$cur."</td>";
+                      $chart_legend .= "<td class='col-md-6 cin cur' style='padding-left:5px;padding-right:5px;'><span style='float:right;display:inline-block'>".$row->AMOUNT."</span></td></tr>";
                       $i++;  
                     }
                     
@@ -200,7 +202,7 @@
                         <td class='col-md-1' style='padding-left:5px;padding-right:5px;'><b><i class='fa fa-money'></i></b></td> 
                         <td class='col-md-4' style='padding-left:5px;padding-right:5px;'><b>Total</b></td>
                         <td class='col-md-1' style='padding-left:10px;padding-right:5px;'><b>".$cur."</b></td>
-                        <td class='col-md-6' style='padding-left:5px;padding-right:5px;'><b><span style='float:right;display:inline-block'>".$this->currency->format($total,$cur)."</span></b></td>";
+                        <td class='col-md-6 cur cin' style='padding-left:5px;padding-right:5px;font-weight:bold !important;'><b><span style='float:right;display:inline-block;'>".$total."</span></b></td>";
                     $chart_legend .= "</tr></table>";
                     if($total!=0){    
                       echo $chart_legend;
@@ -287,7 +289,8 @@
       
   </div><!-- /.container-fluid -->
   
-</div><!-- /#page-content-wrapper -->
+</div><!-- /#page-content-wrapper -->     
+<div id="cur" data-val="<?=$cur?>"></div>
 
 <?php 
   //donut chart script
@@ -523,20 +526,31 @@ $(document).ready(function(){
             speed: 1000,
             refreshInterval: 50,
             onComplete: function(value) {
-				if(cur.toLowerCase() == "RP".toLowerCase()){
-                	$(ale).html(currencyFormat(num));
-				} else {
-					$(ale).html(numberWithCommas(num));
-				}
+      				if(cur.toLowerCase() == "RP".toLowerCase()){
+                $(ale).html(currencyFormat(num));
+      				} else if(cur.toLowerCase() == "RS".toLowerCase()){
+                $(ale).html(currencyFormatRS(num));
+      				} else {
+      					$(ale).html(numberWithCommas(num));
+      				}
                 //console.debug(this);
             }
         });
     }
-           
-    function currencyFormat(number){
-        //return (number + "").replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+
+  function currencyFormat(number){   
 		return (number + "").replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
-    }          
+  }  
+          
+  function currencyFormatRS0(number){
+    return (number + "").replace(/(\d)(?=((\d)(\d{2}?)+)$)/g, "$1,");
+  }          
+  
+  function currencyFormatRS(x){
+    	var parts = x.toString().split(".");
+    	parts[0] = parts[0].replace(/(\B)(?=((\d)(\d{2}?)+)$)/g, "$1,");
+    	return parts.join(".");
+  }          
     
 	function numberWithCommas(x) {
     	var parts = x.toString().split(".");
@@ -591,5 +605,21 @@ $(document).ready(function(){
       };
         
     })(jQuery);
+    
+    
+  jQuery(function($) {
+    var cur = $("#cur").data('val');
+    switch(cur) {
+      case "RS":                  
+        $('.cur').autoNumeric('init', { dGroup: 2 });
+        break;
+      case "RP":   
+        $('.cur').autoNumeric('init', { aSep: '.', dGroup: 3, aDec: ',', aPad: false });
+        break;
+      default: 
+        $('.cur').autoNumeric('init');
+        break;
+    }     
+  });
       
 </script>

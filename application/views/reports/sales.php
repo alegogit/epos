@@ -97,9 +97,13 @@
 						    <th>Started</th>
 						    <th>Ended</th>
 						    <th class="cin">Num Of Guest</th>
-						    <th class="cin">Total</th>
-						    <th class="cin">Tip</th>
-						    <th class="cin">Discount</th>
+						    <th class="cin no-sort"></th>
+						    <th class="cin">Total</th>  
+						    <th class="cin no-sort"></th>
+						    <th class="cin">Tip</th>    
+						    <th class="cin no-sort"></th>
+						    <th class="cin">Discount</th> 
+						    <th class="cin no-sort"></th>
 						    <th class="cin">Paid Amount</th>
 						  </tr>
 						</thead>
@@ -116,10 +120,14 @@
 						    <td><?=$row->STARTED?></td>
 						    <td><?=$row->ENDED?></td>
 						    <td class="cin"><?=$row->NO_OF_GUEST?></td>
-						    <td class="cin"><?=$row->TOTAL?></td>
-						    <td class="cin"><?=$row->TIP?></td>
-						    <td class="cin"><?=$row->DISCOUNT?></td>
-						    <td class="cin"><?=$row->PAID_AMOUNT?></td>
+						    <td class="cin cur text3D"><?=$cur?></td>
+						    <td class="cin cur text3D"><?=$row->TOTAL?></td> 
+						    <td class="cin cur text3D"><?=$cur?></td>
+						    <td class="cin cur text3D"><?=$row->TIP?></td> 
+						    <td class="cin cur text3D"><?=$cur?></td>
+						    <td class="cin cur text3D"><?=$row->DISCOUNT?></td>
+						    <td class="cin cur text3D"><?=$cur?></td>
+						    <td class="cin cur text3D"><?=$row->PAID_AMOUNT?></td>
 						  </tr>
 						  <?php $i++; } ?>
 						</tbody>
@@ -145,12 +153,13 @@
         <table id="modalTable" class="table table-striped compact hover">
 					  <thead>
 						  <tr class="tablehead text3D">
-						    <th>No</th>
-						    <th>Name</th>
-						    <th>Quantity</th>
+						    <th class="cin">No</th>
+						    <th>Menu Name</th>
+						    <th class="cin">Quantity</th>
 						    <th>Kitchen Note</th>
-						    <th>Price</th>
-						    <th>Void</th>
+						    <th class="cin"></th>
+						    <th class="cin">Price</th>
+						    <th class="cin">Void</th>
 						    <th>Void Reason</th>
 						  </tr>
 						</thead>
@@ -159,10 +168,12 @@
 					</table>
         </form>
       </div><!-- /.modal-body -->
-    </div><!-- /.modal-content -->
+    </div><!-- /.modal-content -->                                                                                                                  
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal fade -->
 <div id="ajaxurl" data-url="<?=base_url()?>"></div>
+<div id="cur" data-val="<?=$cur?>"></div>
+<div id="rest_id" data-val="<?=$rest_id?>"></div>
 <?php } ?>
 
 <script type="text/javascript">      
@@ -170,14 +181,15 @@
   $("#startdate").datepicker({format: 'dd M yyyy'});
   $("#enddate").datepicker({format: 'dd M yyyy'});
   
-  var ajaxurl = $("#ajaxurl").data('url');
+  var ajaxurl = $("#ajaxurl").data('url');  
+  var rest_id = $("#rest_id").data('val');
   
   var gOrdDet = function gOrdDet(){
        $(".modalTrigger").click(function () { 
         var odnP = $(this).data('odn');   
         $(".modal-title #ordnumb").html(odnP);
         var varP = $(this).data('id');  
-        var dataP = "varP="+varP;  
+        var dataP = "varP="+varP+"&rest_id="+rest_id;  
         $.ajax({
           type: "POST",
           url: ajaxurl+"process/orders",
@@ -193,7 +205,11 @@
   
   $(document).ready(function(){
     gOrdDet();  
-    $('#report').DataTable({ 
+    $('#report').DataTable({      
+      columnDefs: [
+        { targets: 'no-sort', orderable: false }
+      ],
+      "order": [[ 0, "asc" ]],
       url: ajaxurl+'reports/sales',
       method: 'get',
       onAll: function (name, args) {
@@ -214,10 +230,23 @@
   $('#modalTable').DataTable({
     paging: false,    
     searching: false,
-    ordering:  false
+    ordering:  false,
+    bInfo : false
   });
   
-  $(function () { 
+  jQuery(function($) {
+    var cur = $("#cur").data('val');
+    switch(cur) {
+      case "RS":                  
+        $('.cur').autoNumeric('init', { dGroup: 2 });
+        break;
+      case "RP":   
+        $('.cur').autoNumeric('init', { aSep: '.', dGroup: 3, aDec: ',', aPad: false });
+        break;
+      default: 
+        $('.cur').autoNumeric('init');
+        break;
+    }     
   });
   
 </script>

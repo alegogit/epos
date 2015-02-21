@@ -16,6 +16,7 @@ class Orderdetails_controller extends CI_Controller {
 		{        
 			$session_data = $this->session->userdata('logged_in'); 
       $data['order_details'] = $this->process->get_order_details($this->input->post('varP'));
+      $data['cur'] = $this->process->get_currency($this->input->post('rest_id'));
       $this->load->view('process/order_details',$data);
 		}
 		else

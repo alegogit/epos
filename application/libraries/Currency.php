@@ -22,11 +22,13 @@
     	}
 		
     	function jsformat($cur){ 
-			if(mb_strtolower($cur) == mb_strtolower("RP")){
-				$out = "currencyFormat(value)";
-			} else {
-				$out = "numberWithCommas(value)";
-			}
+  			if(mb_strtolower($cur) == mb_strtolower("RP")){
+  				$out = "currencyFormat(value)";
+  			} else if(mb_strtolower($cur) == mb_strtolower("RS")){
+  				$out = "currencyFormatRS(value)";
+  			} else {
+  				$out = "numberWithCommas(value)";
+  			}
 			return $out;
     	}
   	}

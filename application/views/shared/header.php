@@ -52,6 +52,9 @@
 
 <!-- Table -->
 <script src="<?=base_url()?>assets/js/jquery.dataTables.js"></script> 
+
+<!-- Currency -->
+<script src="<?=base_url()?>assets/js/autoNumeric.js"></script> 
  
 <script type="text/javascript">
 $(function() {

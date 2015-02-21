@@ -40,7 +40,17 @@ class Sales_model extends CI_Model {
                       ->get('');
     return $query->row();
   }
-  
+           
+	function get_currency($rest_id){
+  		$query = $this->db->select('RESTAURANTS.CURRENCY, REF_VALUES.VALUE AS CUR')
+                      ->from('RESTAURANTS')
+                      ->join('REF_VALUES', 'REF_VALUES.CODE = RESTAURANTS.CURRENCY')
+                      ->where('RESTAURANTS.ID',$rest_id)
+                      ->where('REF_VALUES.LOOKUP_NAME','CURRENCY')
+                      ->limit(1)
+                      ->get('');
+		return $query->row()->CUR;
+	}
 	function get_sales_report($start_date,$end_date,$rest_id)
 	{
 	     $query = $this->db->query('SELECT O.ID, O.ORDER_NUMBER ORDER_NUMBER, 

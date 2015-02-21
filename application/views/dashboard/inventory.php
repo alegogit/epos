@@ -143,7 +143,7 @@
           <div class="rdtitle">Sales Today</div>
           <!--<a href="#" class="pull-right">See all</a>-->
           <span class="list-group-item orgbg noborder pad30">
-            <span class="text270"><?=$cur?> <span id="salesd" value="<?=$sales_today->RES?>"></span></span>
+            <span class="text270"><?=$cur?> <span id="salesd" value="<?=$this->currency->decimal($sales_today->RES,$cur)?>" data-cur="<?=$cur?>"></span></span>
             <br><span class="glyphicon glyphicon-info-sign"></span>&nbsp;<?=round((float)$percent_today->PERCENTAGE * 100 ) . '%'?> From Yesterday
           </span>      
           <div class="rdinfo"><?=$trans_today->RES?> Transactions</div>
@@ -153,7 +153,7 @@
           <div class="rdtitle">Sales This Year</div>
           <!--<a href="#" class="pull-right">See all</a>-->
           <span class="list-group-item teabg noborder pad30">
-            <span class="text270"><?=$cur?> <span id="salesy" value="<?=$sales_this_year->RES?>"></span></span>   
+            <span class="text270"><?=$cur?> <span id="salesy" value="<?=$this->currency->decimal($sales_this_year->RES,$cur)?>" data-cur="<?=$cur?>"></span></span>   
             <br><span class="glyphicon glyphicon-info-sign"></span>&nbsp;<?=round((float)$percent_last_week->PERCENTAGE * 100 ) . '%'?> From Last Week
             <!--<br><span class="glyphicon glyphicon-info-sign"></span>&nbsp;<?=round((float)$percent_this_year->PERCENTAGE * 100 ) . '%'?> From Beginning Of The Year -->
           </span>   
@@ -177,42 +177,62 @@
     
   </div><!-- /.container-fluid -->
   
-</div><!-- /#page-content-wrapper -->
+</div><!-- /#page-content-wrapper -->     
+<div id="cur" data-val="<?=$cur?>"></div>
        
 <script>
-    //datepickers
-    $("#startdate").datepicker({format: 'dd M yyyy'});
-    $("#enddate").datepicker({format: 'dd M yyyy'});
+  //datepickers
+  $("#startdate").datepicker({format: 'dd M yyyy'});
+  $("#enddate").datepicker({format: 'dd M yyyy'});
      
-    //print page
-    $("#print").click(function(){      
-      window.print();
-    });   
+  //print page
+  $("#print").click(function(){      
+    window.print();
+  });   
              
-    //animating numbers 
-    $(document).ready(function () {
-      animateNumbers("#salesd");
-      animateNumbers("#salesy");
-      animateNumbers("#cust30");
+  //animating numbers 
+  $(document).ready(function () {
+    animateNumbers("#salesd");
+    animateNumbers("#salesy");
+    animateNumbers("#cust30");
+  });
+           
+  function animateNumbers(ale) {    
+    var num = $(ale).attr("value"); 
+    var cur = $(ale).data("cur");
+    $(ale).countTo({
+      from: 0,
+      to: num,
+      speed: 1000,
+      refreshInterval: 50,
+      onComplete: function(value) {
+        if(cur.toLowerCase() == "RP".toLowerCase()){
+          $(ale).html(currencyFormat(num));
+      	} else if(cur.toLowerCase() == "RS".toLowerCase()){
+          $(ale).html(currencyFormatRS(num));
+      	} else {
+          $(ale).html(numberWithCommas(num));
+      	}
+        //console.debug(this);
+      }
     });
+  }
            
-    function animateNumbers(ale) {    
-        var num = $(ale).attr("value");
-        $(ale).countTo({
-            from: 0,
-            to: num,
-            speed: 1000,
-            refreshInterval: 50,
-            onComplete: function(value) {
-                $(ale).html(currencyFormat(num));
-                console.debug(this);
-            }
-        });
-    }
-           
-    function currencyFormat(number){
-        return (number + "").replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
-    }     
+  function currencyFormat(number){   
+		return (number + "").replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+  }  
+  
+  function currencyFormatRS(x){
+    	var parts = x.toString().split(".");
+    	parts[0] = parts[0].replace(/(\B)(?=((\d)(\d{2}?)+)$)/g, "$1,");
+    	return parts.join(".");
+  }          
+    
+	function numberWithCommas(x) {
+    	var parts = x.toString().split(".");
+    	parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    	return parts.join(".");
+	}    
     
     (function($) {
     $.fn.countTo = function(options) { 
@@ -279,5 +299,6 @@
   });
   
   $('table.dataTable thead th, table.dataTable thead td').css('border','none');
-  $('.dataTables_empty').html('None');   	
+  $('.dataTables_empty').html('None');
+     	
 </script>

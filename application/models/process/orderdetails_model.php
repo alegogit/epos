@@ -24,47 +24,6 @@ class Orderdetails_model extends CI_Model {
 		    return $query->result();
 	}
 	 	
-	function update_printer($arrin){ 
-	  date_default_timezone_set('Asia/Jakarta');
-		$session_data = $this->session->userdata('logged_in');
-		$id = $session_data['id']; 
-		$dt = date('Y-m-d H:i:s');
-	  $data = array(
-               'NAME' => $arrin[1],
-               'REST_ID' => $arrin[2],
-               'PRINTER_CONNECTION' => $arrin[3],
-               'PRINTER_IP_ADDRESS' => $arrin[4],
-               'PRINTER_PORT' => $arrin[5],
-               'LAST_UPDATED_BY' => $id,
-               'LAST_UPDATED_DATE' => $dt,
-            ); 
-		$this->db->where('ID',$arrin[0]);
-    $query = $this->db->update('PRINTER',$data);
-    $output[0] = $this->process->get_printer($arrin[0])->ID;
-    $output[1] = $this->process->get_printer($arrin[0])->NAME; 
-    $output[2] = $this->process->get_restaurant_name($this->process->get_printer($arrin[0])->REST_ID); 
-    $output[3] = $this->process->get_connectivity($this->process->get_printer($arrin[0])->PRINTER_CONNECTION);
-    $output[4] = $this->process->get_printer($arrin[0])->PRINTER_IP_ADDRESS;
-    $output[5] = $this->process->get_printer($arrin[0])->PRINTER_PORT;
-    $output[6] = $this->process->get_username($this->process->get_printer($arrin[0])->LAST_UPDATED_BY);
-    $output[7] = $this->process->get_printer($arrin[0])->LAST_UPDATED_DATE;
-    $outputs = implode(",",$output);   
-    return $outputs;
-	}
-	
-	function get_printer($pid){    
-		$session_data = $this->session->userdata('logged_in');
-		$id = $session_data['id'];
-		$this->db->where('USERS_RESTAURANTS.USER_ID',$id);
-    $query = $this->db->select('PRINTER.*')
-                      ->from('PRINTER')
-                      ->join('USERS_RESTAURANTS', 'PRINTER.REST_ID = USERS_RESTAURANTS.REST_ID')  
-                      ->where('PRINTER.ID',$pid)
-                      ->limit(1)
-                      ->get('');
-    return $query->row();
-  }      
-  
 	function get_restaurant_name($id){
     $query = $this->db->select('NAME AS REST_NAME')
                       ->from('RESTAURANTS')
@@ -81,12 +40,15 @@ class Orderdetails_model extends CI_Model {
     return $query->row()->USERNAME;
   }
          
-  function get_connectivity($code){
-    $query = $this->db->select('VALUE')
-                      ->from('REF_VALUES')
-                      ->where('CODE',$code)
+  function get_currency($rest_id){
+    $query = $this->db->select('RESTAURANTS.CURRENCY, REF_VALUES.VALUE AS CUR')
+                      ->from('RESTAURANTS')
+                      ->join('REF_VALUES', 'REF_VALUES.CODE = RESTAURANTS.CURRENCY')
+                      ->where('RESTAURANTS.ID',$rest_id)
+                      ->where('REF_VALUES.LOOKUP_NAME','CURRENCY')
+                      ->limit(1)
                       ->get('');
-    return $query->row()->VALUE;
-  }
+		return $query->row()->CUR;
+	}
   
 }

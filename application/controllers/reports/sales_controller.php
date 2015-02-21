@@ -31,7 +31,8 @@ class Sales_controller extends CI_Controller {
 			$data['rest_id'] = $rest_id;
 			$data['report_name'] = $report_name;
 			$data['startdate'] = $start_date;
-			$data['enddate'] = $end_date;        
+			$data['enddate'] = $end_date;
+      $data['cur'] = $this->sales->get_currency($rest_id);
 			$data['sales_report'] = $this->sales->get_sales_report(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id); 
 			$data['void_items'] = $this->sales->get_void_items(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id); 
 			
