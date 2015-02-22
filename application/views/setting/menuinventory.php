@@ -84,7 +84,7 @@
                     					<a id="QUANTITY-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->QUANTITY?></a>
                   					</td>
                   					<td style="">
-										<?=$this->setting->get_metric($row->INVENTORY_METRIC)?>&nbsp;&nbsp;
+                              <?=$this->setting->get_metric($row->INVENTORY_METRIC)?>&nbsp;&nbsp;
                   					</td>
 				                  	<td style=""><span id="crby<?=$row->ID?>"><?=$this->setting->get_username($row->CREATED_BY)->NAME?></span></td>
 				                  	<td style=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
@@ -116,7 +116,7 @@
         $attributes = array('class' => 'form-inline', 'id' => 'newmeninv', 'role' => 'form');
         echo form_open('setting/menuinventory',$attributes)
       ?>        
-        <div class="form-group" style="margin-bottom:10px">      
+        <div class="form-group" style="margin-bottom:10px;">      
           <label for="resto"></label>     
           <div class="input-group"> 
             <div class="input-group-addon"><span class="fa fa-cutlery"></span></div>
@@ -140,7 +140,7 @@
             <div class="input-group-addon"><span class="fa fa-cubes"></span></div> 
             <select id="inv" name="inv" class="form-control" required>
             <?php foreach($inventories as $rowi){ ?>
-              <option value="<?=$rowi->ID?>"><?=$rowi->NAME?></option>
+              <option value="<?=$rowi->ID?>" data-mtr="<?=$this->setting->get_metric($rowi->METRIC)?>"><?=$rowi->NAME?></option>
             <?php } ?>
             </select>
           </div>
@@ -150,7 +150,7 @@
           <div class="input-group" style="width:200px;"> 
             <div class="input-group-addon"><span class="fa fa-cube"></span></div>
             <input type="text" class="form-control" style="text-align:right;" id="qty" placeholder="Quantity" name="qty" required>
-            <div class="input-group-addon"><span class="">metric</span></div>
+            <div class="input-group-addon"><span id="metric">metric</span></div>
           </div>
         </div><br />
         <div class="form-group text-right" style="margin-bottom:10px">
@@ -235,6 +235,16 @@
 <script>   
 $(document).ready(function(){ 
 	var baseurl = $("#baseurl").data('url');
+	
+	//autoresizing inputs
+  $('#newmeninv input').autoResize(); 
+    
+  //auto metrics  
+  $('#inv').change(function() {
+    var metric = $(this).find(':selected').data('mtr');
+    $('#metric').html(metric);
+    //console.log(metric); 
+  });
 	                   
 	//make editable on focus  
   	$('.edit').focus(function(e) {
