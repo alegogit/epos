@@ -39,6 +39,17 @@ class Cashflow_model extends CI_Model {
                       ->where('ID',$id)
                       ->get('');
     return $query->row();
+  }              
+  
+	function get_currency($rest_id){
+  		$query = $this->db->select('RESTAURANTS.CURRENCY, REF_VALUES.VALUE AS CUR')
+                      ->from('RESTAURANTS')
+                      ->join('REF_VALUES', 'REF_VALUES.CODE = RESTAURANTS.CURRENCY')
+                      ->where('RESTAURANTS.ID',$rest_id)
+                      ->where('REF_VALUES.LOOKUP_NAME','CURRENCY')
+                      ->limit(1)
+                      ->get('');
+		return $query->row()->CUR;
   }
   	
 	function get_cashflow0($rest_id,$startdate,$enddate)

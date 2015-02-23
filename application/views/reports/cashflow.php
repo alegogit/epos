@@ -31,7 +31,7 @@
           <div class="input-group">
             <div class="input-group-addon"><span class="glyphicon glyphicon-cutlery"></span></div>
             <select id = "myRestaurant" name="rest_id" title="Restaurant Name" class="form-control" style="display:inline">
-              <option value = "0">ALL Restaurants</option>
+              <option value = "0">Select Restaurants</option>
               <?php foreach($restaurants as $row){ ?>
               <option value = "<?=$row->REST_ID?>" <?= ($row->REST_ID==$rest_id)?'selected':''?> ><?=$row->NAME?></option>
               <?php } ?>
@@ -58,10 +58,14 @@
 						  <tr class="tablehead text3D">
 						    <th class="no-sort">Date</th>
 						    <!--<th>Restaurant</th>-->
-						    <th class="no-sort">Device</th>
-						    <th class="cin no-sort">Cash From Register</th>
-						    <th class="cin no-sort">Cash From Order</th>
-						    <th class="cin no-sort">Debit From Order</th>
+						    <th class="no-sort">Device</th>  
+						    <th class="cin"></th>
+						    <th class="cin no-sort">Cash From Register</th>     
+						    <th class="cin"></th>
+						    <th class="cin no-sort">Cash From Order</th>   
+						    <th class="cin"></th>
+						    <th class="cin no-sort">Debit From Order</th>   
+						    <th class="cin"></th>
 						    <th class="cin no-sort">Credit From Order</th>
 						  </tr>
 						</thead>
@@ -77,11 +81,15 @@
 						  <tr class="<?=$this->cashflow->inv_status_class($row->STATUS)?>" data-index="<?=$i?>">
 						    <td><?=$row->TERMINAL_DATE?></td>
 						    <!--<td><?=$row->REST_NAME?></td>-->
-						    <td><?=$row->DEVICE_NAME?></td>
-						    <td class="cin"><?=number_format($row->CASH_FROM_REGISTER, 0, '', '.')?></td>
-						    <td class="cin"><?=number_format($row->CASH_FROM_ORDER, 0, '', '.')?></td>
-						    <td class="cin"><?=number_format($row->DEBIT_FROM_ORDERS, 0, '', '.')?></td>
-						    <td class="cin"><?=number_format($row->CREDIT_FROM_ORDERS, 0, '', '.')?></td>
+						    <td><?=$row->DEVICE_NAME?></td>     
+						    <td class="cin cur text3D"><?=$cur?></td>
+						    <td class="cin cur text3D"><?=number_format((float)$row->CASH_FROM_REGISTER, 0, '.', '')?></td> 
+						    <td class="cin cur text3D"><?=$cur?></td>
+						    <td class="cin cur text3D"><?=number_format((float)$row->CASH_FROM_ORDER, 0, '.', '')?></td> 
+						    <td class="cin cur text3D"><?=$cur?></td>
+						    <td class="cin cur text3D"><?=number_format((float)$row->DEBIT_FROM_ORDERS, 0, '.', '')?></td> 
+						    <td class="cin cur text3D"><?=$cur?></td>
+						    <td class="cin cur text3D"><?=number_format((float)$row->CREDIT_FROM_ORDERS, 0, '.', '')?></td>
 						  </tr>
 						  <?php 
                 $total['CASH_FROM_REGISTER'] = $total['CASH_FROM_REGISTER']+$row->CASH_FROM_REGISTER;  
@@ -95,11 +103,15 @@
 						  <tr class="tablefoot text3D">
 						    <th class="no-sort">Grand Total</th>
 						    <!--<th>Restaurant</th>-->
-						    <th class="no-sort"></th>
-						    <th class="cin no-sort"><?=number_format($total['CASH_FROM_REGISTER'], 0, '', '.')?></th>
-						    <th class="cin no-sort"><?=number_format($total['CASH_FROM_ORDER'], 0, '', '.')?></th>
-						    <th class="cin no-sort"><?=number_format($total['DEBIT_FROM_ORDERS'], 0, '', '.')?></th>
-						    <th class="cin no-sort"><?=number_format($total['CREDIT_FROM_ORDERS'], 0, '', '.')?></th>
+						    <th class="no-sort"></th> 
+						    <th class="cin cur text3D"><?=$cur?></td>
+						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['CASH_FROM_REGISTER'], 0, '.', '')?></th>  
+						    <th class="cin cur text3D"><?=$cur?></td>
+						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['CASH_FROM_ORDER'], 0, '.', '')?></th> 
+						    <th class="cin cur text3D"><?=$cur?></td>
+						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['DEBIT_FROM_ORDERS'], 0, '.', '')?></th>  
+						    <th class="cin cur text3D"><?=$cur?></td>
+						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['CREDIT_FROM_ORDERS'], 0, '.', '')?></th>
 						  </tr>
 						</tfoot>
 					</table>      
@@ -108,7 +120,8 @@
 		</div>
 		
   </div><!-- /.container-fluid -->
-</div><!-- /#page-content-wrapper -->
+</div><!-- /#page-content-wrapper -->  
+<div id="cur" data-val="<?=$cur?>"></div>
 
 <script>  
   //datepickers    
@@ -124,6 +137,22 @@
     ordering:  false,
     bLengthChange: true,
     pageLength: 25
+  });
+  
+  //currency control
+  jQuery(function($) {
+    var cur = $("#cur").data('val');
+    switch(cur) {
+      case "RS":                  
+        $('.cur').autoNumeric('init', { dGroup: 2 });
+        break;
+      case "RP":   
+        $('.cur').autoNumeric('init', { aSep: '.', dGroup: 3, aDec: ',', aPad: false });
+        break;
+      default: 
+        $('.cur').autoNumeric('init');
+        break;
+    }     
   });
 
 </script>

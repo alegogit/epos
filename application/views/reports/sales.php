@@ -234,6 +234,7 @@
     bInfo : false
   });
   
+  //currency control
   jQuery(function($) {
     var cur = $("#cur").data('val');
     switch(cur) {

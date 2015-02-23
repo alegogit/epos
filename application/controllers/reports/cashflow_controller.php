@@ -28,7 +28,8 @@ class Cashflow_controller extends CI_Controller {
 			$end_date = (!($this->input->post('startdate')))?$data['def_end_date']:$this->input->post('enddate'); 
 			$data['rest_id'] = $rest_id;
 			$data['startdate'] = $start_date;
-			$data['enddate'] = $end_date;        
+			$data['enddate'] = $end_date;      
+      $data['cur'] = $this->cashflow->get_currency($rest_id);  
 			$data['cashflow'] = $this->cashflow->get_cashflow($rest_id,date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date))); 
 			
 			$data['deleteId'] = (!($this->input->post('invid')))?'invid':$this->input->post('invid');
