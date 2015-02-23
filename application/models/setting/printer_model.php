@@ -39,7 +39,7 @@ class Printer_model extends CI_Model {
                       ->from('RESTAURANTS')
                       ->where('ID',$id)
                       ->get('');
-    return $query->row();
+    return $query->row()->REST_NAME;
   }
   
 	function get_all_connectivity(){

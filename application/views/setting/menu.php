@@ -33,7 +33,7 @@
 	        </div>
 	        <div class="form-group" style="margin-bottom:0px">
 	          	<div class="input-group">
-	            	<button type="submit" class="btn btn-success" style="display:inline">Filter</button>   
+            <input type="submit" class="btn btn-success" style="display:inline" value="Filter" name="filter">   
 	          	</div>
 	        </div>
 	      	<?=form_close()?>     
@@ -170,7 +170,7 @@
           <label for="rest_id">Restaurant</label><br /> 
           <div class="input-group">  
             <div class="input-group-addon"><span class="fa fa-cutlery"></span></div>
-            <select id="rest_id" name="rest_id" class="form-control" required>
+            <select id="rest_id" name="rest_id" class="form-control" disabled>
             <?php foreach($restaurants as $rows){ ?>
               <option value = "<?=$rows->REST_ID?>" <?= ($rows->REST_ID==$rest_id)?'selected':''?> ><?=$rows->NAME?></option>
             <?php } ?>

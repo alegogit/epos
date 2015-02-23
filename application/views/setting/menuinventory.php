@@ -115,14 +115,7 @@
       <?php
         $attributes = array('class' => 'form-inline', 'id' => 'newmeninv', 'role' => 'form');
         echo form_open('setting/menuinventory',$attributes)
-      ?>        
-        <div class="form-group" style="margin-bottom:10px;">      
-          <label for="resto"></label>     
-          <div class="input-group"> 
-            <div class="input-group-addon"><span class="fa fa-cutlery"></span></div>
-            <input type="text" class="form-control" id="resto" placeholder="" name="resto" value="<?=$def_rest_name?>" disabled>
-          </div>
-        </div><br />
+      ?>       
         <div class="form-group" style="margin-bottom:10px">   
           <label for="menu">Menu</label><br />  
           <div class="input-group">   
@@ -151,6 +144,13 @@
             <div class="input-group-addon"><span class="fa fa-cube"></span></div>
             <input type="text" class="form-control" style="text-align:right;" id="qty" placeholder="Quantity" name="qty" required>
             <div class="input-group-addon"><span id="metric">metric</span></div>
+          </div>
+        </div><br />    
+        <div class="form-group" style="margin-bottom:10px;">      
+          <label for="resto">Restaurant</label><br />     
+          <div class="input-group"> 
+            <div class="input-group-addon"><span class="fa fa-cutlery"></span></div>
+            <input type="text" class="form-control" id="resto" placeholder="" name="resto" value="<?=$def_rest_name?>" disabled>
           </div>
         </div><br />
         <div class="form-group text-right" style="margin-bottom:10px">

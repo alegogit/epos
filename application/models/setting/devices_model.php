@@ -38,8 +38,9 @@ class Devices_model extends CI_Model {
     $query = $this->db->select('NAME AS REST_NAME')
                       ->from('RESTAURANTS')
                       ->where('ID',$id)
+                      ->limit(1)
                       ->get('');
-    return $query->row();
+    return $query->row()->REST_NAME;
   }    
   
 	function get_rest_devices($rest_id){    
@@ -48,13 +49,13 @@ class Devices_model extends CI_Model {
     return $query->result();
   } 
    
-	function new_devices($MAC,$TYPE,$MAKE,$MODEL,$REST_ID){       
+	function new_devices($NAME,$MAC,$TYPE,$MAKE,$MODEL,$REST_ID){       
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id'];
     $query = $this->db->query('INSERT INTO DEVICES
-      (MAC_ADDRESS,TYPE,MAKE,MODEL,REST_ID,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
+      (NAME,MAC_ADDRESS,TYPE,MAKE,MODEL,REST_ID,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
       VALUES 
-      ("'.$MAC.'","'.$TYPE.'","'.$MAKE.'","'.$MODEL.'",'.$REST_ID.','.$id.',NOW(),'.$id.',NOW());');
+      ("'.$NAME.'","'.$MAC.'","'.$TYPE.'","'.$MAKE.'","'.$MODEL.'",'.$REST_ID.','.$id.',NOW(),'.$id.',NOW());');
 		//return $query->row();
   }
   

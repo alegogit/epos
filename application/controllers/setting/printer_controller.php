@@ -19,9 +19,17 @@ class Printer_controller extends CI_Controller {
 	{
 		if($this->session->userdata('logged_in'))
 		{
+			if($this->input->post('filter')){
+				$sess_array = array(
+					'def_rest' => $this->input->post('rest_id')
+			   	);
+				$this->session->set_userdata('filtered', $sess_array);
+			}
 			$data['menu'] = 'setting';         
 			$session_data = $this->session->userdata('logged_in');
-			$data['def_rest'] = $session_data['def_rest'];
+			$session_filt = $this->session->userdata('filtered');
+			$data['def_rest'] = ($session_filt['def_rest'])?$session_filt['def_rest']:$session_data['def_rest'];
+			$data['def_rest_name'] = ($session_filt['def_rest'])?$this->printer->get_restaurant_name($session_filt['def_rest']):$this->printer->get_restaurant_name($session_data['def_rest']);
 			$data['def_start_date'] = date('d M Y', time() - 30 * 60 * 60 * 24);
 			$data['def_end_date'] = date('d M Y', time());
 			$rest_id = (!($this->input->post('rest_id')))?$data['def_rest']:$this->input->post('rest_id'); 
@@ -31,12 +39,12 @@ class Printer_controller extends CI_Controller {
 			$data['startdate'] = $start_date;
 			$data['enddate'] = $end_date;        
 		  
-      		if($this->input->post('printer_name')){               
-		    	$this->printer->new_printer($this->input->post('printer_name'),$this->input->post('MAC_address'),$this->input->post('rest_id'),$this->input->post('conn_code'),$this->input->post('IP_address'),$this->input->post('Port'));
-      		} 
+      if($this->input->post('printer_name')){               
+		    $this->printer->new_printer($this->input->post('printer_name'),$this->input->post('MAC_address'),$rest_id,$this->input->post('conn_code'),$this->input->post('IP_address'),$this->input->post('Port'));
+      } 
 			
-      		$data['printer_conf'] = $this->printer->get_printer($rest_id);
-		  	$data['connectivity'] = $this->printer->get_all_connectivity();
+      $data['printer_conf'] = $this->printer->get_printer($rest_id);
+		  $data['connectivity'] = $this->printer->get_all_connectivity();
      
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);

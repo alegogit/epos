@@ -19,9 +19,17 @@ class Menu_controller extends CI_Controller {
 	{
 		if($this->session->userdata('logged_in'))
 		{
+			if($this->input->post('filter')){
+				$sess_array = array(
+					'def_rest' => $this->input->post('rest_id')
+			   	);
+				$this->session->set_userdata('filtered', $sess_array);
+			}
 			$data['menu'] = 'setting';         
 			$session_data = $this->session->userdata('logged_in');
-			$data['def_rest'] = $session_data['def_rest'];
+			$session_filt = $this->session->userdata('filtered');
+			$data['def_rest'] = ($session_filt['def_rest'])?$session_filt['def_rest']:$session_data['def_rest'];
+			$data['def_rest_name'] = ($session_filt['def_rest'])?$this->setting->get_restaurant_name($session_filt['def_rest']):$this->setting->get_restaurant_name($session_data['def_rest']);
 			$data['def_start_date'] = date('d M Y', time() - 30 * 60 * 60 * 24);
 			$data['def_end_date'] = date('d M Y', time());
 			$rest_id = (!($this->input->post('rest_id')))?$data['def_rest']:$this->input->post('rest_id'); 
@@ -30,15 +38,15 @@ class Menu_controller extends CI_Controller {
 			$data['rest_id'] = $rest_id;
 			$data['startdate'] = $start_date;
 			$data['enddate'] = $end_date; 
-		  	$data['cur'] = $this->setting->get_currency($rest_id);
+		  $data['cur'] = $this->setting->get_currency($rest_id);
 			                                 
-      		if($this->input->post('menu_name')){               
-		    	$this->setting->new_menu($this->input->post('menu_name'),$this->input->post('menu_category'),$this->input->post('menu_price'),$this->input->post('menu_printer'),$this->input->post('menu_tax'));
-      		} 
+      if($this->input->post('menu_name')){               
+		    $this->setting->new_menu($this->input->post('menu_name'),$this->input->post('menu_category'),$this->input->post('menu_price'),$this->input->post('menu_printer'),$this->input->post('menu_tax'));
+      } 
       
-		  	$data['menus'] = $this->setting->get_rest_menus($rest_id);
-		  	$data['printer'] = $this->setting->get_rest_printer($rest_id);
-		  	$data['categories'] = $this->setting->get_rest_categories($rest_id);			                   
+		  $data['menus'] = $this->setting->get_rest_menus($rest_id);
+		  $data['printer'] = $this->setting->get_rest_printer($rest_id);
+		  $data['categories'] = $this->setting->get_rest_categories($rest_id);			                   
 			
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);

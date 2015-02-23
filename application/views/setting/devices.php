@@ -33,7 +33,7 @@
         </div>
         <div class="form-group" style="margin-bottom:0px">
           <div class="input-group">
-            <button type="submit" class="btn btn-success" style="display:inline">Filter</button>   
+            <input type="submit" class="btn btn-success" style="display:inline" value="Filter" name="filter">  
           </div>
         </div>
       <?=form_close()?>     
@@ -159,15 +159,24 @@
             <input type="text" class="form-control" id="devices_mac" placeholder="MAC Address" name="devices_mac" required>
           </div>
         </div><br />
+        <!--
         <div class="form-group" style="margin-bottom:10px"> 
           <label for="devrest">Restaurant</label><br />  
           <div class="input-group">             
             <div class="input-group-addon"><span class="glyphicon glyphicon-cutlery"></span></div>
-            <select id="devrest" name="rest_id" class="form-control" style="width:168px">
+            <select id="devrest" name="rest_id" class="form-control" style="width:168px" disabled>
             <?php foreach($restaurants as $rows){ ?>
               <option value = "<?=$rows->REST_ID?>" <?= ($rows->REST_ID==$rest_id)?'selected':''?> ><?=$rows->NAME?></option>
             <?php } ?>
             </select>
+          </div>
+        </div><br /> 
+        --> 
+        <div class="form-group" style="margin-bottom:10px"> 
+          <label for="devrest">Restaurant</label><br />  
+          <div class="input-group">             
+            <div class="input-group-addon"><span class="glyphicon glyphicon-cutlery"></span></div>
+            <input type="text" class="form-control" id="devrest" placeholder="" name="rest_id" value="<?=$def_rest_name?>" disabled>
           </div>
         </div><br />  
         <div class="form-group text-right" style="margin-bottom:10px">
@@ -339,6 +348,9 @@ $(document).ready(function()
   
   	//masking
  	$("#devices_mac").inputmask({ "mask": "**:**:**:**:**:**" });
+  
+  //autoresizing inputs
+  $('#newdev input').autoResize(); 
 });                                           
 
 
