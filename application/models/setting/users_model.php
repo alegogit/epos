@@ -116,7 +116,7 @@ class Users_model extends CI_Model {
     	return $query->result();
   	}
    
-	function new_users($NAME,$EMAIL,$USERNAME,$PASSWORD,$ROLE,$REST_ID){       
+	function new_users0($NAME,$EMAIL,$USERNAME,$PASSWORD,$ROLE,$REST_ID){       
 		$session_data = $this->session->userdata('logged_in');
 		$PASSWD = sha1(md5($PASSWORD));
 		$id = $session_data['id'];
@@ -128,6 +128,22 @@ class Users_model extends CI_Model {
       		(USER_ID,REST_ID,DEFAULT_REST,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
       		VALUES 
       		('.$this->setting->get_mail_user($EMAIL)->ID.','.$REST_ID.',1,'.$id.',NOW(),'.$id.',NOW());');
+			//return $query->row();
+  	}
+    
+	function new_users($NAME,$EMAIL,$USERNAME,$PASSWORD,$ROLE,$DREST,$AREST=array()){       
+		$session_data = $this->session->userdata('logged_in');
+		$PASSWD = sha1(md5($PASSWORD));
+		$id = $session_data['id'];
+    	$query1 = $this->db->query('INSERT INTO USERS
+      		(NAME,EMAIL_ADDRESS,USERNAME,PASSWORD,ROLE_ID,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
+      		VALUES 
+      		("'.$NAME.'","'.$EMAIL.'","'.$USERNAME.'","'.$PASSWD.'",'.$ROLE.','.$id.',NOW(),'.$id.',NOW());');
+      $query2 = $this->setting->assign_rest($this->setting->get_mail_user($EMAIL)->ID,array_diff($AREST,[$DREST]));  
+    	$query3 = $this->db->query('INSERT INTO USERS_RESTAURANTS
+      		(USER_ID,REST_ID,DEFAULT_REST,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
+      		VALUES 
+      		('.$this->setting->get_mail_user($EMAIL)->ID.','.$DREST.',1,'.$id.',NOW(),'.$id.',NOW());');
 			//return $query->row();
   	}
   

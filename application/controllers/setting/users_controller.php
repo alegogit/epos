@@ -21,7 +21,7 @@ class Users_controller extends CI_Controller {
 		{
 			$data['menu'] = 'setting';         
 			$session_data = $this->session->userdata('logged_in');  
-		  	$role = $session_data['role'];
+		  $role = $session_data['role'];
 			$data['def_rest'] = $session_data['def_rest'];
 			$data['def_start_date'] = date('d M Y', time() - 30 * 60 * 60 * 24);
 			$data['def_end_date'] = date('d M Y', time());
@@ -33,7 +33,7 @@ class Users_controller extends CI_Controller {
 			$data['enddate'] = $end_date; 
 			                                 
 		    if($this->input->post('email')){             
-				$this->setting->new_users($this->input->post('name'),$this->input->post('email'),$this->input->post('username'),$this->input->post('password'),$this->input->post('role'),$this->input->post('rest_id'));
+				$this->setting->new_users($this->input->post('name'),$this->input->post('email'),$this->input->post('username'),$this->input->post('password'),$this->input->post('role'),$this->input->post('drest'),$this->input->post('arest'));
 		    }        
 		                    
 		    if($this->input->post('cps')&&($this->input->post('pass1')==$this->input->post('pass2'))){             

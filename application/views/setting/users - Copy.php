@@ -133,7 +133,7 @@
           <div class="form-group" style="margin-bottom:10px">   
             <label for="name"></label>
             <div class="input-group">                     
-              <div class="input-group-addon"><span class="fa fa-meh-o">&nbsp;</span></div>
+              <div class="input-group-addon"><span class="fa fa-meh-o"></span></div>
               <input type="text" class="form-control" id="name" placeholder="Name" name="name" required>
               <span class="errmsg"></span>
             </div>
@@ -149,29 +149,11 @@
           <div class="form-group" style="margin-bottom:10px">       
             <label for="username"></label>
             <div class="input-group">     
-              <div class="input-group-addon"><span class="fa fa-user">&nbsp;</span></div>                            
+              <div class="input-group-addon"><span class="fa fa-user"></span></div>                            
               <input type="text" class="form-control" id="username" placeholder="Username" name="username" required>
               <span class="errmsg"></span>
             </div>
-          </div><br> 
-        </div><!-- /.col-md-6 -->
-        <div class="col-md-6">     		
-          <div class="form-group" style="margin-bottom:10px"> 
-            <label for="password"></label>
-            <div class="input-group">                 
-              <div class="input-group-addon"><span class="fa fa-lock">&nbsp;</span></div>  
-              <input type="password" class="form-control" id="password" placeholder="Password" name="password" pattern=".{6,}" required>
-              <span class="errmsg"></span>
-            </div>
-          </div><br />  
-          <div class="form-group" style="margin-bottom:10px"> 
-            <label for="confirm"></label>
-            <div class="input-group">                  
-              <div class="input-group-addon"><span class="fa fa-lock">&nbsp;</span></div> 
-              <input type="password" class="form-control" id="confirm" placeholder="Confirm Password" name="confirm" pattern=".{6,}" required>
-              <span class="errmsg"></span>
-            </div>
-          </div><br />      
+          </div><br>     
           <div class="form-group" style="margin-bottom:10px">
             <label for="role"></label>
             <div class="input-group"> 
@@ -184,44 +166,47 @@
               </select>
             </div>
           </div> 
-        </div><!-- /.col-md-6 --> 
-      </div><!-- /.row -->
-      <div class="row"> 
-        <div class="col-md-6">        	   
+        </div>
+        <div class="col-md-6">     		
+          <div class="form-group" style="margin-bottom:10px"> 
+            <label for="password"></label>
+            <div class="input-group">                 
+              <div class="input-group-addon"><span class="fa fa-lock"></span></div>  
+              <input type="password" class="form-control" id="password" placeholder="Password" name="password" pattern=".{6,}" required>
+              <span class="errmsg"></span>
+            </div>
+          </div><br />  
+          <div class="form-group" style="margin-bottom:10px"> 
+            <label for="confirm"></label>
+            <div class="input-group">                  
+              <div class="input-group-addon"><span class="fa fa-lock"></span></div> 
+              <input type="password" class="form-control" id="confirm" placeholder="Confirm Password" name="confirm" pattern=".{6,}" required>
+              <span class="errmsg"></span>
+            </div>
+          </div><br />    
           <div class="form-group" style="margin-bottom:10px">    
-            <label for="arest[]">Assign Restaurant(s)</label><br> 
+            <label for="rest_id">Default Restaurant</label><br> 
             <div class="input-group">  
               <div class="input-group-addon"><span class="glyphicon glyphicon-cutlery"></span></div>  
-              <select id="arest" name="arest[]" class="form-control selectpicker show-tick" data-size="5" data-width="168px" data-live-search="true" multiple>
+              <select id="rest_id" name="rest_id" class="form-control selectpicker show-tick" data-size="5" data-width="168px" data-live-search="true">
               <?php foreach($restaurants as $rows){ ?>
-                <option value="<?=$rows->REST_ID?>" data-name="<?=$rows->NAME?>"><?=$rows->NAME?></option>
+                <option value = "<?=$rows->REST_ID?>"><?=$rows->NAME?></option>
               <?php } ?>
               </select>
             </div>
-          </div> 
-        </div><!-- /.col-md-6 --> 
-        <div class="col-md-6">
-          <div class="form-group" style="margin-bottom:10px">    
-            <label for="drest">Default Restaurant</label><br> 
-            <div class="input-group">  
-              <div class="input-group-addon"><span class="glyphicon glyphicon-cutlery"></span></div> 
-              <select id="drest" name="drest" class="form-control" required>
-                <option value="0" disabled>Please Assign Restaurant(s) first</option>
-              </select> 
-            </div>
           </div>
-        </div><!-- /.col-md-6 -->
-      </div><!-- /.row -->
+        </div><br>
+      </div>
       <div class="row">
         <div class="pull-right" style="margin-right:30px"> 
         <div class="form-group" style="margin-bottom:10px">
           <div class="input-group">       
-            <button type="submit" class="btn btn-success">Submit</button>&nbsp;
+            <button type="submit" class="btn btn-success">Submit</button>
             <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
           </div>
         </div>
         </div>
-      </div><!-- /.row --> 
+      </div> 
       <?=form_close()?>
       </div><!-- /.modal-body -->
     </div><!-- /.modal-content -->
@@ -484,33 +469,7 @@ $(document).ready(function(){
   		  	if(!sel) alert('No data selected');	
   		}
   		return false;
-  	});     
-  	
-  //autoresizing inputs
-  //$('#newuser input').autoResize(); 
-  
-  var foo = []; 
-  $('#arest :selected').each(function(i, selected){ 
-    foo[i] = selected.value;
-    console.log(foo[i]); 
-  });
-   
-  
-  //auto rest              
-  var drest_id = [];
-  var drest_name = [];   
-  $('#arest').change(function() {
-    $('#drest').html('')  
-    $('#arest :selected').each(function(i, selectedElement) {
-      drest_id[i] = $(selectedElement).val();
-      drest_name[i] = $(selectedElement).text();
-      console.log(drest_id[i]+" "+drest_name[i] );  
-      $('#drest').append('<option value="'+drest_id[i]+'">'+drest_name[i]+'</option>');
-    });
-  });
-  
-  var fwidth = parseInt($(".form-control").width());
-  $("#arest,#drest,#role").css("width", "100%");
+  	}); 
 });
   
 $(function(){
