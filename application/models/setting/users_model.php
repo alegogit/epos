@@ -53,7 +53,7 @@ class Users_model extends CI_Model {
 		$session_data = $this->session->userdata('logged_in');  
 		$role = $session_data['role'];   
 		if($role>1){
-      		$query = $this->db->where('ROLE_ID > 2');
+      		$query = $this->db->where('ROLE_ID > '.$role);
     	}
     	$query = $this->db->get('USERS'); 
     	return $query->result();
@@ -106,9 +106,9 @@ class Users_model extends CI_Model {
   
   	function get_roles(){         
 		$session_data = $this->session->userdata('logged_in');  
-		$role = $session_data['role'];   
+		$role = $session_data['role']; 
 		if($role>1){
-      		$query = $this->db->where('ID > 2');
+      		$query = $this->db->where('ID > '.$role);
     	}
     	$query = $this->db->select('ID,NAME')
                       ->from('ROLES')
