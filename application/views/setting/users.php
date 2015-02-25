@@ -27,7 +27,7 @@
               <span class="glyphicon glyphicon-remove"></span> Delete Selected users(s)
             </button>        
             <div style="margin-bottom:15px"></div> 
-            <div class="table-responsive" style="overflow:scroll;">
+            <div class="table-responsive" style="overflow-x:scroll;">
 						  <table id="setting" class="table table-striped dt-right compact">
 						    <thead>
 						    <tr class="tablehead text3D">

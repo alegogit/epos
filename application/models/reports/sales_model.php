@@ -51,7 +51,8 @@ class Sales_model extends CI_Model {
                       ->get('');
 		return $query->row()->CUR;
 	}
-	function get_sales_report($start_date,$end_date,$rest_id)
+  
+	function get_sales_report0($start_date,$end_date,$rest_id)
 	{
 	     $query = $this->db->query('SELECT O.ID, O.ORDER_NUMBER ORDER_NUMBER, 
             T.TABLE_NUMBER TABLE_NUMBER,
@@ -67,7 +68,25 @@ class Sales_model extends CI_Model {
 		    return $query->result();
 	}
   
-  function get_order_details($order_id)
+	function get_sales_report($start_date,$end_date,$rest_id)
+	{
+	     $query = $this->db->query('SELECT O.ID, O.ORDER_NUMBER ORDER_NUMBER, 
+                                    T.TABLE_NUMBER TABLE_NUMBER, C.NAME CUSTOMER_NAME,
+                                    O.STARTED, O.ENDED, O.NO_OF_GUEST,
+		                                O.TOTAL TOTAL_BILL, O.PAYMENT_METHOD	PAYMENT_METHOD, O.TIP,
+		                                O.DISCOUNT DISCOUNT, O.SERVICE_CHARGE, O.TOTAL_TAX,
+                                    O.PAID_AMOUNT
+                                  FROM ORDERS O
+                                  LEFT OUTER JOIN TABLES T ON T.ID = O.TABLE_ID
+                                  LEFT OUTER JOIN CUSTOMERS C ON C.ID = O.CUSTOMER_ID
+                                  LEFT OUTER JOIN RESTAURANTS R	ON R.ID = O.REST_ID	
+                                  WHERE O.ACTIVE = 0
+                                  AND O.ENDED BETWEEN "'.$start_date.'" AND "'.$end_date.'"
+                                  AND R.ID = '.$rest_id.';');
+		    return $query->result();
+	}
+  
+  function get_order_details0($order_id)
 	{
 	     $query = $this->db->query('SELECT M.NAME, 
 		          OD.QUANTITY, OD.KITCHEN_NOTE, OD.PRICE, OD.VOID, OD.VOID_REASON 
@@ -76,8 +95,17 @@ class Sales_model extends CI_Model {
            WHERE ORDER_ID = '.$order_id.';');
 		    return $query->result();
 	}
+  
+  function get_order_details($order_id){
+	     $query = $this->db->query('SELECT OD.MENU_NAME, OD.CATEGORY_NAME, OD.KITCHEN_NOTE, 
+                                		OD.QUANTITY, OD.PRICE, OD.TOTAL,
+                                		OD.VOID, OD.VOID_REASON 
+                                	FROM ORDER_DETAILS OD
+                                  WHERE ORDER_ID = '.$order_id.';');
+		    return $query->result();
+	}
 	
-	function get_void_items($start_date,$end_date,$rest_id)
+	function get_void_items0($start_date,$end_date,$rest_id)
 	{                                                                                                                                  
 	     $query = $this->db->query('SELECT M.NAME, 
 		      OD.VOID_REASON, 
@@ -89,6 +117,17 @@ class Sales_model extends CI_Model {
 	        AND O.ACTIVE = 0
           AND O.ENDED BETWEEN "'.$start_date.'" AND "'.$end_date.'"
           AND O.REST_ID = '.$rest_id.';');
+		    return $query->result();
+	}
+	
+	function get_void_items($start_date,$end_date,$rest_id)	{                                                                                                                                  
+	     $query = $this->db->query('SELECT OD.MENU_NAME, OD.VOID_REASON, 
+		                                O.ORDER_NUMBER, O.STARTED, O.ENDED
+                                  FROM ORDER_DETAILS OD
+                                  LEFT OUTER JOIN ORDERS O ON O.ID = OD.ORDER_ID
+                                  WHERE OD.VOID = 1	AND O.ACTIVE = 0
+                                  AND O.ENDED BETWEEN "'.$start_date.'" AND "'.$end_date.'"
+                                  AND O.REST_ID = '.$rest_id.';');
 		    return $query->result();
 	}
 	

@@ -14,13 +14,22 @@ class Orderdetails_model extends CI_Model {
     return $query->row();
   }  
   
-  function get_order_details($order_id)
+  function get_order_details0($order_id)
 	{
 	     $query = $this->db->query('SELECT M.NAME, 
 		          OD.QUANTITY, OD.KITCHEN_NOTE, OD.PRICE, OD.VOID, OD.VOID_REASON 
 	         FROM ORDER_DETAILS OD
 	         LEFT OUTER JOIN MENU M	ON M.ID = OD.MENU_ID
            WHERE ORDER_ID = '.$order_id.';');
+		    return $query->result();
+	}     
+  
+  function get_order_details($order_id){
+	     $query = $this->db->query('SELECT OD.MENU_NAME, OD.CATEGORY_NAME, OD.KITCHEN_NOTE, 
+                                		OD.QUANTITY, OD.PRICE, OD.TOTAL,
+                                		OD.VOID, OD.VOID_REASON 
+                                	FROM ORDER_DETAILS OD
+                                  WHERE ORDER_ID = '.$order_id.';');
 		    return $query->result();
 	}
 	 	

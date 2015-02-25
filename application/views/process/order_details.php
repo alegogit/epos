@@ -3,14 +3,18 @@
   foreach ($order_details as $row){ 
 ?>
     <tr>
-      <td data-field="numb" style="text-align:right"><?=$i?></td>
-      <td data-field="name"><?=$row->NAME?></td>
-      <td data-field="qty" style="text-align:right"><?=$row->QUANTITY?></td>
-      <td data-field="note"><?=($row->KITCHEN_NOTE=="")?"&nbsp;&nbsp;-":$row->KITCHEN_NOTE?></td>
-      <td data-field="curr" style="text-align:right"><?=$cur?></td>
-      <td data-field="prc" class="cure" style="text-align:right"><?=number_format((float)$row->PRICE, 2, '.', '')?></td>
-      <td data-field="void" style="text-align:right"><?=$row->VOID?></td>
-      <td data-field="vors"><?=(($row->VOID_REASON=="")||($row->VOID_REASON=="NULL"))?"&nbsp;&nbsp;-":$row->VOID_REASON?></td>
+      <td style="text-align:right"><?=$i?></td>
+      <td><?=$row->MENU_NAME?></td>
+      <td><?=$row->CATEGORY_NAME?></td>   
+      <td><?=($row->KITCHEN_NOTE=="")?"&nbsp;&nbsp;-":$row->KITCHEN_NOTE?></td>
+      <td style="text-align:right"><?=$row->QUANTITY?></td>
+      <td style="text-align:right"><?=$cur?></td>
+      <td class="cure" style="text-align:right"><?=number_format((float)$row->PRICE, 2, '.', '')?></td>
+      <td style="text-align:right"><?=$cur?></td>
+      <td class="cure" style="text-align:right"><?=number_format((float)$row->TOTAL, 2, '.', '')?></td> 
+      <td style="text-align:right"><?=$cur?></td>
+      <td class="cure" style="text-align:right"><?=number_format((float)$row->VOID, 2, '.', '')?></td>
+      <td ><?=(($row->VOID_REASON=="")||($row->VOID_REASON=="NULL"))?"&nbsp;&nbsp;-":$row->VOID_REASON?></td>
     </tr>
 <?php 
     $i++; 

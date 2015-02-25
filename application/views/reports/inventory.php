@@ -66,13 +66,14 @@
   </div><!-- /.container-fluid -->
 </div><!-- /#page-content-wrapper -->
 
-<script> 
-    //inititate datatable
-  	var table = $('#report').DataTable({
-	    columnDefs: [
-	    	{ targets: 'no-sort', orderable: false }
-	    ],
-	    "order": [[ 0, "asc" ]]
-  	});
-
-</script>
+<script>                     
+  //inititate datatable
+  var table = $('#report').DataTable({
+    columnDefs: [
+      { targets: 'no-sort', orderable: false }
+    ],
+    "order": [[ 0, "asc" ]],
+    pageLength: 25,    
+    "aLengthMenu": [[15, 25, 100, -1], [15, 25, 100, "All"]]
+  });    
+</script> 

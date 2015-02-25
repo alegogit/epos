@@ -61,9 +61,9 @@
 		    <div class="panel-heading">
           <b><?=$report_name?> Report</b>  
         </div>
-	      <div class="panel-body table-responsive">
+	      <div class="panel-body table-responsive" style="overflow-x:scroll;">
 	       <?php if($report_name!="Sales"){?>   
-	        <table id="report" class="table table-striped" data-toggle="table" data-url="" data-show-refresh="false" data-show-toggle="false" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+	        <table id="void" class="table table-striped" data-toggle="table" data-url="" data-show-refresh="false" data-show-toggle="false" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
 					  <thead>
 						  <tr>
 						    <th data-field="state" data-checkbox="true" >Void ID</th>
@@ -78,7 +78,7 @@
 						  <?php $i = 0;  foreach ($void_items as $row){ ?>
 						  <tr>
 						    <td data-field="state" data-checkbox="true" ><?=$i?></td>
-						    <td data-field="name" data-sortable="true"><?=$row->NAME?></td>
+						    <td data-field="name" data-sortable="true"><?=$row->MENU_NAME?></td>
 						    <td data-field="rson"  data-sortable="true"><?=$row->VOID_REASON?></td>
 						    <td data-field="onum" data-sortable="true"><?=$row->ORDER_NUMBER?></td>
 						    <td data-field="strd" data-sortable="true"><?=$row->STARTED?></td>
@@ -88,27 +88,42 @@
 						</tbody>
 					</table>
 				<?php } else {?>  
-	         <table id="report" class="table table-striped dt-right">
+	         <table id="sales" class="table table-striped dt-right">
 					   <thead>
 						  <tr class="tablehead text3D">
 						    <th class="cin">Order Number</th>
 						    <th class="cin">Table Number</th>
-						    <th>Customer</th>
+						    <th>Customer Name</th>
 						    <th>Started</th>
 						    <th>Ended</th>
-						    <th class="cin">Num Of Guest</th>
+						    <th class="cin">No. Of Guest</th>
 						    <th class="cin no-sort"></th>
-						    <th class="cin">Total</th>  
+						    <th class="cin">Total Bill</th>  
 						    <th class="cin no-sort"></th>
 						    <th class="cin">Tip</th>    
 						    <th class="cin no-sort"></th>
 						    <th class="cin">Discount</th> 
 						    <th class="cin no-sort"></th>
+						    <th class="cin">Service Charge</th> 
+						    <th class="cin no-sort"></th>
+						    <th class="cin">Total Tax</th> 
+						    <th class="cin no-sort"></th>
 						    <th class="cin">Paid Amount</th>
+						    <th>Payment Method</th>
 						  </tr>
 						</thead>
 						<tbody>   
-						  <?php $i = 0;  foreach ($sales_report as $row){ ?>
+						  <?php 
+                $i = 0;
+                $total['NO_OF_GUEST'] = 0;  
+                $total['TOTAL_BILL'] = 0;  
+                $total['TIP'] = 0;  
+                $total['DISCOUNT'] = 0; 
+                $total['SERVICE_CHARGE'] = 0;  
+                $total['TOTAL_TAX'] = 0;  
+                $total['PAID_AMOUNT'] = 0;
+                foreach ($sales_report as $row){ 
+              ?>
 						  <tr>
 						    <td data-field="name" class="cin" data-valign="center">
                   <a href="#" style="font-size:90%" class="label label-lg label-success modalTrigger" data-toggle="modal" data-target="#bookModal" data-id="<?=$row->ID?>" data-odn="<?=$row->ORDER_NUMBER?>">
@@ -121,16 +136,50 @@
 						    <td><?=$row->ENDED?></td>
 						    <td class="cin"><?=$row->NO_OF_GUEST?></td>
 						    <td class="cin cur text3D"><?=$cur?></td>
-						    <td class="cin cur text3D"><?=$row->TOTAL?></td> 
+						    <td class="cin cur text3D"><?=$row->TOTAL_BILL?></td> 
 						    <td class="cin cur text3D"><?=$cur?></td>
 						    <td class="cin cur text3D"><?=$row->TIP?></td> 
+						    <td class="cin cur text3D text-danger"><?=$cur?></td>
+						    <td class="cin cur text3D text-danger"><?=$row->DISCOUNT?></td>
 						    <td class="cin cur text3D"><?=$cur?></td>
-						    <td class="cin cur text3D"><?=$row->DISCOUNT?></td>
+						    <td class="cin cur text3D"><?=$row->SERVICE_CHARGE?></td>
 						    <td class="cin cur text3D"><?=$cur?></td>
-						    <td class="cin cur text3D"><?=$row->PAID_AMOUNT?></td>
+						    <td class="cin cur text3D"><?=$row->TOTAL_TAX?></td>
+						    <td class="cin cur text3D"><strong><?=$cur?></strong></td>
+						    <td class="cin cur text3D" style="font-weight:bolder"><strong><?=$row->PAID_AMOUNT?></strong></td>
+						    <td><?=$row->PAYMENT_METHOD?></td>
 						  </tr>
-						  <?php $i++; } ?>
+						  <?php  
+                  $total['NO_OF_GUEST'] = $total['NO_OF_GUEST']+$row->NO_OF_GUEST;  
+                  $total['TOTAL_BILL'] = $total['TOTAL_BILL']+$row->TOTAL_BILL;  
+                  $total['TIP'] = $total['TIP']+$row->TIP;  
+                  $total['DISCOUNT'] = $total['DISCOUNT']+$row->DISCOUNT; 
+                  $total['SERVICE_CHARGE'] = $total['SERVICE_CHARGE']+$row->SERVICE_CHARGE;  
+                  $total['TOTAL_TAX'] = $total['TOTAL_TAX']+$row->TOTAL_TAX;  
+                  $total['PAID_AMOUNT'] = $total['PAID_AMOUNT']+$row->PAID_AMOUNT;
+                  $i++; 
+                } 
+              ?>
 						</tbody>
+            <tfoot> 
+						  <tr class="tablefoot text3D">
+						    <th class="cin no-sort" colspan="5">Grand Total</th>
+						    <th class="cin text3D no-sort"><?=$total['NO_OF_GUEST']?></th>
+						    <th class="cin text3D no-sort"><?=$cur?></th>
+						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['TOTAL_BILL'], 2, '.', '')?></th>  
+						    <th class="cin text3D no-sort"><?=$cur?></th>
+						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['TIP'], 2, '.', '')?></th>    
+						    <th class="cin text3D no-sort text-danger"><?=$cur?></th>
+						    <th class="cin cur text3D no-sort text-danger"><?=number_format((float)$total['DISCOUNT'], 2, '.', '')?></th> 
+						    <th class="cin text3D no-sort"><?=$cur?></th>
+						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['SERVICE_CHARGE'], 2, '.', '')?></th> 
+						    <th class="cin text3D no-sort"><?=$cur?></th>
+						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['TOTAL_TAX'], 2, '.', '')?></th> 
+						    <th class="cin text3D no-sort"><?=$cur?></th>
+						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['PAID_AMOUNT'], 2, '.', '')?></th>
+						    <th class="no-sort"></th>
+						  </tr>
+            </tfoot>
 					</table> 
 				<?php } ?>
 			  </div>
@@ -143,7 +192,7 @@
 <?php if($report_name=="Sales"){?>
 <!-- Modal -->
 <div class="modal fade" id="bookModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog" style="width:65% !important;">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -154,12 +203,13 @@
 					  <thead>
 						  <tr class="tablehead text3D">
 						    <th class="cin">No</th>
-						    <th>Menu Name</th>
-						    <th class="cin">Quantity</th>
+						    <th>Menu</th>
+						    <th>Category</th>  
 						    <th>Kitchen Note</th>
-						    <th class="cin"></th>
-						    <th class="cin">Price</th>
-						    <th class="cin">Void</th>
+						    <th class="cin">Quantity</th>
+						    <th class="cin" colspan="2">Price</th>
+						    <th class="cin" colspan="2">Total</th> 
+						    <th class="cin" colspan="2">Void</th>
 						    <th>Void Reason</th>
 						  </tr>
 						</thead>
@@ -183,6 +233,16 @@
   
   var ajaxurl = $("#ajaxurl").data('url');  
   var rest_id = $("#rest_id").data('val');
+  
+  //inititate datatable
+  var table = $('#sales, #void').DataTable({
+    columnDefs: [
+      { targets: 'no-sort', orderable: false }
+    ],
+    "order": [[ 0, "asc" ]],
+    pageLength: 25,    
+    "aLengthMenu": [[5, 25, 100, -1], [5, 25, 100, "All"]]
+  }); 
   
   var gOrdDet = function gOrdDet(){
        $(".modalTrigger").click(function () { 
@@ -233,7 +293,7 @@
     ordering:  false,
     bInfo : false
   });
-  
+
   //currency control
   jQuery(function($) {
     var cur = $("#cur").data('val');

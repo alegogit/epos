@@ -82,14 +82,14 @@
 						    <td><?=$row->TERMINAL_DATE?></td>
 						    <!--<td><?=$row->REST_NAME?></td>-->
 						    <td><?=$row->DEVICE_NAME?></td>     
-						    <td class="cin cur text3D"><?=$cur?></td>
-						    <td class="cin cur text3D"><?=number_format((float)$row->CASH_FROM_REGISTER, 0, '.', '')?></td> 
-						    <td class="cin cur text3D"><?=$cur?></td>
-						    <td class="cin cur text3D"><?=number_format((float)$row->CASH_FROM_ORDER, 0, '.', '')?></td> 
-						    <td class="cin cur text3D"><?=$cur?></td>
-						    <td class="cin cur text3D"><?=number_format((float)$row->DEBIT_FROM_ORDERS, 0, '.', '')?></td> 
-						    <td class="cin cur text3D"><?=$cur?></td>
-						    <td class="cin cur text3D"><?=number_format((float)$row->CREDIT_FROM_ORDERS, 0, '.', '')?></td>
+						    <td class="cin text3D"><?=$cur?></td>
+						    <td class="cin cur text3D"><?=number_format((float)$row->CASH_FROM_REGISTER, 2, '.', '')?></td> 
+						    <td class="cin text3D"><?=$cur?></td>
+						    <td class="cin cur text3D"><?=number_format((float)$row->CASH_FROM_ORDER, 2, '.', '')?></td> 
+						    <td class="cin text3D"><?=$cur?></td>
+						    <td class="cin cur text3D"><?=number_format((float)$row->DEBIT_FROM_ORDERS, 2, '.', '')?></td> 
+						    <td class="cin text3D"><?=$cur?></td>
+						    <td class="cin cur text3D"><?=number_format((float)$row->CREDIT_FROM_ORDERS, 2, '.', '')?></td>
 						  </tr>
 						  <?php 
                 $total['CASH_FROM_REGISTER'] = $total['CASH_FROM_REGISTER']+$row->CASH_FROM_REGISTER;  
@@ -104,14 +104,14 @@
 						    <th class="no-sort">Grand Total</th>
 						    <!--<th>Restaurant</th>-->
 						    <th class="no-sort"></th> 
-						    <th class="cin cur text3D"><?=$cur?></td>
-						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['CASH_FROM_REGISTER'], 0, '.', '')?></th>  
-						    <th class="cin cur text3D"><?=$cur?></td>
-						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['CASH_FROM_ORDER'], 0, '.', '')?></th> 
-						    <th class="cin cur text3D"><?=$cur?></td>
-						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['DEBIT_FROM_ORDERS'], 0, '.', '')?></th>  
-						    <th class="cin cur text3D"><?=$cur?></td>
-						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['CREDIT_FROM_ORDERS'], 0, '.', '')?></th>
+						    <th class="cin text3D no-sort"><?=$cur?></td>
+						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['CASH_FROM_REGISTER'], 2, '.', '')?></th>  
+						    <th class="cin text3D no-sort"><?=$cur?></td>
+						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['CASH_FROM_ORDER'], 2, '.', '')?></th> 
+						    <th class="cin text3D no-sort"><?=$cur?></td>
+						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['DEBIT_FROM_ORDERS'], 2, '.', '')?></th>  
+						    <th class="cin text3D no-sort"><?=$cur?></td>
+						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['CREDIT_FROM_ORDERS'], 2, '.', '')?></th>
 						  </tr>
 						</tfoot>
 					</table>      
