@@ -136,17 +136,17 @@
 						    <td><?=$row->ENDED?></td>
 						    <td class="cin"><?=$row->NO_OF_GUEST?></td>
 						    <td class="cin cur text3D"><?=$cur?></td>
-						    <td class="cin cur text3D"><?=$row->TOTAL_BILL?></td> 
+						    <td class="cin cur text3D"><?=number_format((float)$row->TOTAL_BILL, 2, '.', '')?></td> 
 						    <td class="cin cur text3D"><?=$cur?></td>
-						    <td class="cin cur text3D"><?=$row->TIP?></td> 
+						    <td class="cin cur text3D"><?=number_format((float)$row->TIP, 2, '.', '')?></td> 
 						    <td class="cin cur text3D text-danger"><?=$cur?></td>
-						    <td class="cin cur text3D text-danger"><?=$row->DISCOUNT?></td>
+						    <td class="cin cur text3D text-danger"><?=number_format((float)$row->DISCOUNT, 2, '.', '')?></td>
 						    <td class="cin cur text3D"><?=$cur?></td>
-						    <td class="cin cur text3D"><?=$row->SERVICE_CHARGE?></td>
+						    <td class="cin cur text3D"><?=number_format((float)$row->SERVICE_CHARGE, 2, '.', '')?></td>
 						    <td class="cin cur text3D"><?=$cur?></td>
-						    <td class="cin cur text3D"><?=$row->TOTAL_TAX?></td>
+						    <td class="cin cur text3D"><?=number_format((float)$row->TOTAL_TAX, 2, '.', '')?></td>
 						    <td class="cin cur text3D"><strong><?=$cur?></strong></td>
-						    <td class="cin cur text3D" style="font-weight:bolder"><strong><?=$row->PAID_AMOUNT?></strong></td>
+						    <td class="cin cur text3D" style="font-weight:bolder"><strong><?=number_format((float)$row->PAID_AMOUNT, 2, '.', '')?></strong></td>
 						    <td><?=$row->PAYMENT_METHOD?></td>
 						  </tr>
 						  <?php  
@@ -163,7 +163,11 @@
 						</tbody>
             <tfoot> 
 						  <tr class="tablefoot text3D">
-						    <th class="cin no-sort" colspan="5">Grand Total</th>
+						    <th> </th>
+						    <th> </th>
+						    <th> </th>
+						    <th> </th>
+						    <th class="cin no-sort">Grand Total</th>
 						    <th class="cin text3D no-sort"><?=$total['NO_OF_GUEST']?></th>
 						    <th class="cin text3D no-sort"><?=$cur?></th>
 						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['TOTAL_BILL'], 2, '.', '')?></th>  
@@ -207,9 +211,16 @@
 						    <th>Category</th>  
 						    <th>Kitchen Note</th>
 						    <th class="cin">Quantity</th>
+						    <th class="cin"></th>
+						    <th class="cin">Price</th>  
+						    <th class="cin"></th>
+						    <th class="cin">Total</th>
+						    <th class="cin">Void</th>
+                <!--
 						    <th class="cin" colspan="2">Price</th>
 						    <th class="cin" colspan="2">Total</th> 
 						    <th class="cin" colspan="2">Void</th>
+                -->
 						    <th>Void Reason</th>
 						  </tr>
 						</thead>
@@ -235,7 +246,17 @@
   var rest_id = $("#rest_id").data('val');
   
   //inititate datatable
-  var table = $('#sales, #void').DataTable({
+  var table1 = $('#sales').DataTable({
+    columnDefs: [
+      { targets: 'no-sort', orderable: false }
+    ],
+    "order": [[ 0, "asc" ]],
+    pageLength: 25,    
+    "aLengthMenu": [[5, 25, 100, -1], [5, 25, 100, "All"]]
+  }); 
+  
+  //inititate datatable
+  var table2 = $('#void').DataTable({
     columnDefs: [
       { targets: 'no-sort', orderable: false }
     ],
@@ -296,7 +317,8 @@
 
   //currency control
   jQuery(function($) {
-    var cur = $("#cur").data('val');
+    var cur = '<?=$cur?>';
+    //var cur = $("#cur").data("val");
     switch(cur) {
       case "RS":                  
         $('.cur').autoNumeric('init', { dGroup: 2 });

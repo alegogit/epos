@@ -12,8 +12,7 @@
       <td class="cure" style="text-align:right"><?=number_format((float)$row->PRICE, 2, '.', '')?></td>
       <td style="text-align:right"><?=$cur?></td>
       <td class="cure" style="text-align:right"><?=number_format((float)$row->TOTAL, 2, '.', '')?></td> 
-      <td style="text-align:right"><?=$cur?></td>
-      <td class="cure" style="text-align:right"><?=number_format((float)$row->VOID, 2, '.', '')?></td>
+      <td class="cure" style="text-align:right"><?=(($row->VOID==0)||($row->VOID=="NULL"))?"No":"Yes"?></td>
       <td ><?=(($row->VOID_REASON=="")||($row->VOID_REASON=="NULL"))?"&nbsp;&nbsp;-":$row->VOID_REASON?></td>
     </tr>
 <?php 
@@ -25,6 +24,7 @@
 <script>
 jQuery(function($) {
     var cure = '<?=$cur?>';
+    //var cure = $("#cure").data("val");
     switch(cure) {
       case "RS":                  
         $('.cure').autoNumeric('init', { dGroup: 2 });
