@@ -29,34 +29,42 @@ class Loginauth_controller extends CI_Controller {
         }   
 			    
      }
-	 
-	 function check_database($password)
-	 {
-	   //Field validation succeeded.  Validate against database
-	   $username = $this->input->post('username');
-	 
-	   //query the database
-	   $result = $this->login->login($username, sha1(md5($password)));
-	 
-	   if($result){
+     
+  function check_database($password){
+    //Field validation succeeded.  Validate against database
+	  $username = $this->input->post('username');
+	  
+    //query the database
+	  $result = $this->login->login($username, sha1(md5($password)));
+	  
+    $role = 0;
+    if($result){
 		  $sess_array = array();
 		  foreach($result as $row){
-		   $sess_array = array(
-			   'id' => $row->USER_ID
-			   ,'username' => $row->USERNAME
-			   ,'role' => $row->ROLE_ID
-			   ,'def_rest' => $row->REST_ID
-		   );
-		   $this->session->set_userdata('logged_in', $sess_array);
-		   $this->login->update_logintime();
-		  }
-		  //echo "<pre>" . var_dump($row) . "</pre>";   
-		  return TRUE;
-	   } else {
-	    $this->form_validation->set_error_delimiters('<div id="output" class="fade-in">', '</div>');
-		  $this->form_validation->set_message('check_database', 'Invalid username or password');
-		  return false;
-	   }
-	 }
+		    $sess_array = array(
+			   'id' => $row->USER_ID,
+         'username' => $row->USERNAME,
+         'role' => $row->ROLE_ID,
+         'def_rest' => $row->REST_ID
+		    );
+		    $this->session->set_userdata('logged_in', $sess_array);
+		    $this->login->update_logintime();
+        $role = $row->ROLE_ID;
+      }
+		  //echo "<pre>" . var_dump($row) . "</pre>";
+      $config = $this->config->config; 
+      if ($role>$config['max_role']){ 
+        $this->form_validation->set_error_delimiters('<div id="output" class="fade-in">', '</div>');
+        $this->form_validation->set_message('check_database', 'You are not allowed to login to the system. Please contact Administrator.');
+        return false;
+      } else {    
+		    return TRUE;
+      }
+    } else {
+      $this->form_validation->set_error_delimiters('<div id="output" class="fade-in">', '</div>');
+      $this->form_validation->set_message('check_database', 'Invalid username or password');
+      return false;
+    }
+  }
 
 }

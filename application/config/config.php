@@ -369,6 +369,21 @@ $config['rewrite_short_tags'] = FALSE;
 */
 $config['proxy_ips'] = '';
 
+/*
+|--------------------------------------------------------------------------
+| Maximum Role
+|--------------------------------------------------------------------------
+|
+| Maximum role id that can login
+| '1', 'ADMIN'
+| '2', 'GROUP MANAGER'
+| '3', 'BRANCH MANAGER'
+| '4', 'CASHIER'
+| '5', 'WAITER'
+|
+*/
+$config['max_role'] = 3;
+
 
 /* End of file config.php */
 /* Location: ./application/config/config.php */
