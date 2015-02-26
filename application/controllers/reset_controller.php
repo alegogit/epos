@@ -14,7 +14,8 @@ class Reset_controller extends CI_Controller {
         $data['code'] = $resetcode;    
 	      $reset_parm = $this->reset->epos_decrypt($resetcode,$this->config->item('encryption_key'));
 	      $reset_date = strstr($reset_parm,'@', true);
-	      $reset_user = substr(strstr($reset_parm,'@'),1);        
+	      $reset_user = substr(strstr($reset_parm,'@'),1);
+        date_default_timezone_set('Asia/Jakarta');        
 	      $date_diff = floor(abs(strtotime(date('Ymd')) - strtotime($reset_date))/(60*60*24));
 	      
 	      if($date_diff > $this->config->item('reset_link_expiry')){  
@@ -29,7 +30,7 @@ class Reset_controller extends CI_Controller {
               $data['notif'] = "You have successfully reset your password";          
               $data['nxact'] = "Login Now";   
               $this->load->view('reset/reset_notif',$data);
-            } else {     
+            } else {      
               $this->load->view('reset/reset_form',$data);
             }
           } else {                 

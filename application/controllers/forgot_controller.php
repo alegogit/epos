@@ -8,7 +8,8 @@ class Forgot_controller extends CI_Controller {
         $this->load->model('forgot_model','forgot',TRUE);
         $this->load->helper(array('form', 'url','html'));
         $this->load->library(array('form_validation','session'));   
-		    $this->data['user'] = '';
+		    $this->data['user'] = '';  
+		    $this->data['username'] = '';
     }
 	
 	function index() {
@@ -20,7 +21,8 @@ class Forgot_controller extends CI_Controller {
           $this->load->view('forgot/mail_form');  
         } else {      
 	        $email = $this->input->post('email');
-	        $reset_code = $this->forgot->epos_encrypt(date('Ymd')."@".$this->data['user'],$this->config->item('encryption_key'));
+          date_default_timezone_set('Asia/Jakarta');
+	        $reset_code = $this->forgot->epos_encrypt(date('Ymd')."@".$this->data['username'],$this->config->item('encryption_key'));
           $reset_url = $this->config->item('base_url')."reset/".$reset_code;   
 	        $message = "Hi ".$this->data['user'].",<br>&nbsp;<br>";
 	        $message .= "Reset Password Request was made.<br>&nbsp;<br>"; 
@@ -68,6 +70,7 @@ class Forgot_controller extends CI_Controller {
 		   );
 		  }
 		  $this->data['user'] = ($mailuser['name']!="")?$mailuser['name']:$mailuser['username'];
+		  $this->data['username'] = $mailuser['username'];
 		  return true;
 	   } else {
 	    //$eek1 = $this->forgot->epos_encrypt($this->config->item('encryption_key'));
