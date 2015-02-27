@@ -18,7 +18,11 @@ class Tableordersetting_controller extends CI_Controller {
 			$session_data = $this->session->userdata('logged_in'); 
       $data['p'] = $this->input->get('p');  
       if (isset($data['p'])) {   
-        switch ($data['p']){
+        switch ($data['p']){  
+          case 'takent':      
+            $data['varP'] = $this->input->get('tableorder_name').','.$this->input->get('r');  
+            $this->load->view('process/taken_table',$data); 
+          break;
           case 'update':      
             $data['varP'] = $this->input->post('pk').','.$this->input->post('value').','.$this->input->post('name');  
             $this->load->view('process/update_tableorder',$data); 

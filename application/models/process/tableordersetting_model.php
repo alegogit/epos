@@ -20,16 +20,27 @@ class Tableordersetting_model extends CI_Model {
 		$id = $session_data['id']; 
 		$dt = date('Y-m-d H:i:s');
 		$up = strstr($arrin[2], '-', true);
-	  $data = array(
-               $up => $arrin[1],
-               'LAST_UPDATED_BY' => $id,
-               'LAST_UPDATED_DATE' => $dt,
-            ); 
-		$this->db->where('ID',$arrin[0]);
-    $query = $this->db->update('TABLES',$data);
-    $output[0] = $this->process->get_username($this->process->get_tableorder($arrin[0])->LAST_UPDATED_BY)->NAME;
-    $output[1] = $this->process->get_tableorder($arrin[0])->LAST_UPDATED_DATE;
-    $outputs = implode(",",$output);   
+    $untaken = 'true';
+    if($up=="TABLE_NUMBER"){
+      $arrcin = array();
+      $arrcin[0] = $arrin[1];
+      $arrcin[1] = $this->process->get_tableorder($arrin[0])->REST_ID;
+      $untaken = $this->process->get_taken_table($arrcin);  
+    }
+    if($untaken=='true'){ 
+  	  $data = array(
+                 $up => $arrin[1],
+                 'LAST_UPDATED_BY' => $id,
+                 'LAST_UPDATED_DATE' => $dt,
+              ); 
+  		$this->db->where('ID',$arrin[0]);
+      $query = $this->db->update('TABLES',$data);
+      $output[0] = $this->process->get_username($this->process->get_tableorder($arrin[0])->LAST_UPDATED_BY)->NAME;
+      $output[1] = $this->process->get_tableorder($arrin[0])->LAST_UPDATED_DATE;
+      $outputs = implode(",",$output);
+    } else {    
+      $outputs = 'false';
+    }   
     return $outputs;
 	}
 	
@@ -56,7 +67,17 @@ class Tableordersetting_model extends CI_Model {
                       ->limit(1)
                       ->get('');
     return $query->row();
-  }      
+  }     
+  
+	function get_taken_table($arrin){
+    $query = $this->db->query('SELECT TABLE_NUMBER FROM TABLES WHERE TABLE_NUMBER = '.$arrin[0].' AND REST_ID = '.$arrin[1].';');
+    if ($query->num_rows() > 0){
+      $out = 'false';
+    } else {
+      $out = 'true';
+    }                  
+    return $out;
+  }   
                      
 	function get_restaurant_name($id){
     $query = $this->db->select('NAME AS REST_NAME')

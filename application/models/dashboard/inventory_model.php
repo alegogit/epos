@@ -2,44 +2,50 @@
 
 class Inventory_model extends CI_Model {
 
-    var $username   = '';
-    var $password = '';
-    var $date    = '';
+  var $username   = '';
+  var $password = '';
+  var $date    = '';
 
-    function __construct(){
-        // Call the Model constructor
-        parent::__construct();
-    }
+  function __construct(){
+    // Call the Model constructor
+    parent::__construct();
+  }
 	 
 	function get_profile(){
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id'];
 		$this->db->where('ID',$id);
-        $query = $this->db->get('USERS');
-        return $query->row();
-    }
-	
-	function get_restaurant(){
+    $query = $this->db->get('USERS');
+    return $query->row();
+  }
+  
+  function get_restaurant(){
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id'];
-		$this->db->where('USERS_RESTAURANTS.USER_ID',$id);
-    	$query = $this->db->select('*')
-                      ->from('RESTAURANTS')
-                      ->join('USERS_RESTAURANTS', 'RESTAURANTS.ID = USERS_RESTAURANTS.REST_ID')
-                      ->get('');
-    	return $query->result();
+		if($session_data['role']!=1){   
+      $this->db->where('USERS_RESTAURANTS.USER_ID',$id);
+      $query = $this->db->select('*')
+                        ->from('RESTAURANTS')
+                        ->join('USERS_RESTAURANTS', 'RESTAURANTS.ID = USERS_RESTAURANTS.REST_ID')
+                        ->get('');
+    } else {  
+      $query = $this->db->select('*,ID AS REST_ID')
+                        ->from('RESTAURANTS')
+                        ->get('');
     }
+    return $query->result();
+  }
                                 
-  	function get_currency($rest_id){
-    	$query = $this->db->select('RESTAURANTS.CURRENCY, REF_VALUES.VALUE as CUR')
+  function get_currency($rest_id){
+    $query = $this->db->select('RESTAURANTS.CURRENCY, REF_VALUES.VALUE as CUR')
                       ->from('RESTAURANTS')
                       ->join('REF_VALUES', 'REF_VALUES.CODE = RESTAURANTS.CURRENCY')
                       ->where('RESTAURANTS.ID',$rest_id)
                       ->where('REF_VALUES.LOOKUP_NAME','CURRENCY')
                       ->limit(1)
                       ->get('');
-    	return $query->row()->CUR;
-  	}
+    return $query->row()->CUR;
+  }
 	
 	function total_sales_today($rest_id){
 		//$query = $this->db->query('SELECT IFNULL(SUM(TOTAL),0) AS RES FROM ORDERS WHERE DATE(ENDED) = DATE(SYSDATE()) AND REST_ID ='.$rest_id.';');

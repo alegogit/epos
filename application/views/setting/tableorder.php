@@ -145,6 +145,7 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal fade -->
 <div id="baseurl" data-url="<?=base_url()?>"></div>
+<div id="restid" data-val="<?=$rest_id?>"></div>
 <?php  
   	//editable script
   	$i = 0;
@@ -160,6 +161,7 @@
 	                        validate: function(v) {
 	                          if (!v) return 'don\'t leave it blank!';   
 	                          if (isNaN(v)) return 'please fill in a number format!';
+	                          if (isTaken(v)) return 'please fill another Table Number!';
 	                        },
 	                        success: function(result){  
 	                          var data = result.split(',');
@@ -266,17 +268,24 @@ $(document).ready(function(){
 });
 
 $(function(){
-	var baseurl = $("#baseurl").data('url');
-	$("#newtabo").validate({ 
-    	rules: {
-      		tableorder_name: { 
-        		number: true 
-      		},
+	var baseurl = $("#baseurl").data('url'); 
+	var restid = $("#restid").data('val');
+	$("#newtabo").validate({
+    rules: {   
+      tableorder_name: { 
+        number: true,
+        remote: baseurl+"process/tableorder?p=takent&r="+restid  
+      },
 			tableorder_position: {
-        		number: true
+        number: true
 			} 
-	    }    
-  	});
+	  },
+	  messages:{
+      tableorder_name: {
+        remote: "Please enter another Table Number"
+      }
+	  }    
+  });
 });
 
 $.validator.setDefaults({
@@ -297,4 +306,19 @@ $.validator.setDefaults({
     }
 });
   
+function isTaken(tbl){
+  $.ajax({
+    type: "GET",
+    url: baseurl+"process/tableorder?p=takent&r="+restid ,
+    data: tbl,
+	  cache: false,
+	  success: function(result){
+      if(result.trim()!='false'){
+        return false;
+      } else {
+        return true;  
+	    }   
+	  }
+	});   
+}  
 </script>

@@ -2,33 +2,39 @@
 
 class Sync_model extends CI_Model {
 	function __construct(){
-    	// Call the Model constructor
-    	parent::__construct();
-  	}
+    // Call the Model constructor
+    parent::__construct();
+  }
 	 
 	function get_profile(){
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id'];
 		$this->db->where('ID',$id);
-    	$query = $this->db->get('USERS');
-    	return $query->row();
-  	}  
+  	$query = $this->db->get('USERS');
+  	return $query->row();
+  } 
   
-  	function get_restaurant(){
+  function get_restaurant(){
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id'];
-		$this->db->where('USERS_RESTAURANTS.USER_ID',$id);
-    	$query = $this->db->select('*')
-                      ->from('RESTAURANTS')
-                      ->join('USERS_RESTAURANTS', 'RESTAURANTS.ID = USERS_RESTAURANTS.REST_ID')
-                      ->get('');
-    	return $query->result();
-  	}
+		if($session_data['role']!=1){   
+      $this->db->where('USERS_RESTAURANTS.USER_ID',$id);
+      $query = $this->db->select('*')
+                        ->from('RESTAURANTS')
+                        ->join('USERS_RESTAURANTS', 'RESTAURANTS.ID = USERS_RESTAURANTS.REST_ID')
+                        ->get('');
+    } else {  
+      $query = $this->db->select('*,ID AS REST_ID')
+                        ->from('RESTAURANTS')
+                        ->get('');
+    }
+    return $query->result();
+  }
 	
-  	function get_default_rest(){   
+  function get_default_rest(){   
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id'];                      
-    	$query = $this->db->query('SELECT USERS_RESTAURANTS.*, RESTAURANTS.NAME AS REST_NAME
+  	$query = $this->db->query('SELECT USERS_RESTAURANTS.*, RESTAURANTS.NAME AS REST_NAME
                               FROM USERS_RESTAURANTS
                               JOIN RESTAURANTS ON USERS_RESTAURANTS.REST_ID = RESTAURANTS.ID
                               WHERE USERS_RESTAURANTS.DEFAULT_REST=1 AND USERS_RESTAURANTS.USER_ID = '.$id.'

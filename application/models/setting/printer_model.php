@@ -12,16 +12,22 @@ class Printer_model extends CI_Model {
 		$this->db->where('ID',$id);
     $query = $this->db->get('USERS');
     return $query->row();
-  }  
+  }
   
   function get_restaurant(){
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id'];
-		$this->db->where('USERS_RESTAURANTS.USER_ID',$id);
-    $query = $this->db->select('*')
-                      ->from('RESTAURANTS')
-                      ->join('USERS_RESTAURANTS', 'RESTAURANTS.ID = USERS_RESTAURANTS.REST_ID')
-                      ->get('');
+		if($session_data['role']!=1){   
+      $this->db->where('USERS_RESTAURANTS.USER_ID',$id);
+      $query = $this->db->select('*')
+                        ->from('RESTAURANTS')
+                        ->join('USERS_RESTAURANTS', 'RESTAURANTS.ID = USERS_RESTAURANTS.REST_ID')
+                        ->get('');
+    } else {  
+      $query = $this->db->select('*,ID AS REST_ID')
+                        ->from('RESTAURANTS')
+                        ->get('');
+    }
     return $query->result();
   }
     

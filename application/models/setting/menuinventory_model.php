@@ -14,16 +14,20 @@ class Menuinventory_model extends CI_Model {
     	return $query->row();
   	}  
   
-  	function get_restaurant(){
+  function get_restaurant(){
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id'];
-		$this->db->where('USERS_RESTAURANTS.USER_ID',$id);
-    	$query = $this->db->select('*')
-                      ->from('RESTAURANTS')
-                      ->join('USERS_RESTAURANTS', 'RESTAURANTS.ID = USERS_RESTAURANTS.REST_ID')
-                      ->get('');
-    	return $query->result();
-  	}
+		if($session_data['role']!=1){   
+      $this->db->where('USERS_RESTAURANTS.USER_ID',$id);
+      $query = $this->db->select('*')
+                        ->from('RESTAURANTS')
+                        ->join('USERS_RESTAURANTS', 'RESTAURANTS.ID = USERS_RESTAURANTS.REST_ID')
+                        ->get('');
+    } else {  
+      $query = $this->db->get('RESTAURANTS');
+    }
+    return $query->result();
+  }
   
   	function get_currency($rest_id){
     	$query = $this->db->select('RESTAURANTS.CURRENCY, REF_VALUES.VALUE AS CUR')
