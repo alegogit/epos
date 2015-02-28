@@ -146,6 +146,7 @@
 </div><!-- /.modal fade -->
 <div id="baseurl" data-url="<?=base_url()?>"></div>
 <div id="restid" data-val="<?=$rest_id?>"></div>
+
 <?php  
   	//editable script
   	$i = 0;
@@ -161,7 +162,7 @@
 	                        validate: function(v) {
 	                          if (!v) return 'don\'t leave it blank!';   
 	                          if (isNaN(v)) return 'please fill in a number format!';
-	                          if (isTaken(v)) return 'please fill another Table Number!';
+	                          if (isTaken(v)) return 'please fill another Table Number!'; 
 	                        },
 	                        success: function(result){  
 	                          var data = result.split(',');
@@ -305,20 +306,9 @@ $.validator.setDefaults({
         }
     }
 });
-  
-function isTaken(tbl){
-  $.ajax({
-    type: "GET",
-    url: baseurl+"process/tableorder?p=takent&r="+restid ,
-    data: tbl,
-	  cache: false,
-	  success: function(result){
-      if(result.trim()!='false'){
-        return false;
-      } else {
-        return true;  
-	    }   
-	  }
-	});   
+
+function isTaken(tbl) {  
+  var regex = /^(<?php $l = 1; $n = count($tableorder); $tblnum = ""; foreach ($tableorder as $row){ $tblnum .= $row->TABLE_NUMBER; $tblnum .= ($l<$n)?"|":""; $l++; } echo $tblnum; ?>)$/;
+  return regex.test(tbl);
 }  
-</script>
+</script>    
