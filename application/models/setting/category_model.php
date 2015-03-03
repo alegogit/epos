@@ -12,7 +12,7 @@ class Category_model extends CI_Model {
 		$this->db->where('ID',$id);
     $query = $this->db->get('USERS');
     return $query->row();
-  }  
+  } 
   
   function get_restaurant(){
 		$session_data = $this->session->userdata('logged_in');
@@ -24,7 +24,9 @@ class Category_model extends CI_Model {
                         ->join('USERS_RESTAURANTS', 'RESTAURANTS.ID = USERS_RESTAURANTS.REST_ID')
                         ->get('');
     } else {  
-      $query = $this->db->get('RESTAURANTS');
+      $query = $this->db->select('*,ID AS REST_ID')
+                        ->from('RESTAURANTS')
+                        ->get('');
     }
     return $query->result();
   }

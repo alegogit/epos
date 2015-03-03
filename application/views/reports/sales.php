@@ -243,16 +243,18 @@
   $("#enddate").datepicker({format: 'dd M yyyy'});
   
   var ajaxurl = $("#ajaxurl").data('url');  
-  var rest_id = $("#rest_id").data('val');
-  
+  var rest_id = $("#rest_id").data('val');    
+	  
   //inititate datatable
   var table1 = $('#sales').DataTable({
     columnDefs: [
       { targets: 'no-sort', orderable: false }
     ],
     "order": [[ 0, "asc" ]],
-    pageLength: 25,    
-    "aLengthMenu": [[5, 25, 100, -1], [5, 25, 100, "All"]]
+    "dom": '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>',
+    pageLength: 25,
+    "aLengthMenu": [[10, 25, 100, -1], [10, 25, 100, "All"]],
+    "bAutoWidth": false
   }); 
   
   //inititate datatable
@@ -261,8 +263,10 @@
       { targets: 'no-sort', orderable: false }
     ],
     "order": [[ 0, "asc" ]],
-    pageLength: 25,    
-    "aLengthMenu": [[5, 25, 100, -1], [5, 25, 100, "All"]]
+    "dom": '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>',
+    pageLength: 25,
+    "aLengthMenu": [[10, 25, 100, -1], [10, 25, 100, "All"]],
+    "bAutoWidth": false
   }); 
   
   var gOrdDet = function gOrdDet(){

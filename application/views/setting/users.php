@@ -425,7 +425,11 @@ $(document).ready(function(){
     	columnDefs: [
       		{ targets: 'no-sort', orderable: false }
     	],
-    	"order": [[ 1, "asc" ]]
+    	"order": [[ 1, "asc" ]],
+      "dom": '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>',
+      pageLength: 25,
+      "aLengthMenu": [[10, 25, 100, -1], [10, 25, 100, "All"]],
+      "bAutoWidth": false
   	});
   
   	//check all

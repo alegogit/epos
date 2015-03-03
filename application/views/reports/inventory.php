@@ -73,7 +73,9 @@
       { targets: 'no-sort', orderable: false }
     ],
     "order": [[ 0, "asc" ]],
-    pageLength: 25,    
-    "aLengthMenu": [[15, 25, 100, -1], [15, 25, 100, "All"]]
+    "dom": '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>',
+    pageLength: 25,
+    "aLengthMenu": [[10, 25, 100, -1], [10, 25, 100, "All"]],
+    "bAutoWidth": false
   });    
 </script> 

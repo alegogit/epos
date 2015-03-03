@@ -104,23 +104,25 @@
     						  <div class="canvas-donut" style="float:left;margin-left:2px">
     							  <canvas class="chart" id="topcats_donut" ></canvas>
     						  </div> 
-                  <div class="fitin" style="display:inline-block;margin-left:2px;max-width:150px;"> 
+                  <div class="fitin" style="display:inline-block;margin-left:2px;"> 
                     <div>
                       <?php    
                         $i = 0;
                         $n = count($dtopcats);
-                        $chart_legend = "";
+                        $chart_legend = "<table style='width:100%'>";
                         $total = 0; 
                         foreach ($dtopcats as $tot){
                           $total = $total + $tot->AMOUNT;
                         }
                         foreach ($dtopcats as $row){
-                          $chart_legend .= "<span class='glyphicon glyphicon-tint' style='color:".$donut_color[$i]."'></span>";  
-                          $chart_legend .= " <span><b>".ucwords(strtolower($row->CAT_NAME))."</b></span><span style='padding:10px'>&nbsp;</span>";
+                          $chart_legend .= "<tr><td><span class='glyphicon glyphicon-tint' style='color:".$donut_color[$i]."'></span></td>";  
+                          $chart_legend .= " <td class='trunk'><b>".ucwords(strtolower($row->CAT_NAME))."</b></td>";
                           //$chart_legend .= " <b>".number_format($row->AMOUNT, 0, '', '.')."</b>\t";
-                          $chart_legend .= " <span style='float:right;display:inline-block'>".round(($row->AMOUNT/$total)*100)."% </span><hr style='margin-top:5px;margin-bottom:5px'>";
+                          $chart_legend .= " <td style='float:right;display:inline-block'><span style='padding-left:10px;'>&nbsp;</span>".round(($row->AMOUNT/$total)*100)."% </td></tr>
+                          <tr><td colspan='5'><hr style='margin-top:5px;margin-bottom:5px'></tr>";
                           $i++;  
-                        }
+                        }  
+                        $chart_legend .= "</table>";
                         if($n!=0){    
                           echo $chart_legend;
                         }else{
@@ -137,9 +139,8 @@
           <div class="col-md-3">
   				  <div class="panel panel-default">
   				    <div class="panel-heading"><b>Top Menu Items By Sales</b></div>
-  					  <div class="panel-body">  
-                <div class="fitin">
-                  <div style="display:inline-block;width:100%;">
+  					  <div class="panel-body"> 
+                  <div class="fitin" style="display:inline-block;width:100%;">
       					     <?php 
                       $i = 0;
                       $n = count($dbestsells);
@@ -147,7 +148,7 @@
                       foreach ($dbestsells as $row){
                         $chart_legend .= "<tr>
                           <td><b>".($i+1)."</b>&nbsp;</td>";  
-                        $chart_legend .= "<td><b>".ucwords(strtolower($row->ITEMS))."</b>&nbsp;</td>
+                        $chart_legend .= "<td class='trunk'><b>".ucwords(strtolower($row->ITEMS))."</b>&nbsp;</td>
                                           <td class='cin'><span style='padding-left:10px;'>&nbsp;</span>".$cur."&nbsp;</td>";
                         $chart_legend .= "<td class='cin cur'><b>".$row->AMOUNT."</b>&nbsp;</td>";
                         $chart_legend .= "<td style='text-align:right'><span style='padding-left:10px;'>&nbsp;</span>".$row->QTY."</td>
@@ -163,7 +164,6 @@
                       }
                     ?>
                   </div>
-                </div>
               </div>
   				  </div>
   				</div>
@@ -189,7 +189,7 @@
                     $chart_legend .= "<table>";
                     foreach ($dpayment as $row){
                       $chart_legend .= "<tr><td class='col-md-1' style='padding-left:5px;padding-right:5px;'><span class='glyphicon glyphicon-tint' style='color:".$donut_color[$i]."'></span></td>";  
-                      $chart_legend .= "<td class='col-md-4' style='padding-left:5px;padding-right:5px;'>".ucwords(strtolower($row->PAYMENT_METHOD))."</td> 
+                      $chart_legend .= "<td class='col-md-4 trunk' style='padding-left:5px;padding-right:5px;'>".ucwords(strtolower($row->PAYMENT_METHOD))."</td> 
                                         <td class='col-md-1' style='padding-left:10px;padding-right:5px;'>".$cur."</td>";
                       $chart_legend .= "<td class='col-md-6 cin cur' style='padding-left:5px;padding-right:5px;'><span style='float:right;display:inline-block'>".$row->AMOUNT."</span></td></tr>";
                       $i++;  
@@ -459,6 +459,7 @@
      });
      */    
 $(document).ready(function(){
+  /*
   var ttibs_w = $("#ttibs").width();
   var ttibs_h = parseInt($("#ttibs").height());
   var colmd4h = parseInt($(".col-md-4 .panel").height());
@@ -472,6 +473,19 @@ $(document).ready(function(){
    $("#nrtibs").css('width',nrtcbs_w+'px');  
   //console.log(ttibs_h+' '+colmd4h+' '+perctwf+' '+ttibs_f);
   //$(".canvas-donut").css("overflow","visible");
+  */  
+    
+  $.each($('td.trunk').not(':empty'), function(i,v){
+    var count = parseInt($(this).text().length);
+    var maxChars = 6;
+    if(count > maxChars){
+      var str = $(this).text();
+      var trimmed = str.substr(0, maxChars);
+      $(v).html('<b>'+trimmed + '<a href="#" title="'+str+'">...</a></b>');          
+    }
+       
+  });
+  
 }); 
      //datepickers
      $("#startdate").datepicker({format: 'dd M yyyy'});

@@ -53,7 +53,7 @@
               <span class="glyphicon glyphicon-remove"></span> Delete Selected Category  
             </button>        
             <div style="margin-bottom:15px"></div> 
-            <div class="table-responsive">
+            <div class="table-responsive"> 
 						  <table id="setting" class="table table-striped dt-right compact">
 						    <thead>
 						    <tr class="tablehead text3D">
@@ -81,7 +81,7 @@
                 </tr>
                 <?php $i++; } ?>
 						    </tbody>
-						  </table>
+						  </table> 
              </div> 
 					</div><!--/.panel-body-->
 				</div><!--/.panel-->
@@ -176,8 +176,14 @@ $(document).ready(function()
     	columnDefs: [
       		{ targets: 'no-sort', orderable: false }
     	],
-    	"order": [[ 1, "asc" ]]
+    	"order": [[ 1, "asc" ]],
+      "dom": '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>',
+      pageLength: 25,
+      "aLengthMenu": [[10, 25, 100, -1], [10, 25, 100, "All"]],
+      "bAutoWidth": false
   	});
+    
+    $("div.dataTables_filter").css("padding-bottom","15px !important");
   
   //check all
   $("#checkall").click(function(){

@@ -132,7 +132,7 @@ $(function() {
   .fitin{
     min-height: 150px;
     overflow: hidden;
-    font-size: 1em;
+    font-size: 90%;
   }
   </style>
 

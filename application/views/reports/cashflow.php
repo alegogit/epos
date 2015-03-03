@@ -136,7 +136,10 @@
     searching: true,
     ordering:  false,
     bLengthChange: true,
-    pageLength: 25
+    "dom": '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>',
+    pageLength: 25,
+    "aLengthMenu": [[10, 25, 100, -1], [10, 25, 100, "All"]],
+    "bAutoWidth": false
   });
   
   //currency control

@@ -285,16 +285,18 @@ $(document).ready(function(){
     	e.stopPropagation();
     	$(this).editable('toggle');
   	});
-  
+	  
   	//inititate datatable
   	var table = $('#inventory').DataTable({
     	columnDefs: [
       		{ targets: 'no-sort', orderable: false }
     	],
     	"order": [[ 1, "asc" ]],
-      pageLength: 15,    
-      "aLengthMenu": [[15, 35, 100, -1], [15, 35, 100, "All"]]
-  	}); 
+      "dom": '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>',
+      pageLength: 25,
+      "aLengthMenu": [[10, 25, 100, -1], [10, 25, 100, "All"]],
+      "bAutoWidth": false
+  	});
   	
   	//check all
   	$("#checkall").click(function(){

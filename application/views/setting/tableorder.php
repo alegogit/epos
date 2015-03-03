@@ -198,14 +198,15 @@ $(document).ready(function(){
     	$(this).editable('toggle');
   	});
 	  
-	//initiate datatable
-	var table = $('#setting').DataTable({
+  	//inititate datatable
+  	var table = $('#setting').DataTable({
     	columnDefs: [
       		{ targets: 'no-sort', orderable: false }
     	],
     	"order": [[ 1, "asc" ]],
-      pageLength: 15,
-      "aLengthMenu": [[15, 35, 100, -1], [15, 35, 100, "All"]],
+      "dom": '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>',
+      pageLength: 25,
+      "aLengthMenu": [[10, 25, 100, -1], [10, 25, 100, "All"]],
       "bAutoWidth": false
   	});
   
