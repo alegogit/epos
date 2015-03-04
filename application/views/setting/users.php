@@ -319,7 +319,8 @@
                         	pk: ".$row->ID.", 
                         	activate: 'focus',
                         	validate: function(v) {
-                          		if (!v) return 'don\'t leave it blank!';
+                          		if (!v) return 'don\'t leave it blank!'; 
+                              if (!isLimited(v,1,100)) return 'please fill in up to 100 chars!';
                         	},
                         	success: function(result){  
                           		var data = result.split(',');
@@ -332,7 +333,8 @@
 	                        pk: ".$row->ID.", 
 	                        validate: function(v) {
 	                          	if (!v) return 'don\'t leave it blank!'; 
-	                          	if (!isEmail(v)) return 'please fill in an e-Mail format!';
+	                          	if (!isEmail(v)) return 'please fill in an e-Mail format!'; 
+                              if (!isLimited(v,1,45)) return 'please fill in up to 45 chars!';
 	                        },
 	                        success: function(result){  
 	                          	var data = result.split(',');
@@ -344,7 +346,8 @@
 	                        url: updateurl,
 	                        pk: ".$row->ID.", 
 	                        validate: function(v) {
-	                          	if (!v) return 'don\'t leave it blank!';
+	                          	if (!v) return 'don\'t leave it blank!'; 
+                              if (!isLimited(v,1,100)) return 'please fill in up to 100 chars!';
 	                        },
 	                        success: function(result){  
 	                          	var data = result.split(',');
@@ -479,7 +482,9 @@ $(document).ready(function(){
               				} else {    
         						$this.parents('tr').fadeOut(function(){
         							$this.remove(); //remove row when animation is finished
-        						});     
+        						});  
+                var page = window.location.href;
+                window.location.assign(page);   
               				}   
             			}
           			});   
@@ -598,5 +603,10 @@ $.validator.setDefaults({
 function isEmail(email) {
   var regex = /^([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
   return regex.test(email);
-}  
+}                
+            
+function isLimited(input,init,limit) {
+  var regex = new RegExp("^.{" + init + "," + limit + "}$");
+  return regex.test(input);
+} 
 </script>

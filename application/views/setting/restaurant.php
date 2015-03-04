@@ -272,6 +272,7 @@
                         activate: 'focus',
                         validate: function(v) {
                           if (!v) return 'don\'t leave it blank!';
+                          if (!isLimited(v,3,100)) return 'please fill in 3-100 chars!';
                         },
                         success: function(result){  
                           var data = result.split(',');
@@ -286,7 +287,8 @@
                         activate: 'focus',
                         validate: function(v) {
                           if (!v) return 'don\'t leave it blank!';   
-                          if (!isPhone(v)) return 'please fill in a Phone Number format!';
+                          if (!isPhone(v)) return 'please fill in a Phone Number format!';  
+                          if (!isLimited(v,1,20)) return 'please fill in up to 20 chars!';
                         },
                         success: function(result){  
                           var data = result.split(',');
@@ -300,7 +302,8 @@
                         activate: 'focus',
                         validate: function(v) {
                           if (!v) return 'don\'t leave it blank!';  
-                          if (!isPhone(v)) return 'please fill in a FAX Number format!';
+                          if (!isPhone(v)) return 'please fill in a FAX Number format!';  
+                          if (!isLimited(v,1,30)) return 'please fill in up to 30 chars!';
                         },
                         success: function(result){  
                           var data = result.split(',');
@@ -313,7 +316,8 @@
                         pk: ".$row->ID.", 
                         activate: 'focus',
                         validate: function(v) {
-                          if (!v) return 'don\'t leave it blank!';
+                          if (!v) return 'don\'t leave it blank!';   
+                          if (!isLimited(v,1,100)) return 'please fill in up to 100 chars!';
                         },
                         success: function(result){  
                           var data = result.split(',');
@@ -326,7 +330,8 @@
                         pk: ".$row->ID.", 
                         activate: 'focus',
                         validate: function(v) {
-                          if (!v) return 'don\'t leave it blank!';
+                          if (!v) return 'don\'t leave it blank!';    
+                          if (!isLimited(v,1,100)) return 'please fill in up to 100 chars!';
                         },
                         success: function(result){  
                           var data = result.split(',');
@@ -339,7 +344,8 @@
                         pk: ".$row->ID.", 
                         activate: 'focus',
                         validate: function(v) {
-                          if (!v) return 'don\'t leave it blank!';
+                          if (!v) return 'don\'t leave it blank!';  
+                          if (!isLimited(v,1,100)) return 'please fill in up to 100 chars!';
                         },
                         success: function(result){  
                           var data = result.split(',');
@@ -352,7 +358,8 @@
                         pk: ".$row->ID.", 
                         activate: 'focus',
                         validate: function(v) {
-                          if (!v) return 'don\'t leave it blank!';
+                          if (!v) return 'don\'t leave it blank!';    
+                          if (!isLimited(v,1,10)) return 'please fill in up to 10 chars!';
                         },
                         success: function(result){  
                           var data = result.split(',');
@@ -365,7 +372,8 @@
                         pk: ".$row->ID.", 
                         activate: 'focus',
                         validate: function(v) {
-                          if (!v) return 'don\'t leave it blank!';
+                          if (!v) return 'don\'t leave it blank!';    
+                          if (!isLimited(v,1,100)) return 'please fill in up to 100 chars!';
                         },
                         success: function(result){  
                           var data = result.split(',');
@@ -380,7 +388,8 @@
                         activate: 'focus',
                         validate: function(v) {
                           if (!v) return 'don\'t leave it blank!';  
-                          if (!isGeoLoc(v)) return 'please fill in a Geo Location format!';
+                          if (!isGeoLoc(v)) return 'please fill in a Geo Location format!';  
+                          if (!isLimited(v,1,100)) return 'please fill in up to 100 chars!';
                         },
                         success: function(result){  
                           var data = result.split(',');
@@ -394,7 +403,8 @@
                         pk: ".$row->ID.", 
                         validate: function(v) {
                           if (!v) return 'don\'t leave it blank!'; 
-                          if (!isEmail(v)) return 'please fill in an e-Mail format!';
+                          if (!isEmail(v)) return 'please fill in an e-Mail format!';  
+                          if (!isLimited(v,1,100)) return 'please fill in up to 100 chars!';
                         },
                         success: function(result){  
                           var data = result.split(',');
@@ -510,7 +520,9 @@ $(document).ready(function()
               } else {    
         				$this.parents('tr').fadeOut(function(){
         					$this.remove(); //remove row when animation is finished
-        				});     
+        				});
+                var page = window.location.href;
+                window.location.assign(page);   
               }   
             }
           });   
@@ -607,6 +619,11 @@ function isPercent(percent) {
 function isGeoLoc(geoloc) {
   var regex = /^(-?\d{1,2}\.\d{6}),(-?\d{1,3}\.\d{6})$/;
   return regex.test(geoloc);
-}  
+} 
+                                
+function isLimited(input,init,limit) {
+  var regex = new RegExp("^.{" + init + "," + limit + "}$");
+  return regex.test(input);
+}   
                             
 </script>

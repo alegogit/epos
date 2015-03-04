@@ -202,7 +202,8 @@
 		                        url: updateurl,
 		                        pk: ".$row->ID.", 
 		                        validate: function(v) {
-		                          if (!v) return 'don\'t leave it blank!';
+		                          if (!v) return 'don\'t leave it blank!';   
+                              if (!isLimited(v,1,100)) return 'please fill in up to 100 chars!';
 		                        },
 		                        success: function(result){  
 		                          var data = result.split(',');
@@ -351,7 +352,9 @@ $(document).ready(function(){
               				} else {    
         						$this.parents('tr').fadeOut(function(){
         							$this.remove(); //remove row when animation is finished
-        						});     
+        						});
+                var page = window.location.href;
+                window.location.assign(page);      
               				}   
             			}
           			});   
@@ -404,6 +407,11 @@ jQuery.validator.addMethod("percent", function(value, element) {
 function isPercent(percent) {
   var regex = /^[0-9]\d{0,1}(\.\d{1,3})?%?$|^100$/;
   return regex.test(percent);
-}  
+}           
+                     
+function isLimited(input,init,limit) {
+  var regex = new RegExp("^.{" + init + "," + limit + "}$");
+  return regex.test(input);
+} 
   
 </script>

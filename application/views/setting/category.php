@@ -148,6 +148,7 @@
                         pk: ".$row->ID.", 
                         validate: function(v) {
                           if (!v) return 'don\'t leave it blank!';
+                          if (!isLimited(v,1,100)) return 'please fill in up to 100 chars!';
                         },
                         success: function(result){  
                           var data = result.split(',');
@@ -232,7 +233,9 @@ $(document).ready(function()
               } else {    
         				$this.parents('tr').fadeOut(function(){
         					$this.remove(); //remove row when animation is finished
-        				});     
+        				});  
+                var page = window.location.href;
+                window.location.assign(page);   
               }   
             }
           });   
@@ -265,6 +268,11 @@ $.validator.setDefaults({
             error.insertAfter(element);
         }
     }
-});
+});   
+                                
+function isLimited(input,init,limit) {
+  var regex = new RegExp("^.{" + init + "," + limit + "}$");
+  return regex.test(input);
+} 
   
 </script>

@@ -33,12 +33,26 @@ class Restaurantsetting_model extends CI_Model {
     return $outputs;
 	}
   
-  function delete_restaurant($mid){ 
-		$did = strstr($mid, '_', true);
-    $query = $this->db->query('DELETE M FROM RESTAURANTS M 
-      LEFT JOIN ORDER_DETAILS O ON O.RESTAURANTS_ID = M.ID 
-      WHERE O.RESTAURANTS_ID IS NULL
-      AND M.ID='.$did.';');    
+  function delete_restaurant($rid){ 
+		$did = strstr($rid, '_', true);
+    $query = $this->db->query('DELETE R FROM RESTAURANTS R 
+      LEFT JOIN USERS_RESTAURANTS UR ON UR.REST_ID = R.ID 
+      LEFT JOIN TABLES TB ON TB.REST_ID = R.ID 
+      LEFT JOIN DEVICES DV ON DV.REST_ID = R.ID 
+      LEFT JOIN INVENTORY IV ON IV.REST_ID = R.ID 
+      LEFT JOIN PRINTER PR ON PR.REST_ID = R.ID 
+      LEFT JOIN ORDERS OD ON OD.REST_ID = R.ID 
+      LEFT JOIN CUSTOMERS CU ON CU.REST_ID = R.ID 
+      LEFT JOIN CATEGORY CA ON CA.REST_ID = R.ID 
+      WHERE UR.REST_ID IS NULL
+      AND TB.REST_ID IS NULL
+      AND DV.REST_ID IS NULL
+      AND IV.REST_ID IS NULL
+      AND PR.REST_ID IS NULL
+      AND OD.REST_ID IS NULL
+      AND CU.REST_ID IS NULL
+      AND CA.REST_ID IS NULL
+      AND R.ID='.$did.';');    
     if($this->db->affected_rows()!=0){
       $out = "OK";
     } else {                        
