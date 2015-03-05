@@ -166,14 +166,15 @@
 </div><!-- /.modal fade -->
 <div id="baseurl" data-url="<?=base_url()?>"></div>
 <?php  
-	//editable script
-  	$i = 0;
-  	$edit_script = "<script>"; 
-  	$edit_script .= "$(document).ready(function(){";
+  //editable script
+  $i = 0;
+  $edit_script = "<script>";
+  $edit_script .= "$(document).ready(function(){";
 	$edit_script .= "  $.fn.editable.defaults.mode = 'inline';";
 	$edit_script .= "  $.fn.editable.defaults.showbuttons = false;";
-  	$edit_script .= "  var updateurl = '".base_url()."process/menuinventory?p=update';";
-  	foreach ($menuinventory as $row){
+  $edit_script .= "  var updateurl = '".base_url()."process/menuinventory?p=update';";
+  
+  foreach ($menuinventory as $row){
   		$edit_script .= "  $('#MENU_ID-".$row->ID."').editable({
 		                        type: 'select',  
 		                        value: ".$row->MENU_ID.", 
@@ -191,9 +192,12 @@
 		                        success: function(result){  
 		                          var data = result.split(',');
 		                          $('#upby".$row->ID."').html(data[0]);
-		                          $('#updt".$row->ID."').html(data[1]); 
+		                          $('#updt".$row->ID."').html(data[1]);  
 		                        }  
-		                      });";
+		                      });
+                        $('#MENU_ID-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";
   		$edit_script .= "  $('#INVENTORY_ID-".$row->ID."').editable({
 		                        type: 'select',  
 		                        value: ".$row->INVENTORY_ID.", 
@@ -213,7 +217,10 @@
 		                          $('#upby".$row->ID."').html(data[0]);
 		                          $('#updt".$row->ID."').html(data[1]); 
 		                        }  
-		                      });";
+		                      });
+                        $('#INVENTORY_ID-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";
   		$edit_script .= "  $('#QUANTITY-".$row->ID."').editable({
 		                        url: updateurl,
 		                        pk: ".$row->ID.", 
@@ -224,9 +231,12 @@
 		                        success: function(result){  
 		                          var data = result.split(',');
 		                          $('#upby".$row->ID."').html(data[0]);
-		                          $('#updt".$row->ID."').html(data[1]); 
+		                          $('#updt".$row->ID."').html(data[1]);
 		                      } 
-		                    });";
+		                    });
+                        $('#QUANTITY-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";
   	}
   	$edit_script .= "}); ";
 	$edit_script .= '</script>';

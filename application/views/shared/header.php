@@ -28,7 +28,7 @@
 }
 </style>
 <?php } ?>  
-<?php if ( ($menu == 'profile') ) { ?>
+<?php if ( ($menu == 'setting') || ($menu == 'profile') ) { ?>
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/upload/jasny-bootstrap.min.js"></script>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jasny-bootstrap.min.css"/> 
 <?php } ?>  

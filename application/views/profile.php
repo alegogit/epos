@@ -9,28 +9,28 @@
 		?>
     		<!-- left column -->
     		<div class="col-md-4 col-sm-6 col-xs-12">
-      			<div class="text-center">
-					<div class="fileinput fileinput-new" data-provides="fileinput">
-						<div class="fileinput-new">
-		    				<img src="<?=$profpic?>" class="avatar img-circle img-thumbnail" alt="avatar" style="width: 210px; height: 210px;">
+          <div class="text-center">
+            <div class="fileinput fileinput-new" data-provides="fileinput">
+              <div class="fileinput-new">
+                <img src="<?=$profpic?>" class="avatar img-circle img-thumbnail" alt="avatar" style="width: 210px; height: 210px;">
 		  				</div><br/>
 		  				<div class="fileinput-preview fileinput-exists avatar img-circle img-thumbnail thumbnail" style="max-width: 210px; max-height: 210px; border-radius: 50% !important; padding: 4px !important"></div>
 		  				<div class="fileinput-error alert-danger" style="width: 210px; height: 210px; border-radius: 50% !important; padding: 4px !important; display:none;"></div>
 		  				<div>
 		    				<span class="btn btn-default btn-file">
-								<span class="fileinput-new">Change Profile Photo</span><span class="fileinput-exists">Change</span>  
-                <input name="MAX_FILE_SIZE" value="307200" type="hidden">
-								<input type="file" accept="image/jpeg" name="photo" id="myFile">
-							</span>
+                  <span class="fileinput-new">Change Profile Photo</span><span class="fileinput-exists">Change</span>
+                  <input name="MAX_FILE_SIZE" value="307200" type="hidden">
+                  <input type="file" accept="image/jpeg" name="photo" id="myFile">
+                </span>
 		    				<a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
 		  				</div><br/>
-	      				<div class="alert alert-info alert-dismissable" style="max-width: 250px;">
-	        				<a class="panel-close close" data-dismiss="alert">×</a> 
-	        				<i class="fa fa-info-circle"></i>
-	        				Max <strong>300 kb</strong> image file.
-	      				</div>
-					</div>
-      			</div>
+              <div class="alert alert-info alert-dismissable" style="max-width: 250px;">
+                <a class="panel-close close" data-dismiss="alert">×</a>
+                <i class="fa fa-info-circle"></i>
+	        			Max <strong>300 kb</strong> image file.
+	      			</div>
+            </div>
+          </div>
     		</div>
     		<!-- edit form column -->
     		<div class="col-md-8 col-sm-6 col-xs-12 personal-info">

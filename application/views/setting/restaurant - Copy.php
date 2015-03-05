@@ -171,25 +171,6 @@
             		<input type="text" class="form-control" id="FAX" placeholder="FAX" name="FAX" required>
           		</div>
         	</div><br />  		
-      	<div class="form-group" style="margin-bottom:10px;"> 
-        	<label for="currency">Default Currency</label><br>                                     
-          	<div class="input-group">                                        
-            	<div class="input-group-addon"><span class="fa fa-money"></span></div>
-            	<select name="currency" id="currency" class="form-control" title="Default Currency">
-            	<?php foreach($currencies as $rowc){ ?>
-              		<option value="<?=$rowc->CODE?>"><?=$rowc->VALUE?></option>
-            	<?php } ?>
-            	</select>
-          	</div>
-        </div><br/>        		
-        <div class="form-group" style="margin-bottom:10px"> 
-        	<label for="service">Service Charge</label><br>
-          	<div class="input-group" style="width:150px">                            
-            	<div class="input-group-addon"><span class="fa fa-star"></span></div>
-            	<input type="text" class="form-control" id="service" placeholder="" name="service" required>                          
-            	<div class="input-group-addon"><span class="fa fa-percent">%</span></div>
-          	</div>
-        </div><br />
       	</div><!-- /.col-md-4 -->
       	<div class="col-md-4">
 	        <div class="form-group" style="margin-bottom:10px"> 
@@ -243,7 +224,26 @@
 	        </div><br />-->
       </div><!-- /.col-md-4 -->
       <div class="col-md-4">
-          <div class="text-center" style="margin-right:6px">
+      	<div class="form-group" style="margin-bottom:10px;"> 
+        	<label for="currency">Default Currency</label><br>                                     
+          	<div class="input-group">                                        
+            	<div class="input-group-addon"><span class="fa fa-money"></span></div>
+            	<select name="currency" id="currency" class="form-control" title="Default Currency">
+            	<?php foreach($currencies as $rowc){ ?>
+              		<option value="<?=$rowc->CODE?>"><?=$rowc->VALUE?></option>
+            	<?php } ?>
+            	</select>
+          	</div>
+        </div><br/>        		
+        <div class="form-group" style="margin-bottom:10px"> 
+        	<label for="service">Service Charge</label><br>
+          	<div class="input-group" style="width:150px">                            
+            	<div class="input-group-addon"><span class="fa fa-star"></span></div>
+            	<input type="text" class="form-control" id="service" placeholder="" name="service" required>                          
+            	<div class="input-group-addon"><span class="fa fa-percent">%</span></div>
+          	</div>
+        </div><br />
+          <div class="text-center">
             <div class="fileinput fileinput-new" data-provides="fileinput">
               <div class="fileinput-new">
                 <img src="<?=$profpic?>" class="avatar img-circle img-thumbnail" alt="avatar" style="width: 180px; height: 180px;">
@@ -252,13 +252,13 @@
 		  				<div class="fileinput-error alert-danger" style="width: 180px; height: 180px; border-radius: 50% !important; padding: 4px !important; display:none;"></div>
 		  				<div>
 		    				<span class="btn btn-default btn-file">
-                  <span class="fileinput-new">Change Logo</span><span class="fileinput-exists">Change</span>
+                  <span class="fileinput-new">Change Profile Photo</span><span class="fileinput-exists">Change</span>
                   <input name="MAX_FILE_SIZE" value="307200" type="hidden">
                   <input type="file" accept="image/jpeg" name="photo" id="myFile">
                 </span>
 		    				<a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
 		  				</div><br/>
-              <div class="alert alert-info alert-dismissable" style="max-width: 180px;">
+              <div class="alert alert-info alert-dismissable" style="max-width: 250px;">
                 <a class="panel-close close" data-dismiss="alert">×</a>
                 <i class="fa fa-info-circle"></i>
 	        			Max <strong>300 kb</strong> image file.
@@ -652,36 +652,6 @@ function isGeoLoc(geoloc) {
 function isLimited(input,init,limit) {
   var regex = new RegExp("^.{" + init + "," + limit + "}$");
   return regex.test(input);
-}           
-
-$('#myFile').bind('change', function() {
-  var filesize = this.files[0].size / 1024;
-  var filetype = this.files[0].type;
-  if((filesize>300)||(filetype.substring(0,5)!="image")){
-    $(".fileinput-preview").hide();  
-    $(".fileinput-error").show().html("<span style='display:inline-block;padding:35px;font-size:88%;'>You were trying to upload a <b>"+parseInt(filesize)+" kb "+strstr(filetype,'/',true)+"</b> file. Please upload a <b>Maximum 300 kb image</b> file</span>"); 
-  } else {              
-    $(".fileinput-error").hide(); 
-    $(".fileinput-preview").show(); 
-  }
-
-});
-       
-function strstr(haystack, findme, flag)
-{  
-var position = 0;  
-  position = haystack.indexOf(findme);
-  if (position == -1)
-  {
-    return false;
-  } else
- {
-    if (flag)
-{ return haystack.substr(0, position);
-    } else
-{
-      return haystack.slice(position);
-    }
-  }
-}                       
+}   
+                            
 </script>
