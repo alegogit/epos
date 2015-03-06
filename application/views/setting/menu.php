@@ -210,7 +210,10 @@
 		                          $('#upby".$row->ID."').html(data[0]);
 		                          $('#updt".$row->ID."').html(data[1]); 
 		                      } 
-		                    });";
+		                    });
+                        $('#NAME-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";
   		$edit_script .= "  $('#PRICE-".$row->ID."').editable({
 		                        url: updateurl,
 		                        pk: ".$row->ID.", 
@@ -223,7 +226,10 @@
 		                          $('#upby".$row->ID."').html(data[0]);
 		                          $('#updt".$row->ID."').html(data[1]); 
 		                      } 
-		                    });";
+		                    });
+                        $('#PRICE-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";
   		$edit_script .= "  $('#CATEGORY_ID-".$row->ID."').editable({
 		                        type: 'select',  
 		                        value: '".$row->CATEGORY_ID."', 
@@ -243,7 +249,10 @@
 		                          $('#upby".$row->ID."').html(data[0]);
 		                          $('#updt".$row->ID."').html(data[1]); 
 		                        }  
-		                      });";
+		                      });
+                        $('#CATEGORY_ID-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";
   		$edit_script .= "  $('#PRINTER-".$row->ID."').editable({
         						type: 'select',  
 		                        value: '".$row->PRINTER."', 
@@ -263,7 +272,10 @@
 		                          $('#upby".$row->ID."').html(data[0]);
 		                          $('#updt".$row->ID."').html(data[1]); 
 		                        }  
-		                      });";
+		                      });
+                        $('#PRINTER-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";
   		$edit_script .= "  $('#TAX-".$row->ID."').editable({
 		                        url: updateurl,
 		                        pk: ".$row->ID.", 
@@ -277,7 +289,10 @@
 		                          $('#upby".$row->ID."').html(data[0]);
 		                          $('#updt".$row->ID."').html(data[1]); 
 		                      } 
-		                    });";
+		                    });
+                        $('#TAX-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";
   	}
   	$edit_script .= "}); ";
 	$edit_script .= '</script>';
@@ -339,8 +354,8 @@ $(document).ready(function(){
   		 		var $this = $(this);
   				if($this.is(':checked')) {
   					sel = true;	//set to true if there is/are selected row
-          			var idf = $(this).parents('tr').attr('id');
-          			var dataP = "idf="+idf;
+          	var idf = $(this).parents('tr').attr('id');
+          	var dataP = "idf="+idf;
   					$.ajax({
             			type: "POST",
             			url: baseurl+"process/menu?p=delete",
@@ -349,18 +364,18 @@ $(document).ready(function(){
             			success: function(result){ 
               				if(result.trim()!='OK'){    
                 				alert(result); 
-              				} else {    
-        						$this.parents('tr').fadeOut(function(){
-        							$this.remove(); //remove row when animation is finished
-        						});
-                var page = window.location.href;
-                window.location.assign(page);      
+              				} else {
+                        $this.parents('tr').fadeOut(function(){
+                          $this.remove(); //remove row when animation is finished
+                        });
+                        var page = window.location.href;
+                        window.location.assign(page);      
               				}   
             			}
-          			});   
+            });   
   				}
-  	  		});
-  		  	if(!sel) alert('No data selected');	
+        });
+  		  if(!sel) alert('No data selected');	
   		}
   		return false;
   	}); 

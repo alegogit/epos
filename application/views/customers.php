@@ -217,100 +217,132 @@
 		                        url: updateurl,
 		                        pk: ".$row->ID.", 
 		                        validate: function(v) {
-		                          	if (!v) return 'don\'t leave it blank!';
+		                            if (!v) return 'don\'t leave it blank!';
+                                if (!isLimited(v,1,100)) return 'please fill in up to 100 chars!';
 		                        },
 		                        success: function(result){  
 		                          	var data = result.split(',');
 		                          	$('#upby".$row->ID."').html(data[0]);
 		                          	$('#updt".$row->ID."').html(data[1]); 
 		                      	} 
-		                    });";
+		                    });
+                        $('#NAME-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";
 		$edit_script .= "  $('#TELEPHONE-".$row->ID."').editable({
 		                        url: updateurl,
 		                        pk: ".$row->ID.", 
 		                        validate: function(v) {
 		                          	if (!v) return 'don\'t leave it blank!';  
                           			if (!isPhone(v)) return 'please fill in a Phone Number format!';
+                                if (!isLimited(v,1,20)) return 'please fill in up to 20 chars!';
 		                        },
 		                        success: function(result){  
 		                          	var data = result.split(',');
 		                          	$('#upby".$row->ID."').html(data[0]);
 		                          	$('#updt".$row->ID."').html(data[1]); 
 		                      	} 
-		                    });";
+		                    });
+                        $('#TELEPHONE-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";
 		$edit_script .= "  $('#ADDRESS_LINE_1-".$row->ID."').editable({
 		                        url: updateurl,
 		                        pk: ".$row->ID.", 
 		                        validate: function(v) {
-		                          	if (!v) return 'don\'t leave it blank!';   
+		                          	if (!v) return 'don\'t leave it blank!'; 
+                                if (!isLimited(v,1,100)) return 'please fill in up to 100 chars!';  
 		                        },
 		                        success: function(result){  
 		                          	var data = result.split(',');
 		                          	$('#upby".$row->ID."').html(data[0]);
 		                          	$('#updt".$row->ID."').html(data[1]); 
 		                      	} 
-		                    });";
+		                    });
+                        $('#ADDRESS_LINE_1-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";
 		$edit_script .= "  $('#ADDRESS_LINE_2-".$row->ID."').editable({
 		                        url: updateurl,
 		                        pk: ".$row->ID.", 
 		                        validate: function(v) {
-		                          	if (!v) return 'don\'t leave it blank!';
+		                          	if (!v) return 'don\'t leave it blank!';  
+                                if (!isLimited(v,1,100)) return 'please fill in up to 100 chars!';
 		                        },
 		                        success: function(result){  
 		                          	var data = result.split(',');
 		                          	$('#upby".$row->ID."').html(data[0]);
 		                          	$('#updt".$row->ID."').html(data[1]); 
 		                      	} 
-		                    });";
+		                    });
+                        $('#ADDRESS_LINE_2-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";
 		$edit_script .= "  $('#CITY-".$row->ID."').editable({
 		                        url: updateurl,
 		                        pk: ".$row->ID.", 
 		                        validate: function(v) {
-		                          	if (!v) return 'don\'t leave it blank!';
+		                          	if (!v) return 'don\'t leave it blank!';  
+                                if (!isLimited(v,1,100)) return 'please fill in up to 100 chars!';
 		                        },
 		                        success: function(result){  
 		                          	var data = result.split(',');
 		                          	$('#upby".$row->ID."').html(data[0]);
 		                          	$('#updt".$row->ID."').html(data[1]); 
 		                      } 
-		                    });";
+		                    });
+                        $('#CITY-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";
 		$edit_script .= "  $('#POSTAL_CODE-".$row->ID."').editable({
 		                        url: updateurl,
 		                        pk: ".$row->ID.", 
 		                        validate: function(v) {
-		                          	if (!v) return 'don\'t leave it blank!';   
+		                          	if (!v) return 'don\'t leave it blank!'; 
+                                if (!isLimited(v,1,10)) return 'please fill in up to 10 chars!';  
 		                        },
 		                        success: function(result){  
 		                          	var data = result.split(',');
 		                          	$('#upby".$row->ID."').html(data[0]);
 		                          	$('#updt".$row->ID."').html(data[1]); 
 		                      	} 
-		                    });";
+		                    });
+                        $('#POSTAL_CODE-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";
 		$edit_script .= "  $('#COUNTRY-".$row->ID."').editable({
 		                        url: updateurl,
 		                        pk: ".$row->ID.", 
 		                        validate: function(v) {
-		                          	if (!v) return 'don\'t leave it blank!';
+		                          	if (!v) return 'don\'t leave it blank!';  
+                                if (!isLimited(v,1,100)) return 'please fill in up to 100 chars!';
 		                        },
 		                        success: function(result){  
 		                          	var data = result.split(',');
 		                          	$('#upby".$row->ID."').html(data[0]);
 		                          	$('#updt".$row->ID."').html(data[1]); 
 		                      	} 
-		                    });";
+		                    });
+                        $('#COUNTRY-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";
 		$edit_script .= "  $('#EMAIL_ADDRESS-".$row->ID."').editable({
 		                        url: updateurl,
 		                        pk: ".$row->ID.", 
 		                        validate: function(v) {
 		                          	if (!v) return 'don\'t leave it blank!';
-                          			if (!isEmail(v)) return 'please fill in an e-Mail format!';
+                          			if (!isEmail(v)) return 'please fill in an e-Mail format!'; 
+                                if (!isLimited(v,1,100)) return 'please fill in up to 100 chars!';
 		                        },
 		                        success: function(result){  
 		                          var data = result.split(',');
 		                          $('#upby".$row->ID."').html(data[0]);
 		                          $('#updt".$row->ID."').html(data[1]); 
 		                      } 
-		                    });";
+		                    });
+                        $('#EMAIL_ADDRESS-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";
 	}
 	$edit_script .= "}); ";
 	$edit_script .= '</script>';
@@ -385,7 +417,9 @@ $(document).ready(function(){
               				} else {    
         						$this.parents('tr').fadeOut(function(){
         							$this.remove(); //remove row when animation is finished
-        						});     
+        						});    
+                        var page = window.location.href;
+                        window.location.assign(page);     
               				}   
             			}
           			});   
@@ -455,5 +489,10 @@ function isEmail(email) {
 function isPhone(phone) {
   var regex = /(\D*\d){8}/;
   return regex.test(phone);
-}    
+}         
+
+function isLimited(input,init,limit) {
+  var regex = new RegExp("^.{" + init + "," + limit + "}$");
+  return regex.test(input);
+} 
 </script>

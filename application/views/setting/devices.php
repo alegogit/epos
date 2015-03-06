@@ -204,50 +204,66 @@
                         url: updateurl,
                         pk: ".$row->ID.", 
                         validate: function(v) {
-                          if (!v) return 'don\'t leave it blank!';
+                          if (!v) return 'don\'t leave it blank!';  
+                          if (!isLimited(v,1,45)) return 'please fill in up to 45 chars!';
                         },
                         success: function(result){  
                           var data = result.split(',');
                           $('#upby".$row->ID."').html(data[0]);
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
-                    });";
+                    });
+                        $('#NAME-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";
   $edit_script .= "  $('#TYPE-".$row->ID."').editable({
                         url: updateurl,
                         pk: ".$row->ID.", 
                         validate: function(v) {
-                          if (!v) return 'don\'t leave it blank!';
+                          if (!v) return 'don\'t leave it blank!';  
+                          if (!isLimited(v,1,45)) return 'please fill in up to 45 chars!';
                         },
                         success: function(result){  
                           var data = result.split(',');
                           $('#upby".$row->ID."').html(data[0]);
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
-                    });";
+                    });
+                        $('#TYPE-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";
   $edit_script .= "  $('#MAKE-".$row->ID."').editable({
                         url: updateurl,
                         pk: ".$row->ID.", 
                         validate: function(v) {
                           if (!v) return 'don\'t leave it blank!';
+                          if (!isLimited(v,1,45)) return 'please fill in up to 45 chars!';
                         },
                         success: function(result){  
                           var data = result.split(',');
                           $('#upby".$row->ID."').html(data[0]);
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
-                    });";
+                    });
+                        $('#MAKE-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";
   $edit_script .= "  $('#MODEL-".$row->ID."').editable({
                         url: updateurl,
                         pk: ".$row->ID.", 
                         validate: function(v) {
-                          if (!v) return 'don\'t leave it blank!';   
+                          if (!v) return 'don\'t leave it blank!'; 
+                          if (!isLimited(v,1,45)) return 'please fill in up to 45 chars!';  
                         },
                         success: function(result){  
                           var data = result.split(',');
                           $('#upby".$row->ID."').html(data[0]);
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
-                    });";
+                    });
+                        $('#MODEL-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";
   $edit_script .= "   $('#MAC_ADDRESS-".$row->ID."').on('shown', function(e, editable) { 
                         $('.mac').inputmask({ 'mask': '**:**:**:**:**:**' });
                       });";
@@ -263,7 +279,10 @@
                           $('#upby".$row->ID."').html(data[0]);
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
-                    });";
+                    });
+                        $('#MAC_ADDRESS-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";
   }
   $edit_script .= "}); ";
 	$edit_script .= '</script>';
@@ -339,7 +358,9 @@ $(document).ready(function()
               } else {    
         				$this.parents('tr').fadeOut(function(){
         					$this.remove(); //remove row when animation is finished
-        				});     
+        				});
+                var page = window.location.href;
+                window.location.assign(page);     
               }   
             }
           });   
@@ -399,5 +420,10 @@ function isValidMacAddress(macAdd){
   } else {
    return true;
   }
-}
+}                     
+                     
+function isLimited(input,init,limit) {
+  var regex = new RegExp("^.{" + init + "," + limit + "}$");
+  return regex.test(input);
+} 
 </script>

@@ -308,8 +308,8 @@ $(document).ready(function(){
   		 		var $this = $(this);
   				if($this.is(':checked')) {
   					sel = true;	//set to true if there is/are selected row
-          			var idf = $(this).parents('tr').attr('id');
-          			var dataP = "idf="+idf;
+          	var idf = $(this).parents('tr').attr('id');
+          	var dataP = "idf="+idf;
   					$.ajax({
             			type: "POST",
             			url: baseurl+"process/menuinventory?p=delete",
@@ -319,14 +319,16 @@ $(document).ready(function(){
               				if(result.trim()!='OK'){    
                 				alert(result); 
               				} else {    
-        						$this.parents('tr').fadeOut(function(){
-        							$this.remove(); //remove row when animation is finished
-        						});     
+        						    $this.parents('tr').fadeOut(function(){
+        							     $this.remove(); //remove row when animation is finished
+        						    }); 
+                        var page = window.location.href;
+                        window.location.assign(page);     
               				}   
             			}
-          			});   
+            });   
   				}
-  	  		});
+  	  	  });
   		  	if(!sel) alert('No data selected');	
   		}
   		return false;
@@ -361,6 +363,6 @@ $.validator.setDefaults({
             error.insertAfter(element);
         }
     }
-});
+});              
   
 </script>

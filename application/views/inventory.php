@@ -185,26 +185,33 @@
 		                        pk: ".$row->ID.", 
 		                        validate: function(v) {
 		                          if (!v) return 'don\'t leave it blank!';
+                              if (!isLimited(v,1,45)) return 'please fill in up to 45 chars!';
 		                        },
 		                        success: function(result){  
 		                          var data = result.split(',');
 		                          $('#upby".$row->ID."').html(data[0]);
 		                          $('#updt".$row->ID."').html(data[1]); 
 		                      } 
-		                    });";
+		                    });
+                        $('#NAME-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";
   		$edit_script .= "  $('#QUANTITY-".$row->ID."').editable({
 		                        url: updateurl,
 		                        pk: ".$row->ID.", 
 		                        validate: function(v) {
 		                          	if (!v) return 'don\'t leave it blank!';
-                          		  	if (isNaN(v)) return 'please fill in a number format!';
+                          		  if (isNaN(v)) return 'please fill in a number format!';
 		                        },
 		                        success: function(result){  
 		                          	var data = result.split(',');
 		                          	$('#upby".$row->ID."').html(data[0]);
 		                          	$('#updt".$row->ID."').html(data[1]); 
 		                      } 
-		                    });";
+		                    });
+                        $('#QUANTITY-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";
   		$edit_script .= "  $('#METRIC-".$row->ID."').editable({    
                         		type: 'select',  
                         		url: updateurl,
@@ -224,7 +231,10 @@
                           			$('#upby".$row->ID."').html(data[0]);
                           			$('#updt".$row->ID."').html(data[1]); 
                       			} 
-                    		});";		
+                    		});
+                        $('#METRIC-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";		
   		$edit_script .= "  $('#WASTAGE_PERCENT-".$row->ID."').editable({
 		                        url: updateurl,
 		                        pk: ".$row->ID.", 
@@ -237,7 +247,10 @@
 		                          	$('#upby".$row->ID."').html(data[0]);
 		                          	$('#updt".$row->ID."').html(data[1]); 
 		                      } 
-		                    });";
+		                    });
+                        $('#WASTAGE_PERCENT-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";	
   		$edit_script .= "  $('#WASTAGE_FREQ-".$row->ID."').editable({    
                         		type: 'select',  
                         		url: updateurl,
@@ -257,7 +270,10 @@
                           			$('#upby".$row->ID."').html(data[0]);
                           			$('#updt".$row->ID."').html(data[1]); 
                       			} 
-                    		});";							
+                    		});
+                        $('#WASTAGE_FREQ-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";							
   		$edit_script .= "  $('#MIN_QUANTITY-".$row->ID."').editable({
 	                        url: updateurl,
 	                        pk: ".$row->ID.", 
@@ -270,7 +286,10 @@
 	                          	$('#upby".$row->ID."').html(data[0]);
 	                          	$('#updt".$row->ID."').html(data[1]); 
 	                      } 
-	                    });";
+	                    });
+                        $('#MIN_QUANTITY-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";	
   	}
   	$edit_script .= "}); ";
 	$edit_script .= '</script>';
@@ -399,5 +418,10 @@ jQuery.validator.addMethod("percent", function(value, element) {
 function isPercent(percent) {
   var regex = /^[0-9]\d{0,1}(\.\d{1,3})?%?$|^100$/;
   return regex.test(percent);
-}  
+}               
+
+function isLimited(input,init,limit) {
+  var regex = new RegExp("^.{" + init + "," + limit + "}$");
+  return regex.test(input);
+} 
 </script>

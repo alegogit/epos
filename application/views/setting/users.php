@@ -327,7 +327,10 @@
                           		$('#upby".$row->ID."').html(data[0]);
                           		$('#updt".$row->ID."').html(data[1]); 
                       		} 
-                    	});";
+                    	});
+                        $('#NAME-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });"; 
   		$edit_script .= "  $('#EMAIL_ADDRESS-".$row->ID."').editable({
 	                        url: updateurl,
 	                        pk: ".$row->ID.", 
@@ -341,7 +344,10 @@
 	                          	$('#upby".$row->ID."').html(data[0]);
 	                          	$('#updt".$row->ID."').html(data[1]); 
 	                      	} 
-	                    });";    
+	                    });
+                        $('#EMAIL_ADDRESS-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";     
   		$edit_script .= "  $('#USERNAME-".$row->ID."').editable({
 	                        url: updateurl,
 	                        pk: ".$row->ID.", 
@@ -354,7 +360,10 @@
 	                          	$('#upby".$row->ID."').html(data[0]);
 	                          	$('#updt".$row->ID."').html(data[1]); 
 	                      	} 
-	                    });";    
+	                    });
+                        $('#USERNAME-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";    
                     
   		$edit_script .= "  $('#ROLE_ID-".$row->ID."').editable({    
 	                        type: 'select',  
@@ -375,7 +384,10 @@
 	                          	$('#upby".$row->ID."').html(data[0]);
 	                          	$('#updt".$row->ID."').html(data[1]); 
 	                      	} 
-	                    });";
+	                    });
+                        $('#ROLE_ID-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";
   		$def_rest = (!$this->setting->get_default_rest($row->ID)->REST_ID)?0:$this->setting->get_default_rest($row->ID)->REST_ID;						  
   		$edit_script .= "  $('#DEF_REST-".$row->ID."').editable({
                         type: 'select', 
@@ -398,7 +410,10 @@
                           	$('#upby".$row->ID."').html(data[0]);
                           	$('#updt".$row->ID."').html(data[1]); 
                         }  
-                     });";
+                     });
+                        $('#DEF_REST-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";
   	}
   	$edit_script .= '});</script>';
   	echo $edit_script;

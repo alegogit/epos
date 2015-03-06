@@ -206,14 +206,18 @@
 								url: updateurl,
 		                        pk: ".$row->ID.", 
 		                        validate: function(v) {
-		                          if (!v) return 'don\'t leave it blank!';
+		                          if (!v) return 'don\'t leave it blank!';  
+                              if (!isLimited(v,1,100)) return 'please fill in up to 100 chars!';
 		                        },
 		                        success: function(result){  
 		                          var data = result.split(',');
 		                          $('#upby".$row->ID."').html(data[0]);
 		                          $('#updt".$row->ID."').html(data[1]); 
 		                      } 
-		                    });";
+		                    });
+                        $('#NAME-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";
   		$edit_script .= "   $('#PRINTER_MAC_ADDRESS-".$row->ID."').on('shown', function(e, editable) { 
                         		$('.mac').inputmask({ 'mask': '**:**:**:**:**:**' });
                       		});";
@@ -229,7 +233,10 @@
 		                          $('#upby".$row->ID."').html(data[0]);
 		                          $('#updt".$row->ID."').html(data[1]); 
 		                      } 
-		                    });";
+		                    });
+                        $('#PRINTER_MAC_ADDRESS-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";
 	  	$edit_script .= "  $('#REST_ID-".$row->ID."').editable({
 		                        type: 'select',  
 		                        value: ".$row->REST_ID.", 
@@ -249,7 +256,10 @@
 		                          	$('#upby".$row->ID."').html(data[0]);
 		                          	$('#updt".$row->ID."').html(data[1]); 
 		                        }  
-							});";
+						          });
+                        $('#REST_ID-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";
 	  	$edit_script .= "  $('#PRINTER_CONNECTION-".$row->ID."').editable({
 		                        type: 'select',  
 		                        value: '".addslashes($row->PRINTER_CONNECTION)."', 
@@ -269,7 +279,10 @@
 		                          	$('#upby".$row->ID."').html(data[0]);
 		                          	$('#updt".$row->ID."').html(data[1]); 
 		                        }  
-							});";
+							         });
+                        $('#PRINTER_CONNECTION-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";
 	  $edit_script .= "   $('#PRINTER_IP_ADDRESS-".$row->ID."').on('shown', function(e, editable) { 
 	                        	$('.ipv4').inputmask({
 									mask: 'i[i[i]].i[i[i]].i[i[i]].i[i[i]]',
@@ -290,6 +303,7 @@
 		                        pk: ".$row->ID.",    
 		                        validate: function(v) { 
 		                          	if (!v) return 'don\'t leave it blank!';
+                                if (!isLimited(v,7,15)) return 'please fill in 7-15 chars!';
 		                        },
 		                        success: function(result){  
 		                          	var data = result.split(',');
@@ -309,7 +323,10 @@
 		                          	$('#upby".$row->ID."').html(data[0]);
 		                          	$('#updt".$row->ID."').html(data[1]); 
 		                        } 
-	                      });";
+	                      });
+                        $('#PRINTER_PORT-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";
 	}
 	$edit_script .= "}); ";
 	$edit_script .= '</script>';
@@ -383,9 +400,11 @@ $(document).ready(function(){
               				if(result.trim()!='OK'){    
                 				alert(result); 
               				} else {    
-        						$this.parents('tr').fadeOut(function(){
-        							$this.remove(); //remove row when animation is finished
-        						});     
+        						    $this.parents('tr').fadeOut(function(){
+                          $this.remove(); //remove row when animation is finished
+        						    });
+                        var page = window.location.href;
+                        window.location.assign(page);          
               				}    
 			            }
 			        });   
@@ -457,5 +476,10 @@ function isValidMacAddress(macAdd){
   } else {
    return true;
   }
-}  
+}                 
+                     
+function isLimited(input,init,limit) {
+  var regex = new RegExp("^.{" + init + "," + limit + "}$");
+  return regex.test(input);
+} 
 </script>
