@@ -12,6 +12,7 @@ class Restaurant_controller extends CI_Controller {
 		$this->data['user'] = $this->setting->get_profile();
 		$this->data['restaurants'] = $this->setting->get_restaurant();  
     $this->load->library('picture');   
+    $this->load->library('curl');   
     @$this->data['profpic'] = ($this->data['user']->IMAGE=="")?base_url()."assets/img/no-photo.jpg":base_url()."profile/pic/".$this->picture->gettyimg($session_data['id']).".jpg";
   }
 
@@ -40,6 +41,25 @@ class Restaurant_controller extends CI_Controller {
           $this->input->post('email'),$this->input->post('currency'),$this->input->post('service')
         );
       } 
+      
+      if(@$_FILES['cphoto']['tmp_name']){ 
+      
+      
+        $request = curl_init('http://localhost/upload/');
+        // send a file
+        curl_setopt($request, CURLOPT_POST, true); 
+        //$filename = substr($_FILES['cphoto']['tmp_name'],0,-4).".jpg";   echo $filename;
+        //$args['cphoto'] = new CurlFile($filename, 'image/jpg');
+        $args['cphoto'] = new CurlFile($_FILES['cphoto']['tmp_name'], 'image/jpg');
+        curl_setopt($request, CURLOPT_POSTFIELDS, $args);
+        //curl_setopt($request, CURLOPT_POSTFIELDS, array('cphoto' => $cfile )); 
+        // output the response
+        curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
+        //curl_setopt($request,CURLOPT_FOLLOWLOCATION,true);
+        echo curl_exec($request);
+        // close the session
+        curl_close($request);
+      }
       
 		  $data['restaurant'] = $this->setting->get_restaurant_data();
 		  $data['currencies'] = $this->setting->get_currencies();			                   

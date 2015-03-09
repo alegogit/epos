@@ -7,7 +7,8 @@ class Restaurantsetting_controller extends CI_Controller {
 		parent::__construct();	
 		$this->load->model('process/restaurantsetting_model','process',TRUE);
 		$session_data = $this->session->userdata('logged_in');
-		$this->data['user'] = $this->process->get_profile();
+		$this->data['user'] = $this->process->get_profile();    
+    $this->load->library('curl');   
 	}
 
 	public function index()
@@ -26,6 +27,10 @@ class Restaurantsetting_controller extends CI_Controller {
           case 'takenu':      
             $data['varP'] = $this->input->get('name');  
             $this->load->view('process/taken_resto',$data); 
+          break;
+          case 'cphoto':      
+            $data['varP'] = $this->input->get('rid');  
+            $this->load->view('process/resto_photo',$data); 
           break;
           case 'update':      
             $data['varP'] = $this->input->post('pk').','.$this->input->post('value').','.$this->input->post('name');  

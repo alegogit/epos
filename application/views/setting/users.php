@@ -62,7 +62,7 @@
                     <a id="USERNAME-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->USERNAME?></a>
                   </td>
                   <td style="">
-                    <a id="PASSWORD-<?=$row->ID?>" class="epop" tabindex="-1" data-toggle="modal" data-target="#passModal" data-uid="<?=$row->ID?>" data-unm="<?=$row->USERNAME?>" style="font-size:70%">
+                    <a id="PASSWORD-<?=$row->ID?>" class="epop" tabindex="-1" data-toggle="modal" data-target="#passModal" data-uid="<?=$row->ID?>" data-unm="<?=$row->USERNAME?>" style="font-size:70%;cursor:pointer;">
                       <i class="fa fa-circle"></i>
                       <i class="fa fa-circle"></i>
                       <i class="fa fa-circle"></i>
@@ -90,7 +90,7 @@
 						    }         
 							$assval .= "]";
 					?>
-                    <a id="ASS_REST-<?=$row->ID?>" class="epop" tabindex="-1" data-toggle="modal" data-target="#restModal" data-uid="<?=$row->ID?>" data-unm="<?=$row->USERNAME?>" data-def="<?=$assval?>" style="">
+                    <a id="ASS_REST-<?=$row->ID?>" class="epop" tabindex="-1" data-toggle="modal" data-target="#restModal" data-uid="<?=$row->ID?>" data-unm="<?=$row->USERNAME?>" data-def="<?=$assval?>" style="cursor:pointer;">
 						<?=($asstxt!="")?$asstxt:"click to assign restaurant(s)"?>
 					</a>
                   </td>

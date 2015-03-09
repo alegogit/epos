@@ -68,10 +68,11 @@
                     			<span id="NAME__<?=$row->ID?>" tabindex="0"><?=$row->NAME?></span>
                     		<?php } ?>
                   			</td>
-                  			<td style="">
-                    			<a id="LOGO__<?=$row->ID?>" class="edit" tabindex="0">
-                            <img style="width:75px; height:35px;" src="<?php echo base_url(); ?>assets/images/logo3d.png"/>
+                  			<td style="">   
+                          <a id="LOGO__<?=$row->ID?>" class="epop" tabindex="-1" data-toggle="modal" data-target="#logoModal" data-rid="<?=$row->ID?>" data-rnm="<?=$row->NAME?>" style="cursor:pointer">
+                            <img style="width:75px; height:35px;" src="<?=($row->LOGO!="")?base_url().$row->LOGO."png":base_url()."assets/images/logo3d.png"?>"/>
                           </a>
+						
                   			</td>
                   			<td style="">
                     			<a id="EMAIL_ADDRESS__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->EMAIL_ADDRESS?></a>
@@ -104,9 +105,9 @@
 		                    	<a id="CURRENCY__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->CURRENCY_NAME?></a>
 		                  	</td>
 		                  	<td style="" class="cin">
-								<a id="SERVICE_CHARGE__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->SERVICE_CHARGE?></a>
+                          <a id="SERVICE_CHARGE__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->SERVICE_CHARGE?></a>
 		                  	</td>
-							<td style="text-align:left !important;">%&nbsp;&nbsp;</td>
+                        <td style="text-align:left !important;">%&nbsp;&nbsp;</td>
 		                  	<!--<td style="">
 		                    	<a id="ORDER_NUMBER_START__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->ORDER_NUMBER_START?></a>
 		                  	</td>-->
@@ -139,7 +140,7 @@
       <div class="modal-body">  <div id="errmsg"></div>
       <?php
         $attributes = array('class' => 'form-inline', 'id' => 'newresto', 'role' => 'form');
-        echo form_open('setting/restaurant',$attributes)
+        echo form_open('setting/restaurant',$attributes);
       ?> 
 	  <div class="row">
       	<div class="col-md-4">                   		
@@ -280,6 +281,56 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal fade -->
+
+
+<!-- Modal2 -->
+<div class="modal fade" id="logoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Change <span id="modrest"></span>'s Logo</h4>
+      </div><!-- /.modal-header -->
+      <div class="modal-body">  <div id="errmsg"></div>
+      <?php
+        $attributes = array('class' => 'form-inline', 'id' => 'editlogo', 'name' => 'editlogo', 'role' => 'form', 'enctype' => 'multipart/form-data');
+        echo form_open('setting/restaurant',$attributes);
+      ?>    
+          <div class="text-center" style="margin-right:6px">
+            <div class="fileinput fileinput-new" data-provides="fileinput">
+              <div class="fileinput-new">
+                <img src="<?=$profpic?>" class="avatar img-circle img-thumbnail" alt="avatar" style="width: 180px; height: 180px;">
+		  				</div><br/>
+		  				<div class="fileinput-preview fileinput-exists avatar img-circle img-thumbnail thumbnail" style="max-width: 180px; max-height: 180px; border-radius: 50% !important; padding: 4px !important"></div>
+		  				<div class="fileinput-error alert-danger" style="width: 180px; height: 180px; border-radius: 50% !important; padding: 4px !important; display:none;"></div>
+		  				<div>
+		    				<span class="btn btn-default btn-file">
+                  <span class="fileinput-new">Change Logo</span><span class="fileinput-exists">Change</span>
+                  <input name="MAX_FILE_SIZE" value="307200" type="hidden">
+                  <input type="file" accept="image/jpeg" name="cphoto" id="myFile">
+                </span>
+		    				<a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+		  				</div><br/>
+              <div class="alert alert-info alert-dismissable" style="max-width: 180px;">
+                <a class="panel-close close" data-dismiss="alert">×</a>
+                <i class="fa fa-info-circle"></i>
+	        			Max <strong>300 kb</strong> image file.
+	      			</div>
+            </div>
+          </div>   <br />        		
+        <div class="form-group text-right" style="margin-bottom:10px">
+          <div class="input-group">  
+            <input type="hidden" name="rid" id="rid">      
+            <input type="submit" name="cps" class="btn btn-success" value="Submit">&nbsp;
+            <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+          </div>
+        </div><br /> 
+        <?=form_close()?>
+      </div><!-- /.modal-body -->
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal fade -->
+
 <div id="baseurl" data-url="<?=base_url()?>"></div>
 <?php } ?>
 
@@ -307,7 +358,10 @@
                           $('#upby".$row->ID."').html(data[0]);
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
-                    });";
+                    });
+                        $('#NAME__".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });"; 
   }
   $edit_script .= "  $('#TELEPHONE__".$row->ID."').editable({
                         url: updateurl,
@@ -323,7 +377,10 @@
                           $('#upby".$row->ID."').html(data[0]);
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
-                    });";
+                    });
+                        $('#TELEPHONE__".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });"; 
   $edit_script .= "  $('#FAX__".$row->ID."').editable({
                         url: updateurl,
                         pk: ".$row->ID.", 
@@ -338,7 +395,10 @@
                           $('#upby".$row->ID."').html(data[0]);
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
-                    });";
+                    });
+                        $('#FAX__".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });"; 
   $edit_script .= "  $('#ADDRESS_LINE_1__".$row->ID."').editable({
                         url: updateurl,
                         pk: ".$row->ID.", 
@@ -352,7 +412,10 @@
                           $('#upby".$row->ID."').html(data[0]);
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
-                    });";
+                    });
+                        $('#ADDRESS_LINE_1__".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });"; 
   $edit_script .= "  $('#ADDRESS_LINE_2__".$row->ID."').editable({
                         url: updateurl,
                         pk: ".$row->ID.", 
@@ -366,7 +429,10 @@
                           $('#upby".$row->ID."').html(data[0]);
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
-                    });";
+                    });
+                        $('#ADDRESS_LINE_2__".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });"; 
   $edit_script .= "  $('#CITY__".$row->ID."').editable({
                         url: updateurl,
                         pk: ".$row->ID.", 
@@ -380,7 +446,10 @@
                           $('#upby".$row->ID."').html(data[0]);
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
-                    });";
+                    });
+                        $('#CITY__".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });"; 
   $edit_script .= "  $('#POSTAL_CODE__".$row->ID."').editable({
                         url: updateurl,
                         pk: ".$row->ID.", 
@@ -394,7 +463,10 @@
                           $('#upby".$row->ID."').html(data[0]);
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
-                    });";
+                    });
+                        $('#POSTAL_CODE__".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });"; 
   $edit_script .= "  $('#COUNTRY__".$row->ID."').editable({
                         url: updateurl,
                         pk: ".$row->ID.", 
@@ -408,7 +480,10 @@
                           $('#upby".$row->ID."').html(data[0]);
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
-                    });";
+                    });
+                        $('#COUNTRY__".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });"; 
   /*
   $edit_script .= "  $('#GEOLOC__".$row->ID."').editable({
                         url: updateurl,
@@ -424,7 +499,10 @@
                           $('#upby".$row->ID."').html(data[0]);
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
-                    });";
+                    });
+                        $('#GEOLOC__".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });"; 
   */
   $edit_script .= "  $('#EMAIL_ADDRESS__".$row->ID."').editable({
                         url: updateurl,
@@ -439,7 +517,10 @@
                           $('#upby".$row->ID."').html(data[0]);
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
-                    });";    
+                    });
+                        $('#EMAIL_ADDRESS__".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";    
   $edit_script .= "  $('#CURRENCY__".$row->ID."').editable({    
                         type: 'select',  
                         url: updateurl,
@@ -459,7 +540,10 @@
                           $('#upby".$row->ID."').html(data[0]);
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
-                    });";    
+                    });
+                        $('#CURRENCY__".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";   
   $edit_script .= "  $('#SERVICE_CHARGE__".$row->ID."').editable({
                         url: updateurl,
                         pk: ".$row->ID.", 
@@ -472,7 +556,10 @@
                           $('#upby".$row->ID."').html(data[0]);
                           $('#updt".$row->ID."').html(data[1]); 
                       } 
-                    });";
+                    });
+                        $('#SERVICE_CHARGE__".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";
   }
   $edit_script .= "}); ";
 	$edit_script .= '</script>';
@@ -481,7 +568,35 @@
 <script>   
 $(document).ready(function()
 {   
-	var baseurl = $("#baseurl").data('url');
+	var baseurl = $("#baseurl").data('url');  
+  
+  $(".epop").click(function () { 
+  	var ridP = $(this).data('rid'); 
+  	var rnmP = $(this).data('rnm');  
+  	$(".modal-title #modrest").html(rnmP);  
+    $("#rid").val(ridP); 
+  }); 
+  
+  $('#editlogo').submit(function(e) {
+    //alert('sdf');  
+  				$.ajax({
+            type: "POST",
+            url: baseurl+"process/restaurant?p=cphoto",
+            data: dataP,
+            cache: false,
+            success: function(result){ 
+              if(result.trim()!='OK'){    
+                alert(result); 
+              } else {    
+        				$this.parents('tr').fadeOut(function(){
+        					$this.remove(); //remove row when animation is finished
+        				});
+                var page = window.location.href;
+                window.location.assign(page);   
+              }   
+            }
+          });   
+  });
   
   	//make editable on focus  
   	$('.edit').focus(function(e) {
