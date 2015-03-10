@@ -122,6 +122,27 @@ class Restaurant_model extends CI_Model {
       (NAME,TELEPHONE,FAX,ADDRESS_LINE_1,ADDRESS_LINE_2,CITY,POSTAL_CODE,COUNTRY,GEOLOC,EMAIL_ADDRESS,CURRENCY,SERVICE_CHARGE,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
       VALUES 
       ("'.$NAME.'","'.$TELEPHONE.'","'.$FAX.'","'.$ADDRESS_LINE_1.'","'.$ADDRESS_LINE_2.'","'.$CITY.'","'.$POSTAL_CODE.'","'.$COUNTRY.'","'.$GEOLOC.'","'.$EMAIL_ADDRESS.'","'.$CURRENCY.'",'.$SERVICE_CHARGE.','.$id.',NOW(),'.$id.',NOW());');
+  }  
+  
+  function gettyimg($id){ 
+    $iddt = strval(date('Ym')).$id.strval(date('dH'));
+    $num2c = array(
+                "1" => "q",
+                "2" => "w",
+                "3" => "e",
+                "4" => "r",
+                "5" => "t",
+                "6" => "y",
+                "7" => "u",
+                "8" => "i",
+                "9" => "o",
+                "0" => "p"
+            );
+    $gembok = "";
+    for($i=0;$i<strlen($iddt);$i++){  
+      $gembok .= $num2c[$iddt[$i]];
+    }  
+    return $gembok;
   }
   
 }
