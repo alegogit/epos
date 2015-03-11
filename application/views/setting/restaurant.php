@@ -68,11 +68,13 @@
                     			<span id="NAME__<?=$row->ID?>" tabindex="0"><?=$row->NAME?></span>
                     		<?php } ?>
                   			</td>
-                  			<td style="">   
-                          <a id="LOGO__<?=$row->ID?>" class="epop" tabindex="-1" data-toggle="modal" data-target="#logoModal" data-rid="<?=$row->ID?>" data-rnm="<?=$row->NAME?>" style="cursor:pointer">
-                            <img style="width:75px; height:35px;" src="<?=($row->LOGO!="")?base_url().$row->LOGO."png":base_url()."assets/images/logo3d.png"?>"/>
+                  			<td style="">
+                          <?php 
+                            $logo = ($row->LOGO_URL!="")?$row->LOGO_URL:base_url()."assets/images/logo3d.png";
+                          ?>   
+                          <a id="LOGO__<?=$row->ID?>" class="epop" tabindex="-1" data-toggle="modal" data-target="#logoModal" data-rid="<?=$row->ID?>" data-rnm="<?=$row->NAME?>" data-rlg="<?=$logo?>" style="cursor:pointer">
+                            <img alt="<?=$row->NAME?>'s LOGO" style="width:75px; height:35px;" src="<?=$logo?>"/>
                           </a>
-						
                   			</td>
                   			<td style="">
                     			<a id="EMAIL_ADDRESS__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->EMAIL_ADDRESS?></a>
@@ -139,7 +141,7 @@
       </div><!-- /.modal-header -->
       <div class="modal-body">  <div id="errmsg"></div>
       <?php
-        $attributes = array('class' => 'form-inline', 'id' => 'newresto', 'role' => 'form');
+        $attributes = array('class' => 'form-inline', 'id' => 'newresto', 'role' => 'form', 'enctype' => 'multipart/form-data');
         echo form_open('setting/restaurant',$attributes);
       ?> 
 	  <div class="row">
@@ -247,7 +249,7 @@
           <div class="text-center" style="margin-right:6px">
             <div class="fileinput fileinput-new" data-provides="fileinput">
               <div class="fileinput-new">
-                <img src="<?=$profpic?>" class="avatar img-circle img-thumbnail" alt="avatar" style="width: 180px; height: 180px;">
+                <img src="<?=base_url()?>assets/images/logo3d.png" class="avatar img-circle img-thumbnail" alt="avatar" style="width: 180px; height: 180px;">
 		  				</div><br/>
 		  				<div class="fileinput-preview fileinput-exists avatar img-circle img-thumbnail thumbnail" style="max-width: 180px; max-height: 180px; border-radius: 50% !important; padding: 4px !important"></div>
 		  				<div class="fileinput-error alert-danger" style="width: 180px; height: 180px; border-radius: 50% !important; padding: 4px !important; display:none;"></div>
@@ -255,7 +257,7 @@
 		    				<span class="btn btn-default btn-file">
                   <span class="fileinput-new">Change Logo</span><span class="fileinput-exists">Change</span>
                   <input name="MAX_FILE_SIZE" value="307200" type="hidden">
-                  <input type="file" accept="image/jpeg" name="photo" id="myFile">
+                  <input type="file" accept="image/jpeg" name="cphoto" id="myFile1">
                 </span>
 		    				<a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
 		  				</div><br/>
@@ -270,7 +272,7 @@
 	</div><!-- /.row -->
 	<div class="row">    		
     	<div class="form-group text-right center-block" style="align:right;margin:10px">
-        	<div class="input-group">       
+        	<div class="input-group">         
             	<button type="submit" class="btn btn-success">Submit</button>&nbsp;
             	<button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
           	</div>
@@ -280,8 +282,8 @@
 </div><!-- /.modal-body -->
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
-</div><!-- /.modal fade -->
-
+</div><!-- /.modal fade -->    
+<?php } ?>
 
 <!-- Modal2 -->
 <div class="modal fade" id="logoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -299,7 +301,7 @@
           <div class="text-center" style="margin-right:6px">
             <div class="fileinput fileinput-new" data-provides="fileinput">
               <div class="fileinput-new">
-                <img src="<?=$profpic?>" class="avatar img-circle img-thumbnail" alt="avatar" style="width: 180px; height: 180px;">
+                <img id="rest_image" src="<?=$profpic?>" class="avatar img-circle img-thumbnail" alt="avatar" style="width: 180px; height: 180px;">
 		  				</div><br/>
 		  				<div class="fileinput-preview fileinput-exists avatar img-circle img-thumbnail thumbnail" style="max-width: 180px; max-height: 180px; border-radius: 50% !important; padding: 4px !important"></div>
 		  				<div class="fileinput-error alert-danger" style="width: 180px; height: 180px; border-radius: 50% !important; padding: 4px !important; display:none;"></div>
@@ -307,7 +309,7 @@
 		    				<span class="btn btn-default btn-file">
                   <span class="fileinput-new">Change Logo</span><span class="fileinput-exists">Change</span>
                   <input name="MAX_FILE_SIZE" value="307200" type="hidden">
-                  <input type="file" accept="image/jpeg" name="cphoto" id="myFile">
+                  <input type="file" accept="image/jpeg" name="cphoto" id="myFile2">
                 </span>
 		    				<a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
 		  				</div><br/>
@@ -332,7 +334,6 @@
 </div><!-- /.modal fade -->
 
 <div id="baseurl" data-url="<?=base_url()?>"></div>
-<?php } ?>
 
 <?php  
   //editable script
@@ -568,12 +569,26 @@
 <script>   
 $(document).ready(function()
 {   
-	var baseurl = $("#baseurl").data('url');  
+	var baseurl = $("#baseurl").data('url');
+   
+  $('#myFile').bind('change', function() {
+    var filesize = this.files[0].size / 1024;
+    var filetype = this.files[0].type;
+    if((filesize>300)||(filetype.substring(0,5)!="image")){
+      $(".fileinput-preview").hide();  
+      $(".fileinput-error").show().html("<span style='display:inline-block;padding:35px;'>You were trying to upload a <b>"+parseInt(filesize)+" kb "+strstr(filetype,'/',true)+"</b> file. Please upload a <b>Maximum 300 kb image</b> file</span>"); 
+    } else {              
+      $(".fileinput-error").hide(); 
+      $(".fileinput-preview").show(); 
+    } 
+  }); 
   
   $(".epop").click(function () { 
   	var ridP = $(this).data('rid'); 
-  	var rnmP = $(this).data('rnm');  
+  	var rnmP = $(this).data('rnm'); 
+  	var rlgP = $(this).data('rlg');  
   	$(".modal-title #modrest").html(rnmP);  
+    $('#rest_image').attr('src',rlgP);
     $("#rid").val(ridP); 
   }); 
   
@@ -769,7 +784,7 @@ function isLimited(input,init,limit) {
   return regex.test(input);
 }           
 
-$('#myFile').bind('change', function() {
+$('#myFile1,#myFile2').bind('change', function() {
   var filesize = this.files[0].size / 1024;
   var filetype = this.files[0].type;
   if((filesize>300)||(filetype.substring(0,5)!="image")){

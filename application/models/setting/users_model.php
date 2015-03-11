@@ -10,20 +10,33 @@ class Users_model extends CI_Model {
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id'];
 		$this->db->where('ID',$id);
-    	$query = $this->db->get('USERS');
-    	return $query->row();
-  	}  
+    $query = $this->db->get('USERS');
+    return $query->row();
+  }
   
-  	function get_restaurant(){
+  function get_restaurant(){
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id'];
 		$this->db->where('USERS_RESTAURANTS.USER_ID',$id);
-    	$query = $this->db->select('*')
+    $query = $this->db->select('*')
                       ->from('RESTAURANTS')
                       ->join('USERS_RESTAURANTS', 'RESTAURANTS.ID = USERS_RESTAURANTS.REST_ID')
                       ->get('');
-    	return $query->result();
-  	}
+    return $query->result();
+  }                        
+  
+  function get_rest_logo(){
+		$session_data = $this->session->userdata('logged_in');
+		$id = $session_data['id'];
+		$this->db->where('USERS_RESTAURANTS.USER_ID',$id); 
+		$this->db->where('USERS_RESTAURANTS.DEFAULT_REST',1);
+    $query = $this->db->select('LOGO_URL')
+                      ->from('RESTAURANTS')
+                      ->join('USERS_RESTAURANTS', 'RESTAURANTS.ID = USERS_RESTAURANTS.REST_ID')
+                      ->limit(1)
+                      ->get('');
+    return $query->row()->LOGO_URL;
+  }
     
   	function get_all_restaurants(){
     	$query = $this->db->select('ID AS REST_ID,NAME')

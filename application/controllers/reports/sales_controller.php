@@ -10,7 +10,8 @@ class Sales_controller extends CI_Controller {
 		$session_data = $this->session->userdata('logged_in');
 		$this->data['user'] = $this->sales->get_profile();
 		$this->data['restaurants'] = $this->sales->get_restaurant(); 
-    $this->load->library('picture');   
+    $this->load->library('picture');    
+    @$this->data['reslogo'] = ($this->sales->get_rest_logo()=="")?base_url()."assets/images/logo3d.png":$this->sales->get_rest_logo();    
     @$this->data['profpic'] = ($this->data['user']->IMAGE=="")?base_url()."assets/img/no-photo.jpg":base_url()."profile/pic/".$this->picture->gettyimg($session_data['id']).".jpg";
   }
 

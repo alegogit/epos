@@ -13,7 +13,8 @@ class Restaurant_controller extends CI_Controller {
 		$this->data['restaurants'] = $this->setting->get_restaurant();  
     $this->load->library('picture');   
     $this->load->library('curl');   
-    @$this->data['profpic'] = ($this->data['user']->IMAGE=="")?base_url()."assets/img/no-photo.jpg":base_url()."profile/pic/".$this->picture->gettyimg($session_data['id']).".jpg";
+    @$this->data['reslogo'] = ($this->setting->get_rest_logo()=="")?base_url()."assets/images/logo3d.png":$this->setting->get_rest_logo();  
+    @$this->data['profpic'] = ($this->data['user']->IMAGE=="")?base_url()."assets/img/no-photo.jpg":base_url()."profile/pic/".$this->picture->gettyimg($session_data['id']).".jpg";  
   }
 
 	public function index()
@@ -33,40 +34,58 @@ class Restaurant_controller extends CI_Controller {
 			$data['startdate'] = $start_date;
 			$data['enddate'] = $end_date; 
 			                                 
-      if($this->input->post('email') && $data['role']==1){             
-		    $this->setting->new_restaurant(
+      if($this->input->post('email') && $data['role']==1){ 
+        if(@$_FILES['cphoto']['tmp_name']){
+          $request = curl_init($this->config->config['fileserver_upl']);
+          curl_setopt($request, CURLOPT_POST, true); 
+          $args['cphoto'] = new CurlFile($_FILES['cphoto']['tmp_name'], 'image/jpg');
+          $args['rid'] = $this->setting->new_id();
+          $args['key'] = md5($this->setting->gettyimg($args['rid']));
+          $args['dir'] = $this->config->config['fileserver_img_dir'];
+          curl_setopt($request, CURLOPT_POSTFIELDS, $args);
+          curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
+          $result = curl_exec($request);
+          curl_close($request);        
+          if($result !== FALSE) {
+            $photo_url = $this->config->config['fileserver_url'].$args['dir'].$this->setting->gettyimg($args['rid']).".jpg";  
+          } else {
+            $photo_url = base_url()."assets/images/logo3d.png";
+          }
+        } else {
+          $photo_url = base_url()."assets/images/logo3d.png";
+        } 
+        $this->setting->new_restaurant(
           $this->input->post('name'),$this->input->post('telephone'),$this->input->post('FAX'),
           $this->input->post('address1'),$this->input->post('address2'),$this->input->post('city'),
           $this->input->post('postalcode'),$this->input->post('country'),$this->input->post('geoloc'),
-          $this->input->post('email'),$this->input->post('currency'),$this->input->post('service')
+          $this->input->post('email'),$this->input->post('currency'),$this->input->post('service'),$photo_url
         );
+      } else {    
+        if(@$_FILES['cphoto']['tmp_name']){
+          $request = curl_init($this->config->config['fileserver_upl']);
+          // send a file
+          curl_setopt($request, CURLOPT_POST, true); 
+          //$filename = substr($_FILES['cphoto']['tmp_name'],0,-4).".jpg";   echo $filename;
+          //$args['cphoto'] = new CurlFile($filename, 'image/jpg');
+          $args['cphoto'] = new CurlFile($_FILES['cphoto']['tmp_name'], 'image/jpg');
+          $args['rid'] = $this->input->post('rid');
+          $args['key'] = md5( $this->setting->gettyimg( $this->input->post('rid') ) );
+          $args['dir'] = $this->config->config['fileserver_img_dir'];
+          curl_setopt($request, CURLOPT_POSTFIELDS, $args);
+          //curl_setopt($request, CURLOPT_POSTFIELDS, array('cphoto' => $cfile )); 
+          // output the response
+          curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
+          //curl_setopt($request,CURLOPT_FOLLOWLOCATION,true);
+          $result = curl_exec($request);
+          // close the session
+          curl_close($request);        
+          if($result !== FALSE) {
+            $photo_url = $this->config->config['fileserver_url'].$args['dir'].$this->setting->gettyimg($this->input->post('rid')).".jpg";
+            $this->setting->update_logo($photo_url,$args['rid']);
+          }
+        }
       }  
       
-      if(@$_FILES['cphoto']['tmp_name']){ 
-      
-      
-        $request = curl_init($this->config->config['fileserver_upl']);
-        // send a file
-        curl_setopt($request, CURLOPT_POST, true); 
-        //$filename = substr($_FILES['cphoto']['tmp_name'],0,-4).".jpg";   echo $filename;
-        //$args['cphoto'] = new CurlFile($filename, 'image/jpg');
-        $args['cphoto'] = new CurlFile($_FILES['cphoto']['tmp_name'], 'image/jpg');
-        $args['rid'] = $this->input->post('rid');
-        $args['key'] = md5($this->setting->gettyimg($this->input->post('rid')));
-        $args['dir'] = $this->config->config['fileserver_img_dir'];
-        curl_setopt($request, CURLOPT_POSTFIELDS, $args);
-        //curl_setopt($request, CURLOPT_POSTFIELDS, array('cphoto' => $cfile )); 
-        // output the response
-        curl_setopt($request, CURLOPT_RETURNTRANSFER, true);
-        //curl_setopt($request,CURLOPT_FOLLOWLOCATION,true);
-        $result = curl_exec($request);
-        // close the session
-        curl_close($request);        
-        if($result !== FALSE) {
-          $photo_url = $this->config->config['fileserver_url'].$args['dir'].$this->setting->gettyimg($_POST['rid']).".jpg";
-          //$this->setting->update_logo($photo_url,$args['rid']);
-        }
-      }
       
 		  $data['restaurant'] = $this->setting->get_restaurant_data();
 		  $data['currencies'] = $this->setting->get_currencies();			                   

@@ -152,7 +152,7 @@ $(function() {
           </button>
           <div class="gallery">
           <a class="navbar-brand" href="<?=base_url()?>dashboard">
-            <img style="width:75px; height:35px;" src="<?php echo base_url(); ?>assets/images/logo3d.png"/>              
+            <img style="width:75px; height:35px;" src="<?=$reslogo?>"/>              
           </a>
           </div>
         </div>

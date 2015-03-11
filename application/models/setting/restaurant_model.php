@@ -24,6 +24,19 @@ class Restaurant_model extends CI_Model {
                       ->get('');
     return $query->result();
   }
+  
+  function get_rest_logo(){
+		$session_data = $this->session->userdata('logged_in');
+		$id = $session_data['id'];
+		$this->db->where('USERS_RESTAURANTS.USER_ID',$id); 
+		$this->db->where('USERS_RESTAURANTS.DEFAULT_REST',1);
+    $query = $this->db->select('LOGO_URL')
+                      ->from('RESTAURANTS')
+                      ->join('USERS_RESTAURANTS', 'RESTAURANTS.ID = USERS_RESTAURANTS.REST_ID')
+                      ->limit(1)
+                      ->get('');
+    return $query->row()->LOGO_URL;
+  }
     
 	function get_username($id){
     $query = $this->db->select('NAME,USERNAME')
@@ -40,6 +53,13 @@ class Restaurant_model extends CI_Model {
                       ->where('ID',$id)
                       ->get('');
     return $query->row();
+  }    
+  
+	function new_id(){
+    $query = $this->db->select('MAX(ID)+1 AS NEW_ID')
+                      ->from('RESTAURANTS')
+                      ->get('');
+    return $query->row()->NEW_ID;
   }    
   
 	function get_restaurant_data(){ 
@@ -115,14 +135,29 @@ class Restaurant_model extends CI_Model {
     return $query->result();
   }
    
-	function new_restaurant($NAME,$TELEPHONE,$FAX,$ADDRESS_LINE_1,$ADDRESS_LINE_2,$CITY,$POSTAL_CODE,$COUNTRY,$GEOLOC,$EMAIL_ADDRESS,$CURRENCY,$SERVICE_CHARGE){       
+	function new_restaurant($NAME,$TELEPHONE,$FAX,$ADDRESS_LINE_1,$ADDRESS_LINE_2,$CITY,$POSTAL_CODE,$COUNTRY,$GEOLOC,$EMAIL_ADDRESS,$CURRENCY,$SERVICE_CHARGE,$LOGO_URL){       
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id'];
     $query1 = $this->db->query('INSERT INTO RESTAURANTS
-      (NAME,TELEPHONE,FAX,ADDRESS_LINE_1,ADDRESS_LINE_2,CITY,POSTAL_CODE,COUNTRY,GEOLOC,EMAIL_ADDRESS,CURRENCY,SERVICE_CHARGE,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
+      (NAME,TELEPHONE,FAX,ADDRESS_LINE_1,ADDRESS_LINE_2,CITY,POSTAL_CODE,COUNTRY,GEOLOC,EMAIL_ADDRESS,CURRENCY,SERVICE_CHARGE,LOGO_URL,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
       VALUES 
-      ("'.$NAME.'","'.$TELEPHONE.'","'.$FAX.'","'.$ADDRESS_LINE_1.'","'.$ADDRESS_LINE_2.'","'.$CITY.'","'.$POSTAL_CODE.'","'.$COUNTRY.'","'.$GEOLOC.'","'.$EMAIL_ADDRESS.'","'.$CURRENCY.'",'.$SERVICE_CHARGE.','.$id.',NOW(),'.$id.',NOW());');
+      ("'.$NAME.'","'.$TELEPHONE.'","'.$FAX.'","'.$ADDRESS_LINE_1.'","'.$ADDRESS_LINE_2.'","'.$CITY.'","'.$POSTAL_CODE.'","'.$COUNTRY.'","'.$GEOLOC.'","'.$EMAIL_ADDRESS.'","'.$CURRENCY.'",'.$SERVICE_CHARGE.',"'.$LOGO_URL.'",'.$id.',NOW(),'.$id.',NOW());');
   }  
+  
+  
+	function update_logo($pic_url,$rest_id){ 
+	  date_default_timezone_set('Asia/Jakarta');
+		$session_data = $this->session->userdata('logged_in');
+		$id = $session_data['id']; 
+		$dt = date('Y-m-d H:i:s');
+	  $data = array(
+               'LOGO_URL' => $pic_url,
+               'LAST_UPDATED_BY' => $id,
+               'LAST_UPDATED_DATE' => $dt,
+            ); 
+		$this->db->where('ID',$rest_id);
+    $query = $this->db->update('RESTAURANTS',$data);
+	}
   
   function gettyimg($id){ 
     $iddt = strval(date('Ym')).$id.strval(date('dH'));

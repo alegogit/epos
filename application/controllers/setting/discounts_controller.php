@@ -11,6 +11,7 @@ class Discounts_controller extends CI_Controller {
 		$this->data['user'] = $this->discounts->get_profile();
 		$this->data['restaurants'] = $this->discounts->get_restaurant();  
     $this->load->library('picture');   
+    @$this->data['reslogo'] = ($this->setting->get_rest_logo()=="")?base_url()."assets/images/logo3d.png":$this->setting->get_rest_logo();     
     @$this->data['profpic'] = ($this->data['user']->IMAGE=="")?base_url()."assets/img/no-photo.jpg":base_url()."profile/pic/".$this->picture->gettyimg($session_data['id']).".jpg";
   }
 

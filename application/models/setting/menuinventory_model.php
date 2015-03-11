@@ -29,6 +29,19 @@ class Menuinventory_model extends CI_Model {
                         ->get('');
     }
     return $query->result();
+  }                         
+  
+  function get_rest_logo(){
+		$session_data = $this->session->userdata('logged_in');
+		$id = $session_data['id'];
+		$this->db->where('USERS_RESTAURANTS.USER_ID',$id); 
+		$this->db->where('USERS_RESTAURANTS.DEFAULT_REST',1);
+    $query = $this->db->select('LOGO_URL')
+                      ->from('RESTAURANTS')
+                      ->join('USERS_RESTAURANTS', 'RESTAURANTS.ID = USERS_RESTAURANTS.REST_ID')
+                      ->limit(1)
+                      ->get('');
+    return $query->row()->LOGO_URL;
   }
   
   function get_currency($rest_id){

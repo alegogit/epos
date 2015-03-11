@@ -11,7 +11,8 @@ class Customers_controller extends CI_Controller {
 		$this->data['menu'] = 'customers';      
 		$this->data['user'] = $this->customers->get_profile();
 		$this->data['restaurants'] = $this->customers->get_restaurant();   
-    $this->load->library('picture');   
+    $this->load->library('picture');                        
+    @$this->data['reslogo'] = ($this->customers->get_rest_logo()=="")?base_url()."assets/images/logo3d.png":$this->customers->get_rest_logo();  
     @$this->data['profpic'] = ($this->data['user']->IMAGE=="")?base_url()."assets/img/no-photo.jpg":base_url()."profile/pic/".$this->picture->gettyimg($session_data['id']).".jpg";
   }
 

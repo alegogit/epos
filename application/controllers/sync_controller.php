@@ -5,14 +5,15 @@ class Sync_controller extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();	
-		$this->load->model('sync_model','sync',TRUE);  
-    	$this->load->helper(array('form', 'url','html'));
+		$this->load->model('sync_model','sync',TRUE);
+    $this->load->helper(array('form', 'url','html'));
 		$session_data = $this->session->userdata('logged_in');  
 		$this->data['menu'] = 'sync';      
 		$this->data['user'] = $this->sync->get_profile();
-		$this->data['restaurants'] = $this->sync->get_restaurant();   
-    	$this->load->library('picture');   
-    	@$this->data['profpic'] = ($this->data['user']->IMAGE=="")?base_url()."assets/img/no-photo.jpg":base_url()."profile/pic/".$this->picture->gettyimg($session_data['id']).".jpg";
+		$this->data['restaurants'] = $this->sync->get_restaurant();
+    $this->load->library('picture');     
+    @$this->data['reslogo'] = ($this->sync->get_rest_logo()=="")?base_url()."assets/images/logo3d.png":$this->sync->get_rest_logo();
+    @$this->data['profpic'] = ($this->data['user']->IMAGE=="")?base_url()."assets/img/no-photo.jpg":base_url()."profile/pic/".$this->picture->gettyimg($session_data['id']).".jpg";
   }
 
 	public function index()
@@ -30,10 +31,10 @@ class Sync_controller extends CI_Controller {
 			$data['startdate'] = $start_date;
 			$data['enddate'] = $end_date;  
 			$data['synchist'] = $this->sync->get_sync_history($rest_id);
-        	$this->load->view('shared/header',$this->data);
-        	$this->load->view('shared/left_menu', $data);
-        	$this->load->view('sync',$data);   
-        	$this->load->view('shared/footer');
+      $this->load->view('shared/header',$this->data);
+      $this->load->view('shared/left_menu', $data);
+      $this->load->view('sync',$data);
+      $this->load->view('shared/footer');
 		} else {
 			//If no session, redirect to login page
 			redirect('login', 'refresh');

@@ -120,6 +120,12 @@
 .text3D{
   text-shadow: 1px 4px 4px white, 0 0 0 #000;
 }
+.bevel{
+  -moz-box-shadow: inset 0 -1px 1px rgba(0,0,0,0.5);
+  -webkit-box-shadow: inset 0 -1px 1px rgba(0,0,0,0.5);
+  box-shadow: inset 0 -1px 1px rgba(0,0,0,0.5);
+  inset 0 1px 1px rgba(255,255,255,1); /*top internal highlight*/
+}
 .error{                                     
   color: #f9243f;
   font-size: 80%;
