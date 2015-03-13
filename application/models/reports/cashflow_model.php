@@ -95,7 +95,7 @@ class Cashflow_model extends CI_Model {
                                 		WHERE PAYMENT_METHOD = 'DEBIT'
                                 		GROUP BY TERMINAL_ID, DATE(STARTED)
                                  ) DEBIT_FROM_ORDERS ON DEBIT_FROM_ORDERS.ORDER_DATE = DATE(PH.DATE)
-                                 WHERE D.REGISTERED = 1 AND PH.DATE BETWEEN '".$startdate."' AND '".$enddate."' AND R.ID = ".$rest_id."
+                                 WHERE D.REGISTERED = 1 AND PH.DATE BETWEEN '".$startdate."' AND DATE_ADD('".$end_date."', INTERVAL 1 DAY) AND R.ID = ".$rest_id."
 	                               GROUP BY D.ID;");
 		    return $query->result();
 	}
@@ -126,7 +126,7 @@ class Cashflow_model extends CI_Model {
 										WHERE PAYMENT_METHOD = 'DEBIT'
 										GROUP BY TERMINAL_ID, DATE(STARTED)
 								    ) DEBIT_FROM_ORDERS ON DEBIT_FROM_ORDERS.ORDER_DATE = DATE(PH.DATE) AND PH.TERMINAL_ID = D.ID
-									WHERE D.REGISTERED = 1 AND PH.DATE BETWEEN '".$startdate."' AND '".$enddate."' AND R.ID = ".$rest_id."
+									WHERE D.REGISTERED = 1 AND PH.DATE BETWEEN '".$startdate."' AND DATE_ADD('".$enddate."', INTERVAL 1 DAY) AND R.ID = ".$rest_id."
 									GROUP BY D.ID, DATE(PH.DATE);");
 		    return $query->result();
 	}	

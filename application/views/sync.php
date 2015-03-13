@@ -104,7 +104,7 @@ $(document).ready(function(){
       success: function(result){
         $("#gcmresp").show(); 
         if(result.trim()!=''){    
-          $("#syncout").html(startTyping(result,50, "syncout")); 
+          $("#syncout").html(startTyping(result,35, "syncout")); 
         } else {    
           $("#syncout").html('eek');
         }   

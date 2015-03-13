@@ -27,8 +27,8 @@ $config['google_api_key']	= 'AIzaSyANKh_UVStCUvbL8QVq9x7YylJ0wSjNViU';
 //$config['fileserver_url']	= 'http://localhost/upload/';
 $config['fileserver_upl']	= 'http://54.169.200.242/epos/upload/'; 
 $config['fileserver_url']	= 'http://54.169.200.242/epos/';
-$config['fileserver_img_dir']	= 'img/';
-$config['fileserver_app_dir']	= 'app/';
+$config['fileserver_img_dir']	= 'dev/img/';
+$config['fileserver_app_dir']	= 'dev/app/';
 
 /*
 |--------------------------------------------------------------------------

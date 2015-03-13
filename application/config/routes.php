@@ -92,7 +92,9 @@ $route['process/orders'] = "process/orderdetails_controller";
 $route['process/inventory'] = "process/inventoryprocess_controller";
 $route['process/customers'] = "process/customersprocess_controller";    
 
-$route['404_override'] = 'P404';
+$route['cron/inventorywastage'] = "cron/inventorywastage_controller";
+
+$route['404_override'] = 'P404';   
 
 
 /* End of file routes.php */

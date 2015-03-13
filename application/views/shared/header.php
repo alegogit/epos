@@ -151,9 +151,10 @@ $(function() {
             <span class="icon-bar"></span>
           </button>
           <div class="gallery">
-          <a class="navbar-brand" href="<?=base_url()?>dashboard">
-            <img style="width:75px; height:35px;" src="<?=$reslogo?>"/>              
-          </a>
+            <a class="navbar-brand" style="margin-top:-10px !important;" href="<?=base_url()?>dashboard">
+              <img class="img-thumbnail" style="width:40px; height:40px;" src="<?=$reslogo?>"/>  
+              <!--<span style="padding-left:6px;padding-right:6px">epos</span>-->           
+            </a>  
           </div>
         </div>
     

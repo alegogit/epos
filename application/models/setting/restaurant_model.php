@@ -25,6 +25,19 @@ class Restaurant_model extends CI_Model {
     return $query->result();
   }
   
+  function get_rest_logo0(){
+		$session_data = $this->session->userdata('logged_in');
+		$id = $session_data['id'];
+		$this->db->where('USERS_RESTAURANTS.USER_ID',$id); 
+		$this->db->where('USERS_RESTAURANTS.DEFAULT_REST',1);
+    $query = $this->db->select('LOGO_URL, RESTAURANTS.NAME AS REST_NAME')
+                      ->from('RESTAURANTS')
+                      ->join('USERS_RESTAURANTS', 'RESTAURANTS.ID = USERS_RESTAURANTS.REST_ID')
+                      ->limit(1)
+                      ->get('');
+    return $query->row();
+  }
+  
   function get_rest_logo(){
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id'];

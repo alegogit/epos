@@ -79,7 +79,7 @@ class Ordersdata_model extends CI_Model {
           INNER JOIN MENU M ON M.ID = OD.MENU_ID
           INNER JOIN USERS U ON U.ID = O.LAST_UPDATED_BY
           WHERE O.ACTIVE = 0
-          AND O.ENDED BETWEEN "'.$start_date.'" AND "'.$end_date.'"
+          AND O.ENDED BETWEEN "'.$start_date.'" AND DATE_ADD("'.$end_date.'", INTERVAL 1 DAY)
           AND R.ID = '.$rest_id.';');
        $header = "";     
        foreach ($query->list_fields() as $field){

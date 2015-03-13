@@ -175,7 +175,7 @@ class Sales_model extends CI_Model {
 		$query = $this->db->query('SELECT OD.CATEGORY_NAME CAT_NAME, IFNULL(SUM(OD.TOTAL),0)  AMOUNT
 									FROM ORDER_DETAILS OD
 									INNER JOIN ORDERS O ON OD.ORDER_ID = O.ID
-									AND O.ENDED BETWEEN "'.$start_date.'" AND "'.$end_date.'"
+									AND O.ENDED BETWEEN "'.$start_date.'" AND DATE_ADD("'.$end_date.'", INTERVAL 1 DAY)
 									AND O.REST_ID = '.$rest_id.' AND O.ACTIVE = 0
 									GROUP BY OD.CATEGORY_NAME
 									ORDER BY AMOUNT DESC
@@ -198,7 +198,7 @@ class Sales_model extends CI_Model {
 		$query = $this->db->query('SELECT OD.MENU_NAME AS ITEMS, IFNULL(SUM(OD.TOTAL),0) AMOUNT, COUNT(OD.MENU_NAME) AS QTY 
 									FROM ORDER_DETAILS OD 
 									INNER JOIN ORDERS O ON OD.ORDER_ID = O.ID
-									AND O.ENDED BETWEEN "'.$start_date.'" AND "'.$end_date.'"
+									AND O.ENDED BETWEEN "'.$start_date.'" AND DATE_ADD("'.$end_date.'", INTERVAL 1 DAY)
 									AND O.REST_ID = '.$rest_id.' AND O.ACTIVE = 0
 									GROUP BY OD.MENU_NAME
 									ORDER BY SUM(OD.TOTAL) DESC
@@ -223,7 +223,7 @@ class Sales_model extends CI_Model {
 									FROM ORDERS O
 									LEFT OUTER JOIN REF_VALUES R ON O.PAYMENT_METHOD = R.CODE
 									WHERE R.LOOKUP_NAME = "PAYMENT_METHOD" AND R.IS_ACTIVE = 1
-									AND O.ENDED BETWEEN "'.$start_date.'" AND "'.$end_date.'"
+									AND O.ENDED BETWEEN "'.$start_date.'" AND DATE_ADD("'.$end_date.'", INTERVAL 1 DAY)
 									AND REST_ID = '.$rest_id.' AND ACTIVE = 0
 									GROUP BY R.VALUE;');
 		return $query->result();  

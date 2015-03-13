@@ -73,7 +73,7 @@
                             $logo = ($row->LOGO_URL!="")?$row->LOGO_URL:base_url()."assets/images/logo3d.png";
                           ?>   
                           <a id="LOGO__<?=$row->ID?>" class="epop" tabindex="-1" data-toggle="modal" data-target="#logoModal" data-rid="<?=$row->ID?>" data-rnm="<?=$row->NAME?>" data-rlg="<?=$logo?>" style="cursor:pointer">
-                            <img alt="<?=$row->NAME?>'s LOGO" style="width:75px; height:35px;" src="<?=$logo?>"/>
+                            <img alt="<?=$row->NAME?>'s LOGO" class="img-thumbnail" style="width:40px; height:40px;" src="<?=$logo?>"/>
                           </a>
                   			</td>
                   			<td style="">

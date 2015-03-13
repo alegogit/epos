@@ -13,6 +13,7 @@ class Restaurant_controller extends CI_Controller {
 		$this->data['restaurants'] = $this->setting->get_restaurant();  
     $this->load->library('picture');   
     $this->load->library('curl');   
+    //@$this->data['reslogo'] = ($this->setting->get_rest_logo()->LOGO_URL=="")?base_url()."assets/images/logo3d.png":$this->setting->get_rest_logo()->LOGO_URL;  
     @$this->data['reslogo'] = ($this->setting->get_rest_logo()=="")?base_url()."assets/images/logo3d.png":$this->setting->get_rest_logo();  
     @$this->data['profpic'] = ($this->data['user']->IMAGE=="")?base_url()."assets/img/no-photo.jpg":base_url()."profile/pic/".$this->picture->gettyimg($session_data['id']).".jpg";  
   }

@@ -82,7 +82,7 @@ class Sales_model extends CI_Model {
             LEFT OUTER JOIN CUSTOMERS C ON C.ID = O.CUSTOMER_ID
             LEFT OUTER JOIN RESTAURANTS R ON R.ID = O.REST_ID
           WHERE O.ACTIVE = 0
-            AND O.ENDED BETWEEN "'.$start_date.'" AND "'.$end_date.'"
+            AND O.ENDED BETWEEN "'.$start_date.'" AND DATE_ADD("'.$end_date.'", INTERVAL 1 DAY)
             AND R.ID = '.$rest_id.';');
 		    return $query->result();
 	}
@@ -100,7 +100,7 @@ class Sales_model extends CI_Model {
                                   LEFT OUTER JOIN CUSTOMERS C ON C.ID = O.CUSTOMER_ID
                                   LEFT OUTER JOIN RESTAURANTS R	ON R.ID = O.REST_ID	
                                   WHERE O.ACTIVE = 0
-                                  AND O.ENDED BETWEEN "'.$start_date.'" AND "'.$end_date.'"
+                                  AND O.ENDED BETWEEN "'.$start_date.'" AND DATE_ADD("'.$end_date.'", INTERVAL 1 DAY)
                                   AND R.ID = '.$rest_id.';');
 		    return $query->result();
 	}
@@ -134,7 +134,7 @@ class Sales_model extends CI_Model {
 	        LEFT OUTER JOIN MENU M ON M.ID = OD.MENU_ID
         WHERE OD.VOID = 1
 	        AND O.ACTIVE = 0
-          AND O.ENDED BETWEEN "'.$start_date.'" AND "'.$end_date.'"
+          AND O.ENDED BETWEEN "'.$start_date.'" AND DATE_ADD("'.$end_date.'", INTERVAL 1 DAY)
           AND O.REST_ID = '.$rest_id.';');
 		    return $query->result();
 	}
@@ -145,7 +145,7 @@ class Sales_model extends CI_Model {
                                   FROM ORDER_DETAILS OD
                                   LEFT OUTER JOIN ORDERS O ON O.ID = OD.ORDER_ID
                                   WHERE OD.VOID = 1	AND O.ACTIVE = 0
-                                  AND O.ENDED BETWEEN "'.$start_date.'" AND "'.$end_date.'"
+                                  AND O.ENDED BETWEEN "'.$start_date.'" AND DATE_ADD("'.$end_date.'", INTERVAL 1 DAY)
                                   AND O.REST_ID = '.$rest_id.';');
 		    return $query->result();
 	}

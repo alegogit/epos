@@ -45,6 +45,7 @@ class Sync_controller extends CI_Controller {
 	public function exec() { 
 		$restid = $this->input->post('restid');
 		$synchist = $this->sync->get_sync_history($restid);
+    $REG_ID = array();
 		foreach ($synchist as $row){
 			$MENU = $this->sync->get_updated_records('MENU',$row->LAST_SYNC);
 			$CATEGORY = $this->sync->get_updated_records('CATEGORY',$row->LAST_SYNC);
@@ -53,6 +54,9 @@ class Sync_controller extends CI_Controller {
 			$TABLES = $this->sync->get_updated_records('TABLES',$row->LAST_SYNC);
 			$RESTAURANTS = $this->sync->get_updated_records('RESTAURANTS',$row->LAST_SYNC);
 			$REF_VALUES = $this->sync->get_updated_records('REF_VALUES',$row->LAST_SYNC);
+      if($row->PLAY_SERVICE_ID!=""){
+        array_push($REG_ID, $row->PLAY_SERVICE_ID);
+      }
 		}
 		$upd = array('MENU' => array(),'CATEGORY' => array(),'PRINTER' => array(),'USERS' => array(),'TABLES' => array(),'RESTAURANTS' => array(),'REF_VALUES' => array());
 		foreach($MENU as $mn){
@@ -76,7 +80,7 @@ class Sync_controller extends CI_Controller {
 		foreach($REF_VALUES as $rv){
 			array_push($upd['REF_VALUES'], $rv->ID);
 		}
-    $registatoin_ids = array("APA91bFV52QJffsTCVZJcDqP923hiwh_jBkt-p8epifAhTHfk7bzERngujrlhdKEPcMjdoJZEsXQoELSAKMhqGSyz2IISq--h_NxMmiPrdlfRiu6Rw_yvWFsnA-ss-8oZ97G-qj20jPp0FrOC5UNzs3zhpSNZuA1bg");
+    //$registatoin_ids = array("APA91bFV52QJffsTCVZJcDqP923hiwh_jBkt-p8epifAhTHfk7bzERngujrlhdKEPcMjdoJZEsXQoELSAKMhqGSyz2IISq--h_NxMmiPrdlfRiu6Rw_yvWFsnA-ss-8oZ97G-qj20jPp0FrOC5UNzs3zhpSNZuA1bg");
     $message = array(
 				  "MENU" => $upd['MENU'],
 				  "CATEGORY" => $upd['CATEGORY'],
@@ -86,7 +90,16 @@ class Sync_controller extends CI_Controller {
 				  "RESTAURANTS" => $upd['RESTAURANTS'],
 				  "REF_VALUES" => $upd['REF_VALUES']
                 );
-		echo $this->sync->send_notification($registatoin_ids, $message); 
+    if(count($REG_ID)!=0){            
+      if( (count($upd['MENU'])==0) && (count($upd['CATEGORY'])==0) && (count($upd['PRINTER'])==0) && (count($upd['USERS'])==0) && (count($upd['TABLES'])==0) && (count($upd['RESTAURANTS'])==0) && (count($upd['REF_VALUES'])==0) ){     
+        echo "No New Updated Data to be synced..";
+      } else {
+        $registatoin_ids = $REG_ID;
+		    echo $this->sync->send_notification($registatoin_ids, $message);
+      } 
+    } else {
+      echo "No Registration ID(s) yet..";
+    }  
 		//var_dump($message); 
     /*   
         $fields = array(
