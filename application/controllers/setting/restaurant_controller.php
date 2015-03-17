@@ -8,7 +8,8 @@ class Restaurant_controller extends CI_Controller {
 		$this->load->model('setting/restaurant_model','setting',TRUE);  
     $this->load->helper(array('form', 'url','html'));
 		$session_data = $this->session->userdata('logged_in');  
-		$this->data['menu'] = 'setting';      
+		$this->data['menu'] = 'setting';        
+		$this->data['submenu'] = 'restaurant';      
 		$this->data['user'] = $this->setting->get_profile();
 		$this->data['restaurants'] = $this->setting->get_restaurant();  
     $this->load->library('picture');   

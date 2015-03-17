@@ -285,18 +285,22 @@
                         });";
 	  $edit_script .= "   $('#PRINTER_IP_ADDRESS-".$row->ID."').on('shown', function(e, editable) { 
 	                        	$('.ipv4').inputmask({
-									mask: 'i[i[i]].i[i[i]].i[i[i]].i[i[i]]',
-									definitions: {
-										i: {
-											validator: function(chrs, maskset, pos) {
-											return pos - 1 > -1 && '.' != maskset.buffer[pos - 1] ? (chrs = maskset.buffer[pos - 1] + chrs,
-											chrs = pos - 2 > -1 && '.' != maskset.buffer[pos - 2] ? maskset.buffer[pos - 2] + chrs : '0' + chrs) : chrs = '00' + chrs,
-											new RegExp('25[0-5]|2[0-4][0-9]|[01][0-9][0-9]').test(chrs);
-										},
-											cardinality: 1
-										}
-									}
-								});
+            									mask: 'i[i[i]].i[i[i]].i[i[i]].i[i[i]]',
+                              autoUnmask: true,
+                              onUnMask: function(maskedValue, unmaskedValue) {
+                                return maskedValue;
+                              },
+            									definitions: {
+            										i: {
+            											validator: function(chrs, maskset, pos) {
+              											return pos - 1 > -1 && '.' != maskset.buffer[pos - 1] ? (chrs = maskset.buffer[pos - 1] + chrs,
+              											chrs = pos - 2 > -1 && '.' != maskset.buffer[pos - 2] ? maskset.buffer[pos - 2] + chrs : '0' + chrs) : chrs = '00' + chrs,
+              											new RegExp('25[0-5]|2[0-4][0-9]|[01][0-9][0-9]').test(chrs);
+            										  },
+            											cardinality: 1
+            										}
+            									}
+            								});
 	                      	});";
 	  $edit_script .= "  $('#PRINTER_IP_ADDRESS-".$row->ID."').editable({
 		                        url: updateurl,

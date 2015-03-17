@@ -53,11 +53,13 @@
 						        <th class="cin">Min QTY</th>
 						        <th class="cin">Wastage Percentage</th>
 						        <th></th>
-						        <th>Wastage Frequency</th>
+						        <th>Wastage Frequency</th> 
+                  <?php if ($role==1){ ?>
 						        <th data-field="crby" data-sortable="false">Created By</th>
 						        <th data-field="crdt" data-sortable="false">Created Date</th>
 						        <th data-field="upby"  data-sortable="false">Updated By</th>
-						        <th data-field="updt" data-sortable="false">Updated Date</th>
+						        <th data-field="updt" data-sortable="false">Updated Date</th> 
+                  <?php } ?>
 						    </tr>
 						    </thead>  
 						    <tbody>                    
@@ -85,10 +87,12 @@
                   <td>
                     <a id="WASTAGE_FREQ-<?=$row->ID?>" class="edit" tabindex="0"><?=$this->inventory->get_waste_freq($row->WASTAGE_FREQ)->VALUE?></a>
                   </td>
+                  <?php if ($role==1){ ?>
                   <td class=""><span id="crby<?=$row->ID?>"><?=$this->inventory->get_name($row->CREATED_BY)->NAME?></span></td>
                   <td class=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
                   <td class=""><span id="upby<?=$row->ID?>"><?=$this->inventory->get_name($row->LAST_UPDATED_BY)->NAME?></span></td>
                   <td class=""><span id="updt<?=$row->ID?>"><?=$row->LAST_UPDATED_DATE?></span></td>
+                  <?php } ?>
                 </tr>
                 <?php $i++; } ?>
 						    </tbody>

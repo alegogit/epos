@@ -21,7 +21,8 @@ class Customers_controller extends CI_Controller {
 		if($this->session->userdata('logged_in'))
 		{
 			$data['menu'] = 'customers';         
-			$session_data = $this->session->userdata('logged_in');
+			$session_data = $this->session->userdata('logged_in');  
+      $data['role'] = $session_data['role'];
 			$data['def_rest'] = $session_data['def_rest'];
 			$data['def_start_date'] = date('d M Y', time() - 30 * 60 * 60 * 24);
 			$data['def_end_date'] = date('d M Y', time());
@@ -30,7 +31,7 @@ class Customers_controller extends CI_Controller {
 			$end_date = (!($this->input->post('startdate')))?$data['def_end_date']:$this->input->post('enddate'); 
 			$data['rest_id'] = $rest_id;
 			$data['startdate'] = $start_date;
-			$data['enddate'] = $end_date; 
+			$data['enddate'] = $end_date;   
 			
       	if($this->input->post('email')){               
 		    $this->customers->new_customers($this->input->post('name'),$this->input->post('phone'),$this->input->post('address1'),$this->input->post('address2'),$this->input->post('city'),$this->input->post('email'),$this->input->post('postal'),$this->input->post('country'),$this->input->post('rest_id'));

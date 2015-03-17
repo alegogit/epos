@@ -47,12 +47,14 @@
 						    <!--<th>Geo Location</th>-->
 						    <th>Currency</th>
 						    <th class="cin">Service Charge</th>
-							<th class="no-sort" style="text-align:left !important;"></th>
+                <th class="no-sort" style="text-align:left !important;"></th>
 						    <!--<th>Order No. Start</th>-->
+              <?php if ($role==1){ ?>
 						    <th>Created By</th>
 						    <th>Created Date</th>
 						    <th>Updated By</th>
-						    <th>Updated Date</th
+						    <th>Updated Date</th>
+              <?php } ?>
 						</tr>
 						</thead>  
 						<tbody>                    
@@ -112,11 +114,13 @@
                         <td style="text-align:left !important;">%&nbsp;&nbsp;</td>
 		                  	<!--<td style="">
 		                    	<a id="ORDER_NUMBER_START__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->ORDER_NUMBER_START?></a>
-		                  	</td>-->
+		                  	</td>-->    
+                      <?php if ($role==1){ ?>
 		                  	<td style=""><span id="crby<?=$row->ID?>"><?=$this->setting->get_username($row->CREATED_BY)->NAME?></span></td>
 		                  	<td style=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
 		                  	<td style=""><span id="upby<?=$row->ID?>"><?=$this->setting->get_username($row->LAST_UPDATED_BY)->NAME?></span></td>
-		                  	<td style=""><span id="updt<?=$row->ID?>"><?=$row->LAST_UPDATED_DATE?></span></td>
+		                  	<td style=""><span id="updt<?=$row->ID?>"><?=$row->LAST_UPDATED_DATE?></span></td>    
+                      <?php } ?>
 		                </tr>
 		                <?php $i++; } ?>
 						    </tbody>

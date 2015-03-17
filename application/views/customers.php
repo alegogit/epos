@@ -54,11 +54,14 @@
 						        <th>Address Line 2</th>
 						        <th>City</th>
 						        <th>Postal Code</th>
-						        <th>Country</th>
+						        <th>Country</th> 
+						        <th>Status</th> 
+                  <?php if ($role==1){ ?>
 						        <th data-field="crby" data-sortable="false">Created By</th>
 						        <th data-field="crdt" data-sortable="false">Created Date</th>
 						        <th data-field="upby"  data-sortable="false">Updated By</th>
-						        <th data-field="updt" data-sortable="false">Updated Date</th>
+						        <th data-field="updt" data-sortable="false">Updated Date</th>   
+                  <?php } ?>
 						    </tr>
 						    </thead>  
 						    <tbody>                    
@@ -90,11 +93,16 @@
                   </td>
                   <td style="">
                     <a id="COUNTRY-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->COUNTRY?></a>
-                  </td>
+                  </td>     
+                  <td style="">
+                    <a id="ACTIVE-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->ACTIVE?><i></i></a>
+                  </td>            
+                  <?php if ($role==1){ ?>
                   <td style=""><span id="crby<?=$row->ID?>"><?=$this->customers->get_name($row->CREATED_BY)->NAME?></span></td>
                   <td style=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
                   <td style=""><span id="upby<?=$row->ID?>"><?=$this->customers->get_name($row->LAST_UPDATED_BY)->NAME?></span></td>
-                  <td style=""><span id="updt<?=$row->ID?>"><?=$row->LAST_UPDATED_DATE?></span></td>
+                  <td style=""><span id="updt<?=$row->ID?>"><?=$row->LAST_UPDATED_DATE?></span></td> 
+                  <?php } ?>
                 </tr>
                 <?php $i++; } ?>
 						    </tbody>

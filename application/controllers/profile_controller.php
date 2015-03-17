@@ -8,7 +8,7 @@ class Profile_controller extends CI_Controller {
 		$this->load->model('profile_model','profile',TRUE);  
     $this->load->helper(array('form', 'url','html'));
 		$session_data = $this->session->userdata('logged_in');  
-		$this->data['menu'] = 'profile';      
+		$this->data['menu'] = 'profile';    
 		$this->data['user'] = $this->profile->get_profile();
 		$this->data['restaurants'] = $this->profile->get_restaurant(); 
     $this->load->library('picture');             
