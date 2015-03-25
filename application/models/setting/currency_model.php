@@ -70,7 +70,20 @@ class Currency_model extends CI_Model {
                       ->get('');
     return $query->row()->CURRENCY;
   }
+        
+	function get_status(){  
+    $this->db->where('LOOKUP_NAME','STATUS');
+    $query = $this->db->get('REF_VALUES');
+    return $query->result();
+  }
   
+  function set_status($stat){
+    if($stat==1){
+      $output = "Active";
+    } else {
+      $output = "<span style='color:#dd1144 !important;'>Inactive</span>";
+    }
+  } 
   
 	function set_default_currency($curr_cd,$rest_id){
 	  date_default_timezone_set('Asia/Jakarta');

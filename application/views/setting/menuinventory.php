@@ -61,37 +61,41 @@
 						        	<th>Menu</th>
 						        	<th class="no-sort">Inventory</th>
 						        	<th class="no-sort cin">Quantity</th>
-						        	<th class="no-sort"></th>
+						        	<th class="no-sort"></th>  
+                    <?php if ($role==1){ ?>
 						        	<th class="no-sort">Created By</th>
 						        	<th class="no-sort">Created Date</th>
 						        	<th class="no-sort">Updated By</th>
-						        	<th class="no-sort">Updated Date</th>
+						        	<th class="no-sort">Updated Date</th> 
+                    <?php } ?>
 						    	</tr>
 						    </thead>  
 						    <tbody>                    
 						    <?php $i = 1;  foreach ($menuinventory as $row){ ?>
-                				<tr data-index="<?=$i?>" class="datarow" id="<?=$row->ID.'_'.$row->MENU_NAME?>">
-				                  	<td class="">
-				                    	<input type="checkbox" class="case" tabindex="-1">
-				                  	</td>
-				                  	<td style="">
-				                    	<a id="MENU_ID-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->MENU_NAME?></a>
-				                  	</td>
-                  					<td style="">
-                    					<a id="INVENTORY_ID-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->INVENTORY_NAME?></a>
-                  					</td>
-                  					<td class="cin" style="">
-                    					<a id="QUANTITY-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->QUANTITY?></a>
-                  					</td>
-                  					<td style="">
-                              <?=$this->setting->get_metric($row->INVENTORY_METRIC)?>&nbsp;&nbsp;
-                  					</td>
-				                  	<td style=""><span id="crby<?=$row->ID?>"><?=$this->setting->get_username($row->CREATED_BY)->NAME?></span></td>
-				                  	<td style=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
-				                  	<td style=""><span id="upby<?=$row->ID?>"><?=$this->setting->get_username($row->LAST_UPDATED_BY)->NAME?></span></td>
-				                  	<td style=""><span id="updt<?=$row->ID?>"><?=$row->LAST_UPDATED_DATE?></span></td>
-				                </tr>
-				                <?php $i++; } ?>
+                  <tr data-index="<?=$i?>" class="datarow" id="<?=$row->ID.'_'.$row->MENU_NAME?>">
+				            <td class="">
+				              <input type="checkbox" class="case" tabindex="-1">
+				            </td>
+				            <td style="">
+				              <a id="MENU_ID-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->MENU_NAME?></a>
+				            </td>
+                  	<td style="">
+                      <a id="INVENTORY_ID-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->INVENTORY_NAME?></a>
+                  	</td>
+                  	<td class="cin" style="">
+                      <a id="QUANTITY-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->QUANTITY?></a>
+                  	</td>
+                  	<td style="">
+                      <?=$this->setting->get_metric($row->INVENTORY_METRIC)?>&nbsp;&nbsp;
+                  	</td> 
+                  <?php if ($role==1){ ?>
+				            <td style=""><span id="crby<?=$row->ID?>"><?=$this->setting->get_username($row->CREATED_BY)->NAME?></span></td>
+				            <td style=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
+				            <td style=""><span id="upby<?=$row->ID?>"><?=$this->setting->get_username($row->LAST_UPDATED_BY)->NAME?></span></td>
+				            <td style=""><span id="updt<?=$row->ID?>"><?=$row->LAST_UPDATED_DATE?></span></td>
+                  <?php } ?>
+				          </tr>
+				          <?php $i++; } ?>
 						    </tbody>
 						  	</table>
              			</div> 
@@ -236,7 +240,7 @@
 		                    });
                         $('#QUANTITY-".$row->ID."').on('save', function(e) {  
                           return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
-                        });";
+                        });";  
   	}
   	$edit_script .= "}); ";
 	$edit_script .= '</script>';

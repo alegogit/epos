@@ -52,6 +52,7 @@ $route['logout'] = "dashboard/sales_controller/logout";
 $route['dashboard'] = "dashboard/sales_controller";
 $route['dashboard/sales'] = "dashboard/sales_controller";
 $route['dashboard/inventory'] = "dashboard/inventory_controller";
+$route['dashboard/test'] = "dashboard/test_controller";
 
 $route['profile'] = "profile_controller";
 $route['profile/pic/(:any)'] = "profile_controller";
@@ -72,10 +73,16 @@ $route['setting/currency'] = "setting/currency_controller";
 
 $route['reports'] = "reports/sales_controller";
 $route['reports/sales'] = "reports/sales_controller";
+$route['reports/salesview'] = "reports/sales_controller/view";
 $route['reports/inventory'] = "reports/inventory_controller";
+$route['reports/inventoryview'] = "reports/inventory_controller/view";
 $route['reports/cashflow'] = "reports/cashflow_controller";   
+$route['reports/attendance'] = "reports/attendance_controller";  
+$route['reports/attendance/exec'] = "reports/attendance_controller/exec";   
 
 $route['extracts'] = "extracts/ordersdata_controller";
+$route['printpdf'] = "printpdf_controller";
+$route['printpdf/view'] = "printpdf_controller/view";
 
 $route['sync'] = "sync_controller";
 $route['sync/exec'] = "sync_controller/exec";

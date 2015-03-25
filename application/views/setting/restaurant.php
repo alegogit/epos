@@ -46,10 +46,13 @@
 						    <th>Country</th>
 						    <!--<th>Geo Location</th>-->
 						    <th>Currency</th>
-						    <th class="cin">Service Charge</th>
-                <th class="no-sort" style="text-align:left !important;"></th>
+						    <th class="cin">Service Charge</th>  
+                <th class="no-sort" style="text-align:left !important;"></th> 
+						    <th class="cin">Takeout Service Charge</th>
+                <th class="no-sort" style="text-align:left !important;"></th> 
 						    <!--<th>Order No. Start</th>-->
-              <?php if ($role==1){ ?>
+              <?php if ($role==1){ ?> 
+						    <th>Status</th> 
 						    <th>Created By</th>
 						    <th>Created Date</th>
 						    <th>Updated By</th>
@@ -59,7 +62,7 @@
 						</thead>  
 						<tbody>                    
 						<?php $i = 0; $tab = 1; foreach ($restaurant as $row){ ?>
-                		<tr data-index="<?=$i?>" class="datarow" id="<?=$row->ID.'_'.$row->NAME?>">
+                		<tr data-index="<?=$i?>" class="datarow <?=($row->ACTIVE==0)?'danger':''?>" id="<?=$row->ID.'_'.$row->NAME?>">
                   			<td class="">
                     			<input type="checkbox" class="case" tabindex="-1">
                   			</td>
@@ -100,7 +103,7 @@
                     			<a id="POSTAL_CODE__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->POSTAL_CODE?></a>
                   			</td>
                   			<td style="">
-                    			<a id="COUNTRY__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->COUNTRY?></a>
+                    			<a id="COUNTRY__<?=$row->ID?>" class="edit" tabindex="0"><?=$this->setting->get_country($row->COUNTRY,0)?></a>
                   			</td>
 		                  	<!--<td style="">
 		                    	<a id="GEOLOC__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->GEOLOC?></a>
@@ -110,12 +113,19 @@
 		                  	</td>
 		                  	<td style="" class="cin">
                           <a id="SERVICE_CHARGE__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->SERVICE_CHARGE?></a>
+		                  	</td>               
+                        <td style="text-align:left !important;">%&nbsp;&nbsp;</td>
+		                  	<td style="" class="cin">
+                          <a id="TAKEOUT_SERVICE_CHARGE__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->TAKEOUT_SERVICE_CHARGE?></a>
 		                  	</td>
                         <td style="text-align:left !important;">%&nbsp;&nbsp;</td>
 		                  	<!--<td style="">
 		                    	<a id="ORDER_NUMBER_START__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->ORDER_NUMBER_START?></a>
 		                  	</td>-->    
-                      <?php if ($role==1){ ?>
+                      <?php if ($role==1){ ?>     
+                        <td style="">
+                          <a id="ACTIVE__<?=$row->ID?>" class="edit" tabindex="0"><?=$this->setting->set_status($row->ACTIVE)?><i></i></a>
+                        </td>   
 		                  	<td style=""><span id="crby<?=$row->ID?>"><?=$this->setting->get_username($row->CREATED_BY)->NAME?></span></td>
 		                  	<td style=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
 		                  	<td style=""><span id="upby<?=$row->ID?>"><?=$this->setting->get_username($row->LAST_UPDATED_BY)->NAME?></span></td>
@@ -175,9 +185,27 @@
           		<label for="FAX"></label><br>
           		<div class="input-group">                                                                        
             		<div class="input-group-addon"><span class="fa fa-fax"></span></div>
-            		<input type="text" class="form-control" id="FAX" placeholder="FAX" name="FAX" required>
+            		<input type="text" class="form-control" id="FAX" placeholder="FAX" name="FAX">
           		</div>
-        	</div><br />  		
+        	</div><br />   		
+        <div class="form-group" style="margin-bottom:10px"> 
+        	<label for="service">Service Charge</label><br>
+          	<div class="input-group" style="width:150px">                            
+            	<div class="input-group-addon"><span class="fa fa-star"></span></div>
+            	<input type="text" class="form-control" id="service" placeholder="" name="service" required>                          
+            	<div class="input-group-addon"><span class="fa fa-percent">%</span></div>
+          	</div>
+        </div><br />      		
+        <div class="form-group" style="margin-bottom:10px"> 
+        	<label for="toservice">Takeout Service Charge</label><br>
+          	<div class="input-group" style="width:150px">                            
+            	<div class="input-group-addon"><span class="fa fa-star"></span></div>
+            	<input type="text" class="form-control" id="toservice" placeholder="" name="toservice" required>                          
+            	<div class="input-group-addon"><span class="fa fa-percent">%</span></div>
+          	</div>
+        </div><br />
+      	</div><!-- /.col-md-4 -->
+      	<div class="col-md-4">    		
       	<div class="form-group" style="margin-bottom:10px;"> 
         	<label for="currency">Default Currency</label><br>                                     
           	<div class="input-group">                                        
@@ -188,17 +216,7 @@
             	<?php } ?>
             	</select>
           	</div>
-        </div><br/>        		
-        <div class="form-group" style="margin-bottom:10px"> 
-        	<label for="service">Service Charge</label><br>
-          	<div class="input-group" style="width:150px">                            
-            	<div class="input-group-addon"><span class="fa fa-star"></span></div>
-            	<input type="text" class="form-control" id="service" placeholder="" name="service" required>                          
-            	<div class="input-group-addon"><span class="fa fa-percent">%</span></div>
-          	</div>
-        </div><br />
-      	</div><!-- /.col-md-4 -->
-      	<div class="col-md-4">
+        </div><br/>       
 	        <div class="form-group" style="margin-bottom:10px"> 
 				<label for="address1"></label><br>
 		        <div class="input-group">                                                                                                
@@ -210,7 +228,7 @@
 	          	<label for="address2"></label><br>
 	          	<div class="input-group">                                                                                                
 	            	<div class="input-group-addon"><span class="glyphicon glyphicon-home"></span></div>
-	            	<input type="text" class="form-control" id="address2" placeholder="Address Line 2" name="address2" required>
+	            	<input type="text" class="form-control" id="address2" placeholder="Address Line 2" name="address2">
 	          	</div>
 	        </div><br />	
 	        <div class="form-group" style="margin-bottom:10px">
@@ -226,7 +244,19 @@
 	            	<div class="input-group-addon"><span class="fa fa-envelope"></span></div>
 	            	<input type="text" class="form-control" id="postalcode" placeholder="Postal Code" name="postalcode" required>
 	          	</div>
-	        </div><br />
+	        </div><br />   
+	        <div class="form-group" style="margin-bottom:10px"> 
+	          <label for="country">Select Country</label><br /> 
+	          <div class="input-group">       
+	            <div class="input-group-addon"><span class="fa fa-flag"></span></div>
+	            <select id="country" name="country" class="form-control selectpicker show-tick" data-size="5" data-width="150px" data-live-search="true" required>  
+	            <?php foreach($countries as $rowc){ ?>
+	              <option value = "<?=$rowc->CODE?>" ><?=$rowc->VALUE?></option>
+	            <?php } ?>
+	            </select>
+	          </div>
+	        </div><br />   
+	        <!--
 	        <div class="form-group" style="margin-bottom:10px">
 	          	<label for="country"></label><br>                                      
 	          	<div class="input-group">                                     
@@ -234,7 +264,7 @@
 	            	<input type="text" class="form-control" id="country" placeholder="Country" name="country" required>
 	          	</div>
 	        </div><br />
-	        <!--<div class="form-group" style="margin-bottom:10px"> 
+          <div class="form-group" style="margin-bottom:10px"> 
 	          	<label for="geoloc"></label><br>                             
 	          	<div class="input-group">                           
 	            	<div class="input-group-addon"><span class="fa fa-globe"></span></div>
@@ -390,10 +420,9 @@
                         url: updateurl,
                         pk: ".$row->ID.", 
                         activate: 'focus',
-                        validate: function(v) {
-                          if (!v) return 'don\'t leave it blank!';  
-                          if (!isPhone(v)) return 'please fill in a FAX Number format!';  
-                          if (!isLimited(v,1,30)) return 'please fill in up to 30 chars!';
+                        validate: function(v) {  
+                          if (v &&(!isPhone(v))) return 'please fill in a FAX Number format!';  
+                          if (!isLimited(v,0,30)) return 'please fill in up to 30 chars!';
                         },
                         success: function(result){  
                           var data = result.split(',');
@@ -410,7 +439,7 @@
                         activate: 'focus',
                         validate: function(v) {
                           if (!v) return 'don\'t leave it blank!';   
-                          if (!isLimited(v,1,100)) return 'please fill in up to 100 chars!';
+                          if (!isLimited(v,1,100)) return 'Exceed more than maximum';
                         },
                         success: function(result){  
                           var data = result.split(',');
@@ -425,9 +454,8 @@
                         url: updateurl,
                         pk: ".$row->ID.", 
                         activate: 'focus',
-                        validate: function(v) {
-                          if (!v) return 'don\'t leave it blank!';    
-                          if (!isLimited(v,1,100)) return 'please fill in up to 100 chars!';
+                        validate: function(v) {   
+                          if (!isLimited(v,0,100)) return 'Exceed more than maximum';
                         },
                         success: function(result){  
                           var data = result.split(',');
@@ -471,7 +499,31 @@
                     });
                         $('#POSTAL_CODE__".$row->ID."').on('save', function(e) {  
                           return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
-                        });"; 
+                        });";           
+  $edit_script .= "  $('#COUNTRY__".$row->ID."').editable({    
+                        type: 'select',
+                        url: updateurl,
+                        pk: ".$row->ID.", 
+                        value: '".addslashes($this->setting->get_country($row->COUNTRY))."', 
+                        source: [ ";
+    $r = 1; 
+    $t = count($countries);                   
+    foreach($countries as $rowc){      
+      $edit_script .= "  {value: '".addslashes($rowc->CODE)."', text: '".addslashes($rowc->VALUE)."'}";
+      $edit_script .= ($r<$t)?", ":"";
+      $t++;
+    }                      
+  $edit_script .= "     ],
+                        success: function(result){  
+                          var data = result.split(',');
+                          $('#upby".$row->ID."').html(data[0]);
+                          $('#updt".$row->ID."').html(data[1]); 
+                      } 
+                    });
+                        $('#COUNTRY__".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";
+  /*   
   $edit_script .= "  $('#COUNTRY__".$row->ID."').editable({
                         url: updateurl,
                         pk: ".$row->ID.", 
@@ -489,7 +541,6 @@
                         $('#COUNTRY__".$row->ID."').on('save', function(e) {  
                           return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
                         });"; 
-  /*
   $edit_script .= "  $('#GEOLOC__".$row->ID."').editable({
                         url: updateurl,
                         pk: ".$row->ID.", 
@@ -564,7 +615,49 @@
                     });
                         $('#SERVICE_CHARGE__".$row->ID."').on('save', function(e) {  
                           return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
-                        });";
+                        });";     
+  $edit_script .= "  $('#TAKEOUT_SERVICE_CHARGE__".$row->ID."').editable({
+                        url: updateurl,
+                        pk: ".$row->ID.", 
+                        validate: function(v) {
+                          if (!v) return 'don\'t leave it blank!';
+                          if (!isPercent(v)) return 'please fill in Up to 100%!';
+                        },
+                        success: function(result){  
+                          var data = result.split(',');
+                          $('#upby".$row->ID."').html(data[0]);
+                          $('#updt".$row->ID."').html(data[1]); 
+                      } 
+                    });
+                        $('#TAKEOUT_SERVICE_CHARGE__".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";        
+  $edit_script .= "  $('#ACTIVE__".$row->ID."').editable({    
+                        type: 'select',
+                        url: updateurl,
+                        pk: ".$row->ID.", 
+                        value: ".addslashes($row->ACTIVE).", 
+                        source: [ ";
+    $u = 1; 
+    $v = count($statuses);                   
+    foreach($statuses as $rows){      
+      $edit_script .= "  {value: ".addslashes($rows->CODE).", text: '".addslashes($rows->VALUE)."'}";
+      $edit_script .= ($u<$v)?", ":"";
+      $v++;
+    }                      
+  $edit_script .= "     ],
+                        success: function(result){  
+                          var data = result.split(',');
+                          $('#upby".$row->ID."').html(data[0]);   
+                          $('#updt".$row->ID."').html(data[1]); 
+                          $('#".$row->ID."_".addslashes($row->NAME)."').addClass('danger'); 
+                      } 
+                    });
+                        $('#ACTIVE__".$row->ID."').on('save', function(e) {  
+                          //return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                          var page = window.location.href;
+                          window.location.assign(page);
+                        });"; 
   }
   $edit_script .= "}); ";
 	$edit_script .= '</script>';
@@ -717,6 +810,10 @@ $(function(){
         phone: true 
       },       
       service: {       
+        number: true,   
+        percent: true
+      },       
+      toservice: {       
         number: true,   
         percent: true
       }       

@@ -60,7 +60,8 @@ class Restaurant_controller extends CI_Controller {
           $this->input->post('name'),$this->input->post('telephone'),$this->input->post('FAX'),
           $this->input->post('address1'),$this->input->post('address2'),$this->input->post('city'),
           $this->input->post('postalcode'),$this->input->post('country'),$this->input->post('geoloc'),
-          $this->input->post('email'),$this->input->post('currency'),$this->input->post('service'),$photo_url
+          $this->input->post('email'),$this->input->post('currency'),
+          $this->input->post('service'),$this->input->post('toservice'),$photo_url
         );
       } else {    
         if(@$_FILES['cphoto']['tmp_name']){
@@ -86,11 +87,12 @@ class Restaurant_controller extends CI_Controller {
             $this->setting->update_logo($photo_url,$args['rid']);
           }
         }
-      }  
-      
+      }                        
       
 		  $data['restaurant'] = $this->setting->get_restaurant_data();
-		  $data['currencies'] = $this->setting->get_currencies();			                   
+		  $data['currencies'] = $this->setting->get_currencies();	
+		  $data['countries'] = $this->setting->get_countries(); 			       
+		  $data['statuses'] = $this->setting->get_status(); 			           		                   
 			
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);

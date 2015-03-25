@@ -39,16 +39,20 @@
 						        <th>Role</th>
 						        <th>Assigned Restaurant(s)</th>
 						        <th>Default Restaurant</th>
-						        <th>Last Login</th>
+						        <th class="cin">Hrs/Wk</th>  
+						        <th>Last Login</th> 
+						        <th>Status</th> 
+                  <?php if ($role==1){ ?>
 						        <th>Created By</th>
 						        <th>Created Date</th>
 						        <th>Updated By</th>
-						        <th>Updated Date</th>
+						        <th>Updated Date</th>    
+                  <?php } ?>
 						    </tr>
 						    </thead>  
 						    <tbody>                    
 						    <?php $i = 0; $tab = 1; foreach ($users as $row){ ?>
-                <tr data-index="<?=$i?>" class="datarow" id="<?=$row->ID.'_'.$row->NAME?>">
+                <tr data-index="<?=$i?>" class="datarow <?=($row->ACTIVE==0)?'danger':''?>" id="<?=$row->ID.'_'.$row->NAME?>">
                   <td class="">
                     <input type="checkbox" class="case" tabindex="-1">
                   </td>
@@ -97,11 +101,19 @@
                   <td style="">
                     <a id="DEF_REST-<?=$row->ID?>" class="edit" tabindex="0"><?=$this->setting->get_default_rest($row->ID)->REST_NAME?></a>
                   </td>
-                  <td style=""><span id="last<?=$row->ID?>"><?=$row->LAST_LOGIN?></span></td>
+                  <td class="cin" style="">
+                    <a id="TOTAL_HRS_WEEK-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->TOTAL_HRS_WEEK?></a>
+                  </td>
+                  <td style=""><span id="last<?=$row->ID?>"><?=$row->LAST_LOGIN?></span></td> 
+                  <td style="">
+                    <a id="ACTIVE-<?=$row->ID?>" class="edit" tabindex="0"><?=$this->setting->set_status($row->ACTIVE)?><i></i></a>
+                  </td>            
+                  <?php if ($role==1){ ?>
                   <td style=""><span id="crby<?=$row->ID?>"><?=$this->setting->get_username($row->CREATED_BY)->NAME?></span></td>
                   <td style=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
                   <td style=""><span id="upby<?=$row->ID?>"><?=$this->setting->get_username($row->LAST_UPDATED_BY)->NAME?></span></td>
-                  <td style=""><span id="updt<?=$row->ID?>"><?=$row->LAST_UPDATED_DATE?></span></td>
+                  <td style=""><span id="updt<?=$row->ID?>"><?=$row->LAST_UPDATED_DATE?></span></td>  
+                  <?php } ?>
                 </tr>
                 <?php $i++; } ?>
 						    </tbody>
@@ -183,7 +195,15 @@
               <?php } ?>
               </select>
             </div>
-          </div> 
+          </div><br>      		
+          <div class="form-group" style="margin-bottom:10px">       
+            <label for="hrspwk"></label>
+            <div class="input-group">     
+              <div class="input-group-addon"><span class="fa fa-clock-o">&nbsp;</span></div>                            
+              <input type="text" class="form-control" id="hrspwk" placeholder="Hours per Week" name="hrspwk" pattern="\d*" required>
+              <span class="errmsg"></span>
+            </div>
+          </div>  
         </div><!-- /.col-md-6 --> 
       </div><!-- /.row -->
       <div class="row"> 
@@ -413,7 +433,51 @@
                      });
                         $('#DEF_REST-".$row->ID."').on('save', function(e) {  
                           return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
-                        });";
+                        });";   
+                             
+  		$edit_script .= "  $('#TOTAL_HRS_WEEK-".$row->ID."').editable({
+	                        url: updateurl,
+	                        pk: ".$row->ID.", 
+	                        validate: function(v) {
+	                          	if (!v) return 'don\'t leave it blank!'; 
+                              if (isNaN(v)) return 'please fill in a number format!'; 
+	                          	if (v>160) return 'This value cannot exceed 160!'; 
+	                        },
+	                        success: function(result){  
+	                          	var data = result.split(',');
+	                          	$('#upby".$row->ID."').html(data[0]);
+	                          	$('#updt".$row->ID."').html(data[1]); 
+	                      	} 
+	                    });
+                        $('#TOTAL_HRS_WEEK-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";            
+  $edit_script .= "  $('#ACTIVE-".$row->ID."').editable({    
+                        type: 'select',
+                        url: updateurl,
+                        pk: ".$row->ID.", 
+                        value: ".addslashes($row->ACTIVE).", 
+                        source: [ ";
+    $u = 1; 
+    $v = count($statuses);                   
+    foreach($statuses as $rows){      
+      $edit_script .= "  {value: ".addslashes($rows->CODE).", text: '".addslashes($rows->VALUE)."'}";
+      $edit_script .= ($u<$v)?", ":"";
+      $v++;
+    }                      
+  $edit_script .= "     ],
+                        success: function(result){  
+                          var data = result.split(',');
+                          $('#upby".$row->ID."').html(data[0]);   
+                          $('#updt".$row->ID."').html(data[1]); 
+                          $('#".$row->ID."_".$row->NAME."').addClass('danger'); 
+                      } 
+                    });
+                        $('#ACTIVE-".$row->ID."').on('save', function(e) {  
+                          //return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                          var page = window.location.href;
+                          window.location.assign(page);
+                        });"; 
   	}
   	$edit_script .= '});</script>';
   	echo $edit_script;
@@ -560,7 +624,11 @@ $(function(){
 	      	},
 	      	role: {
 	        	required: true
-	      	}       
+	      	},
+    			hrspwk: {
+            number: true,
+            max: 160
+    			}      
     	},
 	    messages:{ 
 	      	name: "Please enter name.",
@@ -574,6 +642,9 @@ $(function(){
 	      	},
 	      	confirm: { 
 	        	equalTo:"The passwords don’t match"
+	      	},
+	      	hrspwk: { 
+	        	max:"This value cannot exceed 160"
 	      	}
 	    }
   });

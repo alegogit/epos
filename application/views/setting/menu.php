@@ -63,41 +63,49 @@
 							        <th>Category</th>
 							        <th>Printer</th>
 							        <th class="cin">Tax</th>
-							        <th class="no-sort" style="text-align:left !important;"></th>
+							        <th class="no-sort" style="text-align:left !important;"></th> 
+  						        <th>Status</th> 
+                    <?php if ($role==1){ ?>
 							        <th>Created By</th>
 							        <th>Created Date</th>
 							        <th>Updated By</th>
 							        <th>Updated Date</th>
+                    <?php } ?>
 							    </tr>
 							</thead>  
 							<tbody>                    
 							<?php $i = 0;  foreach ($menus as $row){ ?>
-	                			<tr data-index="<?=$i?>" class="datarow" id="<?=$row->ID.'_'.$row->NAME?>">
-				                  	<td class="">
-				                    	<input type="checkbox" class="case" tabindex="-1">
-				                  	</td>
-				                  	<td style="">
-				                    	<a id="NAME-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->NAME?></a>
-				                  	</td>
-				                  	<td style="" class="cin">
-				                    	<a id="PRICE-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->PRICE?></a>
-				                  	</td>
-				                  	<td style="">
-				                    	<a id="CATEGORY_ID-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->CAT_NAME?></a>
-				                  	</td>
-				                  	<td style="">
-				                    	<a id="PRINTER-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->PRINT_NAME?></a>
-				                 	</td>
-                  					<td class="cin" style="">
+                <tr data-index="<?=$i?>" class="datarow <?=($row->ACTIVE==0)?'danger':''?>" id="<?=$row->ID.'_'.$row->NAME?>">
+                  <td class="">
+                    <input type="checkbox" class="case" tabindex="-1">
+                  </td>
+				          <td style="">
+				            <a id="NAME-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->NAME?></a>
+				          </td>
+				          <td style="" class="cin">
+				            <a id="PRICE-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->PRICE?></a>
+				          </td>
+				          <td style="">
+				            <a id="CATEGORY_ID-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->CAT_NAME?></a>
+				          </td>
+				          <td style="">
+				            <a id="PRINTER-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->PRINT_NAME?></a>
+				          </td>
+                  <td class="cin" style="">
 										<a id="TAX-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->TAX?></a>
-                  					</td>
-									<td style="text-align:left !important;">%&nbsp;&nbsp;</td>
-				                  	<td style=""><span id="crby<?=$row->ID?>"><?=$this->setting->get_username($row->CREATED_BY)->NAME?></span></td>
-				                  	<td style=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
-				                  	<td style=""><span id="upby<?=$row->ID?>"><?=$this->setting->get_username($row->LAST_UPDATED_BY)->NAME?></span></td>
-				                  	<td style=""><span id="updt<?=$row->ID?>"><?=$row->LAST_UPDATED_DATE?></span></td>
-				                </tr>
-				                <?php $i++; } ?>
+                  </td>
+									<td style="text-align:left !important;">%&nbsp;&nbsp;</td>  
+                  <td style="">
+                    <a id="ACTIVE-<?=$row->ID?>" class="edit" tabindex="0"><?=$this->setting->set_status($row->ACTIVE)?><i></i></a>
+                  </td>   
+                <?php if ($role==1){ ?>
+				          <td style=""><span id="crby<?=$row->ID?>"><?=$this->setting->get_username($row->CREATED_BY)->NAME?></span></td>
+				          <td style=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
+				          <td style=""><span id="upby<?=$row->ID?>"><?=$this->setting->get_username($row->LAST_UPDATED_BY)->NAME?></span></td>
+				          <td style=""><span id="updt<?=$row->ID?>"><?=$row->LAST_UPDATED_DATE?></span></td> 
+                  <?php } ?>
+				        </tr>
+				      <?php $i++; } ?>
 							    </tbody>
 							  </table>
 	             </div> 
@@ -292,6 +300,32 @@
 		                    });
                         $('#TAX-".$row->ID."').on('save', function(e) {  
                           return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";           
+  $edit_script .= "  $('#ACTIVE-".$row->ID."').editable({    
+                        type: 'select',
+                        url: updateurl,
+                        pk: ".$row->ID.", 
+                        value: ".addslashes($row->ACTIVE).", 
+                        source: [ ";
+    $u = 1; 
+    $v = count($statuses);                   
+    foreach($statuses as $rows){      
+      $edit_script .= "  {value: ".addslashes($rows->CODE).", text: '".addslashes($rows->VALUE)."'}";
+      $edit_script .= ($u<$v)?", ":"";
+      $v++;
+    }                      
+  $edit_script .= "     ],
+                        success: function(result){  
+                          var data = result.split(',');
+                          $('#upby".$row->ID."').html(data[0]);   
+                          $('#updt".$row->ID."').html(data[1]); 
+                          $('#".$row->ID."_".addslashes($row->NAME)."').addClass('danger'); 
+                      } 
+                    });
+                        $('#ACTIVE-".$row->ID."').on('save', function(e) {  
+                          //return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                          var page = window.location.href;
+                          window.location.assign(page);
                         });";
   	}
   	$edit_script .= "}); ";

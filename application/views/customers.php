@@ -66,7 +66,7 @@
 						    </thead>  
 						    <tbody>                    
 						    <?php $i = 0;  foreach ($customers as $row){ ?>
-                <tr data-index="<?=$i?>" class="datarow" id="<?=$row->ID.'_'.$row->NAME?>">
+                <tr data-index="<?=$i?>" class="datarow <?=($row->ACTIVE==0)?'danger':''?>" id="<?=$row->ID.'_'.$row->NAME?>">
                   <td class="">
                     <input type="checkbox" class="case" tabindex="-1">
                   </td>
@@ -92,10 +92,10 @@
                     <a id="POSTAL_CODE-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->POSTAL_CODE?></a>
                   </td>
                   <td style="">
-                    <a id="COUNTRY-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->COUNTRY?></a>
+                    <a id="COUNTRY-<?=$row->ID?>" class="edit" tabindex="0"><?=$this->customers->get_country($row->COUNTRY,0)?></a>
                   </td>     
                   <td style="">
-                    <a id="ACTIVE-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->ACTIVE?><i></i></a>
+                    <a id="ACTIVE-<?=$row->ID?>" class="edit" tabindex="0"><?=$this->customers->set_status($row->ACTIVE)?><i></i></a>
                   </td>            
                   <?php if ($role==1){ ?>
                   <td style=""><span id="crby<?=$row->ID?>"><?=$this->customers->get_name($row->CREATED_BY)->NAME?></span></td>
@@ -175,7 +175,7 @@
 	          <label for="address2"></label> 
 	          <div class="input-group">                                                                                               
 	            <div class="input-group-addon"><span class="glyphicon glyphicon-home"></span></div>   
-	            <input type="text" class="form-control" id="address2" placeholder="Address Line 2" name="address2" required>
+	            <input type="text" class="form-control" id="address2" placeholder="Address Line 2" name="address2">
 	          </div>
 	        </div><br />
 	        <div class="form-group" style="margin-bottom:10px">
@@ -192,11 +192,15 @@
 	            <input type="text" class="form-control" id="postal" placeholder="Postal Code" name="postal" required>
 	          </div>
 	        </div><br />
-	        <div class="form-group" style="margin-bottom:10px">
-	          <label for="country"></label> 
-	          <div class="input-group">                              
-	            <div class="input-group-addon"><span class="fa fa-flag"></span></div>  
-	            <input type="text" class="form-control" id="country" placeholder="Country" name="country" required>
+	        <div class="form-group" style="margin-bottom:10px"> 
+	          <label for="country">Select Country</label><br /> 
+	          <div class="input-group">       
+	            <div class="input-group-addon"><span class="fa fa-flag"></span></div>
+	            <select id="country" name="country" class="form-control selectpicker show-tick" data-size="5" data-width="168px" data-live-search="true" required>  
+	            <?php foreach($countries as $rowc){ ?>
+	              <option value = "<?=$rowc->CODE?>" ><?=$rowc->VALUE?></option>
+	            <?php } ?>
+	            </select>
 	          </div>
 	        </div><br />
 	  	</div>  
@@ -273,9 +277,8 @@
 		$edit_script .= "  $('#ADDRESS_LINE_2-".$row->ID."').editable({
 		                        url: updateurl,
 		                        pk: ".$row->ID.", 
-		                        validate: function(v) {
-		                          	if (!v) return 'don\'t leave it blank!';  
-                                if (!isLimited(v,1,100)) return 'please fill in up to 100 chars!';
+		                        validate: function(v) { 
+                                if (!isLimited(v,0,100)) return 'please fill in up to 100 chars!';
 		                        },
 		                        success: function(result){  
 		                          	var data = result.split(',');
@@ -317,20 +320,27 @@
 		                    });
                         $('#POSTAL_CODE-".$row->ID."').on('save', function(e) {  
                           return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
-                        });";
-		$edit_script .= "  $('#COUNTRY-".$row->ID."').editable({
-		                        url: updateurl,
-		                        pk: ".$row->ID.", 
-		                        validate: function(v) {
-		                          	if (!v) return 'don\'t leave it blank!';  
-                                if (!isLimited(v,1,100)) return 'please fill in up to 100 chars!';
-		                        },
-		                        success: function(result){  
-		                          	var data = result.split(',');
-		                          	$('#upby".$row->ID."').html(data[0]);
-		                          	$('#updt".$row->ID."').html(data[1]); 
-		                      	} 
-		                    });
+                        });";          
+  $edit_script .= "  $('#COUNTRY-".$row->ID."').editable({    
+                        type: 'select',
+                        url: updateurl,
+                        pk: ".$row->ID.", 
+                        value: '".addslashes($this->customers->get_country($row->COUNTRY))."', 
+                        source: [ ";
+    $r = 1; 
+    $t = count($countries);                   
+    foreach($countries as $rowc){      
+      $edit_script .= "  {value: '".addslashes($rowc->CODE)."', text: '".addslashes($rowc->VALUE)."'}";
+      $edit_script .= ($r<$t)?", ":"";
+      $t++;
+    }                      
+  $edit_script .= "     ],
+                        success: function(result){  
+                          var data = result.split(',');
+                          $('#upby".$row->ID."').html(data[0]);
+                          $('#updt".$row->ID."').html(data[1]); 
+                      } 
+                    });
                         $('#COUNTRY-".$row->ID."').on('save', function(e) {  
                           return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
                         });";
@@ -350,6 +360,32 @@
 		                    });
                         $('#EMAIL_ADDRESS-".$row->ID."').on('save', function(e) {  
                           return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";          
+  $edit_script .= "  $('#ACTIVE-".$row->ID."').editable({    
+                        type: 'select',
+                        url: updateurl,
+                        pk: ".$row->ID.", 
+                        value: ".addslashes($row->ACTIVE).", 
+                        source: [ ";
+    $u = 1; 
+    $v = count($statuses);                   
+    foreach($statuses as $rows){      
+      $edit_script .= "  {value: ".addslashes($rows->CODE).", text: '".addslashes($rows->VALUE)."'}";
+      $edit_script .= ($u<$v)?", ":"";
+      $v++;
+    }                      
+  $edit_script .= "     ],
+                        success: function(result){  
+                          var data = result.split(',');
+                          $('#upby".$row->ID."').html(data[0]);   
+                          $('#updt".$row->ID."').html(data[1]); 
+                          $('#".$row->ID."_".$row->NAME."').addClass('danger'); 
+                      } 
+                    });
+                        $('#ACTIVE-".$row->ID."').on('save', function(e) {  
+                          //return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                          var page = window.location.href;
+                          window.location.assign(page);
                         });";
 	}
 	$edit_script .= "}); ";

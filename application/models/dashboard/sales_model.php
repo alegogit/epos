@@ -48,6 +48,15 @@ class Sales_model extends CI_Model {
                       ->get('');
     return $query->row()->LOGO_URL;
   }
+  
+  function get_logo_rest($restid=1){
+		$this->db->where('ID',$restid); 
+    $query = $this->db->select('LOGO_URL')
+                      ->from('RESTAURANTS')
+                      ->limit(1)
+                      ->get('');
+    return $query->row()->LOGO_URL;
+  }
     
 	function get_currency($rest_id){
   		$query = $this->db->select('RESTAURANTS.CURRENCY, REF_VALUES.VALUE AS CUR')

@@ -20,7 +20,8 @@ class Discounts_controller extends CI_Controller {
 		if($this->session->userdata('logged_in'))
 		{
 			$data['menu'] = 'setting';         
-			$session_data = $this->session->userdata('logged_in');
+			$session_data = $this->session->userdata('logged_in');  
+		  $data['role'] = $session_data['role'];
 			$data['def_rest'] = $session_data['def_rest'];
 			$data['def_start_date'] = date('d M Y', time() - 30 * 60 * 60 * 24);
 			$data['def_end_date'] = date('d M Y', time());
@@ -29,7 +30,9 @@ class Discounts_controller extends CI_Controller {
 			$end_date = (!($this->input->post('startdate')))?$data['def_end_date']:$this->input->post('enddate'); 
 			$data['rest_id'] = $rest_id;
 			$data['startdate'] = $start_date;
-			$data['enddate'] = $end_date;   
+			$data['enddate'] = $end_date;      		       
+      
+		  $data['statuses'] = $this->setting->get_status(); 		
 			
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);

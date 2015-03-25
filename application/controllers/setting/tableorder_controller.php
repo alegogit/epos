@@ -27,7 +27,8 @@ class Tableorder_controller extends CI_Controller {
 				$this->session->set_userdata('filtered', $sess_array);
 			}
 			$data['menu'] = 'setting';         
-			$session_data = $this->session->userdata('logged_in');
+			$session_data = $this->session->userdata('logged_in');     
+		  $data['role'] = $session_data['role'];
 			$session_filt = $this->session->userdata('filtered');
 			$data['def_rest'] = ($session_filt['def_rest'])?$session_filt['def_rest']:$session_data['def_rest'];
 			$data['def_rest_name'] = ($session_filt['def_rest'])?$this->setting->get_restaurant_name($session_filt['def_rest']):$this->setting->get_restaurant_name($session_data['def_rest']);
@@ -44,7 +45,8 @@ class Tableorder_controller extends CI_Controller {
 		    $this->setting->new_tableorder($this->input->post('tableorder_name'),$this->input->post('tableorder_position'),$rest_id);
       } 
       
-		  $data['tableorder'] = $this->setting->get_rest_tableorder($rest_id);
+		  $data['tableorder'] = $this->setting->get_rest_tableorder($rest_id);  		       
+		  $data['statuses'] = $this->setting->get_status(); 		
 			                   
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);

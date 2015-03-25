@@ -113,7 +113,21 @@ class Menuinventory_model extends CI_Model {
                       ->where('REST_ID',$rest_id)
                       ->get('');
   	return $query->result();
-  }    
+  }        
+  
+	function get_status(){  
+    $this->db->where('LOOKUP_NAME','STATUS');
+    $query = $this->db->get('REF_VALUES');
+    return $query->result();
+  }
+  
+  function set_status($stat){
+    if($stat==1){
+      $output = "Active";
+    } else {
+      $output = "<span style='color:#dd1144 !important;'>Inactive</span>";
+    }
+  } 
 	
 	function new_menuinventory($MENU_ID,$INVENTORY_ID,$QUANTITY){       
 		$session_data = $this->session->userdata('logged_in');

@@ -31,14 +31,15 @@ class Customers_controller extends CI_Controller {
 			$end_date = (!($this->input->post('startdate')))?$data['def_end_date']:$this->input->post('enddate'); 
 			$data['rest_id'] = $rest_id;
 			$data['startdate'] = $start_date;
-			$data['enddate'] = $end_date;   
-			
-      	if($this->input->post('email')){               
+			$data['enddate'] = $end_date; 
+      
+      if($this->input->post('email')){               
 		    $this->customers->new_customers($this->input->post('name'),$this->input->post('phone'),$this->input->post('address1'),$this->input->post('address2'),$this->input->post('city'),$this->input->post('email'),$this->input->post('postal'),$this->input->post('country'),$this->input->post('rest_id'));
-      	} 
+      } 
       
 		  $data['customers'] = $this->customers->get_rest_customers($rest_id);
-			                   
+		  $data['countries'] = $this->customers->get_countries(); 			       
+		  $data['statuses'] = $this->customers->get_status(); 			                   
 			
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);

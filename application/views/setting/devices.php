@@ -63,50 +63,54 @@
 						        <th>Manufacturer</th>
 						        <th>Model</th>
 						        <th>MAC Address</th>
-						        <th>Last Sync</th>
+						        <th>Last Sync</th> 
+                  <?php if ($role==1){ ?>
 						        <th data-field="crby" data-sortable="false">Created By</th>
 						        <th data-field="crdt" data-sortable="false">Created Date</th>
 						        <th data-field="upby"  data-sortable="false">Updated By</th>
-						        <th data-field="updt" data-sortable="false">Updated Date</th>
+						        <th data-field="updt" data-sortable="false">Updated Date</th> 
+                  <?php } ?>
 						    </tr>
 						</thead>  
 						<tbody>                    
 						<?php $i = 0;  foreach ($devices as $row){ ?>
-                			<tr data-index="<?=$i?>" class="datarow" id="<?=$row->ID.'_'.$row->MAKE.' '.$row->MODEL.' '.$row->TYPE?>">
-			                  	<td class="">
-			                    	<input type="checkbox" class="case" tabindex="-1">
-			                  	</td>
-			                  	<td style="">
-			                    	<a id="NAME-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->NAME?></a>
-			                  	</td>
-			                  	<td style="">
-			                    	<a id="TYPE-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->TYPE?></a>
-			                  	</td>
-			                  	<td style="">
-			                    	<a id="MAKE-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->MAKE?></a>
-			                  	</td>
-			                  	<td style="">
-			                    	<a id="MODEL-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->MODEL?></a>
-			                  	</td>
-			                  	<td style="">
-			                    	<a id="MAC_ADDRESS-<?=$row->ID?>" class="edit" data-inputclass="mac" tabindex="0"><?=$row->MAC_ADDRESS?></a>
-			                  	</td>
-			                  	<td style="">
-			                    	<?=$row->LAST_SYNC?>
-			                  	</td>
-			                  	<td style=""><span id="crby<?=$row->ID?>"><?=$this->setting->get_username($row->CREATED_BY)->NAME?></span></td>
-			                  	<td style=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
-			                  	<td style=""><span id="upby<?=$row->ID?>"><?=$this->setting->get_username($row->LAST_UPDATED_BY)->NAME?></span></td>
-			                  	<td style=""><span id="updt<?=$row->ID?>"><?=$row->LAST_UPDATED_DATE?></span></td>
-			                </tr>
-			                <?php $i++; } ?>
-						    </tbody>
-						  </table>
-             </div> 
-					</div><!--/.panel-body-->
-				</div><!--/.panel-->
-			</div><!--/.col-lg-12-->
-		</div><!--/.row-->
+              <tr data-index="<?=$i?>" class="datarow" id="<?=$row->ID.'_'.$row->MAKE.' '.$row->MODEL.' '.$row->TYPE?>">
+			        	<td class="">
+                  <input type="checkbox" class="case" tabindex="-1">
+			          </td>
+			          <td style="">
+                  <a id="NAME-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->NAME?></a>
+			          </td>
+			          <td style="">
+                  <a id="TYPE-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->TYPE?></a>
+			          </td>
+			          <td style="">
+                  <a id="MAKE-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->MAKE?></a>
+			          </td>
+			          <td style="">
+                  <a id="MODEL-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->MODEL?></a>
+			          </td>
+			          <td style="">
+                  <a id="MAC_ADDRESS-<?=$row->ID?>" class="edit" data-inputclass="mac" tabindex="0"><?=$row->MAC_ADDRESS?></a>
+			          </td>
+			          <td style="">
+                  <?=$row->LAST_SYNC?>
+			          </td>    
+              <?php if ($role==1){ ?>
+                <td style=""><span id="crby<?=$row->ID?>"><?=$this->setting->get_username($row->CREATED_BY)->NAME?></span></td>
+			          <td style=""><span id="crdt<?=$row->ID?>"><?=$row->CREATED_DATE?></span></td>
+			          <td style=""><span id="upby<?=$row->ID?>"><?=$this->setting->get_username($row->LAST_UPDATED_BY)->NAME?></span></td>
+			          <td style=""><span id="updt<?=$row->ID?>"><?=$row->LAST_UPDATED_DATE?></span></td>  
+              <?php } ?>
+			        </tr>
+			      <?php $i++; } ?>
+						</tbody>
+					</table>
+        </div> 
+			</div><!--/.panel-body-->
+		</div><!--/.panel-->
+	</div><!--/.col-lg-12-->
+</div><!--/.row-->
 		
   </div><!-- /.container-fluid -->
 </div><!-- /#page-content-wrapper -->
@@ -282,7 +286,7 @@
                     });
                         $('#MAC_ADDRESS-".$row->ID."').on('save', function(e) {  
                           return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
-                        });";
+                        });";    
   }
   $edit_script .= "}); ";
 	$edit_script .= '</script>';

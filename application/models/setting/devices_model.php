@@ -66,8 +66,22 @@ class Devices_model extends CI_Model {
     $this->db->where('REST_ID',$rest_id);
     $query = $this->db->get('DEVICES');
     return $query->result();
+  }                      
+  
+	function get_status(){  
+    $this->db->where('LOOKUP_NAME','STATUS');
+    $query = $this->db->get('REF_VALUES');
+    return $query->result();
+  }
+  
+  function set_status($stat){
+    if($stat==1){
+      $output = "Active";
+    } else {
+      $output = "<span style='color:#dd1144 !important;'>Inactive</span>";
+    }
   } 
-   
+  
 	function new_devices($NAME,$MAC,$TYPE,$MAKE,$MODEL,$REST_ID){       
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id'];

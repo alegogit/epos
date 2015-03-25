@@ -146,15 +146,53 @@ class Restaurant_model extends CI_Model {
                       ->from('ROLES')
                       ->get('');
     return $query->result();
-  }
+  }  
    
-	function new_restaurant($NAME,$TELEPHONE,$FAX,$ADDRESS_LINE_1,$ADDRESS_LINE_2,$CITY,$POSTAL_CODE,$COUNTRY,$GEOLOC,$EMAIL_ADDRESS,$CURRENCY,$SERVICE_CHARGE,$LOGO_URL){       
+	function get_country($country_code,$set=1){ 
+    if (strlen($country_code)>2){
+      return $country_code." <span style='color:#dd1144 !important;'><i>(please select)</i></span>";
+    } else {   
+      $query = $this->db->select('CODE AS COUNTRY_CODE, VALUE AS COUNTRY_NAME')
+                        ->from('REF_VALUES')
+                        ->where('LOOKUP_NAME','COUNTRY')  
+                        ->where('CODE',$country_code)  
+                        ->limit(1)
+                        ->get('');
+      if($set==1){               
+        return $query->row()->COUNTRY_CODE;
+      } else {             
+        return $query->row()->COUNTRY_NAME;
+      }   
+    }   
+  } 
+  
+	function get_countries(){    
+    $this->db->where('LOOKUP_NAME','COUNTRY');
+    $query = $this->db->get('REF_VALUES');
+    return $query->result();
+  }
+  
+	function get_status(){  
+    $this->db->where('LOOKUP_NAME','STATUS');
+    $query = $this->db->get('REF_VALUES');
+    return $query->result();
+  }
+  
+  function set_status($stat){
+    if($stat==1){
+      $output = "Active";
+    } else {
+      $output = "<span style='color:#dd1144 !important;'>Inactive</span>";
+    }
+  } 
+   
+	function new_restaurant($NAME,$TELEPHONE,$FAX,$ADDRESS_LINE_1,$ADDRESS_LINE_2,$CITY,$POSTAL_CODE,$COUNTRY,$GEOLOC,$EMAIL_ADDRESS,$CURRENCY,$SERVICE_CHARGE,$TAKEOUT_SERVICE_CHARGE,$LOGO_URL){       
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id'];
     $query1 = $this->db->query('INSERT INTO RESTAURANTS
-      (NAME,TELEPHONE,FAX,ADDRESS_LINE_1,ADDRESS_LINE_2,CITY,POSTAL_CODE,COUNTRY,GEOLOC,EMAIL_ADDRESS,CURRENCY,SERVICE_CHARGE,LOGO_URL,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
+      (NAME,TELEPHONE,FAX,ADDRESS_LINE_1,ADDRESS_LINE_2,CITY,POSTAL_CODE,COUNTRY,GEOLOC,EMAIL_ADDRESS,CURRENCY,SERVICE_CHARGE,TAKEOUT_SERVICE_CHARGE,LOGO_URL,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
       VALUES 
-      ("'.$NAME.'","'.$TELEPHONE.'","'.$FAX.'","'.$ADDRESS_LINE_1.'","'.$ADDRESS_LINE_2.'","'.$CITY.'","'.$POSTAL_CODE.'","'.$COUNTRY.'","'.$GEOLOC.'","'.$EMAIL_ADDRESS.'","'.$CURRENCY.'",'.$SERVICE_CHARGE.',"'.$LOGO_URL.'",'.$id.',NOW(),'.$id.',NOW());');
+      ("'.$NAME.'","'.$TELEPHONE.'","'.$FAX.'","'.$ADDRESS_LINE_1.'","'.$ADDRESS_LINE_2.'","'.$CITY.'","'.$POSTAL_CODE.'","'.$COUNTRY.'","'.$GEOLOC.'","'.$EMAIL_ADDRESS.'","'.$CURRENCY.'",'.$SERVICE_CHARGE.','.$TAKEOUT_SERVICE_CHARGE.',"'.$LOGO_URL.'",'.$id.',NOW(),'.$id.',NOW());');
   }  
   
   

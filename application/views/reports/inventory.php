@@ -5,7 +5,9 @@
     <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
       <a role="button" class="btn btn-default" href="<?=base_url()?>reports/sales">&nbsp;&nbsp;&nbsp;Sales&nbsp;&nbsp;&nbsp;</a>
       <a role="button" class="btn btn-primary" href="<?=base_url()?>reports/inventory">Inventory</a>         
-      <a role="button" class="btn btn-default" href="<?=base_url()?>reports/cashflow">Cash Flow</a>         
+      <a role="button" class="btn btn-default" href="<?=base_url()?>reports/cashflow">Cash Flow</a>            
+      <a role="button" class="btn btn-default" href="<?=base_url()?>reports/endofday">End of Day</a>              
+      <a role="button" class="btn btn-default" href="<?=base_url()?>reports/attendance">Attendance</a>          
     </div>    
                                                                             
     <hr style="margin-bottom:10px;margin-top:10px" />         

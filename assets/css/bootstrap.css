@@ -190,6 +190,7 @@ th {
   padding: 0;
 }
 @media print {
+  /*
   * {
     color: #000 !important;
     text-shadow: none !important;
@@ -197,6 +198,14 @@ th {
     -webkit-box-shadow: none !important;
             box-shadow: none !important;
   }
+  */
+  * {
+    color: #000;
+    text-shadow: none;
+    background: transparent;
+    -webkit-box-shadow: none;
+            box-shadow: none;
+  }   
   a,
   a:visited {
     text-decoration: underline;

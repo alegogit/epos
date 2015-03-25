@@ -20,7 +20,8 @@ class Currency_controller extends CI_Controller {
 		if($this->session->userdata('logged_in'))
 		{
 			$data['menu'] = 'setting';         
-			$session_data = $this->session->userdata('logged_in');
+			$session_data = $this->session->userdata('logged_in');  
+		  $data['role'] = $session_data['role'];
 			$data['def_rest'] = $session_data['def_rest'];
 			$data['def_start_date'] = date('d M Y', time() - 30 * 60 * 60 * 24);
 			$data['def_end_date'] = date('d M Y', time());
@@ -33,10 +34,11 @@ class Currency_controller extends CI_Controller {
 			
 			$data['currencies'] = $this->setting->get_currencies();
 			$data['rest_dcurr'] = $this->setting->get_rest_currency($rest_id);
-			$data['rest_name'] = $this->setting->get_restaurant_name($rest_id)->REST_NAME;
+			$data['rest_name'] = $this->setting->get_restaurant_name($rest_id)->REST_NAME; 		       
+		  $data['statuses'] = $this->setting->get_status(); 		
 			
 			if($this->input->post('curr_cd')){
-			   $this->setting->set_default_currency($this->input->post('curr_cd'),$rest_id);
+			   $this->setting->set_default_currency($this->input->post('curr_cd'),$rest_id);  
       }
 			
 			$this->load->view('shared/header',$this->data);

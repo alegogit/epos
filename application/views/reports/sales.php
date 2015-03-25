@@ -5,7 +5,9 @@
     <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
       <a role="button" class="btn btn-primary" href="<?=base_url()?>reports/sales">&nbsp;&nbsp;&nbsp;Sales&nbsp;&nbsp;&nbsp;</a>
       <a role="button" class="btn btn-default" href="<?=base_url()?>reports/inventory">Inventory</a>              
-      <a role="button" class="btn btn-default" href="<?=base_url()?>reports/cashflow">Cash Flow</a>     
+      <a role="button" class="btn btn-default" href="<?=base_url()?>reports/cashflow">Cash Flow</a>              
+      <a role="button" class="btn btn-default" href="<?=base_url()?>reports/endofday">End of Day</a>              
+      <a role="button" class="btn btn-default" href="<?=base_url()?>reports/attendance">Attendance</a>     
     </div>                                                                       
     <hr style="margin-bottom:10px;margin-top:10px" />         
     
@@ -102,7 +104,9 @@
 						    <th class="cin no-sort"></th>
 						    <th class="cin">Tip</th>    
 						    <th class="cin no-sort"></th>
-						    <th class="cin">Discount</th> 
+						    <th class="cin">Discount</th>
+						    <th class="cin no-sort"></th>
+						    <th class="cin">Total Rounding</th> 
 						    <th class="cin no-sort"></th>
 						    <th class="cin">Service Charge</th> 
 						    <th class="cin no-sort"></th>
@@ -110,6 +114,7 @@
 						    <th class="cin no-sort"></th>
 						    <th class="cin">Paid Amount</th>
 						    <th>Payment Method</th>
+						    <th>Order Type</th>
 						  </tr>
 						</thead>
 						<tbody>   
@@ -142,18 +147,22 @@
 						    <td class="cin cur text3D text-danger"><?=$cur?></td>
 						    <td class="cin cur text3D text-danger"><?=number_format((float)$row->DISCOUNT, 2, '.', '')?></td>
 						    <td class="cin cur text3D"><?=$cur?></td>
+						    <td class="cin cur text3D"><?=number_format((float)$row->TOTAL_ROUNDING, 2, '.', '')?></td>
+						    <td class="cin cur text3D"><?=$cur?></td>
 						    <td class="cin cur text3D"><?=number_format((float)$row->SERVICE_CHARGE, 2, '.', '')?></td>
 						    <td class="cin cur text3D"><?=$cur?></td>
 						    <td class="cin cur text3D"><?=number_format((float)$row->TOTAL_TAX, 2, '.', '')?></td>
 						    <td class="cin cur text3D"><strong><?=$cur?></strong></td>
 						    <td class="cin cur text3D" style="font-weight:bolder"><strong><?=number_format((float)$row->PAID_AMOUNT, 2, '.', '')?></strong></td>
 						    <td><?=$row->PAYMENT_METHOD?></td>
+						    <td><?=$row->ORDER_TYPE?></td>
 						  </tr>
 						  <?php  
                   $total['NO_OF_GUEST'] = $total['NO_OF_GUEST']+$row->NO_OF_GUEST;  
                   $total['TOTAL_BILL'] = $total['TOTAL_BILL']+$row->TOTAL_BILL;  
                   $total['TIP'] = $total['TIP']+$row->TIP;  
-                  $total['DISCOUNT'] = $total['DISCOUNT']+$row->DISCOUNT; 
+                  $total['DISCOUNT'] = $total['DISCOUNT']+$row->DISCOUNT;     
+                  $total['TOTAL_ROUNDING'] = $total['TOTAL_ROUNDING']+$row->TOTAL_ROUNDING;
                   $total['SERVICE_CHARGE'] = $total['SERVICE_CHARGE']+$row->SERVICE_CHARGE;  
                   $total['TOTAL_TAX'] = $total['TOTAL_TAX']+$row->TOTAL_TAX;  
                   $total['PAID_AMOUNT'] = $total['PAID_AMOUNT']+$row->PAID_AMOUNT;
@@ -176,11 +185,14 @@
 						    <th class="cin text3D no-sort text-danger"><?=$cur?></th>
 						    <th class="cin cur text3D no-sort text-danger"><?=number_format((float)$total['DISCOUNT'], 2, '.', '')?></th> 
 						    <th class="cin text3D no-sort"><?=$cur?></th>
+						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['TOTAL_ROUNDING'], 2, '.', '')?></th> 
+						    <th class="cin text3D no-sort"><?=$cur?></th>
 						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['SERVICE_CHARGE'], 2, '.', '')?></th> 
 						    <th class="cin text3D no-sort"><?=$cur?></th>
 						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['TOTAL_TAX'], 2, '.', '')?></th> 
 						    <th class="cin text3D no-sort"><?=$cur?></th>
 						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['PAID_AMOUNT'], 2, '.', '')?></th>
+						    <th class="no-sort"></th>
 						    <th class="no-sort"></th>
 						  </tr>
             </tfoot>

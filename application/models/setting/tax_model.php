@@ -52,6 +52,20 @@ class Tax_model extends CI_Model {
                       ->where('ID',$id)
                       ->get('');
     return $query->row();
+  }                     
+  
+	function get_status(){  
+    $this->db->where('LOOKUP_NAME','STATUS');
+    $query = $this->db->get('REF_VALUES');
+    return $query->result();
   }
+  
+  function set_status($stat){
+    if($stat==1){
+      $output = "Active";
+    } else {
+      $output = "<span style='color:#dd1144 !important;'>Inactive</span>";
+    }
+  } 
   
 }

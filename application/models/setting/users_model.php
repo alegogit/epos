@@ -144,14 +144,14 @@ class Users_model extends CI_Model {
 			//return $query->row();
   	}
     
-	function new_users($NAME,$EMAIL,$USERNAME,$PASSWORD,$ROLE,$DREST,$AREST=array()){       
+	function new_users($NAME,$EMAIL,$USERNAME,$PASSWORD,$ROLE,$TOTAL_HRS_WEEK,$DREST,$AREST=array()){       
 		$session_data = $this->session->userdata('logged_in');
 		$PASSWD = sha1(md5($PASSWORD));
 		$id = $session_data['id'];
     	$query1 = $this->db->query('INSERT INTO USERS
-      		(NAME,EMAIL_ADDRESS,USERNAME,PASSWORD,ROLE_ID,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
+      		(NAME,EMAIL_ADDRESS,USERNAME,PASSWORD,ROLE_ID,TOTAL_HRS_WEEK,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
       		VALUES 
-      		("'.$NAME.'","'.$EMAIL.'","'.$USERNAME.'","'.$PASSWD.'",'.$ROLE.','.$id.',NOW(),'.$id.',NOW());');
+      		("'.$NAME.'","'.$EMAIL.'","'.$USERNAME.'","'.$PASSWD.'",'.$ROLE.','.$TOTAL_HRS_WEEK.','.$id.',NOW(),'.$id.',NOW());');
       $query2 = $this->setting->assign_rest($this->setting->get_mail_user($EMAIL)->ID,array_diff($AREST,[$DREST]));  
     	$query3 = $this->db->query('INSERT INTO USERS_RESTAURANTS
       		(USER_ID,REST_ID,DEFAULT_REST,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
@@ -195,5 +195,20 @@ class Users_model extends CI_Model {
             ); 
 		$this->db->where('ID',$uid);
     	$query = $this->db->update('USERS',$data);
-  	}
+  	}          
+  
+	function get_status(){  
+    $this->db->where('LOOKUP_NAME','STATUS');
+    $query = $this->db->get('REF_VALUES');
+    return $query->result();
+  }
+  
+  function set_status($stat){
+    if($stat==1){
+      $output = "Active";
+    } else {
+      $output = "<span style='color:#dd1144 !important;'>Inactive</span>";
+    }
+  } 
+  
 }

@@ -121,12 +121,4 @@ class Sync_controller extends CI_Controller {
 		redirect('dashboard', 'refresh');
 	}
 		
-	public function notif()
-	{
-		$this->load->view('shared/header');
-		$this->load->view('shared/left_menu', $data);
-		$this->load->view('contents/notifications');
-		$this->load->view('shared/footer');
-	}
-	
 }

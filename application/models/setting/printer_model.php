@@ -105,7 +105,21 @@ class Printer_model extends CI_Model {
     $this->db->where('REST_ID',$rest_id);
     $query = $this->db->get('PRINTER');
     return $query->result();
-  }       
+  }                     
+  
+	function get_status(){  
+    $this->db->where('LOOKUP_NAME','STATUS');
+    $query = $this->db->get('REF_VALUES');
+    return $query->result();
+  }
+  
+  function set_status($stat){
+    if($stat==1){
+      $output = "Active";
+    } else {
+      $output = "<span style='color:#dd1144 !important;'>Inactive</span>";
+    }
+  } 
     
 	function new_printer($NAME,$PRINTER_MAC_ADDRESS,$REST_ID,$PRINTER_CONNECTION,$PRINTER_IP_ADDRESS,$PRINTER_PORT){       
 		$session_data = $this->session->userdata('logged_in');

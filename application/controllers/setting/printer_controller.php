@@ -27,7 +27,8 @@ class Printer_controller extends CI_Controller {
 				$this->session->set_userdata('filtered', $sess_array);
 			}
 			$data['menu'] = 'setting';         
-			$session_data = $this->session->userdata('logged_in');
+			$session_data = $this->session->userdata('logged_in');     
+		  $data['role'] = $session_data['role'];
 			$session_filt = $this->session->userdata('filtered');
 			$data['def_rest'] = ($session_filt['def_rest'])?$session_filt['def_rest']:$session_data['def_rest'];
 			$data['def_rest_name'] = ($session_filt['def_rest'])?$this->printer->get_restaurant_name($session_filt['def_rest']):$this->printer->get_restaurant_name($session_data['def_rest']);
@@ -45,7 +46,8 @@ class Printer_controller extends CI_Controller {
       } 
 			
       $data['printer_conf'] = $this->printer->get_printer($rest_id);
-		  $data['connectivity'] = $this->printer->get_all_connectivity();
+		  $data['connectivity'] = $this->printer->get_all_connectivity(); 		       
+		  $data['statuses'] = $this->printer->get_status(); 		
      
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);

@@ -49,6 +49,29 @@ class Inventory_controller extends CI_Controller {
 		
 	}
 	
+	public function view()
+	{
+			$data['def_rest'] = 2;
+			$data['def_report_name'] = 'Inventory';
+			$data['def_start_date'] = date('d M Y', time() - 7 * 60 * 60 * 24);
+			$data['def_end_date'] = date('d M Y', time());     
+			$rest_id = (!($this->input->post('rest_id')))?$data['def_rest']:$this->input->post('rest_id');
+			$report_name = (!($this->input->get('report_name')))?$data['def_report_name']:$this->input->get('report_name'); 
+			//$start_date = (!($this->input->post('startdate')))?$data['def_start_date']:$this->input->post('startdate'); 
+			$start_date = "01 Jan 2015";
+      $end_date = (!($this->input->post('startdate')))?$data['def_end_date']:$this->input->post('enddate'); 
+			$data['rest_id'] = $rest_id;
+			$data['report_name'] = $report_name;
+			$data['startdate'] = $start_date;
+			$data['enddate'] = $end_date; 
+          
+			$data['inventory'] = $this->inventory->get_inventory($rest_id); 
+			
+			$this->load->view('shared/notopbar_header',$this->data);
+			$this->load->view('reports/inventoryview',$data);
+			$this->load->view('shared/footer');		
+	}
+  
 	public function profile()
 	{
 		$data['profile'] = $this->inventory->get_profile();

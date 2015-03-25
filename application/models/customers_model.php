@@ -76,6 +76,44 @@ class Customers_model extends CI_Model {
     return $query->result();
   } 
    
+	function get_country($country_code,$set=1){ 
+    if (strlen($country_code)>2){
+      return $country_code." <span style='color:#dd1144 !important;'><i>(please select)</i></span>";
+    } else {   
+      $query = $this->db->select('CODE AS COUNTRY_CODE, VALUE AS COUNTRY_NAME')
+                        ->from('REF_VALUES')
+                        ->where('LOOKUP_NAME','COUNTRY')  
+                        ->where('CODE',$country_code)  
+                        ->limit(1)
+                        ->get('');
+      if($set==1){               
+        return $query->row()->COUNTRY_CODE;
+      } else {             
+        return $query->row()->COUNTRY_NAME;
+      }   
+    }   
+  } 
+  
+	function get_countries(){    
+    $this->db->where('LOOKUP_NAME','COUNTRY');
+    $query = $this->db->get('REF_VALUES');
+    return $query->result();
+  }
+  
+	function get_status(){  
+    $this->db->where('LOOKUP_NAME','STATUS');
+    $query = $this->db->get('REF_VALUES');
+    return $query->result();
+  }
+  
+  function set_status($stat){
+    if($stat==1){
+      $output = "Active";
+    } else {
+      $output = "<span style='color:#dd1144 !important;'>Inactive</span>";
+    }
+  } 
+   
 	function new_customers($NAME,$TELEPHONE,$ADDRESS_LINE_1,$ADDRESS_LINE_2,$CITY,$EMAIL_ADDRESS,$POSTAL_CODE,$COUNTRY,$REST_ID){       
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id'];

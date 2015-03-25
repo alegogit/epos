@@ -27,7 +27,8 @@ class Menuinventory_controller extends CI_Controller {
 				$this->session->set_userdata('filtered', $sess_array);
 			}
 			$data['menu'] = 'setting';         
-			$session_data = $this->session->userdata('logged_in');
+			$session_data = $this->session->userdata('logged_in');     
+		  $data['role'] = $session_data['role'];
 			$session_filt = $this->session->userdata('filtered');
 			$data['def_rest'] = ($session_filt['def_rest'])?$session_filt['def_rest']:$session_data['def_rest'];
 			$data['def_rest_name'] = ($session_filt['def_rest'])?$this->setting->get_restaurant_name($session_filt['def_rest']):$this->setting->get_restaurant_name($session_data['def_rest']);
@@ -38,16 +39,18 @@ class Menuinventory_controller extends CI_Controller {
 			$end_date = (!($this->input->post('startdate')))?$data['def_end_date']:$this->input->post('enddate'); 
 			$data['rest_id'] = $rest_id;
 			$data['startdate'] = $start_date;
-			$data['enddate'] = $end_date; 
-		  	$data['cur'] = $this->setting->get_currency($rest_id);
-			                                 
-      		if($this->input->post('qty')){               
-		    	$this->setting->new_menuinventory($this->input->post('menu'),$this->input->post('inv'),$this->input->post('qty'));
-      		} 
+			$data['enddate'] = $end_date;
       
-		  	$data['menuinventory'] = $this->setting->get_rest_menuinventory($rest_id);
-		  	$data['menus'] = $this->setting->get_rest_menus($rest_id);
-		  	$data['inventories'] = $this->setting->get_rest_inventories($rest_id);
+      $data['cur'] = $this->setting->get_currency($rest_id);
+      
+      if($this->input->post('qty')){
+        $this->setting->new_menuinventory($this->input->post('menu'),$this->input->post('inv'),$this->input->post('qty'));
+      }
+      
+      $data['menuinventory'] = $this->setting->get_rest_menuinventory($rest_id);
+		  $data['menus'] = $this->setting->get_rest_menus($rest_id);
+		  $data['inventories'] = $this->setting->get_rest_inventories($rest_id);  		       
+		  $data['statuses'] = $this->setting->get_status(); 		
 			
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);
