@@ -10,7 +10,7 @@
 	      	<a role="button" class="btn btn-default" href="<?=base_url()?>setting/tableorder">Table Order</a>        
 	      	<a role="button" class="btn btn-default" href="<?=base_url()?>setting/users">Users</a>               
 	      	<a role="button" class="btn btn-default" href="<?=base_url()?>setting/printer">Printer</a>       
-	      	<a role="button" class="btn btn-default" href="<?=base_url()?>setting/devices">Devices</a>           
+	      	<a role="button" class="btn btn-default" href="<?=base_url()?>setting/terminal">Terminal</a>           
 	    </div>       
 	                                                                          
 	    <hr style="margin-bottom:10px" />

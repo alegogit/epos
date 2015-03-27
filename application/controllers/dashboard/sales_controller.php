@@ -38,8 +38,8 @@ class Sales_controller extends CI_Controller {
 			$end_date = (!($this->input->post('enddate')))?$data['def_end_date']:$this->input->post('enddate'); 
 			$data['rest_id'] = $rest_id;
 			$data['startdate'] = $start_date;
-			$data['enddate'] = $end_date;      
-		  	$data['cur'] = $this->dash_sls->get_currency($rest_id);
+			$data['enddate'] = $end_date;
+      $data['cur'] = $this->dash_sls->get_currency($rest_id);
 			$data['trans_today'] = $this->dash_sls->num_transactions_today($rest_id);
 			$data['sales_today'] = $this->dash_sls->total_sales_today($rest_id);
 			$data['percent_today'] = $this->dash_sls->percentage_increase_from_yesterday($rest_id);
@@ -49,12 +49,12 @@ class Sales_controller extends CI_Controller {
 			$data['percent_this_week'] = $this->dash_sls->percentage_increase_from_last_week($rest_id); 
 			$data['num_cust_30day'] = $this->dash_sls->num_customers_30day($rest_id);
 			$data['dpayment'] = $this->dash_sls->dash_payment_method(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id);
-			$data['dtopcats'] = $this->dash_sls->dash_top_categories(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id);
+			$data['dtopcats'] = $this->dash_sls->remove_zero_values($this->dash_sls->dash_top_categories(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id),'AMOUNT');
 			$data['dbestsells'] = $this->dash_sls->dash_best_sellers(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id);
 			$data['dmorevenue'] = $this->dash_sls->dash_monthly_revenue($rest_id);
-		  	$data['dwkrevenue'] = $this->dash_sls->dash_weekly_revenue($rest_id);
-		  	$data['nostock'] = $this->dash_sls->no_stock($rest_id);
-		  	//$data['promotions'] = $this->home->get_latest_promotions();
+      $data['dwkrevenue'] = $this->dash_sls->dash_weekly_revenue($rest_id);
+      $data['nostock'] = $this->dash_sls->no_stock($rest_id);
+		  //$data['promotions'] = $this->home->get_latest_promotions();
 			//$data['services'] = $this->home->get_latest_services();
 			
 			$this->load->view('shared/header',$this->data);

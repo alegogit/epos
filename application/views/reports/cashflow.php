@@ -60,44 +60,53 @@
 						  <tr class="tablehead text3D">
 						    <th class="no-sort">Date</th>
 						    <!--<th>Restaurant</th>-->
-						    <th class="no-sort">Device</th>  
+						    <th class="no-sort">Terminal</th>  
 						    <th class="cin"></th>
 						    <th class="cin no-sort">Cash From Register</th>     
 						    <th class="cin"></th>
-						    <th class="cin no-sort">Cash From Order</th>   
+						    <th class="cin no-sort">Cash From Order</th>       
 						    <th class="cin"></th>
+						    <th class="cin no-sort">Differences</th>   
+						    <!--<th class="cin"></th>
 						    <th class="cin no-sort">Debit From Order</th>   
 						    <th class="cin"></th>
-						    <th class="cin no-sort">Credit From Order</th>
+						    <th class="cin no-sort">Credit From Order</th>-->
 						  </tr>
 						</thead>
 						<tbody>           
 						  <?php 
                 $i = 0;
                 $total['CASH_FROM_REGISTER'] = 0;  
-                $total['CASH_FROM_ORDER'] = 0;  
+                $total['CASH_FROM_INVOICES'] = 0;   
+                $total['DIFFERENCE'] = 0;  
                 $total['DEBIT_FROM_ORDERS'] = 0;  
-                $total['CREDIT_FROM_ORDERS'] = 0;  
+                $total['CREDIT_FROM_ORDERS'] = 0;    
+                echo "</pre>"; 
+                print_r($cashflow); 
+                echo "</pre>";
                 foreach ($cashflow as $row){ 
               ?>
 						  <tr class="<?=$this->cashflow->inv_status_class($row->STATUS)?>" data-index="<?=$i?>">
 						    <td><?=$row->TERMINAL_DATE?></td>
 						    <!--<td><?=$row->REST_NAME?></td>-->
-						    <td><?=$row->DEVICE_NAME?></td>     
+						    <td><?=$row->TERMINAL_NAME?></td>     
 						    <td class="cin text3D"><?=$cur?></td>
 						    <td class="cin cur text3D"><?=number_format((float)$row->CASH_FROM_REGISTER, 2, '.', '')?></td> 
 						    <td class="cin text3D"><?=$cur?></td>
-						    <td class="cin cur text3D"><?=number_format((float)$row->CASH_FROM_ORDER, 2, '.', '')?></td> 
+						    <td class="cin cur text3D"><?=number_format((float)$row->CASH_FROM_INVOICES, 2, '.', '')?></td> 
 						    <td class="cin text3D"><?=$cur?></td>
+						    <td class="cin cur text3D"><?=number_format((float)$row->CASH_FROM_REGISTER-(float)$row->CASH_FROM_INVOICES, 2, '.', '')?></td> 
+						    <!--<td class="cin text3D"><?=$cur?></td>
 						    <td class="cin cur text3D"><?=number_format((float)$row->DEBIT_FROM_ORDERS, 2, '.', '')?></td> 
 						    <td class="cin text3D"><?=$cur?></td>
-						    <td class="cin cur text3D"><?=number_format((float)$row->CREDIT_FROM_ORDERS, 2, '.', '')?></td>
+						    <td class="cin cur text3D"><?=number_format((float)$row->CREDIT_FROM_ORDERS, 2, '.', '')?></td>-->
 						  </tr>
 						  <?php 
                 $total['CASH_FROM_REGISTER'] = $total['CASH_FROM_REGISTER']+$row->CASH_FROM_REGISTER;  
-                $total['CASH_FROM_ORDER'] = $total['CASH_FROM_ORDER']+$row->CASH_FROM_ORDER;  
-                $total['DEBIT_FROM_ORDERS'] = $total['DEBIT_FROM_ORDERS']+$row->DEBIT_FROM_ORDERS;  
-                $total['CREDIT_FROM_ORDERS'] = $total['CREDIT_FROM_ORDERS']+$row->CREDIT_FROM_ORDERS;  
+                $total['CASH_FROM_INVOICES'] = $total['CASH_FROM_INVOICES']+$row->CASH_FROM_INVOICES;  
+                $total['DIFFERENCE'] = $total['DIFFERENCE']+($row->DIFFERENCE);  
+                //$total['DEBIT_FROM_ORDERS'] = $total['DEBIT_FROM_ORDERS']+$row->DEBIT_FROM_ORDERS;  
+                //$total['CREDIT_FROM_ORDERS'] = $total['CREDIT_FROM_ORDERS']+$row->CREDIT_FROM_ORDERS;  
                 $i++; 
               } ?>
 						</tbody>
@@ -109,11 +118,13 @@
 						    <th class="cin text3D no-sort"><?=$cur?></td>
 						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['CASH_FROM_REGISTER'], 2, '.', '')?></th>  
 						    <th class="cin text3D no-sort"><?=$cur?></td>
-						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['CASH_FROM_ORDER'], 2, '.', '')?></th> 
+						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['CASH_FROM_INVOICES'], 2, '.', '')?></th> 
 						    <th class="cin text3D no-sort"><?=$cur?></td>
+						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['DIFFERENCE'], 2, '.', '')?></th> 
+						    <!--<th class="cin text3D no-sort"><?=$cur?></td>
 						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['DEBIT_FROM_ORDERS'], 2, '.', '')?></th>  
 						    <th class="cin text3D no-sort"><?=$cur?></td>
-						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['CREDIT_FROM_ORDERS'], 2, '.', '')?></th>
+						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['CREDIT_FROM_ORDERS'], 2, '.', '')?></th>-->
 						  </tr>
 						</tfoot>
 					</table>      

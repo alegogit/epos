@@ -71,36 +71,38 @@ class Cashflow_model extends CI_Model {
 		return $query->row()->CUR;
   }
   	
-	function get_cashflow0($rest_id,$startdate,$enddate)
+	function get_cashflow($rest_id,$startdate,$enddate)
 	{
-	    $query = $this->db->query("SELECT	R.NAME REST_NAME, D.NAME DEVICE_NAME,	SUM(PH.CASH_CLOSING - CASH_OPENING) CASH_FROM_REGISTER, 
-		                                    CASH_FROM_ORDERS.TOTAL CASH_FROM_ORDER, 
-                                        DEBIT_FROM_ORDERS.TOTAL DEBIT_FROM_ORDERS, CREDIT_FROM_ORDERS.TOTAL CREDIT_FROM_ORDERS, 
+	    $query = $this->db->query("SELECT R.ID REST_ID,	R.NAME REST_NAME,
+                                        T.ID TERMINAL_ID, T.NAME TERMINAL_NAME,
+                                        SUM(PH.CASH_CLOSING - PH.CASH_OPENING) CASH_FROM_REGISTER,
+                                        CASH_FROM_INVOICES.TOTAL CASH_FROM_INVOICES, 
+                                        SUM(PH.CASH_CLOSING - PH.CASH_OPENING) - CASH_FROM_INVOICES.TOTAL	DIFFERENCE,
                                         DATE(PH.DATE) TERMINAL_DATE
-	                               FROM DEVICES D
-	                               INNER JOIN RESTAURANTS R	ON D.REST_ID = R.ID
-	                               INNER JOIN PAYMENT_HISTORY PH ON PH.TERMINAL_ID = D.ID
-	                               LEFT OUTER JOIN (
-                                    SELECT DATE(STARTED) ORDER_DATE, SUM(TOTAL) TOTAL, TERMINAL_ID FROM ORDERS 
-                                    WHERE PAYMENT_METHOD = 'CASH'
-                                    GROUP BY TERMINAL_ID, DATE(STARTED)
-                                 ) CASH_FROM_ORDERS	ON CASH_FROM_ORDERS.ORDER_DATE = DATE(PH.DATE)
-	                               LEFT OUTER JOIN (
-                                		SELECT DATE(STARTED) ORDER_DATE, SUM(TOTAL) TOTAL,  TERMINAL_ID FROM ORDERS 
-                                		WHERE PAYMENT_METHOD = 'CREDIT'
-                                		GROUP BY TERMINAL_ID, DATE(STARTED)
-                                 ) CREDIT_FROM_ORDERS	ON CREDIT_FROM_ORDERS.ORDER_DATE = DATE(PH.DATE)
-                                 LEFT OUTER JOIN (
-                                		SELECT DATE(STARTED) ORDER_DATE, SUM(TOTAL) TOTAL,  TERMINAL_ID FROM ORDERS 
-                                		WHERE PAYMENT_METHOD = 'DEBIT'
-                                		GROUP BY TERMINAL_ID, DATE(STARTED)
-                                 ) DEBIT_FROM_ORDERS ON DEBIT_FROM_ORDERS.ORDER_DATE = DATE(PH.DATE)
-                                 WHERE D.REGISTERED = 1 AND PH.DATE BETWEEN '".$startdate."' AND DATE_ADD('".$end_date."', INTERVAL 1 DAY) AND R.ID = ".$rest_id."
-	                               GROUP BY D.ID;");
+                                FROM TERMINAL T 
+                                INNER JOIN RESTAURANTS R 
+                                        ON T.REST_ID = R.ID
+                                LEFT OUTER JOIN PAYMENT_HISTORY PH
+                                        ON PH.TERMINAL_ID = T.ID
+                                LEFT OUTER JOIN (
+                                        SELECT DATE(O.STARTED) ORDER_DATE, SUM(I.PAID_AMOUNT) TOTAL, I.TERMINAL_ID
+                                        FROM INVOICES I
+                                        INNER JOIN INVOICES_ORDERS OI
+                                          ON OI.INVOICE_ID = I.ID
+                                        INNER JOIN ORDERS O
+                                          ON O.ID = OI.ORDER_ID
+                                        WHERE I.PAYMENT_METHOD = 'CASH'
+                                        GROUP BY I.TERMINAL_ID, DATE(O.STARTED)
+                                ) CASH_FROM_INVOICES 
+                                        ON CASH_FROM_INVOICES.ORDER_DATE = DATE(PH.DATE) AND CASH_FROM_INVOICES.TERMINAL_ID = T.ID
+                                WHERE T.REGISTERED = 1
+                                        AND PH.DATE BETWEEN '".$startdate."' AND DATE_ADD('".$enddate."', INTERVAL 1 DAY) 
+                                        AND R.ID = ".$rest_id."
+                                GROUP BY T.ID, DATE(PH.DATE);");
 		    return $query->result();
 	}
 	
-	function get_cashflow($rest_id,$startdate,$enddate)
+	function get_cashflow0($rest_id,$startdate,$enddate)
 	{
 	    $query = $this->db->query("SELECT R.NAME REST_NAME, D.NAME DEVICE_NAME, 
 										SUM(PH.CASH_CLOSING - CASH_OPENING) CASH_FROM_REGISTER, 
@@ -108,7 +110,7 @@ class Cashflow_model extends CI_Model {
         								DEBIT_FROM_ORDERS.TOTAL DEBIT_FROM_ORDERS,
 										CREDIT_FROM_ORDERS.TOTAL CREDIT_FROM_ORDERS, 
         								DATE(PH.DATE) TERMINAL_DATE
-									FROM DEVICES D
+									FROM TERMINAL D
 									INNER JOIN RESTAURANTS R ON D.REST_ID = R.ID
 									LEFT OUTER JOIN PAYMENT_HISTORY PH ON PH.TERMINAL_ID = D.ID
 									LEFT OUTER JOIN (

@@ -68,7 +68,8 @@ $route['setting/menuinventory'] = "setting/menuinventory_controller";
 $route['setting/tableorder'] = "setting/tableorder_controller";
 $route['setting/users'] = "setting/users_controller";
 $route['setting/printer'] = "setting/printer_controller";
-$route['setting/devices'] = "setting/devices_controller"; 
+//$route['setting/devices'] = "setting/devices_controller"; 
+$route['setting/terminal'] = "setting/terminal_controller"; 
 $route['setting/currency'] = "setting/currency_controller";    
 
 $route['reports'] = "reports/sales_controller";
@@ -82,7 +83,9 @@ $route['reports/attendance/exec'] = "reports/attendance_controller/exec";
 
 $route['extracts'] = "extracts/ordersdata_controller";
 $route['printpdf'] = "printpdf_controller";
+$route['printpdf/tojpg'] = "printpdf_controller/tojpg";
 $route['printpdf/view'] = "printpdf_controller/view";
+$route['printpdf/topdf'] = "printpdf_controller/topdf";
 
 $route['sync'] = "sync_controller";
 $route['sync/exec'] = "sync_controller/exec";
@@ -94,7 +97,8 @@ $route['process/menuinventory'] = "process/menuinventorysetting_controller";
 $route['process/tableorder'] = "process/tableordersetting_controller";   
 $route['process/users'] = "process/userssetting_controller";        
 $route['process/printer'] = "process/printersetting_controller";
-$route['process/devices'] = "process/devicessetting_controller";
+//$route['process/devices'] = "process/devicessetting_controller";
+$route['process/terminal'] = "process/terminalsetting_controller";
 $route['process/orders'] = "process/orderdetails_controller";
 $route['process/inventory'] = "process/inventoryprocess_controller";
 $route['process/customers'] = "process/customersprocess_controller";    

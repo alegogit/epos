@@ -10,7 +10,7 @@
       <a role="button" class="btn btn-primary" href="<?=base_url()?>setting/tableorder">Table Order</a>        
       <a role="button" class="btn btn-default" href="<?=base_url()?>setting/users">Users</a>               
       <a role="button" class="btn btn-default" href="<?=base_url()?>setting/printer">Printer</a>       
-      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/devices">Devices</a>           
+      <a role="button" class="btn btn-default" href="<?=base_url()?>setting/terminal">Terminal</a>           
     </div>       
                                                                           
     <hr style="margin-bottom:10px" />
@@ -59,7 +59,7 @@
 						    	<tr class="tablehead text3D">
 						        	<th class="no-sort"><input type="checkbox" id="checkall" value="Check All"></th>
 							        <th class="cin">Table Number</th>
-							        <th class="cin">Position</th> 
+							        <!--<th class="cin">Position</th>--> 
   						        <th>Status</th> 
                     <?php if ($role==1){ ?>
 							        <th>Created By</th>
@@ -78,9 +78,9 @@
 				            <td class="cin" style="">
 				            	<a id="TABLE_NUMBER-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->TABLE_NUMBER?></a>
 				            </td>
-				            <td class="cin" style="">
+				            <!--<td class="cin" style="">
 				            	<a id="POSITION-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->POSITION?></a>
-				            </td>   
+				            </td>-->   
                     <td style="">
                       <a id="ACTIVE-<?=$row->ID?>" class="edit" tabindex="0"><?=$this->setting->set_status($row->ACTIVE)?><i></i></a>
                     </td>   
@@ -123,13 +123,13 @@
             <input type="text" class="form-control" id="tableorder_name" placeholder="Table Number" name="tableorder_name" pattern="\d*" required>
           </div>
         </div><br />
-        <div class="form-group" style="margin-bottom:10px">       
+        <!--<div class="form-group" style="margin-bottom:10px">       
           <label for="tableorder_position"></label>
           <div class="input-group"> 
             <div class="input-group-addon"><span class="fa fa-plus-square-o"></span></div>
             <input type="text" class="form-control" id="tableorder_position" placeholder="Position" name="tableorder_position" pattern="\d*" required>
           </div>
-        </div><br />
+        </div><br />-->
         <div class="form-group" style="margin-bottom:10px">      
           <label for="rest_id">Restaurant</label><br /> 
           <div class="input-group">    
@@ -180,7 +180,8 @@
 	                    });
                         $('#TABLE_NUMBER-".$row->ID."').on('save', function(e) {  
                           return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
-                        });";
+                        });";   
+     /*                   
 	  	$edit_script .= "  $('#POSITION-".$row->ID."').editable({
 	                        url: updateurl,
 	                        pk: ".$row->ID.", 
@@ -197,6 +198,7 @@
                         $('#POSITION-".$row->ID."').on('save', function(e) {  
                           return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
                         });";     
+       */                 
   $edit_script .= "  $('#ACTIVE-".$row->ID."').editable({    
                         type: 'select',
                         url: updateurl,

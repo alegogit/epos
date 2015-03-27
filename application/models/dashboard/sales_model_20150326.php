@@ -33,7 +33,7 @@ class Sales_model extends CI_Model {
                         ->from('RESTAURANTS')
                         ->get('');
     }
-    return $query->result();                                                                                                                                      
+    return $query->result();
   }       
   
   function get_rest_logo(){
@@ -70,9 +70,8 @@ class Sales_model extends CI_Model {
 	}
 	
 	function total_sales_today($rest_id){
-		$query = $this->db->query("SELECT IFNULL(SUM(TOTAL),0) - IFNULL(SUM(DISCOUNT), 0) AS NET_SALES 
-                                FROM ORDERS
-                            		WHERE DATE(ENDED) = DATE(SYSDATE()) AND REST_ID = ".$rest_id." AND ACTIVE =0;");
+		//$query = $this->db->query('SELECT IFNULL(SUM(TOTAL),0) AS RES FROM ORDERS WHERE DATE(ENDED) = DATE(SYSDATE()) AND REST_ID ='.$rest_id.';');
+		$query = $this->db->query('SELECT IFNULL(SUM(TOTAL),0) AS RES FROM ORDERS WHERE DATE(ENDED) = DATE(SYSDATE()) AND REST_ID = '.$rest_id.' AND ACTIVE =0;');
 		return $query->row();
 	}
 
@@ -162,110 +161,80 @@ class Sales_model extends CI_Model {
 	}
 	     
 	function num_customers_30day($rest_id){
-    /*
 		$query = $this->db->query('SELECT COUNT(C.ID) AS RES 
         							FROM CUSTOMERS C
 									INNER JOIN ORDERS O ON O.CUSTOMER_ID = C.ID
             						WHERE O.REST_ID = '.$rest_id.'
 									AND O.ENDED > SUBDATE(SYSDATE(), 30);');
 		return $query->row();
-    */
 	}
 	
-	function dash_top_categories($start_date,$end_date,$rest_id){  		
-		$query = $this->db->query("SELECT OD.CATEGORY_NAME CAT_NAME, IFNULL(SUM(OD.TOTAL),0)  AMOUNT, IFNULL(COUNT(OD.ID),0)  TOTAL 
-	                             FROM ORDER_DETAILS OD
-                               LEFT JOIN PRICE_CHANGE PC ON PC.ORDER_DETAILS_ID = OD.ID AND PC.MENU_ID = NULL
-                               INNER JOIN INVOICES I ON OD.INVOICE_ID = I.ID
-                               INNER JOIN INVOICES_ORDERS OI ON OI.INVOICE_ID = I.ID
-                               INNER JOIN ORDERS O ON OI.ORDER_ID = O.ID
-                                  AND O.ENDED BETWEEN '".$start_date."' AND DATE_ADD('".$end_date."', INTERVAL 1 DAY)
-                                  AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
-                               GROUP BY OD.CATEGORY_NAME
-                               UNION  
-                               SELECT 'ADJUSTMENTS' CAT_NAME, IFNULL(SUM(OD.TOTAL),0)  AMOUNT, IFNULL(COUNT(OD.ID),0)  TOTAL 
-                          	   FROM ORDER_DETAILS OD
-                               INNER JOIN PRICE_CHANGE PC ON PC.ORDER_DETAILS_ID = OD.ID
-                               INNER JOIN INVOICES I ON OD.INVOICE_ID = I.ID
-                               INNER JOIN INVOICES_ORDERS OI ON OI.INVOICE_ID = I.ID
-                               INNER JOIN ORDERS O ON OI.ORDER_ID = O.ID
-                                  AND O.ENDED BETWEEN '".$start_date."' AND DATE_ADD('".$end_date."', INTERVAL 1 DAY)
-                                  AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 1
-                                ORDER BY AMOUNT DESC;");
+	function dash_top_categories($start_date,$end_date,$rest_id){
+		/*
+		$query = $this->db->query('SELECT C.NAME CAT_NAME, IFNULL(SUM(OD.PRICE*OD.QUANTITY),0) AMOUNT FROM ORDER_DETAILS OD 
+									INNER JOIN ORDERS O ON OD.ORDER_ID = O.ID
+						          	AND O.ENDED BETWEEN "'.$start_date.'" AND "'.$end_date.'"
+						          	AND O.REST_ID = '.$rest_id.' AND O.ACTIVE = 0
+						          	INNER JOIN MENU M ON M.ID = OD.MENU_ID
+						          	INNER JOIN CATEGORY C ON C.ID = M.CATEGORY_ID
+						          	GROUP BY C.NAME
+						          	ORDER BY AMOUNT DESC
+						          	LIMIT 5;');
+		*/
+		$query = $this->db->query('SELECT OD.CATEGORY_NAME CAT_NAME, IFNULL(SUM(OD.TOTAL),0)  AMOUNT
+									FROM ORDER_DETAILS OD
+									INNER JOIN ORDERS O ON OD.ORDER_ID = O.ID
+									AND O.ENDED BETWEEN "'.$start_date.'" AND DATE_ADD("'.$end_date.'", INTERVAL 1 DAY)
+									AND O.REST_ID = '.$rest_id.' AND O.ACTIVE = 0
+									GROUP BY OD.CATEGORY_NAME
+									ORDER BY AMOUNT DESC
+									LIMIT 5;');
 		return $query->result();  
+        //return $query->row();
 	}
-  
-  function remove_zero_values($array,$flag){
-    $i = 0;
-    foreach ($array as $row){    
-      if($row->$flag==0){
-        unset($array[$i]);
-      }
-      $i++;
-    } 
-    $this->dash_sls->set_as_others($array,$flag);
-    return $array;
-  }
-  
-  function set_as_others($array,$flag){
-    $i = 0;
-    $merge = array($flag => 0, 'TOTAL' => 0);
-    foreach ($array as $row){    
-      if($i>=5){
-        if(strtolower($row->CAT_NAME)!="adjustments") {
-          $merge[$flag] = $merge[$flag] + $row->$flag;
-          $merge['TOTAL'] = $merge['TOTAL'] + $row->TOTAL;
-          $row->CAT_NAME = "others";
-          $array[$i] = $array[5];
-          $row->$flag = $merge[$flag];
-          $row->TOTAL = $merge['TOTAL'];
-        } else {
-          $array[$i] = $array[6];
-        }
-      }
-      $i++;
-    }                  
-    $array5 = array('CAT_NAME' => 'others', 'AMOUNT' => $merge[$flag], 'TOTAL' => $merge['TOTAL']);
-    array_replace($array[5],$array5);
-    return $array;
-  }
 	
-	function dash_best_sellers($start_date,$end_date,$rest_id){    		
-		$query = $this->db->query("SELECT OD.MENU_NAME AS ITEMS, IFNULL(SUM(OD.TOTAL),0) AMOUNT, COUNT(OD.MENU_NAME) AS QTY 
-                              	FROM ORDER_DETAILS OD 
-                                  INNER JOIN INVOICES I ON OD.INVOICE_ID = I.ID
-                                  INNER JOIN INVOICES_ORDERS OI ON OI.INVOICE_ID = I.ID
-                              	INNER JOIN ORDERS O ON OI.ORDER_ID = O.ID
-                              		AND O.ENDED BETWEEN '".$start_date."' AND DATE_ADD('".$end_date."', INTERVAL 1 DAY)
-                              		AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
-                                GROUP BY OD.MENU_NAME
-                                ORDER BY SUM(OD.TOTAL) DESC
-                                LIMIT 5;");
+	function dash_best_sellers($start_date,$end_date,$rest_id){
+		/*
+		$query = $this->db->query('SELECT M.NAME AS ITEMS, IFNULL(SUM(OD.PRICE*QUANTITY),0) AMOUNT, COUNT(M.NAME) AS QTY FROM ORDER_DETAILS OD 
+	        INNER JOIN ORDERS O ON OD.ORDER_ID = O.ID
+		      AND O.ENDED BETWEEN "'.$start_date.'" AND "'.$end_date.'"
+		      AND O.REST_ID = '.$rest_id.' AND O.ACTIVE = 0
+	        INNER JOIN MENU M ON M.ID = OD.MENU_ID
+          GROUP BY M.NAME
+          ORDER BY SUM(OD.PRICE*QUANTITY) DESC
+          LIMIT 5;');
+		  */
+		$query = $this->db->query('SELECT OD.MENU_NAME AS ITEMS, IFNULL(SUM(OD.TOTAL),0) AMOUNT, COUNT(OD.MENU_NAME) AS QTY 
+									FROM ORDER_DETAILS OD 
+									INNER JOIN ORDERS O ON OD.ORDER_ID = O.ID
+									AND O.ENDED BETWEEN "'.$start_date.'" AND DATE_ADD("'.$end_date.'", INTERVAL 1 DAY)
+									AND O.REST_ID = '.$rest_id.' AND O.ACTIVE = 0
+									GROUP BY OD.MENU_NAME
+									ORDER BY SUM(OD.TOTAL) DESC
+									LIMIT 5;');
 		return $query->result();  
+        //return $query->row();
 	}
 
-	function dash_payment_method($start_date,$end_date,$rest_id){  		
-		$query = $this->db->query("SELECT  R.VALUE AS PAYMENT_METHOD, IFNULL(SUM(O.TOTAL), 0) AMOUNT , IFNULL(COUNT(I.ID),0)  TOTAL 
-                              	FROM INVOICES I
-                              	INNER JOIN REF_VALUES R ON I.PAYMENT_METHOD = R.CODE
-                              		AND R.LOOKUP_NAME = 'PAYMENT_METHOD' AND R.IS_ACTIVE = 1
-                                INNER JOIN INVOICES_ORDERS OI ON OI.INVOICE_ID = I.ID
-                              	INNER JOIN ORDERS O ON OI.ORDER_ID = O.ID
-                              	WHERE O.ENDED BETWEEN '".$start_date."' AND DATE_ADD('".$end_date."', INTERVAL 1 DAY)
-                              		AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
-                              	GROUP BY R.VALUE;");
-		return $query->result();  
-	}
-  
-	function dash_order_type($start_date,$end_date,$rest_id){  		
-		$query = $this->db->query("SELECT  R.VALUE AS ORDER_TYPE, IFNULL(SUM(O.TOTAL), 0) AMOUNT , IFNULL(COUNT(O.ID),0)  TOTAL 
-                              	FROM ORDERS O
-                              	INNER JOIN REF_VALUES R 
-                              			ON O.ORDER_TYPE = R.CODE
-                              			AND R.LOOKUP_NAME = 'ORDER_TYPE' AND R.IS_ACTIVE = 1
-                                  WHERE O.ENDED BETWEEN '".$start_date."' AND DATE_ADD('".$end_date."', INTERVAL 1 DAY)
-                              		AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
-                              	GROUP BY R.VALUE;");
+	
+	function dash_payment_method($start_date,$end_date,$rest_id){
+		/*
+		$query = $this->db->query('SELECT R.CODE, R.VALUE AS PAYMENT_METHOD, IFNULL(PAYMENT.AMOUNT, 0) AS AMOUNT FROM REF_VALUES R 
+	        LEFT OUTER JOIN  (
+		        SELECT PAYMENT_METHOD, IFNULL(SUM(PAID_AMOUNT),0) AMOUNT FROM ORDERS
+		        WHERE ENDED BETWEEN "'.$start_date.'" AND "'.$end_date.'"
+		        AND REST_ID = '.$rest_id.' AND ACTIVE = 0
+		        GROUP BY PAYMENT_METHOD
+          ) PAYMENT ON PAYMENT.PAYMENT_METHOD = R.CODE
+          WHERE R.LOOKUP_NAME = "PAYMENT_METHOD" AND R.IS_ACTIVE = 1;');
+		*/
+		$query = $this->db->query('SELECT  R.VALUE AS PAYMENT_METHOD, IFNULL(SUM(O.TOTAL), 0) AMOUNT 
+									FROM ORDERS O
+									LEFT OUTER JOIN REF_VALUES R ON O.PAYMENT_METHOD = R.CODE
+									WHERE R.LOOKUP_NAME = "PAYMENT_METHOD" AND R.IS_ACTIVE = 1
+									AND O.ENDED BETWEEN "'.$start_date.'" AND DATE_ADD("'.$end_date.'", INTERVAL 1 DAY)
+									AND REST_ID = '.$rest_id.' AND ACTIVE = 0
+									GROUP BY R.VALUE;');
 		return $query->result();  
 	}
   

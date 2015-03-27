@@ -1,18 +1,18 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Tableorder_controller extends CI_Controller {
+class Terminal_controller extends CI_Controller {
 	
 	function __construct()
 	{
 		parent::__construct();	
-		$this->load->model('setting/tableorder_model','setting',TRUE);  
+		$this->load->model('setting/terminal_model','setting',TRUE); 
     $this->load->helper(array('form', 'url','html'));
-		$session_data = $this->session->userdata('logged_in'); 
+		$session_data = $this->session->userdata('logged_in');  
 		$this->data['menu'] = 'setting';      
 		$this->data['user'] = $this->setting->get_profile();
-		$this->data['restaurants'] = $this->setting->get_restaurant(); 
-    $this->load->library('picture');    
-    @$this->data['reslogo'] = ($this->setting->get_rest_logo()=="")?base_url()."assets/images/logo3d.png":$this->setting->get_rest_logo();    
+		$this->data['restaurants'] = $this->setting->get_restaurant();  
+    $this->load->library('picture');      
+    @$this->data['reslogo'] = ($this->setting->get_rest_logo()=="")?base_url()."assets/images/logo3d.png":$this->setting->get_rest_logo();  
     @$this->data['profpic'] = ($this->data['user']->IMAGE=="")?base_url()."assets/img/no-photo.jpg":base_url()."profile/pic/".$this->picture->gettyimg($session_data['id']).".jpg";
   }
 
@@ -27,7 +27,7 @@ class Tableorder_controller extends CI_Controller {
 				$this->session->set_userdata('filtered', $sess_array);
 			}
 			$data['menu'] = 'setting';         
-			$session_data = $this->session->userdata('logged_in');     
+			$session_data = $this->session->userdata('logged_in');   
 		  $data['role'] = $session_data['role'];
 			$session_filt = $this->session->userdata('filtered');
 			$data['def_rest'] = ($session_filt['def_rest'])?$session_filt['def_rest']:$session_data['def_rest'];
@@ -39,19 +39,18 @@ class Tableorder_controller extends CI_Controller {
 			$end_date = (!($this->input->post('startdate')))?$data['def_end_date']:$this->input->post('enddate'); 
 			$data['rest_id'] = $rest_id;
 			$data['startdate'] = $start_date;
-			$data['enddate'] = $end_date;   
-			         			
-      if($this->input->post('tableorder_name')){               
-		    //$this->setting->new_tableorder($this->input->post('tableorder_name'),$this->input->post('tableorder_position'),$rest_id);             
-		    $this->setting->new_tableorder($this->input->post('tableorder_name'),1,$rest_id);
-      } 
+			$data['enddate'] = $end_date;
       
-		  $data['tableorder'] = $this->setting->get_rest_tableorder($rest_id);  		       
-		  $data['statuses'] = $this->setting->get_status(); 		
-			                   
+      if($this->input->post('terminal_type')){
+        $this->setting->new_terminal($this->input->post('terminal_name'),$this->input->post('terminal_mac'),$this->input->post('terminal_type'),$this->input->post('terminal_manufacturer'),$this->input->post('terminal_model'),$rest_id);
+      }
+      
+      $data['terminal'] = $this->setting->get_rest_terminal($rest_id);    		       
+		  $data['statuses'] = $this->setting->get_status(); 					                   
+			
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);
-			$this->load->view('setting/tableorder',$data);
+			$this->load->view('setting/terminal',$data);
 			$this->load->view('shared/footer');
 		}
 		else
