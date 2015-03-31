@@ -51,6 +51,7 @@ $route['logout'] = "dashboard/sales_controller/logout";
 
 $route['dashboard'] = "dashboard/sales_controller";
 $route['dashboard/sales'] = "dashboard/sales_controller";
+$route['dashboard/trends'] = "dashboard/trends_controller";
 $route['dashboard/inventory'] = "dashboard/inventory_controller";
 $route['dashboard/test'] = "dashboard/test_controller";
 

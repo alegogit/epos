@@ -5,7 +5,8 @@ class Inventory_controller extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();	
-		$this->load->model('dashboard/inventory_model','dash_inv',TRUE);
+		$this->load->model('dashboard/inventory_model','dash_inv',TRUE);  
+		$this->load->model('dashboard/rpanel_model','rpanel',TRUE);
     $this->load->helper(array('form', 'url','html'));
 		$session_data = $this->session->userdata('logged_in');
 		$this->data['user'] = $this->dash_inv->get_profile();
@@ -38,15 +39,15 @@ class Inventory_controller extends CI_Controller {
 			$data['rest_id'] = $rest_id;
 			//$data['startdate'] = $start_date;
 			//$data['enddate'] = $end_date;          
-		  	$data['cur'] = $this->dash_inv->get_currency($rest_id);
-			$data['trans_today'] = $this->dash_inv->num_transactions_today($rest_id);
-			$data['sales_today'] = $this->dash_inv->total_sales_today($rest_id);
-			$data['percent_today'] = $this->dash_inv->percentage_increase_from_yesterday($rest_id);
-			$data['trans_this_year'] = $this->dash_inv->num_transactions_this_year($rest_id);
-			$data['sales_this_year'] = $this->dash_inv->total_sales_this_year($rest_id);
-			//$data['percent_this_year'] = $this->dash_inv->percentage_increase_this_year($rest_id);       
-			$data['percent_this_week'] = $this->dash_inv->percentage_increase_from_last_week($rest_id); 
-			$data['num_cust_30day'] = $this->dash_inv->num_customers_30day($rest_id);
+      $data['cur'] = $this->dash_inv->get_currency($rest_id);
+      //==rpanel=======>       
+			$data['net_sales_today'] = $this->rpanel->net_sales_today($rest_id);
+			$data['tot_sales_today'] = $this->rpanel->total_sales_today($rest_id);
+			$data['avrsls_percust'] = $this->rpanel->average_sales_per_customer($rest_id);
+			$data['num_cust_today'] = $this->rpanel->number_customer_today($rest_id);
+			$data['avrsls_perinv'] = $this->rpanel->average_sales_per_invoice($rest_id);
+			$data['com_inv_today'] = $this->rpanel->completed_invoice_today($rest_id);
+      //<==rpanel=====
 			$data['nonmovitm'] = $this->dash_inv->non_moving_items($rest_id);
 			$data['lowinstck'] = $this->dash_inv->low_in_stock($rest_id);
 			$data['nostock'] = $this->dash_inv->no_stock($rest_id);
