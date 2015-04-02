@@ -47,10 +47,10 @@
 				<div class="panel-heading"><b>Add/Edit Table Order</b></div>
 				<div class="panel-body">                 					                    
 			    	<button type="button" class="btn btn-success" data-toggle="modal" data-target="#bookModal">
-              			<span class="glyphicon glyphicon-plus"></span> Add New Device  
+              			<span class="glyphicon glyphicon-plus"></span> Add New Terminal  
             		</button>             
             		<button type="button" class="btn btn-danger">
-              			<span class="glyphicon glyphicon-remove"></span> Delete Selected Device(s)
+              			<span class="glyphicon glyphicon-remove"></span> Delete Selected Terminal(s)
             		</button>        
             	<div style="margin-bottom:15px"></div> 
             	<div class="table-responsive">
@@ -63,6 +63,7 @@
 						        <th>Manufacturer</th>
 						        <th>Model</th>
 						        <th>MAC Address</th>
+						        <th>Host/Client</th>
 						        <th>Last Sync</th> 
                   <?php if ($role==1){ ?>
 						        <th data-field="crby" data-sortable="false">Created By</th>
@@ -93,6 +94,9 @@
 			          <td style="">
                   <a id="MAC_ADDRESS-<?=$row->ID?>" class="edit" data-inputclass="mac" tabindex="0"><?=$row->MAC_ADDRESS?></a>
 			          </td>
+			          <td style="">   
+                    <a id="CONN_TYPE-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->CONN_TYPE?><i></i></a>
+			          </td>  
 			          <td style="">
                   <?=$row->LAST_SYNC?>
 			          </td>    
@@ -121,7 +125,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Add New Device</h4>
+        <h4 class="modal-title" id="myModalLabel">Add New Terminal</h4>
       </div><!-- /.modal-header -->
       <div class="modal-body">
       <?php
@@ -163,19 +167,17 @@
             <input type="text" class="form-control" id="terminal_mac" placeholder="MAC Address" name="terminal_mac" required>
           </div>
         </div><br />
-        <!--
         <div class="form-group" style="margin-bottom:10px"> 
-          <label for="devrest">Restaurant</label><br />  
+          <label for="conn_type">Host/Client</label><br />  
           <div class="input-group">             
-            <div class="input-group-addon"><span class="glyphicon glyphicon-cutlery"></span></div>
-            <select id="devrest" name="rest_id" class="form-control" style="width:168px" disabled>
-            <?php foreach($restaurants as $rows){ ?>
-              <option value = "<?=$rows->REST_ID?>" <?= ($rows->REST_ID==$rest_id)?'selected':''?> ><?=$rows->NAME?></option>
+            <div class="input-group-addon"><span class="fa fa-gear"></span></div>
+            <select id="conn_type" name="conn_type" class="form-control" style="width:168px" required>
+            <?php foreach($conn_type as $rowc){ ?>
+              <option value = "<?=$rowc->CODE?>"><?=$rowc->VALUE?></option>
             <?php } ?>
             </select>
           </div>
         </div><br /> 
-        --> 
         <div class="form-group" style="margin-bottom:10px"> 
           <label for="devrest">Restaurant</label><br />  
           <div class="input-group">             
@@ -194,7 +196,7 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal fade -->
-<div id="baseurl" data-url="<?=base_url()?>"></div>
+<div id="baseurl" data-url="<?=base_url()?>"></div> 
 <?php  
   //editable script
   $i = 0;
@@ -286,9 +288,32 @@
                     });
                         $('#MAC_ADDRESS-".$row->ID."').on('save', function(e) {  
                           return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";             
+  $edit_script .= "  $('#CONN_TYPE-".$row->ID."').editable({    
+                        type: 'select',
+                        url: updateurl,
+                        pk: ".$row->ID.", 
+                        value: '".addslashes($row->CONN_TYPE)."', 
+                        source: [ ";
+    $u = 1; 
+    $v = count($conn_type);                   
+    foreach($conn_type as $rows){      
+      $edit_script .= "  {value: '".addslashes($rows->CODE)."', text: '".addslashes($rows->VALUE)."'}";
+      $edit_script .= ($u<$v)?", ":"";
+      $v++;
+    }                      
+  $edit_script .= "     ],
+                        success: function(result){  
+                          var data = result.split(',');
+                          $('#upby".$row->ID."').html(data[0]);   
+                          $('#updt".$row->ID."').html(data[1]);  
+                      } 
+                    });
+                        $('#CONN_TYPE-".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
                         });";    
   }
-  $edit_script .= "}); ";
+  $edit_script .= "}); ";   
 	$edit_script .= '</script>';
   echo $edit_script;
 ?>

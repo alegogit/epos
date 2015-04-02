@@ -54,17 +54,11 @@ class Trends_controller extends CI_Controller {
 			$data['davrspcust'] = $this->dash_trn->dash_weekly_avslspcust($rest_id);
       $data['davrspinvo'] = $this->dash_trn->dash_weekly_avslspinv($rest_id);
       $data['nostock'] = $this->dash_trn->no_stock($rest_id);
-		  //$data['promotions'] = $this->home->get_latest_promotions();
-			//$data['services'] = $this->home->get_latest_services();
 			
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);
-			//(!($this->input->get('p')))?$this->load->view('dashboard/sales',$data):$this->load->view('dashboard/'.$this->input->get('p'),$data);
 			$this->load->view('dashboard/trends',$data);
 			$this->load->view('shared/footer');
-			//echo "&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>&nbsp;<br>";
-			//echo "<pre>" . var_dump($data['dpayment']) . "</pre>";
-               //echo $this->input->get('rest_id');
 		}
 		else
 		{

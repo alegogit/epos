@@ -95,26 +95,29 @@
 						  <tr class="tablehead text3D">
 						    <th class="cin">Order Number</th>
 						    <th class="cin">Table Number</th>
-						    <th>Customer Name</th>
+						    <!--<th>Customer Name</th>-->
 						    <th>Started</th>
-						    <th>Ended</th>
+						    <th>Ended</th>  
+						    <th>Order Type</th>
+						    <th>Server Name</th>
 						    <th class="cin">No. Of Guest</th>
 						    <th class="cin no-sort"></th>
 						    <th class="cin">Total Bill</th>  
 						    <th class="cin no-sort"></th>
 						    <th class="cin">Tip</th>    
 						    <th class="cin no-sort"></th>
-						    <th class="cin">Discount</th>
-						    <th class="cin no-sort"></th>
-						    <th class="cin">Total Rounding</th> 
+						    <th class="cin">Discount</th> 
 						    <th class="cin no-sort"></th>
 						    <th class="cin">Service Charge</th> 
 						    <th class="cin no-sort"></th>
-						    <th class="cin">Total Tax</th> 
+						    <th class="cin">Total Tax</th>
 						    <th class="cin no-sort"></th>
+						    <th class="cin">Delivery Fee</th>
+						    <th class="cin no-sort"></th>
+						    <th class="cin">Total Rounding</th> 
+						    <th class="cin no-sort"></th> 
 						    <th class="cin">Paid Amount</th>
-						    <th>Payment Method</th>
-						    <th>Order Type</th>
+						    <!--<th>Payment Method</th>-->
 						  </tr>
 						</thead>
 						<tbody>   
@@ -125,20 +128,23 @@
                 $total['TIP'] = 0;  
                 $total['DISCOUNT'] = 0; 
                 $total['SERVICE_CHARGE'] = 0;  
+                $total['DELIVERY_FEE'] = 0;   
                 $total['TOTAL_TAX'] = 0;  
                 $total['PAID_AMOUNT'] = 0;
                 foreach ($sales_report as $row){ 
               ?>
 						  <tr>
-						    <td data-field="name" class="cin" data-valign="center">
+						    <td data-field="name" class="cin details-control" data-valign="center">
                   <a href="#" style="font-size:90%" class="label label-lg label-success modalTrigger" data-toggle="modal" data-target="#bookModal" data-id="<?=$row->ID?>" data-odn="<?=$row->ORDER_NUMBER?>">
                     <?=$row->ORDER_NUMBER?>
                   </a>  
                 </td>
 						    <td class="cin"><?=$row->TABLE_NUMBER?></td>
-						    <td><?=$row->CUSTOMER_NAME?></td>
+						    <!--<td><?=$row->CUSTOMER_NAME?></td>-->
 						    <td><?=$row->STARTED?></td>
-						    <td><?=$row->ENDED?></td>
+						    <td><?=$row->ENDED?></td>     
+						    <td><?=$row->ORDER_TYPE?></td>
+						    <td><?=$row->SERVER_NAME?></td>
 						    <td class="cin"><?=$row->NO_OF_GUEST?></td>
 						    <td class="cin cur text3D"><?=$cur?></td>
 						    <td class="cin cur text3D"><?=number_format((float)$row->TOTAL_BILL, 2, '.', '')?></td> 
@@ -147,21 +153,23 @@
 						    <td class="cin cur text3D text-danger"><?=$cur?></td>
 						    <td class="cin cur text3D text-danger"><?=number_format((float)$row->DISCOUNT, 2, '.', '')?></td>
 						    <td class="cin cur text3D"><?=$cur?></td>
-						    <td class="cin cur text3D"><?=number_format((float)$row->TOTAL_ROUNDING, 2, '.', '')?></td>
-						    <td class="cin cur text3D"><?=$cur?></td>
 						    <td class="cin cur text3D"><?=number_format((float)$row->SERVICE_CHARGE, 2, '.', '')?></td>
 						    <td class="cin cur text3D"><?=$cur?></td>
-						    <td class="cin cur text3D"><?=number_format((float)$row->TOTAL_TAX, 2, '.', '')?></td>
-						    <td class="cin cur text3D"><strong><?=$cur?></strong></td>
-						    <td class="cin cur text3D" style="font-weight:bolder"><strong><?=number_format((float)$row->PAID_AMOUNT, 2, '.', '')?></strong></td>
-						    <td><?=$row->PAYMENT_METHOD?></td>
-						    <td><?=$row->ORDER_TYPE?></td>
+						    <td class="cin cur text3D"><?=number_format((float)$row->TOTAL_TAX, 2, '.', '')?></td> 
+						    <td class="cin cur text3D"><?=$cur?></td>
+						    <td class="cin cur text3D"><?=number_format((float)$row->DELIVERY_FEE, 2, '.', '')?></td> 
+						    <td class="cin cur text3D"><?=$cur?></td>
+						    <td class="cin cur text3D"><?=number_format((float)$row->TOTAL_ROUNDING, 2, '.', '')?></td>
+						    <td class="cin cur text3D info"><strong><?=$cur?></strong></td>
+						    <td class="cin cur text3D info" style="font-weight:bolder"><strong><?=number_format((float)$row->PAID_AMOUNT, 2, '.', '')?></strong></td>
+						    <!--<td><?=$row->PAYMENT_METHOD?></td>-->
 						  </tr>
 						  <?php  
                   $total['NO_OF_GUEST'] = $total['NO_OF_GUEST']+$row->NO_OF_GUEST;  
                   $total['TOTAL_BILL'] = $total['TOTAL_BILL']+$row->TOTAL_BILL;  
                   $total['TIP'] = $total['TIP']+$row->TIP;  
-                  $total['DISCOUNT'] = $total['DISCOUNT']+$row->DISCOUNT;     
+                  $total['DISCOUNT'] = $total['DISCOUNT']+$row->DISCOUNT;   
+                  $total['DELIVERY_FEE'] = $total['DELIVERY_FEE']+$row->DELIVERY_FEE;  
                   $total['TOTAL_ROUNDING'] = $total['TOTAL_ROUNDING']+$row->TOTAL_ROUNDING;
                   $total['SERVICE_CHARGE'] = $total['SERVICE_CHARGE']+$row->SERVICE_CHARGE;  
                   $total['TOTAL_TAX'] = $total['TOTAL_TAX']+$row->TOTAL_TAX;  
@@ -174,8 +182,9 @@
 						  <tr class="tablefoot text3D">
 						    <th> </th>
 						    <th> </th>
-						    <th> </th>
-						    <th> </th>
+						    <th> </th> 
+						    <th class="no-sort"></th>
+						    <th class="no-sort"></th>    
 						    <th class="cin no-sort">Grand Total</th>
 						    <th class="cin text3D no-sort"><?=$total['NO_OF_GUEST']?></th>
 						    <th class="cin text3D no-sort"><?=$cur?></th>
@@ -185,15 +194,16 @@
 						    <th class="cin text3D no-sort text-danger"><?=$cur?></th>
 						    <th class="cin cur text3D no-sort text-danger"><?=number_format((float)$total['DISCOUNT'], 2, '.', '')?></th> 
 						    <th class="cin text3D no-sort"><?=$cur?></th>
-						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['TOTAL_ROUNDING'], 2, '.', '')?></th> 
-						    <th class="cin text3D no-sort"><?=$cur?></th>
 						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['SERVICE_CHARGE'], 2, '.', '')?></th> 
 						    <th class="cin text3D no-sort"><?=$cur?></th>
-						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['TOTAL_TAX'], 2, '.', '')?></th> 
+						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['TOTAL_TAX'], 2, '.', '')?></th>  
 						    <th class="cin text3D no-sort"><?=$cur?></th>
-						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['PAID_AMOUNT'], 2, '.', '')?></th>
-						    <th class="no-sort"></th>
-						    <th class="no-sort"></th>
+						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['DELIVERY_FEE'], 2, '.', '')?></th> 
+						    <th class="cin text3D no-sort"><?=$cur?></th>
+						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['TOTAL_ROUNDING'], 2, '.', '')?></th> 
+						    <th class="cin text3D no-sort info"><?=$cur?></th>
+						    <th class="cin cur text3D no-sort info"><?=number_format((float)$total['PAID_AMOUNT'], 2, '.', '')?></th>
+						    <!--<th class="no-sort"></th>-->
 						  </tr>
             </tfoot>
 					</table> 
@@ -253,7 +263,8 @@
   //datepickers    
   $("#startdate").datepicker({format: 'dd M yyyy'});
   $("#enddate").datepicker({format: 'dd M yyyy'});
-  
+
+   
   var ajaxurl = $("#ajaxurl").data('url');  
   var rest_id = $("#rest_id").data('val');    
 	  
@@ -299,7 +310,59 @@
         }); 
        });
     }; 
+    
+  function format ( d ) {
+    // `d` is the original data object for the row
+    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px !important; width:100%;" class="table table-striped dt-right">'+
+        '<thead>'+
+        '<tr class="tablehead text3D">'+
+            '<th>asdfa</th>'+
+            '<th>dgfsdg</th>'+
+        '</tr>'+
+        '</thead>'+
+        '<tbody>'+
+        '<tr>'+
+            '<td>Full name:</td>'+
+            '<td>eek</td>'+
+        '</tr>'+
+        '<tr>'+       
+            '<td>Extension number:</td>'+
+            '<td>346</td>'+
+        '</tr>'+
+        '<tr>'+  
+            '<td>Extra info:</td>'+
+            '<td>And any further details here (images etc)...</td>'+
+        '</tr>'+
+        '</tbody>'+
+    '</table>';
+  }
   
+  //child('#sales tbody td.details-control');
+  function child(ale) {
+        var tr = $(ale).closest('tr');
+        var row = table1.row( tr );
+ 
+            row.child( format(row.data()) ).show();
+            tr.addClass('shown');
+    }       
+    
+      // Add event listener for opening and closing details
+    $('#sales tbody').on('click', 'td.details-control', function () {
+        var tr = $(this).closest('tr'); 
+        var row = table1.row( tr );
+ 
+        if ( row.child.isShown() ) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
+        }
+        else {
+            // Open this row
+            row.child( format(row.data()) ).show();
+            tr.addClass('shown');
+        }
+    } );  
+    
   $(document).ready(function(){
     gOrdDet();  
     $('#report').DataTable({      
@@ -322,6 +385,8 @@
         }
       console.log('Event:', name, ', data:', args);
     }); 
+    
+    
   });
   
   $('#modalTable').DataTable({

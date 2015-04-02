@@ -98,12 +98,12 @@
      font-weight: bold;
 }
 .text270{
-     font-size: 205%; 
+     font-size: 175%; 
      font-weight: bold;
 }
 .pad30{
-     padding-top: 30px;
-     padding-bottom: 30px;
+     padding-top: 15px;
+     padding-bottom: 15px;
 }
 .noborder{
      border: none;

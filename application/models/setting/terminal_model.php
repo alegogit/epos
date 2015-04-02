@@ -80,15 +80,21 @@ class Terminal_model extends CI_Model {
     } else {
       $output = "<span style='color:#dd1144 !important;'>Inactive</span>";
     }
-  } 
+  }    
   
-	function new_terminal($NAME,$MAC,$TYPE,$MAKE,$MODEL,$REST_ID){       
+	function get_conn_type(){  
+    $this->db->where('LOOKUP_NAME','CONN_TYPE');
+    $query = $this->db->get('REF_VALUES');
+    return $query->result();
+  }
+  
+	function new_terminal($NAME,$MAC,$TYPE,$MAKE,$MODEL,$CONN_TYPE,$REST_ID){       
 		$session_data = $this->session->userdata('logged_in');
 		$id = $session_data['id'];
     $query = $this->db->query('INSERT INTO TERMINAL
-      (NAME,MAC_ADDRESS,TYPE,MAKE,MODEL,REST_ID,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
+      (NAME,MAC_ADDRESS,TYPE,MAKE,MODEL,CONN_TYPE,REST_ID,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
       VALUES 
-      ("'.$NAME.'","'.$MAC.'","'.$TYPE.'","'.$MAKE.'","'.$MODEL.'",'.$REST_ID.','.$id.',NOW(),'.$id.',NOW());');
+      ("'.$NAME.'","'.$MAC.'","'.$TYPE.'","'.$MAKE.'","'.$MODEL.'","'.$CONN_TYPE.'",'.$REST_ID.','.$id.',NOW(),'.$id.',NOW());');
 		//return $query->row();
   }
   

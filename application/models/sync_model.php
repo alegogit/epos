@@ -59,7 +59,7 @@ class Sync_model extends CI_Model {
     
 	function get_sync_history($rest_id){
     	$query = $this->db->select('*')
-                      ->from('DEVICES')
+                      ->from('TERMINAL')
                       ->where('REST_ID',$rest_id)
                       ->get('');
     	return $query->result();
@@ -125,7 +125,7 @@ class Sync_model extends CI_Model {
 	
 	function get_last_sync(){
     	$query = $this->db->get('LAST_SYNC')
-                      ->from('DEVICES')
+                      ->from('TERMINAL')
                       ->get('');
     	return $query->result();
 	}
