@@ -8,7 +8,8 @@
         <div class="row">
           <div class="col-md-6">
             <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
-              <a role="button" class="btn btn-primary" href="<?=base_url()?>dashboard/sales">&nbsp;&nbsp;Sales&nbsp;&nbsp;</a>
+              <a role="button" class="btn btn-default" href="<?=base_url()?>dashboard/sales">&nbsp;&nbsp;Sales&nbsp;&nbsp;</a>   
+              <a role="button" class="btn btn-primary" href="<?=base_url()?>dashboard/trends">&nbsp;&nbsp;Trends&nbsp;&nbsp;</a>
               <a role="button" class="btn btn-default" href="<?=base_url()?>dashboard/inventory" <?=(count($nostock)>0)?'title="'.(count($nostock)>0).' no stock item(s)"':''?>>Inventory</a>
             </div>  
             <?php if(count($nostock)>0){ ?>
@@ -43,7 +44,7 @@
         <div class="row" style="padding-left: 15px">  
           <?php
             $attributes = array('class' => 'form-inline', 'id' => 'filter', 'role' => 'form');
-            echo form_open('dashboard/sales',$attributes)
+            echo form_open('dashboard/trends',$attributes)
           ?>
             <div class="form-group" style="margin-bottom:0px">
               <div class="input-group">
@@ -79,148 +80,7 @@
 		    
         <hr style="margin-bottom:10px;margin-top:10px" />
 		
-	      <div class="row"> 
-          <?php 
-          //chart config
-            $donut_color[0] = "#30a5ff";
-            $donut_color[1] = "#ffb53e";
-            $donut_color[2] = "#1ebfae";
-            $donut_color[3] = "#f9243f";
-            $donut_color[4] = "#d2691e";
-            $donut_highl[0] = "#62b9fb";
-            $donut_highl[1] = "#fac878";
-            $donut_highl[2] = "#3cdfce";
-            $donut_highl[3] = "#f6495f";
-            $donut_highl[4] = "#e4843f";
-            
-          ?>                 
-            
-          <?php //echo "<pre>" . var_dump($dpayment) . "</pre>"; ?>
-          <div class="col-md-4">
-  				  <div class="panel panel-default">
-  				    <div class="panel-heading"><b>Top Category By Sales</b></div>
-  					  <div class="panel-body">
-    					  <div class="row">
-    						  <div class="canvas-donut" style="float:left;margin-left:2px">
-    							  <canvas class="chart" id="topcats_donut" ></canvas>
-    						  </div> 
-                  <div class="fitin" style="display:inline-block;margin-left:2px;"> 
-                    <div>
-                      <?php    
-                        $i = 0;
-                        $n = count($dtopcats);
-                        $chart_legend = "<table style='width:100%'>";
-                        $total = 0; 
-                        foreach ($dtopcats as $tot){
-                          $total = $total + $tot->AMOUNT;
-                        }
-                        foreach ($dtopcats as $row){
-                          $chart_legend .= "<tr><td><span class='glyphicon glyphicon-tint' style='color:".$donut_color[$i]."'></span></td>";  
-                          $chart_legend .= " <td class='trunk'><b>".ucwords(strtolower($row->CAT_NAME))."</b></td>";
-                          //$chart_legend .= " <b>".number_format($row->AMOUNT, 0, '', '.')."</b>\t";
-                          $chart_legend .= " <td style='float:right;display:inline-block'><span style='padding-left:10px;'>&nbsp;</span>".round(($row->AMOUNT/$total)*100)."% </td></tr>
-                          <tr><td colspan='5'><hr style='margin-top:5px;margin-bottom:5px'></tr>";
-                          $i++;  
-                        }  
-                        $chart_legend .= "</table>";
-                        if($n!=0){    
-                          echo $chart_legend;
-                        }else{
-                          echo "<div id='nrtcbs' class='alert alert-danger' style='padding:10px;'>No Records</div>";
-                        }
-                    ?>
-                    </div>
-                  </div> 
-                </div>  
-  					  </div>
-  				  </div>
-  				</div>
-          
-          <div class="col-md-3">
-  				  <div class="panel panel-default">
-  				    <div class="panel-heading"><b>Top Menu Items By Sales</b></div>
-  					  <div class="panel-body"> 
-                  <div class="fitin" style="display:inline-block;width:100%;">
-      					     <?php 
-                      $i = 0;
-                      $n = count($dbestsells);
-                      $chart_legend = "<table id='ttibs' style='width:100%'>";
-                      foreach ($dbestsells as $row){
-                        $chart_legend .= "<tr>
-                          <td><b>".($i+1)."</b>&nbsp;</td>";  
-                        $chart_legend .= "<td class='trunk'><b>".ucwords(strtolower($row->ITEMS))."</b>&nbsp;</td>
-                                          <td class='cin'><span style='padding-left:10px;'>&nbsp;</span>".$cur."&nbsp;</td>";
-                        $chart_legend .= "<td class='cin cur'><b>".$row->AMOUNT."</b>&nbsp;</td>";
-                        $chart_legend .= "<td style='text-align:right'><span style='padding-left:10px;'>&nbsp;</span>".$row->QTY."</td>
-                          </tr>
-                          <tr><td colspan='5'><hr style='margin-top:5px;margin-bottom:5px'></td></tr>";
-                        $i++;  
-                      }
-                      $chart_legend .= "</table>";
-                      if($n!=0){    
-                        echo $chart_legend;
-                      }else{
-                        echo "<div id='nrtibs' class='alert alert-danger' style='padding:10px;'>No Records</div>";
-                      }
-                    ?>
-                  </div>
-              </div>
-  				  </div>
-  				</div>
-				  
-				  <div class="col-md-5">
-  				  <div class="panel panel-default">
-  				    <div class="panel-heading"><b>Payment Methods</b></div>
-  					  <div class="panel-body">
-  					  <div class="row">
-  						  <div class="canvas-donut" style="float:left;margin-left:2px">
-  							  <canvas class="chart" id="payment_donut" ></canvas>
-  						  </div>  
-                <div class="fitin" style="display:inline-block;margin-left:2px;max-width:205px;"> 
-                  <div>
-                  <?php 
-                    $i = 0;
-                    $n = count($dpayment);
-                    $chart_legend = ""; 
-                    $total = 0; 
-                    foreach ($dpayment as $tot){
-                      $total = $total + $tot->AMOUNT;
-                    }
-                    $chart_legend .= "<table>";
-                    foreach ($dpayment as $row){
-                      $chart_legend .= "<tr><td class='col-md-1' style='padding-left:5px;padding-right:5px;'><span class='glyphicon glyphicon-tint' style='color:".$donut_color[$i]."'></span></td>";  
-                      $chart_legend .= "<td class='col-md-4 trunk' style='padding-left:5px;padding-right:5px;'>".ucwords(strtolower($row->PAYMENT_METHOD))."</td> 
-                                        <td class='col-md-1' style='padding-left:10px;padding-right:5px;'>".$cur."</td>";
-                      $chart_legend .= "<td class='col-md-6 cin cur' style='padding-left:5px;padding-right:5px;'><span style='float:right;display:inline-block'>".$row->AMOUNT."</span></td></tr>";
-                      $i++;  
-                    }
-                    
-                    $chart_legend .= "<tr>
-                        <td colspan='4'><hr style='margin-top:5px;margin-bottom:5px;border-color:#222'></td>
-                      </tr>
-                      <tr>
-                        <td class='col-md-1' style='padding-left:5px;padding-right:5px;'><b><i class='fa fa-money'></i></b></td> 
-                        <td class='col-md-4' style='padding-left:5px;padding-right:5px;'><b>Total</b></td>
-                        <td class='col-md-1' style='padding-left:10px;padding-right:5px;'><b>".$cur."</b></td>
-                        <td class='col-md-6 cur cin' style='padding-left:5px;padding-right:5px;font-weight:bold !important;'><b><span style='float:right;display:inline-block;'>".$total."</span></b></td>";
-                    $chart_legend .= "</tr></table>";
-                    if($total!=0){    
-                      echo $chart_legend;
-                    }else{
-                      echo "<div class='alert alert-danger' style='padding:10px;'>No Records</div>";
-                    }
-                  ?>
-                 </div>
-                </div>
-              </div> 
-  					  </div>
-  				  </div>
-				  </div>
-				  
-				  
-			  </div>	
-			  
-		    <div class="row">
+	         <div class="row">
       			<div class="col-lg-12">
       				<div class="panel panel-default">
       					<div class="panel-heading">
@@ -237,10 +97,37 @@
                 </div>
       					<div class="panel-body">
       						<div class="canvas-wrapper">
-      							<canvas class="main-chart" id="monthly-line-chart" height="200" width="600"></canvas>
+      							<canvas class="main-chart" id="monthly-line-chart" height="180" width="600"></canvas>
       						</div>
       						<div class="canvas-wrapper">
-      							<canvas class="main-chart" id="weekly-line-chart" height="200" width="600" style="display:none"></canvas>
+      							<canvas class="main-chart" id="weekly-line-chart" height="180" width="600" style="display:none"></canvas>
+      						</div>
+      					</div>
+      				</div>
+      			</div>
+      	</div><!--/.row-->
+        
+	         <div class="row">
+      			<div class="col-lg-12">
+      				<div class="panel panel-default">
+      					<div class="panel-heading">
+      					  <div class="row" style="padding-left:10px;padding-right:10px">
+        					  <b>
+                      <span id="pctit">Weekly Average Sales Per Customer</span>
+                      <span id="pitit" style="display:none">Weekly Average Sales Per Invoice</span>
+                    </b>
+                    <div class="btn-group pull-right" role="group" aria-label="...">
+                      <a role="button" class="btn btn-sm btn-primary" id="pcbutt" href="#davrspcust-line-chart">Per Customer</a> 
+                      <a role="button" class="btn btn-sm btn-default" id="pibutt" href="#davrspinvo-line-chart">Per Invoice</a>        
+                    </div>
+                  </div>
+                </div>
+      					<div class="panel-body">
+      						<div class="canvas-wrapper">
+      							<canvas class="main-chart" id="davrspcust-line-chart" height="180" width="600"></canvas>
+      						</div>
+      						<div class="canvas-wrapper">
+      							<canvas class="main-chart" id="davrspinvo-line-chart" height="180" width="600" style="display:none"></canvas>
       						</div>
       					</div>
       				</div>
@@ -254,32 +141,36 @@
         <div class="list-group rightdash" style="margin-top:10px;">      
           <div class="rdtitle">Sales Today</div>
           <!--<a href="#" class="pull-right">See all</a>-->
-          <span class="list-group-item orgbg noborder pad30">
-            <span class="text270"><?=$cur?> <span id="salesd" value="<?=$this->currency->decimal($sales_today->RES,$cur)?>" data-cur="<?=$cur?>"></span></span>
-            <br><span class="glyphicon glyphicon-info-sign"></span>&nbsp;<?=round((float)$percent_today->PERCENTAGE * 100 ) . '%'?> From Yesterday
-          </span>      
-          <div class="rdinfo"><?=$trans_today->RES?> Transactions</div>
+          <span class="list-group-item noborder pad30" style="background-color:#e4843f;">
+            <span class="text270"><?=$cur?> <span id="nsales" value="<?=$this->currency->decimal($net_sales_today->NET_SALES,$cur)?>" data-cur="<?=$cur?>"></span></span><br>  
+            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;<span style="font-size:110%;"><b>Net Sales Today</b></span><br>
+          </span>   
+          <div class="rdinfo"></div>   
+          <span class="list-group-item orgbg noborder pad30"> 
+            <span class="text270"><?=$cur?> <span id="tsales" value="<?=$this->currency->decimal($tot_sales_today->TOTAL_SALES,$cur)?>" data-cur="<?=$cur?>"></span></span><br>     
+            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;<span style="font-size:110%;"><b>Total Sales Today</b></span><br>
+          </span> 
+          <div class="rdinfo"></div> 
         </div>    
         
         <div class="list-group rightdash">            
-          <div class="rdtitle">Sales This Year</div>
+          <div class="rdtitle">Customer Today</div>
           <!--<a href="#" class="pull-right">See all</a>-->
-          <span class="list-group-item teabg noborder pad30">
-            <span class="text270"><?=$cur?> <span id="salesy" value="<?=$this->currency->decimal($sales_this_year->RES,$cur)?>" data-cur="<?=$cur?>"></span></span>   
-            <br><span class="glyphicon glyphicon-info-sign"></span>&nbsp;<?=round((float)$percent_last_week->PERCENTAGE * 100 ) . '%'?> From Last Week
-            <!--<br><span class="glyphicon glyphicon-info-sign"></span>&nbsp;<?=round((float)$percent_this_year->PERCENTAGE * 100 ) . '%'?> From Beginning Of The Year -->
+          <span class="list-group-item teabg noborder pad30">   
+            <span class="text270"><?=$cur?> <span id="csales" value="<?=$this->currency->decimal($avrsls_percust->AVG_SALES_CUST,$cur)?>" data-cur="<?=$cur?>"></span></span> <br>  
+            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;<span style="font-size:110%;"><b>Average Sales/Customer</b></span>
           </span>   
-          <div class="rdinfo"><?=$trans_this_year->RES?> Transactions</div>
+          <div class="rdinfo"><?=$num_cust_today->TOTAL_CUST?> Customer(s) Today</div>
         </div>        
                   
         <div class="list-group rightdash">    
-          <div class="rdtitle">Your Customers</div>   
+          <div class="rdtitle">Invoice Today</div>   
           <!--<a href="#" class="pull-right">See all</a>-->
           <span class="list-group-item redbg noborder pad30">
-            <span class="text270"><span id="cust30" value="<?=$num_cust_30day->RES?>"></span></span>
-            <br>People
+            <span class="text270"><?=$cur?> <span id="isales" value="<?=$this->currency->decimal($avrsls_perinv->AVG_SALES_INV,$cur)?>" data-cur="<?=$cur?>"></span></span> <br>  
+            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;<span style="font-size:110%;"><b>Average Sales/Invoice</b></span>
           </span>  
-          <div class="rdinfo">Last 30 Days</div> 
+          <div class="rdinfo"><?=$com_inv_today->TOTAL_INV?> Invoice(s) Today</div> 
         </div>    
        
         
@@ -291,90 +182,6 @@
   
 </div><!-- /#page-content-wrapper -->     
 <div id="cur" data-val="<?=$cur?>"></div>
-
-<?php 
-  //donut chart script
-  $i = 0;
-  $n = count($dtopcats);
-  $total = 0; 
-  foreach ($dtopcats as $tot){
-  	$total = $total + $tot->AMOUNT;
-  }
-  $chart_script = "<script>"; 
-  $chart_script .= "var doughnutData = [";
-  if ($n!=0){
-    foreach ($dtopcats as $row){
-      $chart_script .= "{";  
-      //$chart_script .= "value: ".$row->AMOUNT.",";
-      $chart_script .= "value: ".round(($row->AMOUNT/$total)*100).",";
-      //$chart_script .= "tooltip: 'eek',";
-      $chart_script .= "color: '".$donut_color[$i]."',";
-      $chart_script .= "highlight: '".$donut_highl[$i]."',";
-      $chart_script .= "label: '".ucwords(strtolower($row->CAT_NAME))."'";
-      $chart_script .= ($i==($n-1))?"}":"},";  
-      $i++;  
-    }
-  }else{                                                                   
-    $chart_script .= "{";  
-    $chart_script .= "value: 1,";
-    $chart_script .= "color: '#ebccd1', label: 'No Records'}";
-  }
-  $chart_script .= "];";
-  $chart_script .= "var chart1 = document.getElementById('topcats_donut').getContext('2d');";
-  $chart_script .= "chart1.canvas.width = 117;";
-  $chart_script .= "chart1.canvas.height = 117;";
-  $chart_script .= "window.myDoughnut1 = new Chart(chart1).Doughnut(doughnutData, {
-    responsive: true,  
-    tooltipFontSize : 12, 
-    maintainAspectRatio: false,
-    showInLegend: true,";
-  $chart_script .= ($n!=0)?"   
-    tooltipTemplate: '<%if (label){%><%=label%>: <%}%><%= value %>%'":"tooltipTemplate: '<%if (label){%><%=label%> <%}%>'";
-  $chart_script .= "  });";  
-	$chart_script .= '</script>';
-  echo $chart_script;
-?>                                                                                          
- 
-<?php 
-  //donut chart script
-  $i = 0;
-  $n = count($dpayment);          
-  foreach ($dpayment as $tot){
-    $total = $total + $tot->AMOUNT;
-  }
-  $chart_script = "<script>"; 
-  $chart_script .= "var doughnutData = [";   
-  if ($total!=0){
-    foreach ($dpayment as $row){
-      $chart_script .= "{";  
-      $chart_script .= "value: ".$row->AMOUNT.",";
-      $chart_script .= "color: '".$donut_color[$i]."',";
-      $chart_script .= "highlight: '".$donut_highl[$i]."',";
-      $chart_script .= "label: '".ucwords(strtolower($row->PAYMENT_METHOD))."',";
-      $chart_script .= ($i==($n-1))?"}":"},";  
-      $i++;  
-    }       
-  }else{                                                                   
-    $chart_script .= "{";  
-    $chart_script .= "value: 1,";
-    $chart_script .= "color: '#ebccd1', label: 'No Records'}";
-  }
-  $chart_script .= "];";
-  $chart_script .= "var chart2 = document.getElementById('payment_donut').getContext('2d');";      
-  $chart_script .= "chart2.canvas.width = 117;";
-  $chart_script .= "chart2.canvas.height = 117;";
-  $chart_script .= "chart2.canvas.padding = 2;";
-  $chart_script .= "window.myDoughnut2 = new Chart(chart2).Doughnut(doughnutData, {
-    responsive : true, 
-    tooltipFontSize : 12,
-    maintainAspectRatio: false,";
-  $chart_script .= ($total!=0)?" 
-    tooltipTemplate: '<%if (label){%><%=label%>: ".$cur." <%}%><%= ".$this->currency->jsformat($cur)." %>'":"tooltipTemplate: '<%if (label){%><%=label%> <%}%>'";
-  $chart_script .= "  });"; 
-	$chart_script .= '</script>';                       
-  echo $chart_script;
-?>  
-
                     
 <?php
   //line chart script  
@@ -384,7 +191,7 @@
   $data = "";
   foreach ($dmorevenue as $row){  
     $labels .= ($i==($n-1))?"'".date('M', strtotime($row->REC_MONTH))."'":"'".date('M', strtotime($row->REC_MONTH))."',"; 
-    $data .=  ($i==($n-1))?$row->REVENUE:$row->REVENUE.","; 
+    $data .=  ($i==($n-1))?$row->AMT:$row->AMT.","; 
     $i++;
   }
   $chart_script = "<script>"; 
@@ -404,7 +211,7 @@
 	$chart_script .= "		]";
   $chart_script .= "	};";
 	$chart_script .= "var chart3 = document.getElementById('monthly-line-chart').getContext('2d');";    
-  $chart_script .= "chart3.canvas.height = 175;";
+  $chart_script .= "chart3.canvas.height = 153;";
 	$chart_script .= "window.myLine1 = new Chart(chart3).Line(lineChartData, { ";
 	$chart_script .= "	responsive: true, tooltipFontSize : 12,";
 	$chart_script .= "	legendTemplate: '<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%>eek<%=datasets[i].label%><%}%></li><%}%></ul>', ";
@@ -413,8 +220,7 @@
 	$chart_script .= '</script>';
   echo $chart_script;
 ?> 
-
-                   
+  
 <?php
   //line chart script  
   $i = 0;
@@ -422,8 +228,8 @@
   $labels = "";
   $data = "";
   foreach ($dwkrevenue as $rowk){  
-    $labels .= ($i==($n-1))?"'".$rowk->REC_WEEK."'":"'".$rowk->REC_WEEK."',"; 
-    $data .=  ($i==($n-1))?$rowk->REVENUE:$rowk->REVENUE.","; 
+    $labels .= ($i==($n-1))?"'".date('M d', strtotime($rowk->REC_WEEK))."'":"'".date('M d', strtotime($rowk->REC_WEEK))."',"; 
+    $data .=  ($i==($n-1))?$rowk->AMT:$rowk->AMT.","; 
     $i++;
   }
   $chart_script = "<script>"; 
@@ -443,8 +249,83 @@
 	$chart_script .= "		]";
   	$chart_script .= "	};";
 	$chart_script .= "var chart5 = document.getElementById('weekly-line-chart').getContext('2d');";    
-  	$chart_script .= "chart5.canvas.height = 175;";
+  	$chart_script .= "chart5.canvas.height = 153;";
 	$chart_script .= "window.myLine2 = new Chart(chart5).Line(lineChartData, { ";
+	$chart_script .= "	responsive: true, tooltipFontSize : 12,";
+	$chart_script .= "	tooltipTemplate: '<%if (label){%><%=label%>: ".$cur." <%}%><%= ".$this->currency->jsformat($cur)." %>' ";
+	$chart_script .= "});  ";
+	$chart_script .= '</script>';
+  echo $chart_script;
+?> 
+           
+<?php
+  //line chart script  
+  $i = 0;
+  $n = count($davrspcust);  
+  $labels = "";
+  $data = "";
+  foreach ($davrspcust as $rowc){  
+    $labels .= ($i==($n-1))?"'".date('M d', strtotime($rowc->REC_WEEK))."'":"'".date('M d', strtotime($rowc->REC_WEEK))."',"; 
+    $data .=  ($i==($n-1))?$rowc->AVG_SALES_CUST:$rowc->AVG_SALES_CUST.","; 
+    $i++;
+  }
+  $chart_script = "<script>"; 
+  $chart_script .= "var lineChartData = {";
+	$chart_script .= "		labels : [".$labels."],";
+	$chart_script .= "		datasets : [";
+	$chart_script .= "			{ ";
+	$chart_script .= "				label: 'Monthly Revenue',";
+	$chart_script .= "				fillColor : 'rgba(48, 164, 255, 0.2)', ";
+	$chart_script .= "				strokeColor : 'rgba(48, 164, 255, 1)', ";
+	$chart_script .= "				pointColor : 'rgba(48, 164, 255, 1)', ";
+	$chart_script .= "				pointStrokeColor : '#fff', ";
+	$chart_script .= "				pointHighlightFill : '#fff', ";
+	$chart_script .= "				pointHighlightStroke : 'rgba(48, 164, 255, 1)', ";
+	$chart_script .= "				data : [".$data."]";
+	$chart_script .= "			}";
+	$chart_script .= "		]";
+  	$chart_script .= "	};";
+	$chart_script .= "var chart7 = document.getElementById('davrspcust-line-chart').getContext('2d');";    
+  	$chart_script .= "chart7.canvas.height = 153;";
+	$chart_script .= "window.myLine7 = new Chart(chart7).Line(lineChartData, { ";
+	$chart_script .= "	responsive: true, tooltipFontSize : 12,";
+	$chart_script .= "	tooltipTemplate: '<%if (label){%><%=label%>: ".$cur." <%}%><%= ".$this->currency->jsformat($cur)." %>' ";
+	$chart_script .= "});  ";
+	$chart_script .= '</script>';
+  echo $chart_script;
+?>  
+       
+<?php
+  //line chart script  
+  $i = 0;
+  $n = count($davrspinvo);  
+  $labels = "";
+  $data = "";
+  foreach ($davrspinvo as $rowi){  
+    if($rowi->AVG_SALES_INV==NULL){ $rowi->AVG_SALES_INV = 0; }
+    $labels .= ($i==($n-1))?"'".date('M d', strtotime($rowi->REC_WEEK))."'":"'".date('M d', strtotime($rowi->REC_WEEK))."',"; 
+    $data .=  ($i==($n-1))?$rowi->AVG_SALES_INV:$rowi->AVG_SALES_INV.","; 
+    $i++;    
+  }
+  $chart_script = "<script>"; 
+  $chart_script .= "var lineChartData = {";
+	$chart_script .= "		labels : [".$labels."],";
+	$chart_script .= "		datasets : [";
+	$chart_script .= "			{ ";
+	$chart_script .= "				label: 'Monthly Revenue',";
+	$chart_script .= "				fillColor : 'rgba(48, 164, 255, 0.2)', ";
+	$chart_script .= "				strokeColor : 'rgba(48, 164, 255, 1)', ";
+	$chart_script .= "				pointColor : 'rgba(48, 164, 255, 1)', ";
+	$chart_script .= "				pointStrokeColor : '#fff', ";
+	$chart_script .= "				pointHighlightFill : '#fff', ";
+	$chart_script .= "				pointHighlightStroke : 'rgba(48, 164, 255, 1)', ";
+	$chart_script .= "				data : [".$data."]";
+	$chart_script .= "			}";
+	$chart_script .= "		]";
+  	$chart_script .= "	};";
+	$chart_script .= "var chart9 = document.getElementById('davrspinvo-line-chart').getContext('2d');";    
+  	$chart_script .= "chart9.canvas.height = 153;";
+	$chart_script .= "window.myLine9 = new Chart(chart9).Line(lineChartData, { ";
 	$chart_script .= "	responsive: true, tooltipFontSize : 12,";
 	$chart_script .= "	tooltipTemplate: '<%if (label){%><%=label%>: ".$cur." <%}%><%= ".$this->currency->jsformat($cur)." %>' ";
 	$chart_script .= "});  ";
@@ -453,27 +334,7 @@
 ?>                  
 
 <script>
-     /*
-     $('#myRestaurant').change(function() {
-            $('#selRest').submit(); 
-     });
-     */    
 $(document).ready(function(){
-  /*
-  var ttibs_w = $("#ttibs").width();
-  var ttibs_h = parseInt($("#ttibs").height());
-  var colmd4h = parseInt($(".col-md-4 .panel").height());
-  var colmd3h = parseInt($(".col-md-3 .panel").height());
-  if(ttibs_h > colmd4h){                               
-    var ttibs_f = parseInt($("#ttibs").css('font-size'))-((ttibs_h/colmd4h)+1);
-    $("#ttibs").css('font-size',ttibs_f+'px');  
-    $(".col-md-3 div .panel").css('min-height',colmd4h+'px !important');  
-  }
-  var nrtcbs_w = parseInt($("#nrtcbs").width())+24;
-   $("#nrtibs").css('width',nrtcbs_w+'px');  
-  //console.log(ttibs_h+' '+colmd4h+' '+perctwf+' '+ttibs_f);
-  //$(".canvas-donut").css("overflow","visible");
-  */  
     
   $.each($('td.trunk').not(':empty'), function(i,v){
     var count = parseInt($(this).text().length);
@@ -503,6 +364,18 @@ $(document).ready(function(){
         $("#weekly-line-chart,#wktit").show();  
         $("#mobutt").removeClass("btn-default").removeClass("btn-primary").addClass("btn-default"); 
         $("#wkbutt").removeClass("btn-default").addClass("btn-primary");         
+     });          
+     $("#pcbutt").click(function(){      
+        $("#davrspcust-line-chart,#pctit").show(); 
+        $("#davrspinvo-line-chart,#pitit").hide();  
+        $("#pcbutt").removeClass("btn-default").addClass("btn-primary"); 
+        $("#pibutt").removeClass("btn-default").removeClass("btn-primary").addClass("btn-default");
+     });  
+     $("#pibutt").click(function(){
+        $("#davrspcust-line-chart,#pctit").hide(); 
+        $("#davrspinvo-line-chart,#pitit").show();  
+        $("#pcbutt").removeClass("btn-default").removeClass("btn-primary").addClass("btn-default"); 
+        $("#pibutt").removeClass("btn-default").addClass("btn-primary");         
      });                                  
      
      //print page
@@ -512,9 +385,10 @@ $(document).ready(function(){
        
     //animating numbers 
     $(document).ready(function () {
-      animateNumbers("#salesd");
-      animateNumbers("#salesy");
-      animateNumbers("#cust30");
+      animateNumbers("#nsales");
+      animateNumbers("#tsales");
+      animateNumbers("#csales");
+      animateNumbers("#isales");
     });
            
     function animateNumbers0(ale) {    

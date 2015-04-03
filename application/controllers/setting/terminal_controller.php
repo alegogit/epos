@@ -42,11 +42,12 @@ class Terminal_controller extends CI_Controller {
 			$data['enddate'] = $end_date;
       
       if($this->input->post('terminal_type')){
-        $this->setting->new_terminal($this->input->post('terminal_name'),$this->input->post('terminal_mac'),$this->input->post('terminal_type'),$this->input->post('terminal_manufacturer'),$this->input->post('terminal_model'),$rest_id);
+        $this->setting->new_terminal($this->input->post('terminal_name'),$this->input->post('terminal_mac'),$this->input->post('terminal_type'),$this->input->post('terminal_manufacturer'),$this->input->post('terminal_model'),$this->input->post('conn_type'),$rest_id);
       }
       
       $data['terminal'] = $this->setting->get_rest_terminal($rest_id);    		       
-		  $data['statuses'] = $this->setting->get_status(); 					                   
+		  $data['statuses'] = $this->setting->get_status(); 					        		       
+		  $data['conn_type'] = $this->setting->get_conn_type(); 					                   
 			
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);

@@ -69,109 +69,6 @@ class Sales_model extends CI_Model {
 		return $query->row()->CUR;
 	}
 	
-	function total_sales_today($rest_id){
-		$query = $this->db->query("SELECT IFNULL(SUM(TOTAL),0) - IFNULL(SUM(DISCOUNT), 0) AS NET_SALES 
-                                FROM ORDERS
-                            		WHERE DATE(ENDED) = DATE(SYSDATE()) AND REST_ID = ".$rest_id." AND ACTIVE =0;");
-		return $query->row();
-	}
-
-	function percentage_increase_from_yesterday($rest_id){
-	     /*
-		 $query = $this->db->query('SELECT
-			IFNULL((((
-				(SELECT IFNULL(SUM(TOTAL),0) FROM ORDERS WHERE DATE(ENDED) = DATE(SYSDATE()) AND REST_ID ='.$rest_id.')
-				/ 
-				(SELECT IFNULL(SUM(TOTAL),0) FROM ORDERS WHERE DATE(ENDED) = DATE(SUBDATE(SYSDATE(),1)) AND REST_ID ='.$rest_id.')
-			) -1 ) *100 ) ,0)
-			AS PERCENTAGE
-			FROM DUAL;');
-		*/
-		$query = $this->db->query('SELECT
-										IFNULL((((
-											(SELECT IFNULL(SUM(TOTAL),0) FROM ORDERS WHERE DATE(ENDED) = DATE(SYSDATE()) AND REST_ID = '.$rest_id.' AND ACTIVE =0)
-											/ 
-											(SELECT IFNULL(SUM(TOTAL),0) FROM ORDERS WHERE (YEAR(ENDED) = YEAR(SYSDATE())) 
-																					AND (DATE(ENDED) < DATE(SUBDATE(SYSDATE(),1))) 
-																					AND REST_ID = '.$rest_id.' AND ACTIVE =0)
-										) -1 ) *100 ) ,0)
-										AS PERCENTAGE
-									FROM DUAL;');
-		 
-          return $query->row();
-	}
-
-	function num_transactions_today($rest_id){
-	     //$query = $this->db->query('SELECT IFNULL(COUNT(ID),0) AS RES FROM ORDERS WHERE DATE(ENDED) = DATE(SYSDATE()) AND REST_ID = '.$rest_id.';')
-	     $query = $this->db->query('SELECT IFNULL(COUNT(ID),0) AS RES FROM ORDERS WHERE DATE(ENDED) = DATE(SYSDATE()) AND REST_ID = '.$rest_id.' AND ACTIVE =0;');
-		 return $query->row();
-	}
-     
-	function percentage_increase_from_last_week($rest_id){
-		/*
-	     $query = $this->db->query('SELECT
-			IFNULL((((
-				(SELECT IFNULL(SUM(TOTAL),0) FROM ORDERS WHERE YEAR(ENDED) = YEAR(SYSDATE()) AND REST_ID = '.$rest_id.')
-				/ 
-				(SELECT IFNULL(SUM(TOTAL),0) FROM ORDERS WHERE (YEAR(ENDED) = YEAR(SYSDATE())) 
-														AND (DATE(ENDED) < DATE(SUBDATE(SYSDATE(),7))) 
-														AND REST_ID = '.$rest_id.')
-			) -1 ) *100 ) ,0)
-			AS PERCENTAGE
-			FROM DUAL;');  
-		*/
-		$query = $this->db->query('SELECT
-										IFNULL((((
-											(SELECT IFNULL(SUM(TOTAL),0) FROM ORDERS WHERE YEAR(ENDED) = YEAR(SYSDATE()) AND REST_ID = '.$rest_id.' AND ACTIVE =0)
-											/ 
-											(SELECT IFNULL(SUM(TOTAL),0) FROM ORDERS WHERE (YEAR(ENDED) = YEAR(SYSDATE())) 
-																					AND (DATE(ENDED) < DATE(SUBDATE(SYSDATE(),7))) 
-																					AND REST_ID = '.$rest_id.' AND ACTIVE =0)
-										) -1 ) *100 ) ,0)
-										AS PERCENTAGE
-									FROM DUAL ');  
-		return $query->row();
-	}
-	
-	function total_sales_this_year($rest_id){
-		//$query = $this->db->query('SELECT IFNULL(SUM(TOTAL),0) AS RES FROM ORDERS WHERE YEAR(ENDED) = YEAR(SYSDATE()) AND REST_ID ='.$rest_id.'');
-		$query = $this->db->query('SELECT IFNULL(SUM(TOTAL),0) AS RES FROM ORDERS WHERE YEAR(ENDED) = YEAR(SYSDATE()) AND REST_ID = '.$rest_id.' AND ACTIVE = 0;');
-		return $query->row();
-	}
-	
-	function percentage_increase_this_year($rest_id){                                                                   
-	     $query = $this->db->query('SELECT
-			IFNULL((((
-				(SELECT IFNULL(SUM(TOTAL),0) FROM ORDERS WHERE YEAR(ENDED) = YEAR(SYSDATE()) AND REST_ID = '.$rest_id.')
-				/ 
-				(SELECT IFNULL(SUM(TOTAL),0) FROM ORDERS WHERE (YEAR(ENDED) = YEAR(SYSDATE())) AND (
-						DATE(ENDED) < GREATEST(DATE_FORMAT(NOW() ,"%Y-01-01"), DATE_SUB(SYSDATE(), INTERVAL 6 MONTH))
-                        ) AND
-                        REST_ID = '.$rest_id.')
-			) -1 ) *100 ) ,0)
-			AS PERCENTAGE
-		FROM DUAL;');
-		//return $query->result();  
-          return $query->row();
-	}
-	
-	function num_transactions_this_year($rest_id){
-		//$query = $this->db->query('SELECT IFNULL(COUNT(ID),0) AS RES FROM ORDERS WHERE YEAR(ENDED) = YEAR(SYSDATE()) AND REST_ID ='.$rest_id.';');
-		$query = $this->db->query('SELECT IFNULL(COUNT(ID),0) AS RES  FROM ORDERS WHERE YEAR(ENDED) = YEAR(SYSDATE()) AND REST_ID = '.$rest_id.' AND ACTIVE = 0;');
-		return $query->row();
-	}
-	     
-	function num_customers_30day($rest_id){
-    /*
-		$query = $this->db->query('SELECT COUNT(C.ID) AS RES 
-        							FROM CUSTOMERS C
-									INNER JOIN ORDERS O ON O.CUSTOMER_ID = C.ID
-            						WHERE O.REST_ID = '.$rest_id.'
-									AND O.ENDED > SUBDATE(SYSDATE(), 30);');
-		return $query->row();
-    */
-	}
-	
 	function dash_top_categories($start_date,$end_date,$rest_id){  		
 		$query = $this->db->query("SELECT OD.CATEGORY_NAME CAT_NAME, IFNULL(SUM(OD.TOTAL),0)  AMOUNT, IFNULL(COUNT(OD.ID),0)  TOTAL 
 	                             FROM ORDER_DETAILS OD
@@ -195,40 +92,77 @@ class Sales_model extends CI_Model {
 		return $query->result();  
 	}
   
-  function remove_zero_values($array,$flag){
+  function remove_zero_values($array){
     $i = 0;
     foreach ($array as $row){    
-      if($row->$flag==0){
+      if($row->AMOUNT==0){
         unset($array[$i]);
       }
       $i++;
     } 
-    $this->dash_sls->set_as_others($array,$flag);
     return $array;
   }
   
-  function set_as_others($array,$flag){
+  function get_top_five($array){
     $i = 0;
-    $merge = array($flag => 0, 'TOTAL' => 0);
     foreach ($array as $row){    
       if($i>=5){
-        if(strtolower($row->CAT_NAME)!="adjustments") {
-          $merge[$flag] = $merge[$flag] + $row->$flag;
-          $merge['TOTAL'] = $merge['TOTAL'] + $row->TOTAL;
-          $row->CAT_NAME = "others";
-          $array[$i] = $array[5];
-          $row->$flag = $merge[$flag];
-          $row->TOTAL = $merge['TOTAL'];
-        } else {
-          $array[$i] = $array[6];
-        }
+        unset($array[$i]);   
       }
       $i++;
-    }                  
-    $array5 = array('CAT_NAME' => 'others', 'AMOUNT' => $merge[$flag], 'TOTAL' => $merge['TOTAL']);
-    array_replace($array[5],$array5);
+    } 
+    return $array;
+  }  
+    
+  function set_as_others($array){
+    $i = 0;
+    $merge = array('AMOUNT' => 0, 'TOTAL' => 0);
+    foreach ($array as $row){    
+      if($i>=5){         
+        if((strtolower($row->CAT_NAME)!="adjustments")){
+          $merge['AMOUNT'] = $merge['AMOUNT'] + $row->AMOUNT;
+          $merge['TOTAL'] = $merge['TOTAL'] + $row->TOTAL;
+          $row->CAT_NAME = "others";   
+          $row->AMOUNT = $merge['AMOUNT'];
+          $row->TOTAL = $merge['TOTAL'];
+        } else {    
+          unset($array[$i]);
+        }
+      } else {  
+        unset($array[$i]);
+      }
+      $i++;
+    }              
     return $array;
   }
+  
+  function remove_others($array){  
+    $i = 0; 
+    foreach ($array as $row){
+      if($i>=5){
+        if(strtolower($row->CAT_NAME)!="adjustments"){ 
+          unset($array[$i]);
+        }
+      } else {  
+        unset($array[$i]);
+      }
+      $i++; 
+    }  
+    return $array;
+  }
+  
+  function remove_other_others($array){
+    $key = array_keys($array); 
+    $i = $key[0];
+    $n = count($array)+$i;
+    foreach ($array as $row){    
+      if($i<$n-1){  
+        unset($array[$i]);
+      }
+      $i++;
+    }
+    return $array;
+  }                 
 	
 	function dash_best_sellers($start_date,$end_date,$rest_id){    		
 		$query = $this->db->query("SELECT OD.MENU_NAME AS ITEMS, IFNULL(SUM(OD.TOTAL),0) AMOUNT, COUNT(OD.MENU_NAME) AS QTY 
@@ -242,7 +176,7 @@ class Sales_model extends CI_Model {
                                 ORDER BY SUM(OD.TOTAL) DESC
                                 LIMIT 5;");
 		return $query->result();  
-	}
+	}        
 
 	function dash_payment_method($start_date,$end_date,$rest_id){  		
 		$query = $this->db->query("SELECT  R.VALUE AS PAYMENT_METHOD, IFNULL(SUM(O.TOTAL), 0) AMOUNT , IFNULL(COUNT(I.ID),0)  TOTAL 
@@ -258,14 +192,17 @@ class Sales_model extends CI_Model {
 	}
   
 	function dash_order_type($start_date,$end_date,$rest_id){  		
-		$query = $this->db->query("SELECT  R.VALUE AS ORDER_TYPE, IFNULL(SUM(O.TOTAL), 0) AMOUNT , IFNULL(COUNT(O.ID),0)  TOTAL 
-                              	FROM ORDERS O
-                              	INNER JOIN REF_VALUES R 
-                              			ON O.ORDER_TYPE = R.CODE
-                              			AND R.LOOKUP_NAME = 'ORDER_TYPE' AND R.IS_ACTIVE = 1
-                                  WHERE O.ENDED BETWEEN '".$start_date."' AND DATE_ADD('".$end_date."', INTERVAL 1 DAY)
-                              		AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
-                              	GROUP BY R.VALUE;");
+		$query = $this->db->query("SELECT R.VALUE AS ORDER_TYPE, IFNULL(ORDERS_GROUPED.AMOUNT, 0) AMOUNT, IFNULL(ORDERS_GROUPED.TOTAL, 0) TOTAL
+                                FROM REF_VALUES R 
+                                LEFT OUTER JOIN 
+                                  (	SELECT O.ORDER_TYPE, IFNULL(SUM(O.TOTAL), 0) AMOUNT, IFNULL(COUNT(O.ID),0)  TOTAL 
+                                      FROM ORDERS O
+                                      WHERE O.ENDED BETWEEN '".$start_date."' AND DATE_ADD('".$end_date."', INTERVAL 1 DAY)
+                                      AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
+                                      GROUP BY O.ORDER_TYPE
+                                  ) ORDERS_GROUPED
+                                ON ORDERS_GROUPED.ORDER_TYPE = R.CODE
+                                WHERE R.LOOKUP_NAME = 'ORDER_TYPE' AND R.IS_ACTIVE = 1;");
 		return $query->result();  
 	}
   
