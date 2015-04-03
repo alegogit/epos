@@ -195,75 +195,38 @@ class Sales_model extends CI_Model {
 		return $query->result();  
 	}
   
-  function remove_zero_values($array){
+  function remove_zero_values($array,$flag){
     $i = 0;
     foreach ($array as $row){    
-      if($row->AMOUNT==0){
+      if($row->$flag==0){
         unset($array[$i]);
       }
       $i++;
     } 
+    $this->dash_sls->set_as_others($array,$flag);
     return $array;
   }
   
-  function get_top_five($array){
+  function set_as_others($array,$flag){
     $i = 0;
+    $merge = array($flag => 0, 'TOTAL' => 0);
     foreach ($array as $row){    
       if($i>=5){
-        unset($array[$i]);   
-      }
-      $i++;
-    } 
-    return $array;
-  }  
-    
-  function set_as_others($array){
-    $i = 0;
-    $merge = array('AMOUNT' => 0, 'TOTAL' => 0);
-    foreach ($array as $row){    
-      if($i>=5){         
-        if((strtolower($row->CAT_NAME)!="adjustments")){
-          $merge['AMOUNT'] = $merge['AMOUNT'] + $row->AMOUNT;
+        if(strtolower($row->CAT_NAME)!="adjustments") {
+          $merge[$flag] = $merge[$flag] + $row->$flag;
           $merge['TOTAL'] = $merge['TOTAL'] + $row->TOTAL;
-          $row->CAT_NAME = "others";   
-          $row->AMOUNT = $merge['AMOUNT'];
+          $row->CAT_NAME = "others";
+          $array[$i] = $array[5];
+          $row->$flag = $merge[$flag];
           $row->TOTAL = $merge['TOTAL'];
-        } else {    
-          unset($array[$i]);
+        } else {
+          $array[$i] = $array[6];
         }
-      } else {  
-        unset($array[$i]);
       }
       $i++;
-    }              
-    return $array;
-  }
-  
-  function remove_others($array){  
-    $i = 0; 
-    foreach ($array as $row){
-      if($i>=5){
-        if(strtolower($row->CAT_NAME)!="adjustments"){ 
-          unset($array[$i]);
-        }
-      } else {  
-        unset($array[$i]);
-      }
-      $i++; 
-    }  
-    return $array;
-  }
-  
-  function remove_other_others($array){
-    $key = array_keys($array); 
-    $i = $key[0];
-    $n = count($array)+$i;
-    foreach ($array as $row){    
-      if($i<$n-1){  
-        unset($array[$i]);
-      }
-      $i++;
-    }
+    }                  
+    $array5 = array('CAT_NAME' => 'others', 'AMOUNT' => $merge[$flag], 'TOTAL' => $merge['TOTAL']);
+    array_replace($array[5],$array5);
     return $array;
   }
 	

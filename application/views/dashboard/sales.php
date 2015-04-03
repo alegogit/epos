@@ -114,7 +114,11 @@
                         foreach ($dtopcats as $tot){
                           $total = $total + $tot->AMOUNT; 
                         }
-                        foreach ($dtopcats as $row){
+                        foreach ($dtopcats as $row){ 
+                          if($row->AMOUNT==0){
+                            unset($dtopcats[$i]);
+                          } 
+                          //if($i<5){         
                             $chart_legend .= "<tr><td><span class='glyphicon glyphicon-tint' style='color:".$donut_color[$i]."'></span></td>";  
                             $chart_legend .= " <td class='trunk'><b>".ucwords(strtolower($row->CAT_NAME))."</b></td>";  
                             $chart_legend .= " <td><span style='padding-left:10px;'>&nbsp;</span>".$row->TOTAL."</td>";  
@@ -122,6 +126,7 @@
                             $chart_legend .= " <td class='cin cur'><b>".$row->AMOUNT."</b></td>";
                             $chart_legend .= " <td style='float:right;display:inline-block'><span style='padding-left:10px;'>&nbsp;</span>".round(($row->AMOUNT/$total)*100)."% </td></tr>
                             <tr><td colspan='5'><hr style='margin-top:5px;margin-bottom:5px'></tr>";
+                          //}
                           $i++;  
                         }  
                         $chart_legend .= "</table>";
@@ -129,8 +134,7 @@
                           echo $chart_legend;
                         }else{
                           echo "<div id='nrtcbs' class='alert alert-danger' style='padding:10px;'>No Records</div>";
-                        }  
-                        //echo "<pre>"; print_r($dtopcats); echo "</pre>";
+                        }  echo "<pre>"; print_r($dtopcats); echo "</pre>";
                     ?>
                     </div>
                   </div> 
