@@ -50,7 +50,9 @@
 <script src="<?=base_url()?>assets/js/bootstrap-datepicker.js"></script>
 
 <!-- Table -->
-<script src="<?=base_url()?>assets/js/jquery.dataTables.js"></script> 
+<script src="<?=base_url()?>assets/js/jquery.dataTables.js"></script>
+<script src="<?=base_url()?>assets/js/footable/footable.all.min.js"></script> 
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/footable/footable.core.min.css"/>
 
 <!-- Currency -->
 <script src="<?=base_url()?>assets/js/autoNumeric.js"></script> 

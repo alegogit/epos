@@ -63,7 +63,7 @@
 		    <div class="panel-heading">
           <b><?=$report_name?> Report</b>  
         </div>
-	      <div class="panel-body table-responsive" style="overflow-x:scroll;">  
+	      <div class="panel-body table-responsive" style="overflow-x:scroll;">
 	       <?php if($report_name!="Sales"){?>   
 	        <table id="void" class="table table-striped" data-toggle="table" data-url="" data-show-refresh="false" data-show-toggle="false" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
 					  <thead>
@@ -90,8 +90,7 @@
 						</tbody>
 					</table>
 				<?php } else {?>  
-				  <p>Search: <input id="filter" type="text"/></p>
-	         <table id="sales" class="table table-striped dt-right" data-filter="#filter" data-filter-text-only="true">
+	         <table id="sales" class="table table-striped dt-right">
 					   <thead>
 						  <tr class="tablehead text3D">
 						    <th class="cin">Order Number</th>
@@ -136,7 +135,7 @@
               ?>
 						  <tr>
 						    <td data-field="name" class="cin details-control" data-valign="center">
-                  <a href="#" style="font-size:90%" class="label label-lg label-success modalTrigger" data-toggle="modal" data-target="#bookModal" data-id="<?=$row->OID?>" data-odn="<?=$row->ORDER_NUMBER?>">
+                  <a href="#" style="font-size:90%" class="label label-lg label-success modalTrigger" data-toggle="modal" data-target="#bookModal" data-id="<?=$row->ID?>" data-odn="<?=$row->ORDER_NUMBER?>">
                     <?=$row->ORDER_NUMBER?>
                   </a>  
                 </td>
@@ -164,78 +163,6 @@
 						    <td class="cin cur text3D info"><strong><?=$cur?></strong></td>
 						    <td class="cin cur text3D info" style="font-weight:bolder"><strong><?=number_format((float)$row->PAID_AMOUNT, 2, '.', '')?></strong></td>
 						    <!--<td><?=$row->PAYMENT_METHOD?></td>-->
-						  </tr>
-						  <tr>
-                <td class="active"></td>
-                <td colspan="22">
-                  <table id="invoice" class="table table-striped dt-right" style="width:100%;">
-                    <thead>
-                      <tr class="tablehead text3D">
-                        <th>Invoice ID</th>
-                        <th>Customer</th>
-                        <th>Terminal</th>
-                        <th>Payment Method</th>
-                        <th>Total</th>
-                        <th>Discount</th>
-                        <th>Total Tax</th>
-                        <th>Service Charge</th>
-                        <th>Tip</th>
-                        <th>Rounding</th>
-                        <th>Paid Amount</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                    <?php 
-                      foreach($this->sales->get_order_invoice($row->OID) as $rowi){
-                    ?>
-                      <tr>
-                        <td><?=$rowi->IID?></td>
-                        <td><?=$rowi->CUSTOMER_NAME?></td>
-                        <td><?=$rowi->TERMINAL_NAME?></td>
-                        <td><?=$rowi->PAYMENT_METHOD?></td>
-                        <td><?=$rowi->TOTAL?></td>
-                        <td><?=$rowi->DISCOUNT?></td>
-                        <td><?=$rowi->TOTAL_TAX?></td>
-                        <td><?=$rowi->SERVICE_CHARGE?></td>
-                        <td><?=$rowi->TIP?></td>
-                        <td><?=$rowi->ROUNDING?></td>
-                        <td><?=$rowi->PAID_AMOUNT?></td>
-                      </tr>
-                      <tr>
-                        <td class="active"></td>
-                        <td colspan="10">
-                          <table id="odetail" class="table table-striped dt-right" style="width:100%;">
-                            <thead>
-                              <tr class="tablehead text3D">
-                                <th>Menu Name</th>
-                                <th>Category Name</th>
-                                <th>Kitchen Note</th>
-                                <th>Qty</th>
-                                <th>Price</th>
-                                <th>Total</th>
-                              </tr>
-                            </thead>
-                            <tbody> 
-                            <?php 
-                              foreach($this->sales->get_order_details($rowi->IID) as $rowd){
-                            ?>
-                              <tr>
-                                <td><?=$rowd->MENU_NAME?></td>
-                                <td><?=$rowd->CATEGORY_NAME?></td>
-                                <td><?=($rowd->KITCHEN_NOTE==NULL)?"-":$rowd->KITCHEN_NOTE?></td>
-                                <td><?=$rowd->QUANTITY?></td>
-                                <td><?=$rowd->PRICE?></td>
-                                <td><?=$rowd->TOTAL?></td>
-                              </tr>
-                            <?php } ?>
-                            </tbody>
-                          </table>
-                        </td>
-                      </tr>
-                    <?php } ?>
-                    </tbody>
-                  </table>
-                </td>
 						  </tr>
 						  <?php  
                   $total['NO_OF_GUEST'] = $total['NO_OF_GUEST']+$row->NO_OF_GUEST;  
@@ -278,11 +205,6 @@
 						    <th class="cin cur text3D no-sort info"><?=number_format((float)$total['PAID_AMOUNT'], 2, '.', '')?></th>
 						    <!--<th class="no-sort"></th>-->
 						  </tr>
-						  <tr> 
-                <td colspan="23">                                                           
-                  <div class="pagination pagination-centered hide-if-no-paging"></div>
-                </td>
-              </tr>
             </tfoot>
 					</table> 
 				<?php } ?>
@@ -345,8 +267,7 @@
    
   var ajaxurl = $("#ajaxurl").data('url');  
   var rest_id = $("#rest_id").data('val');    
-	
-  /*  
+	  
   //inititate datatable
   var table1 = $('#sales').DataTable({
     columnDefs: [
@@ -358,9 +279,6 @@
     "aLengthMenu": [[10, 25, 100, -1], [10, 25, 100, "All"]],
     "bAutoWidth": false
   }); 
-  */
-  
-  $('#sales').footable();
   
   //inititate datatable
   var table2 = $('#void').DataTable({
@@ -422,7 +340,7 @@
         '</tbody>'+
       '</table>'+
     '</div>'+
-    '</div><script>clickshowchild("#tbchild tbody","td.tdclick");<\/script>';
+    '</div>';
   }
   
   //tablechild('#sales tbody td.details-control');
@@ -434,7 +352,7 @@
             tr.addClass('shown');
     }       
     
-  //clickshowchild('#sales tbody','td.details-control'); 
+  clickshowchild('#sales tbody','td.details-control'); 
   function clickshowchild(tableale,tdclass){
       // Add event listener for opening and closing details
     $(tableale).on('click', tdclass, function () {
@@ -449,13 +367,13 @@
         else {
             // Open this row
             row.child( format(row.data()) ).show();
-            tr.addClass('shown');     
+            tr.addClass('shown');   
+  clickshowchild('#tbchild tbody','td.tdclick');  
         }
     } );  
   }
     
   $(document).ready(function(){
-    
     gOrdDet();  
     $('#report').DataTable({      
       columnDefs: [
@@ -503,15 +421,6 @@
         $('.cur').autoNumeric('init');
         break;
     }     
-  });    
-  
-  $(function () {   
-    $('table').footable().bind('footable_filtering', function (e) {
-      var selected = $('.filter-status').find(':selected').text();
-      if (selected && selected.length > 0) {
-        e.filter += (e.filter && e.filter.length > 0) ? ' ' + selected : selected;
-        e.clear = !e.filter;
-      }
-    });
   });
+  
 </script>

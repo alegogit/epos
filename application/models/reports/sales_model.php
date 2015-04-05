@@ -73,7 +73,7 @@ class Sales_model extends CI_Model {
   
 	function get_sales_report($start_date,$end_date,$rest_id){
 	     $query = $this->db->query("-- ORDER LIST
-                  SELECT  O.ID,
+                  SELECT O.ID OID,
                   		O.ORDER_NUMBER ORDER_NUMBER, 
                   		T.TABLE_NUMBER TABLE_NUMBER,
                           O.STARTED,
@@ -105,28 +105,36 @@ class Sales_model extends CI_Model {
 		    return $query->result();
 	}
   
-	function get_sales_report0($start_date,$end_date,$rest_id)
-	{
-	     $query = $this->db->query('SELECT O.ID, O.ORDER_NUMBER ORDER_NUMBER, 
-                                    T.TABLE_NUMBER TABLE_NUMBER, C.NAME CUSTOMER_NAME,
-                                    O.STARTED, O.ENDED, O.NO_OF_GUEST,
-		                                O.TOTAL TOTAL_BILL, O.PAYMENT_METHOD	PAYMENT_METHOD, O.TIP,
-		                                O.DISCOUNT DISCOUNT, O.SERVICE_CHARGE, O.TOTAL_TAX,
-                                    O.PAID_AMOUNT
-                                  FROM ORDERS O
-                                  LEFT OUTER JOIN TABLES T ON T.ID = O.TABLE_ID
-                                  LEFT OUTER JOIN CUSTOMERS C ON C.ID = O.CUSTOMER_ID
-                                  LEFT OUTER JOIN RESTAURANTS R	ON R.ID = O.REST_ID	
-                                  WHERE O.ACTIVE = 0
-                                  AND O.ENDED BETWEEN "'.$start_date.'" AND DATE_ADD("'.$end_date.'", INTERVAL 1 DAY)
-                                  AND R.ID = '.$rest_id.';');
+  function get_order_invoice($ord_id){
+	     $query = $this->db->query("-- Invoice List (based on Order)
+                                  SELECT 	I.ID IID,
+                                  		C.NAME CUSTOMER_NAME,
+                                          T.NAME TERMINAL_NAME,
+                                          PAYMENT.VALUE PAYMENT_METHOD,
+                                  		I.TOTAL,
+                                          I.DISCOUNT,
+                                  		I.TOTAL_TAX,
+                                          I.SERVICE_CHARGE,
+                                          I.TIP,
+                                          I.ROUNDING,
+                                          I.PAID_AMOUNT
+                                  FROM INVOICES I
+                                  	LEFT OUTER JOIN TERMINAL T
+                                  		ON T.ID = I.TERMINAL_ID
+                                  	LEFT OUTER JOIN CUSTOMERS C
+                                  		ON C.ID = I.CUSTOMER_ID
+                                  	LEFT OUTER JOIN REF_VALUES PAYMENT
+                                  		ON PAYMENT.CODE = I.PAYMENT_METHOD
+                                  			AND PAYMENT.LOOKUP_NAME = 'PAYMENT_METHOD'
+                                  	INNER JOIN INVOICES_ORDERS OI
+                                  		ON OI.INVOICE_ID = I.ID
+                                  WHERE OI.ORDER_ID = ".$ord_id.";");
 		    return $query->result();
 	}
   
-  function get_order_details($inv_id)
-	{
+  function get_order_details($inv_id){
 	     $query = $this->db->query("-- Order Detail List (Based on Invoice)
-                  SELECT  OD.MENU_NAME,
+                  SELECT  OD.ID ODID, OD.MENU_NAME,
                           OD.CATEGORY_NAME, 
                   		OD.KITCHEN_NOTE, 
                   		OD.QUANTITY,
