@@ -75,7 +75,10 @@ $route['setting/currency'] = "setting/currency_controller";
 
 $route['reports'] = "reports/sales_controller";
 $route['reports/sales'] = "reports/sales_controller";
+$route['reports/sales2'] = "reports/sales_controller/two";
+$route['reports/salesinv'] = "reports/sales_controller/inv";
 $route['reports/salesview'] = "reports/sales_controller/view";
+$route['reports/salesprint'] = "reports/sales_controller/printing";
 $route['reports/inventory'] = "reports/inventory_controller";
 $route['reports/inventoryview'] = "reports/inventory_controller/view";
 $route['reports/cashflow'] = "reports/cashflow_controller";   

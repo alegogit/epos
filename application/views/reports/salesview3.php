@@ -1,135 +1,37 @@
+<?php
+  $this->load->view('shared/notopbar_header',$this->data);
+?>
 <div id="page-content-wrapper">
 <!-- Page Content -->
   <div class="container-fluid" style="font-size:90%;">
-  
-    <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
-      <a role="button" class="btn btn-primary" href="<?=base_url()?>reports/sales">&nbsp;&nbsp;&nbsp;Sales&nbsp;&nbsp;&nbsp;</a>
-      <a role="button" class="btn btn-default" href="<?=base_url()?>reports/inventory">Inventory</a>              
-      <a role="button" class="btn btn-default" href="<?=base_url()?>reports/cashflow">Cash Flow</a>              
-      <a role="button" class="btn btn-default" href="<?=base_url()?>reports/endofday">End of Day</a>              
-      <a role="button" class="btn btn-default" href="<?=base_url()?>reports/attendance">Attendance</a>     
-    </div>   
-    <div class="pull-right">
-      <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
-        <a id="print" role="button" class="btn btn-primary" href="<?=base_url()?>reports/salesprint">&nbsp;<span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Print&nbsp;</a>
-      </div>
-    </div>                                                                    
-    <hr style="margin-bottom:10px;margin-top:10px" />         
-    
-    <div class="row" style="padding-left: 15px">  
-      <?php
-        $attributes = array('class' => 'form-inline', 'id' => 'filter', 'role' => 'form');
-        echo form_open('reports/sales',$attributes)
-      ?>
-        <div class="form-group" style="margin-bottom:0px">
-          <div class="input-group">
-            <div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
-            <input id="startdate" name="startdate" type="text" value="<?=$startdate?>" class="form-control datepicker" style="display:inline;padding-left:10px;padding-right:-20px" title="Start Date">
-          </div>                                                                                                                                                              
-        </div>
-        <div class="form-group" style="margin-bottom:0px">
-          <div class="input-group">       
-            <div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
-            <input id="enddate" name="enddate" type="text" value="<?=$enddate?>" class="form-control datepicker" style="display:inline;padding-left:10px;padding-right:-20px" title="End Date">
-          </div>
-        </div>
-        <div class="form-group" style="margin-bottom:0px">
-          <div class="input-group">
-            <div class="input-group-addon"><span class="glyphicon glyphicon-cutlery"></span></div>
-            <select id = "myRestaurant" name="rest_id" title="Restaurant Name" class="form-control" style="display:inline">
-              <option value = "0">ALL Restaurants</option>
-              <?php foreach($restaurants as $row){ ?>
-              <option value = "<?=$row->REST_ID?>" <?= ($row->REST_ID==$rest_id)?'selected':''?> ><?=$row->NAME?></option>
-              <?php } ?>
-            </select>   
-          </div>
-        </div>
-        <div class="form-group" style="margin-bottom:0px">
-          <div class="input-group">
-            <div class="input-group-addon"><span class="glyphicon glyphicon-file"></span></div>
-            <select id = "repch" name="report_name" title="Choose Report" class="form-control" style="display:inline">
-              <option value = "0">Choose Report</option>
-              <option value = "Sales" <?=($report_name=='Sales')?'selected':''?>>Sales</option>
-              <option value = "Void Items" <?=($report_name=='Void Items')?'selected':''?>>Void Items</option>
-            </select>   
-          </div>
-        </div>
-        <div class="form-group" style="margin-bottom:0px">
-          <div class="input-group">
-            <button type="submit" class="btn btn-success" style="display:inline">Filter</button>   
-          </div>
-        </div>
-      <?=form_close()?>
-	  </div>            
+           
+    <div class="row" style="text-align:center;">  
+        <h4>
+          <img class="img-thumbnail" style="width:53px; height:53px; margin-top:-10px;" src="<?=$reslogo?>"/> <br><?=$restaurants->NAME?> 
+        </h4>
+    </div>
     
     <hr style="margin-bottom:10px;margin-top:10px" />
         
 	  <div class="panel panel-default">
-		    <div class="panel-heading">
-          <b><?=$report_name?> Report</b>  
+		    <div class="panel-heading" style="font-size:110% !important;">
+          <div class="row" style="vertical-align:bottom !important;"> 
+          <table width="100%"><tr> 
+            <td>
+              <b>&nbsp;&nbsp;&nbsp;<?=$report_name?> Report</b>
+            </td>
+            <td class="col-md-6" class="" style="text-align:right;">
+              <b><?=$startdate." - ".$enddate?></b>
+            </td>
+          </tr></table>
+          </div>  
         </div>
-	      <div class="panel-body table-responsive" style="overflow-x:scroll;">  
-	       <?php if($report_name!="Sales"){?>   
-	        <table id="void" class="table table-striped" data-toggle="table" data-url="" data-show-refresh="false" data-show-toggle="false" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
-					  <thead>
-						  <tr>
-						    <th data-field="state" data-checkbox="true" >Void ID</th>
-						    <th data-field="name" data-sortable="true">Menu Name</th>
-						    <th data-field="rson"  data-sortable="true">Void Reason</th>
-						    <th data-field="onum" data-sortable="true">Order Number</th>
-						    <th data-field="strd" data-sortable="true">Started</th>
-						    <th data-field="endd"  data-sortable="true">Ended</th>
-						  </tr>
-						</thead>
-						<tbody>           
-						  <?php $i = 0;  foreach ($void_items as $row){ ?>
-						  <tr>
-						    <td data-field="state" data-checkbox="true" ><?=$i?></td>
-						    <td data-field="name" data-sortable="true"><?=$row->MENU_NAME?></td>
-						    <td data-field="rson"  data-sortable="true"><?=$row->VOID_REASON?></td>
-						    <td data-field="onum" data-sortable="true"><?=$row->ORDER_NUMBER?></td>
-						    <td data-field="strd" data-sortable="true"><?=$row->STARTED?></td>
-						    <td data-field="endd"  data-sortable="true"><?=$row->ENDED?></td>
-						  </tr>
-						  <?php $i++; } ?>
-						</tbody>
-					</table>
-				<?php } else {?>
-          <!--<div class="row" style="position:fixed;">-->
-          <div style="margin-bottom:15px;">
-            <ul class="nav navbar-nav">
-              <li class="dropdown">
-                <button data-toggle="dropdown" class="dropdown-toggle text3D btn btn-default">
-                  &nbsp;<i class="fa fa-navicon"></i>
-                  <b>Show More Details </b>
-                  <b class="caret"></b>&nbsp;
-                </button>
-                <ul class="dropdown-menu">
-                  <li><a id="sallb" href="#">Show Invoice & Order Details</a></li>
-                  <li><a id="sinvb" href="#">Show Invoice Details Only</a></li>
-                  <li class="divider"></li>
-                  <li><a id="hallb" href="#">Hide Details</a></li>
-                </ul>  
-              </li>
-            </ul>
-            <form class="form-inline" role="form">      
-              <div class="form-group pull-right">
-                <div class="input-group">       
-                  <div class="input-group-addon"><span class="fa fa-search"></span></div>
-                  <input id="sfilter" type="text" class="form-control" placeholder="Search"/>
-                </div>
-              </div>
-            </form> 
-           </div> 
-          <div style="margin-bottom:15px;">
-            &nbsp;
-          </div>
+	      <div class="panel-body table-responsive" style="font-size:80% !important;"> 
 	         <table id="sales" class="table table-striped dt-right table-hover table-condensed" data-filter="#sfilter" data-filter-text-only="true" data-sort="false">
 					   <thead>
 						  <tr class="tablehead text3D">
 						    <th class="cin">Order Number</th>
 						    <th class="cin">Table Number</th>
-						    <!--<th>Customer Name</th>-->
 						    <th>Started</th>
 						    <th>Ended</th>  
 						    <th>Order Type</th>
@@ -143,7 +45,6 @@
 						    <th class="" colspan="2">Delivery Fee</th>
 						    <th class="" colspan="2">Total Rounding</th> 
 						    <th class="" colspan="2">Paid Amount</th>
-						    <!--<th>Payment Method</th>-->
 						  </tr>
 						</thead>
 						<tbody>   
@@ -154,7 +55,7 @@
                 $total['TIP'] = 0;  
                 $total['DISCOUNT'] = 0; 
                 $total['SERVICE_CHARGE'] = 0;  
-                $total['DELIVERY_FEE'] = 0;    
+                $total['DELIVERY_FEE'] = 0;     
                 $total['TOTAL_ROUNDING'] = 0;   
                 $total['TOTAL_TAX'] = 0;  
                 $total['PAID_AMOUNT'] = 0;
@@ -167,7 +68,6 @@
                   </a>  
                 </td>
 						    <td class="cin"><?=$row->TABLE_NUMBER?></td>
-						    <!--<td><?=$row->CUSTOMER_NAME?></td>-->
 						    <td><?=$row->STARTED?></td>
 						    <td><?=$row->ENDED?></td>     
 						    <td><?=$row->ORDER_TYPE?></td>
@@ -189,11 +89,10 @@
 						    <td class="cin cur text3D"><?=number_format((float)$row->TOTAL_ROUNDING, 2, '.', '')?></td>
 						    <td class="text3D info"><strong><?=$cur?></strong></td>
 						    <td class="cin cur text3D info" style="font-weight:bolder"><strong><?=number_format((float)$row->PAID_AMOUNT, 2, '.', '')?></strong></td>
-						    <!--<td><?=$row->PAYMENT_METHOD?></td>-->
 						  </tr>
 						  <tr id="inv-<?=$row->OID?>">
-                <td class="active inv" style="display:none !important;"></td>
-                <td colspan="22" class="inv" style="display:none !important;">
+                <td class="active inv" style=""></td>
+                <td colspan="22" class="inv" style="">
                   <table id="invoice" class="table-striped dt-right table-hover table-condensed" style="width:100%;" data-sort="false">
                     <thead>
                       <tr class="tablehead text3D">
@@ -235,8 +134,8 @@
                         <td class="cin cur text3D info"><?=number_format((float)$rowi->PAID_AMOUNT, 2, '.', '')?></td> 
                       </tr>
                       <tr>
-                        <td class="active odt" style="display:none !important;"></td>
-                        <td colspan="24" class="odt" style="display:none !important;">
+                        <td class="active odt" style=""></td>
+                        <td colspan="24" class="odt" style="">
                           <table id="odetail" class="table-striped dt-right table-hover table-condensed" style="width:100%;" data-sort="false">
                             <thead>
                               <tr class="tablehead text3D">
@@ -311,7 +210,6 @@
 						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['TOTAL_ROUNDING'], 2, '.', '')?></th> 
 						    <th class="text3D no-sort info"><?=$cur?></th>
 						    <th class="cin cur text3D no-sort info"><?=number_format((float)$total['PAID_AMOUNT'], 2, '.', '')?></th>
-						    <!--<th class="no-sort"></th>-->
 						  </tr>
 						  <tr> 
                 <td colspan="23">                                                
@@ -320,10 +218,8 @@
               </tr>
             </tfoot>
 					</table> 
-				<?php } ?>
 			  </div>
 			</div>
-		</div>
   
   </div><!-- /.container-fluid -->
 </div><!-- /#page-content-wrapper -->
@@ -332,86 +228,13 @@
 <div id="cur" data-val="<?=$cur?>"></div>
 <div id="rest_id" data-val="<?=$rest_id?>"></div>
 
-<script type="text/javascript">      
-  //datepickers    
-  $("#startdate").datepicker({format: 'dd M yyyy'});
-  $("#enddate").datepicker({format: 'dd M yyyy'});
-
+<script type="text/javascript">   
    
   var ajaxurl = $("#ajaxurl").data('url');  
-  var rest_id = $("#rest_id").data('val');    
-	
-  /*  
-  //inititate datatable
-  var table1 = $('#sales').DataTable({
-    columnDefs: [
-      { targets: 'no-sort', orderable: false }
-    ],
-    "order": [[ 0, "asc" ]],
-    "dom": '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>',
-    pageLength: 25,
-    "aLengthMenu": [[10, 25, 100, -1], [10, 25, 100, "All"]],
-    "bAutoWidth": false
-  }); 
-  */
+  var rest_id = $("#rest_id").data('val'); 
   
   var table1 = $('#sales').footable({
-    paginate: true,
-    pageSize: 50,
-    pageNavigationSize: 8
-  });
-  
-  //inititate datatable
-  var table2 = $('#void').DataTable({
-    columnDefs: [
-      { targets: 'no-sort', orderable: false }
-    ],
-    "order": [[ 0, "asc" ]],
-    "dom": '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>',
-    pageLength: 25,
-    "aLengthMenu": [[10, 25, 100, -1], [10, 25, 100, "All"]],
-    "bAutoWidth": false
-  }); 
-  
-  /* temporary disabled  
-   $('#sales tbody').on('click', 'td.details-control', function () {
-   //$('td.details-control').click(function () {
-        var tr = $(this).closest('tr');           
-        //var td = $(this).closest('tr').next('td').find('inv');           
-        var td = $('td.inv');
-         console.log(tr);
-          console.log(td);
-        
-        if ( td.is(":visible") ) {
-            // This row is already open - close it
-            td.hide();
-            td.removeClass('shown');
-        }
-        else {
-            // Open this row
-            td.show();
-            td.addClass('shown');     
-        }
-    } );  
-  */
-    
-  $(document).ready(function(){
-    $('#sallb').click(function(){
-      $('td.inv').show();
-      $('td.odt').show();
-    });
-    $('#sinvb').click(function(){
-      $('td.inv').show();   
-      $('td.odt').hide();
-    });
-    $('#hallb').click(function(){
-      $('td.inv').hide();   
-      $('td.odt').hide();
-    }); 
-    $('#sales table').css({
-      paddingLeft: '3px',
-      paddingRight: '3px'
-    }); 
+    paginate: false
   });
   
   //currency control
@@ -430,14 +253,8 @@
         break;
     }     
   });    
-  
-  $(function () {   
-    $('#sales .table').footable().bind('footable_filtering', function (e) {
-      var selected = $('.filter-status').find(':selected').text();
-      if (selected && selected.length > 0) {
-        e.filter += (e.filter && e.filter.length > 0) ? ' ' + selected : selected;
-        e.clear = !e.filter;
-      }
-    });
-  });
 </script>
+
+<?php
+  $this->load->view('shared/footer');
+?>

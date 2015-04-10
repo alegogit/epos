@@ -1,1 +1,1 @@
-<img src="<?=base_url()."assets/img/testinv1.jpg"?>">
+<img src="<?=base_url()."assets/img/testsls1.jpg"?>">

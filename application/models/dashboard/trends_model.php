@@ -67,50 +67,50 @@ class Trends_model extends CI_Model {
   
   function dash_monthly_revenue($rest_id){
 	     $query = $this->db->query("-- This month
-                                  SELECT IFNULL(SUM(PAID_AMOUNT),0) AMT, DATE_FORMAT(NOW() ,'%Y-%m-01') REC_MONTH 
+                                  SELECT IFNULL(SUM(PAID_AMOUNT),0) AMT, DATE_FORMAT(NOW() ,'%Y-%m-%d') REC_MONTH 
                               		FROM ORDERS O 
-                              		WHERE O.ENDED BETWEEN DATE_FORMAT(NOW() ,'%Y-%m-01') 
+                              		WHERE O.ENDED BETWEEN DATE_FORMAT(NOW() ,'%Y-%m-%d') 
                               		  AND NOW()
                               		  AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
                                   UNION ALL
                                   
                                   -- Last month
-                                  SELECT IFNULL(SUM(PAID_AMOUNT),0) AMT, (DATE_FORMAT(NOW() ,'%Y-%m-01') - INTERVAL 1 MONTH) REC_MONTH 
+                                  SELECT IFNULL(SUM(PAID_AMOUNT),0) AMT, (DATE_FORMAT(NOW() ,'%Y-%m-%d') - INTERVAL 1 MONTH) REC_MONTH 
                               		FROM ORDERS O
-                              		WHERE O.ENDED BETWEEN (DATE_FORMAT(NOW() ,'%Y-%m-01') - INTERVAL 1 MONTH) 
-                              			AND SUBDATE(DATE_FORMAT(NOW() ,'%Y-%m-01'), 1)
+                              		WHERE O.ENDED BETWEEN (DATE_FORMAT(NOW() ,'%Y-%m-%d') - INTERVAL 1 MONTH) 
+                              			AND SUBDATE(DATE_FORMAT(NOW() ,'%Y-%m-%d'), 1)
                               			AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
                                   UNION ALL
                                   
                                   -- 2 months ago 
-                                  SELECT IFNULL(SUM(PAID_AMOUNT),0) AMT, (DATE_FORMAT(NOW() ,'%Y-%m-01') - INTERVAL 2 MONTH) REC_MONTH 
+                                  SELECT IFNULL(SUM(PAID_AMOUNT),0) AMT, (DATE_FORMAT(NOW() ,'%Y-%m-%d') - INTERVAL 2 MONTH) REC_MONTH 
                               		FROM ORDERS O
-                              		WHERE O.ENDED BETWEEN (DATE_FORMAT(NOW() ,'%Y-%m-01') - INTERVAL 2 MONTH) 
-                              		  AND SUBDATE((DATE_FORMAT(NOW() ,'%Y-%m-01') - INTERVAL 1 MONTH), 1)
+                              		WHERE O.ENDED BETWEEN (DATE_FORMAT(NOW() ,'%Y-%m-%d') - INTERVAL 2 MONTH) 
+                              		  AND SUBDATE((DATE_FORMAT(NOW() ,'%Y-%m-%d') - INTERVAL 1 MONTH), 1)
                               			AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
                                   UNION ALL
                                  
                                   -- 3 months ago 
-                                  SELECT IFNULL(SUM(PAID_AMOUNT),0) AMT, (DATE_FORMAT(NOW() ,'%Y-%m-01') - INTERVAL 3 MONTH) REC_MONTH 
+                                  SELECT IFNULL(SUM(PAID_AMOUNT),0) AMT, (DATE_FORMAT(NOW() ,'%Y-%m-%d') - INTERVAL 3 MONTH) REC_MONTH 
                               		FROM ORDERS O
-                              		WHERE O.ENDED BETWEEN (DATE_FORMAT(NOW() ,'%Y-%m-01') - INTERVAL 3 MONTH) 
-                              		  AND SUBDATE((DATE_FORMAT(NOW() ,'%Y-%m-01') - INTERVAL 2 MONTH), 1)
+                              		WHERE O.ENDED BETWEEN (DATE_FORMAT(NOW() ,'%Y-%m-%d') - INTERVAL 3 MONTH) 
+                              		  AND SUBDATE((DATE_FORMAT(NOW() ,'%Y-%m-%d') - INTERVAL 2 MONTH), 1)
                               			AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
                                   UNION ALL
                                       
                                   -- 4 months ago 
-                                  SELECT IFNULL(SUM(PAID_AMOUNT),0) AMT, (DATE_FORMAT(NOW() ,'%Y-%m-01') - INTERVAL 4 MONTH) REC_MONTH 
+                                  SELECT IFNULL(SUM(PAID_AMOUNT),0) AMT, (DATE_FORMAT(NOW() ,'%Y-%m-%d') - INTERVAL 4 MONTH) REC_MONTH 
                               		FROM ORDERS O
-                              		WHERE O.ENDED BETWEEN (DATE_FORMAT(NOW() ,'%Y-%m-01') - INTERVAL 4 MONTH) 
-                              		  AND SUBDATE((DATE_FORMAT(NOW() ,'%Y-%m-01') - INTERVAL 3 MONTH), 1)
+                              		WHERE O.ENDED BETWEEN (DATE_FORMAT(NOW() ,'%Y-%m-%d') - INTERVAL 4 MONTH) 
+                              		  AND SUBDATE((DATE_FORMAT(NOW() ,'%Y-%m-%d') - INTERVAL 3 MONTH), 1)
                               			AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
                                   UNION ALL
                                    
                                   -- 5 months ago 
-                                  SELECT IFNULL(SUM(PAID_AMOUNT),0) AMT, (DATE_FORMAT(NOW() ,'%Y-%m-01') - INTERVAL 5 MONTH) REC_MONTH 
+                                  SELECT IFNULL(SUM(PAID_AMOUNT),0) AMT, (DATE_FORMAT(NOW() ,'%Y-%m-%d') - INTERVAL 5 MONTH) REC_MONTH 
                               		FROM ORDERS O
-                              		WHERE O.ENDED BETWEEN (DATE_FORMAT(NOW() ,'%Y-%m-01') - INTERVAL 5 MONTH)
-                              		  AND SUBDATE((DATE_FORMAT(NOW() ,'%Y-%m-01') - INTERVAL 4 MONTH), 1)
+                              		WHERE O.ENDED BETWEEN (DATE_FORMAT(NOW() ,'%Y-%m-%d') - INTERVAL 5 MONTH)
+                              		  AND SUBDATE((DATE_FORMAT(NOW() ,'%Y-%m-%d') - INTERVAL 4 MONTH), 1)
                               			AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
                                   ORDER BY REC_MONTH ASC;");
 		    return $query->result();  
@@ -118,7 +118,7 @@ class Trends_model extends CI_Model {
   
   function dash_weekly_revenue($rest_id){
 	     $query = $this->db->query("-- This Week
-                                  SELECT IFNULL(SUM(PAID_AMOUNT),0) AMT, DATE_FORMAT(NOW() ,'%Y-%m-01') REC_WEEK 
+                                  SELECT IFNULL(SUM(PAID_AMOUNT),0) AMT, DATE_FORMAT(NOW() ,'%Y-%m-%d') REC_WEEK 
                               		FROM ORDERS O
                               			WHERE O.ENDED BETWEEN DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d') AND NOW()
                               				AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
@@ -208,7 +208,7 @@ class Trends_model extends CI_Model {
 			
   function dash_weekly_avslspcust($rest_id){   
 	     $query = $this->db->query("SELECT IFNULL(SUM(O.PAID_AMOUNT),0)/ IFNULL(SUM(O.NO_OF_GUEST),1) AS AVG_SALES_CUST,  
-                              		DATE_FORMAT(NOW() ,'%Y-%m-01') REC_WEEK
+                              		DATE_FORMAT(NOW() ,'%Y-%m-%d') REC_WEEK
                               		FROM ORDERS O 
                               			WHERE O.ENDED BETWEEN DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d') 
                               				AND NOW()
@@ -309,7 +309,7 @@ class Trends_model extends CI_Model {
   
   function dash_weekly_avslspinv($rest_id){   
 	     $query = $this->db->query("SELECT IFNULL(SUM(O.PAID_AMOUNT),0)/ IFNULL(COUNT(O.ID),1) AS AVG_SALES_INV,  
-                		DATE_FORMAT(NOW() ,'%Y-%m-01') REC_WEEK
+                		DATE_FORMAT(NOW() ,'%Y-%m-%d') REC_WEEK
                 		FROM ORDERS O 
                 			WHERE O.ENDED BETWEEN DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d') 
                 				AND NOW()

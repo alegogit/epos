@@ -10,7 +10,7 @@
             <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
               <a role="button" class="btn btn-primary" href="<?=base_url()?>dashboard/sales">&nbsp;&nbsp;Sales&nbsp;&nbsp;</a>  
               <a role="button" class="btn btn-default" href="<?=base_url()?>dashboard/trends">&nbsp;&nbsp;Trends&nbsp;&nbsp;</a>
-              <a role="button" class="btn btn-default" href="<?=base_url()?>dashboard/inventory" <?=(count($nostock)>0)?'title="'.(count($nostock)>0).' no stock item(s)"':''?>>Inventory</a> 
+              <a role="button" class="btn btn-default" href="<?=base_url()?>dashboard/inventory" <?=(count($nostock)>0)?'title="'.count($nostock).' no stock item(s)"':''?>>Inventory</a> 
             </div>  
             <?php if(count($nostock)>0){ ?>
             <span class="label label-danger label-as-badge" style="margin-top:5px;margin-left:-10px;z-index:3;position:absolute">
@@ -292,33 +292,34 @@
         <div class="list-group rightdash" style="margin-top:10px;">      
           <div class="rdtitle">Sales Today</div>
           <!--<a href="#" class="pull-right">See all</a>-->
-          <span class="list-group-item orgbg noborder pad30">
+          <span class="list-group-item noborder pad30" style="background-color:#e4843f;">
             <span class="text270"><?=$cur?> <span id="nsales" value="<?=$this->currency->decimal($net_sales_today->NET_SALES,$cur)?>" data-cur="<?=$cur?>"></span></span><br>  
-            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;<span style="font-size:120%;"><b>Net Sales Today</b></span><br>
-            &nbsp;<br>
+            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;<span style="font-size:105%;"><b>Net Sales Today</b></span><br>
+          </span>   
+          <div class="rdinfo"></div>   
+          <span class="list-group-item orgbg noborder pad30"> 
             <span class="text270"><?=$cur?> <span id="tsales" value="<?=$this->currency->decimal($tot_sales_today->TOTAL_SALES,$cur)?>" data-cur="<?=$cur?>"></span></span><br>     
-            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;<span style="font-size:120%;"><b>Total Sales Today</b></span><br>
-          </span>      
-          <div class="rdinfo">
-          </div>
+            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;<span style="font-size:105%;"><b>Total Sales Today</b></span><br>
+          </span> 
+          <div class="rdinfo"></div> 
         </div>    
         
         <div class="list-group rightdash">            
-          <div class="rdtitle">Customer</div>
+          <div class="rdtitle">Customer Today</div>
           <!--<a href="#" class="pull-right">See all</a>-->
           <span class="list-group-item teabg noborder pad30">   
             <span class="text270"><?=$cur?> <span id="csales" value="<?=$this->currency->decimal($avrsls_percust->AVG_SALES_CUST,$cur)?>" data-cur="<?=$cur?>"></span></span> <br>  
-            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;<span style="font-size:120%;"><b>Average Sales/Customer</b></span>
+            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;<span style="font-size:105%;"><b>Average Sales/Customer</b></span>
           </span>   
           <div class="rdinfo"><?=$num_cust_today->TOTAL_CUST?> Customer(s) Today</div>
         </div>        
                   
         <div class="list-group rightdash">    
-          <div class="rdtitle">Invoice</div>   
+          <div class="rdtitle">Invoice Today</div>   
           <!--<a href="#" class="pull-right">See all</a>-->
           <span class="list-group-item redbg noborder pad30">
             <span class="text270"><?=$cur?> <span id="isales" value="<?=$this->currency->decimal($avrsls_perinv->AVG_SALES_INV,$cur)?>" data-cur="<?=$cur?>"></span></span> <br>  
-            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;<span style="font-size:120%;"><b>Average Sales/Invoice</b></span>
+            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;<span style="font-size:105%;"><b>Average Sales/Invoice</b></span>
           </span>  
           <div class="rdinfo"><?=$com_inv_today->TOTAL_INV?> Invoice(s) Today</div> 
         </div>    

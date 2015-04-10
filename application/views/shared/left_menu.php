@@ -25,7 +25,7 @@
 	  <?php echo anchor('reports', 'Reports'); ?>
     </li>
     <li class="<?php if($menu == 'extracts'){ echo "active";} ?>">
-	  <?php echo anchor('extracts', 'Extracts'); ?>
+	  <?php //echo anchor('extracts', 'Extracts'); ?>
     </li>
     <li class="<?php if($menu == 'sync'){ echo "active";} ?>">
 	  <?php echo anchor('sync', 'Sync'); ?>

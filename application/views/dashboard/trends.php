@@ -10,7 +10,7 @@
             <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
               <a role="button" class="btn btn-default" href="<?=base_url()?>dashboard/sales">&nbsp;&nbsp;Sales&nbsp;&nbsp;</a>   
               <a role="button" class="btn btn-primary" href="<?=base_url()?>dashboard/trends">&nbsp;&nbsp;Trends&nbsp;&nbsp;</a>
-              <a role="button" class="btn btn-default" href="<?=base_url()?>dashboard/inventory" <?=(count($nostock)>0)?'title="'.(count($nostock)>0).' no stock item(s)"':''?>>Inventory</a>
+              <a role="button" class="btn btn-default" href="<?=base_url()?>dashboard/inventory" <?=(count($nostock)>0)?'title="'.count($nostock).' no stock item(s)"':''?>>Inventory</a>
             </div>  
             <?php if(count($nostock)>0){ ?>
             <span class="label label-danger label-as-badge" style="margin-top:5px;margin-left:-10px;z-index:3;position:absolute">
@@ -46,7 +46,7 @@
             $attributes = array('class' => 'form-inline', 'id' => 'filter', 'role' => 'form');
             echo form_open('dashboard/trends',$attributes)
           ?>
-            <div class="form-group" style="margin-bottom:0px">
+            <!--<div class="form-group" style="margin-bottom:0px">
               <div class="input-group">
                 <div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
                 <input id="startdate" name="startdate" type="text" value="<?=$startdate?>" class="form-control datepicker" style="display:inline;padding-left:10px;padding-right:-20px" title="Start Date">
@@ -57,7 +57,7 @@
                 <div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
                 <input id="enddate" name="enddate" type="text" value="<?=$enddate?>" class="form-control datepicker" style="display:inline;padding-left:10px;padding-right:-20px" title="End Date">
               </div>
-            </div>
+            </div>-->
             <div class="form-group" style="margin-bottom:0px">
               <div class="input-group">
                 <div class="input-group-addon"><span class="glyphicon glyphicon-cutlery"></span></div>
@@ -86,8 +86,8 @@
       					<div class="panel-heading">
       					  <div class="row" style="padding-left:10px;padding-right:10px">
         					  <b>
-                      <span id="motit">Monthly Revenue</span>
-                      <span id="wktit" style="display:none">Weekly Revenue</span>
+                      <span id="motit">Monthly Revenue - Last 6 Months</span>
+                      <span id="wktit" style="display:none">Weekly Revenue - Last 12 Weeks</span>
                     </b>
                     <div class="btn-group pull-right" role="group" aria-label="...">
                       <a role="button" class="btn btn-sm btn-primary" id="mobutt" href="#monthly-line-chart">Monthly</a> 
@@ -97,10 +97,10 @@
                 </div>
       					<div class="panel-body">
       						<div class="canvas-wrapper">
-      							<canvas class="main-chart" id="monthly-line-chart" height="180" width="600"></canvas>
+      							<canvas class="main-chart" id="monthly-line-chart" height="125" width="600"></canvas>
       						</div>
       						<div class="canvas-wrapper">
-      							<canvas class="main-chart" id="weekly-line-chart" height="180" width="600" style="display:none"></canvas>
+      							<canvas class="main-chart" id="weekly-line-chart" height="125" width="600" style="display:none"></canvas>
       						</div>
       					</div>
       				</div>
@@ -113,8 +113,8 @@
       					<div class="panel-heading">
       					  <div class="row" style="padding-left:10px;padding-right:10px">
         					  <b>
-                      <span id="pctit">Weekly Average Sales Per Customer</span>
-                      <span id="pitit" style="display:none">Weekly Average Sales Per Invoice</span>
+                      <span id="pctit">Weekly Average Sales Per Customer - Last 12 Weeks</span>
+                      <span id="pitit" style="display:none">Weekly Average Sales Per Invoice - Last 12 Weeks</span>
                     </b>
                     <div class="btn-group pull-right" role="group" aria-label="...">
                       <a role="button" class="btn btn-sm btn-primary" id="pcbutt" href="#davrspcust-line-chart">Per Customer</a> 
@@ -124,10 +124,10 @@
                 </div>
       					<div class="panel-body">
       						<div class="canvas-wrapper">
-      							<canvas class="main-chart" id="davrspcust-line-chart" height="180" width="600"></canvas>
+      							<canvas class="main-chart" id="davrspcust-line-chart" height="125" width="600"></canvas>
       						</div>
       						<div class="canvas-wrapper">
-      							<canvas class="main-chart" id="davrspinvo-line-chart" height="180" width="600" style="display:none"></canvas>
+      							<canvas class="main-chart" id="davrspinvo-line-chart" height="125" width="600" style="display:none"></canvas>
       						</div>
       					</div>
       				</div>
@@ -143,12 +143,12 @@
           <!--<a href="#" class="pull-right">See all</a>-->
           <span class="list-group-item noborder pad30" style="background-color:#e4843f;">
             <span class="text270"><?=$cur?> <span id="nsales" value="<?=$this->currency->decimal($net_sales_today->NET_SALES,$cur)?>" data-cur="<?=$cur?>"></span></span><br>  
-            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;<span style="font-size:110%;"><b>Net Sales Today</b></span><br>
+            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;<span style="font-size:105%;"><b>Net Sales Today</b></span><br>
           </span>   
           <div class="rdinfo"></div>   
           <span class="list-group-item orgbg noborder pad30"> 
             <span class="text270"><?=$cur?> <span id="tsales" value="<?=$this->currency->decimal($tot_sales_today->TOTAL_SALES,$cur)?>" data-cur="<?=$cur?>"></span></span><br>     
-            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;<span style="font-size:110%;"><b>Total Sales Today</b></span><br>
+            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;<span style="font-size:105%;"><b>Total Sales Today</b></span><br>
           </span> 
           <div class="rdinfo"></div> 
         </div>    
@@ -158,7 +158,7 @@
           <!--<a href="#" class="pull-right">See all</a>-->
           <span class="list-group-item teabg noborder pad30">   
             <span class="text270"><?=$cur?> <span id="csales" value="<?=$this->currency->decimal($avrsls_percust->AVG_SALES_CUST,$cur)?>" data-cur="<?=$cur?>"></span></span> <br>  
-            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;<span style="font-size:110%;"><b>Average Sales/Customer</b></span>
+            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;<span style="font-size:105%;"><b>Average Sales/Customer</b></span>
           </span>   
           <div class="rdinfo"><?=$num_cust_today->TOTAL_CUST?> Customer(s) Today</div>
         </div>        
@@ -168,7 +168,7 @@
           <!--<a href="#" class="pull-right">See all</a>-->
           <span class="list-group-item redbg noborder pad30">
             <span class="text270"><?=$cur?> <span id="isales" value="<?=$this->currency->decimal($avrsls_perinv->AVG_SALES_INV,$cur)?>" data-cur="<?=$cur?>"></span></span> <br>  
-            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;<span style="font-size:110%;"><b>Average Sales/Invoice</b></span>
+            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;<span style="font-size:105%;"><b>Average Sales/Invoice</b></span>
           </span>  
           <div class="rdinfo"><?=$com_inv_today->TOTAL_INV?> Invoice(s) Today</div> 
         </div>    
@@ -191,7 +191,7 @@
   $data = "";
   foreach ($dmorevenue as $row){  
     $labels .= ($i==($n-1))?"'".date('M', strtotime($row->REC_MONTH))."'":"'".date('M', strtotime($row->REC_MONTH))."',"; 
-    $data .=  ($i==($n-1))?$row->AMT:$row->AMT.","; 
+    $data .=  ($i==($n-1))?(float)$row->AMT:(float)$row->AMT.","; 
     $i++;
   }
   $chart_script = "<script>"; 
@@ -199,7 +199,7 @@
 	$chart_script .= "		labels : [".$labels."],";
 	$chart_script .= "		datasets : [";
 	$chart_script .= "			{ ";
-	$chart_script .= "				label: 'Monthly Revenue',";
+	$chart_script .= "				label: 'Monthly Revenue - Last 6 Months',";
 	$chart_script .= "				fillColor : 'rgba(48, 164, 255, 0.2)', ";
 	$chart_script .= "				strokeColor : 'rgba(48, 164, 255, 1)', ";
 	$chart_script .= "				pointColor : 'rgba(48, 164, 255, 1)', ";
@@ -211,7 +211,7 @@
 	$chart_script .= "		]";
   $chart_script .= "	};";
 	$chart_script .= "var chart3 = document.getElementById('monthly-line-chart').getContext('2d');";    
-  $chart_script .= "chart3.canvas.height = 153;";
+  $chart_script .= "chart3.canvas.height = 115;";
 	$chart_script .= "window.myLine1 = new Chart(chart3).Line(lineChartData, { ";
 	$chart_script .= "	responsive: true, tooltipFontSize : 12,";
 	$chart_script .= "	legendTemplate: '<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].strokeColor%>\"></span><%if(datasets[i].label){%>eek<%=datasets[i].label%><%}%></li><%}%></ul>', ";
@@ -229,7 +229,7 @@
   $data = "";
   foreach ($dwkrevenue as $rowk){  
     $labels .= ($i==($n-1))?"'".date('M d', strtotime($rowk->REC_WEEK))."'":"'".date('M d', strtotime($rowk->REC_WEEK))."',"; 
-    $data .=  ($i==($n-1))?$rowk->AMT:$rowk->AMT.","; 
+    $data .=  ($i==($n-1))?(float)$rowk->AMT:(float)$rowk->AMT.","; 
     $i++;
   }
   $chart_script = "<script>"; 
@@ -237,7 +237,7 @@
 	$chart_script .= "		labels : [".$labels."],";
 	$chart_script .= "		datasets : [";
 	$chart_script .= "			{ ";
-	$chart_script .= "				label: 'Monthly Revenue',";
+	$chart_script .= "				label: 'Weekly Revenue - Last 12 Weeks',";
 	$chart_script .= "				fillColor : 'rgba(48, 164, 255, 0.2)', ";
 	$chart_script .= "				strokeColor : 'rgba(48, 164, 255, 1)', ";
 	$chart_script .= "				pointColor : 'rgba(48, 164, 255, 1)', ";
@@ -249,7 +249,7 @@
 	$chart_script .= "		]";
   	$chart_script .= "	};";
 	$chart_script .= "var chart5 = document.getElementById('weekly-line-chart').getContext('2d');";    
-  	$chart_script .= "chart5.canvas.height = 153;";
+  	$chart_script .= "chart5.canvas.height = 115;";
 	$chart_script .= "window.myLine2 = new Chart(chart5).Line(lineChartData, { ";
 	$chart_script .= "	responsive: true, tooltipFontSize : 12,";
 	$chart_script .= "	tooltipTemplate: '<%if (label){%><%=label%>: ".$cur." <%}%><%= ".$this->currency->jsformat($cur)." %>' ";
@@ -266,7 +266,8 @@
   $data = "";
   foreach ($davrspcust as $rowc){  
     $labels .= ($i==($n-1))?"'".date('M d', strtotime($rowc->REC_WEEK))."'":"'".date('M d', strtotime($rowc->REC_WEEK))."',"; 
-    $data .=  ($i==($n-1))?$rowc->AVG_SALES_CUST:$rowc->AVG_SALES_CUST.","; 
+    $amountc = (strtolower($cur)=="rp")?number_format((float)$rowc->AVG_SALES_CUST, 0, '.', ''):number_format((float)$rowc->AVG_SALES_CUST, 2, '.', '');
+    $data .=  ($i==($n-1))?$amountc:$amountc.","; 
     $i++;
   }
   $chart_script = "<script>"; 
@@ -274,7 +275,7 @@
 	$chart_script .= "		labels : [".$labels."],";
 	$chart_script .= "		datasets : [";
 	$chart_script .= "			{ ";
-	$chart_script .= "				label: 'Monthly Revenue',";
+	$chart_script .= "				label: 'Weekly Average Sales Per Customer - Last 12 weeks',";
 	$chart_script .= "				fillColor : 'rgba(48, 164, 255, 0.2)', ";
 	$chart_script .= "				strokeColor : 'rgba(48, 164, 255, 1)', ";
 	$chart_script .= "				pointColor : 'rgba(48, 164, 255, 1)', ";
@@ -286,7 +287,7 @@
 	$chart_script .= "		]";
   	$chart_script .= "	};";
 	$chart_script .= "var chart7 = document.getElementById('davrspcust-line-chart').getContext('2d');";    
-  	$chart_script .= "chart7.canvas.height = 153;";
+  	$chart_script .= "chart7.canvas.height = 115;";
 	$chart_script .= "window.myLine7 = new Chart(chart7).Line(lineChartData, { ";
 	$chart_script .= "	responsive: true, tooltipFontSize : 12,";
 	$chart_script .= "	tooltipTemplate: '<%if (label){%><%=label%>: ".$cur." <%}%><%= ".$this->currency->jsformat($cur)." %>' ";
@@ -304,7 +305,8 @@
   foreach ($davrspinvo as $rowi){  
     if($rowi->AVG_SALES_INV==NULL){ $rowi->AVG_SALES_INV = 0; }
     $labels .= ($i==($n-1))?"'".date('M d', strtotime($rowi->REC_WEEK))."'":"'".date('M d', strtotime($rowi->REC_WEEK))."',"; 
-    $data .=  ($i==($n-1))?$rowi->AVG_SALES_INV:$rowi->AVG_SALES_INV.","; 
+    $amounti = (strtolower($cur)=="rp")?number_format((float)$rowi->AVG_SALES_INV, 0, '.', ''):number_format((float)$rowi->AVG_SALES_INV, 2, '.', '');
+    $data .=  ($i==($n-1))?$amounti:$amounti.","; 
     $i++;    
   }
   $chart_script = "<script>"; 
@@ -312,7 +314,7 @@
 	$chart_script .= "		labels : [".$labels."],";
 	$chart_script .= "		datasets : [";
 	$chart_script .= "			{ ";
-	$chart_script .= "				label: 'Monthly Revenue',";
+	$chart_script .= "				label: 'Weekly Average Sales Per Invoice - Last 12 weeks',";
 	$chart_script .= "				fillColor : 'rgba(48, 164, 255, 0.2)', ";
 	$chart_script .= "				strokeColor : 'rgba(48, 164, 255, 1)', ";
 	$chart_script .= "				pointColor : 'rgba(48, 164, 255, 1)', ";
@@ -324,7 +326,7 @@
 	$chart_script .= "		]";
   	$chart_script .= "	};";
 	$chart_script .= "var chart9 = document.getElementById('davrspinvo-line-chart').getContext('2d');";    
-  	$chart_script .= "chart9.canvas.height = 153;";
+  	$chart_script .= "chart9.canvas.height = 115;";
 	$chart_script .= "window.myLine9 = new Chart(chart9).Line(lineChartData, { ";
 	$chart_script .= "	responsive: true, tooltipFontSize : 12,";
 	$chart_script .= "	tooltipTemplate: '<%if (label){%><%=label%>: ".$cur." <%}%><%= ".$this->currency->jsformat($cur)." %>' ";
@@ -348,9 +350,11 @@ $(document).ready(function(){
   });
   
 }); 
+  /*
      //datepickers
      $("#startdate").datepicker({format: 'dd M yyyy'});
      $("#enddate").datepicker({format: 'dd M yyyy'});
+  */
      
      //switch chart
      $("#mobutt").click(function(){      

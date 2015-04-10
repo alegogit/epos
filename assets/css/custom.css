@@ -98,7 +98,7 @@
      font-weight: bold;
 }
 .text270{
-     font-size: 175%; 
+     font-size: 155%; 
      font-weight: bold;
 }
 .pad30{
@@ -113,6 +113,7 @@
     border: 1px solid #cacaca !important;
     color: #333333 !important;
     height: 35px;
+    background-color: gainsboro;
 }
 .cin{
     text-align: right;
@@ -139,3 +140,43 @@ div.dataTables_filter {
   padding-top: 0.55em;
   padding-bottom: 0.55em;
 }
+
+.pagination ul{
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  display: inline-block;
+  margin-bottom: 0;
+  margin-left: 0;
+}
+.pagination ul > li {
+    display: inline;
+}
+.pagination ul > li:first-child > a, .pagination ul > li:first-child > span {
+    border-bottom-left-radius: 4px;
+    border-left-width: 1px;
+    border-top-left-radius: 4px;
+}
+.pagination ul > li > a, .pagination ul > li > span {
+/*
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #ffffff;
+    border-color: #dddddd;
+    border-image: none;
+    border-style: solid;
+    border-width: 1px 1px 1px 0;
+    float: left;
+    line-height: 20px;
+    padding: 4px 12px;
+    text-decoration: none; 
+*/              
+    float: center;
+    line-height: 20px;
+    padding: 4px 12px;
+    text-decoration: none; 
+    background: linear-gradient(to bottom, white 0%, gainsboro 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+    border: 1px solid #cacaca;
+    color: #333333 !important;
+}  

@@ -23,7 +23,7 @@ class Cashflow_controller extends CI_Controller {
 			$data['menu'] = 'reports';         
 			$session_data = $this->session->userdata('logged_in');
 			$data['def_rest'] = $session_data['def_rest'];
-			$data['def_start_date'] = date('d M Y', time() - 1 * 60 * 60 * 24);
+			$data['def_start_date'] = date('d M Y', time() - 7 * 60 * 60 * 24);
 			$data['def_end_date'] = date('d M Y', time());     
 			$rest_id = (!($this->input->post('rest_id')))?$data['def_rest']:$this->input->post('rest_id');
 			$start_date = (!($this->input->post('startdate')))?$data['def_start_date']:$this->input->post('startdate'); 

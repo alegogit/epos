@@ -40,8 +40,6 @@
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.theme.css"/>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery.dataTables.css"/>
 
-<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/msform.css"/>
-<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/gallery-effect.css"/>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/custom.css"/>    
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/font-awesome.min.css"/>
 
@@ -53,6 +51,8 @@
 
 <!-- Table -->
 <script src="<?=base_url()?>assets/js/jquery.dataTables.js"></script> 
+<script src="<?=base_url()?>assets/js/footable/footable.all.min.js"></script> 
+<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/footable/footable.core.min.css"/>
 
 <!-- Currency -->
 <script src="<?=base_url()?>assets/js/autoNumeric.js"></script> 

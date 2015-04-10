@@ -8,18 +8,13 @@
       <a role="button" class="btn btn-default" href="<?=base_url()?>reports/cashflow">Cash Flow</a>              
       <a role="button" class="btn btn-default" href="<?=base_url()?>reports/endofday">End of Day</a>              
       <a role="button" class="btn btn-default" href="<?=base_url()?>reports/attendance">Attendance</a>     
-    </div>   
-    <div class="pull-right">
-      <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
-        <a id="print" role="button" class="btn btn-primary" href="<?=base_url()?>reports/salesprint">&nbsp;<span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Print&nbsp;</a>
-      </div>
-    </div>                                                                    
+    </div>                                                                       
     <hr style="margin-bottom:10px;margin-top:10px" />         
     
     <div class="row" style="padding-left: 15px">  
       <?php
         $attributes = array('class' => 'form-inline', 'id' => 'filter', 'role' => 'form');
-        echo form_open('reports/sales',$attributes)
+        echo form_open('reports/sales2',$attributes)
       ?>
         <div class="form-group" style="margin-bottom:0px">
           <div class="input-group">
@@ -94,37 +89,9 @@
 						  <?php $i++; } ?>
 						</tbody>
 					</table>
-				<?php } else {?>
-          <!--<div class="row" style="position:fixed;">-->
-          <div style="margin-bottom:15px;">
-            <ul class="nav navbar-nav">
-              <li class="dropdown">
-                <button data-toggle="dropdown" class="dropdown-toggle text3D btn btn-default">
-                  &nbsp;<i class="fa fa-navicon"></i>
-                  <b>Show More Details </b>
-                  <b class="caret"></b>&nbsp;
-                </button>
-                <ul class="dropdown-menu">
-                  <li><a id="sallb" href="#">Show Invoice & Order Details</a></li>
-                  <li><a id="sinvb" href="#">Show Invoice Details Only</a></li>
-                  <li class="divider"></li>
-                  <li><a id="hallb" href="#">Hide Details</a></li>
-                </ul>  
-              </li>
-            </ul>
-            <form class="form-inline" role="form">      
-              <div class="form-group pull-right">
-                <div class="input-group">       
-                  <div class="input-group-addon"><span class="fa fa-search"></span></div>
-                  <input id="sfilter" type="text" class="form-control" placeholder="Search"/>
-                </div>
-              </div>
-            </form> 
-           </div> 
-          <div style="margin-bottom:15px;">
-            &nbsp;
-          </div>
-	         <table id="sales" class="table table-striped dt-right table-hover table-condensed" data-filter="#sfilter" data-filter-text-only="true" data-sort="false">
+				<?php } else {?>  
+				  <p>Search: <input id="sfilter" type="text"/></p>
+	         <table id="sales" class="table table-striped dt-right" data-filter="#sfilter" data-filter-text-only="true" data-sort="false">
 					   <thead>
 						  <tr class="tablehead text3D">
 						    <th class="cin">Order Number</th>
@@ -135,14 +102,22 @@
 						    <th>Order Type</th>
 						    <th>Server Name</th>
 						    <th class="cin">No. Of Guest</th>
-						    <th class="" colspan="2">Total Bill</th>  
-						    <th class="" colspan="2">Tip</th>  
-						    <th class="" colspan="2">Discount</th>
-						    <th class="" colspan="2">Service Charge</th>
-						    <th class="" colspan="2">Total Tax</th>
-						    <th class="" colspan="2">Delivery Fee</th>
-						    <th class="" colspan="2">Total Rounding</th> 
-						    <th class="" colspan="2">Paid Amount</th>
+						    <th class="cin no-sort"></th>
+						    <th class="cin">Total Bill</th>  
+						    <th class="cin no-sort"></th>
+						    <th class="cin">Tip</th>    
+						    <th class="cin no-sort"></th>
+						    <th class="cin">Discount</th> 
+						    <th class="cin no-sort"></th>
+						    <th class="cin">Service Charge</th> 
+						    <th class="cin no-sort"></th>
+						    <th class="cin">Total Tax</th>
+						    <th class="cin no-sort"></th>
+						    <th class="cin">Delivery Fee</th>
+						    <th class="cin no-sort"></th>
+						    <th class="cin">Total Rounding</th> 
+						    <th class="cin no-sort"></th> 
+						    <th class="cin">Paid Amount</th>
 						    <!--<th>Payment Method</th>-->
 						  </tr>
 						</thead>
@@ -154,15 +129,14 @@
                 $total['TIP'] = 0;  
                 $total['DISCOUNT'] = 0; 
                 $total['SERVICE_CHARGE'] = 0;  
-                $total['DELIVERY_FEE'] = 0;    
-                $total['TOTAL_ROUNDING'] = 0;   
+                $total['DELIVERY_FEE'] = 0;   
                 $total['TOTAL_TAX'] = 0;  
                 $total['PAID_AMOUNT'] = 0;
                 foreach ($sales_report as $row){ 
               ?>
 						  <tr>
 						    <td data-field="name" class="cin details-control" data-valign="center">
-                  <a href="#" style="font-size:90%" class="label label-lg label-success" data-id="<?=$row->OID?>">
+                  <a href="#" style="font-size:90%" class="label label-lg label-success modalTrigger" data-toggle="modal" data-target="#bookModal" data-id="<?=$row->OID?>" data-odn="<?=$row->ORDER_NUMBER?>">
                     <?=$row->ORDER_NUMBER?>
                   </a>  
                 </td>
@@ -173,105 +147,25 @@
 						    <td><?=$row->ORDER_TYPE?></td>
 						    <td><?=$row->SERVER_NAME?></td>
 						    <td class="cin"><?=$row->NO_OF_GUEST?></td>
-						    <td class="text3D"><?=$cur?></td>
+						    <td class="cin cur text3D"><?=$cur?></td>
 						    <td class="cin cur text3D"><?=number_format((float)$row->TOTAL_BILL, 2, '.', '')?></td> 
-						    <td class="text3D"><?=$cur?></td>
+						    <td class="cin cur text3D"><?=$cur?></td>
 						    <td class="cin cur text3D"><?=number_format((float)$row->TIP, 2, '.', '')?></td> 
-						    <td class="text3D text-danger"><?=$cur?></td>
+						    <td class="cin cur text3D text-danger"><?=$cur?></td>
 						    <td class="cin cur text3D text-danger"><?=number_format((float)$row->DISCOUNT, 2, '.', '')?></td>
-						    <td class="text3D"><?=$cur?></td>
+						    <td class="cin cur text3D"><?=$cur?></td>
 						    <td class="cin cur text3D"><?=number_format((float)$row->SERVICE_CHARGE, 2, '.', '')?></td>
-						    <td class="text3D"><?=$cur?></td>
+						    <td class="cin cur text3D"><?=$cur?></td>
 						    <td class="cin cur text3D"><?=number_format((float)$row->TOTAL_TAX, 2, '.', '')?></td> 
-						    <td class="text3D"><?=$cur?></td>
+						    <td class="cin cur text3D"><?=$cur?></td>
 						    <td class="cin cur text3D"><?=number_format((float)$row->DELIVERY_FEE, 2, '.', '')?></td> 
-						    <td class="text3D"><?=$cur?></td>
+						    <td class="cin cur text3D"><?=$cur?></td>
 						    <td class="cin cur text3D"><?=number_format((float)$row->TOTAL_ROUNDING, 2, '.', '')?></td>
-						    <td class="text3D info"><strong><?=$cur?></strong></td>
+						    <td class="cin cur text3D info"><strong><?=$cur?></strong></td>
 						    <td class="cin cur text3D info" style="font-weight:bolder"><strong><?=number_format((float)$row->PAID_AMOUNT, 2, '.', '')?></strong></td>
 						    <!--<td><?=$row->PAYMENT_METHOD?></td>-->
 						  </tr>
-						  <tr id="inv-<?=$row->OID?>">
-                <td class="active inv" style="display:none !important;"></td>
-                <td colspan="22" class="inv" style="display:none !important;">
-                  <table id="invoice" class="table-striped dt-right table-hover table-condensed" style="width:100%;" data-sort="false">
-                    <thead>
-                      <tr class="tablehead text3D">
-                        <th class="cin">Invoice ID</th> 
-                        <th>Customer</th>
-                        <th>Terminal</th>
-                        <th>Payment Method</th> 
-                        <th class="" colspan="2">Total</th>
-                        <th class="" colspan="2">Tip</th>
-                        <th class="" colspan="2">Discount</th>  
-                        <th class="" colspan="2">Service Charge</th>
-                        <th class="" colspan="2">Total Tax</th> 
-                        <th class="" colspan="2">Rounding</th>
-                        <th class="" colspan="2">Paid Amount</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                    <?php 
-                      foreach($this->sales->get_order_invoice($row->OID) as $rowi){
-                    ?>
-                      <tr>
-                        <td class="cin"><?=$rowi->IID?></td> 
-                        <td><?=$rowi->CUSTOMER_NAME?></td>
-                        <td><?=$rowi->TERMINAL_NAME?></td>
-                        <td><?=$rowi->PAYMENT_METHOD?></td> 
-						            <td class="text3D"><?=$cur?></td>
-                        <td class="cin cur text3D"><?=number_format((float)$rowi->TOTAL, 2, '.', '')?></td>  
-						            <td class="text3D"><?=$cur?></td>
-                        <td class="cin cur text3D"><?=number_format((float)$rowi->TIP, 2, '.', '')?></td>  
-						            <td class="text3D text-danger"><?=$cur?></td>
-                        <td class="cin cur text3D text-danger"><?=number_format((float)$rowi->DISCOUNT, 2, '.', '')?></td>   
-						            <td class="text3D"><?=$cur?></td>
-                        <td class="cin cur text3D"><?=number_format((float)$rowi->SERVICE_CHARGE, 2, '.', '')?></td>  
-						            <td class="text3D"><?=$cur?></td>
-                        <td class="cin cur text3D"><?=number_format((float)$rowi->TOTAL_TAX, 2, '.', '')?></td> 
-						            <td class="text3D"><?=$cur?></td>
-                        <td class="cin cur text3D"><?=number_format((float)$rowi->ROUNDING, 2, '.', '')?></td>  
-						            <td class="text3D info"><?=$cur?></td>
-                        <td class="cin cur text3D info"><?=number_format((float)$rowi->PAID_AMOUNT, 2, '.', '')?></td> 
-                      </tr>
-                      <tr>
-                        <td class="active odt" style="display:none !important;"></td>
-                        <td colspan="24" class="odt" style="display:none !important;">
-                          <table id="odetail" class="table-striped dt-right table-hover table-condensed" style="width:100%;" data-sort="false">
-                            <thead>
-                              <tr class="tablehead text3D">
-                                <th>Menu Name</th>
-                                <th>Category Name</th>
-                                <th>Kitchen Note</th>
-                                <th class="cin">Qty</th>  
-                                <th class="" colspan="2">Price</th> 
-                                <th class="" colspan="2">Total</th>
-                              </tr>
-                            </thead>
-                            <tbody> 
-                            <?php 
-                              foreach($this->sales->get_order_details($rowi->IID) as $rowd){
-                            ?>
-                              <tr>
-                                <td><?=$rowd->MENU_NAME?></td>
-                                <td><?=$rowd->CATEGORY_NAME?></td>
-                                <td><?=($rowd->KITCHEN_NOTE==NULL)?"-":$rowd->KITCHEN_NOTE?></td>
-                                <td class="cin text3D"><?=$rowd->QUANTITY?></td>
-						                    <td class="text3D"><?=$cur?></td>
-                                <td class="cin cur text3D"><?=number_format((float)$rowd->PRICE, 2, '.', '')?></td> 
-						                    <td class="text3D"><?=$cur?></td>
-                                <td class="cin cur text3D"><?=number_format((float)$rowd->TOTAL, 2, '.', '')?></td>
-                              </tr>
-                            <?php } ?>
-                            </tbody>
-                          </table>
-                        </td>
-                      </tr>
-                    <?php } ?>
-                    </tbody>
-                  </table>
-                </td>
-						  </tr>
+              <tr id="inv-<?=$row->OID?>"><td colspan="23" style="display:none !important;"></td></tr>
 						  <?php  
                   $total['NO_OF_GUEST'] = $total['NO_OF_GUEST']+$row->NO_OF_GUEST;  
                   $total['TOTAL_BILL'] = $total['TOTAL_BILL']+$row->TOTAL_BILL;  
@@ -295,27 +189,27 @@
 						    <th class="no-sort"></th>    
 						    <th class="cin no-sort">Grand Total</th>
 						    <th class="cin text3D no-sort"><?=$total['NO_OF_GUEST']?></th>
-						    <th class="text3D no-sort"><?=$cur?></th>
+						    <th class="cin text3D no-sort"><?=$cur?></th>
 						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['TOTAL_BILL'], 2, '.', '')?></th>  
-						    <th class="text3D no-sort"><?=$cur?></th>
+						    <th class="cin text3D no-sort"><?=$cur?></th>
 						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['TIP'], 2, '.', '')?></th>    
-						    <th class="text3D no-sort text-danger"><?=$cur?></th>
+						    <th class="cin text3D no-sort text-danger"><?=$cur?></th>
 						    <th class="cin cur text3D no-sort text-danger"><?=number_format((float)$total['DISCOUNT'], 2, '.', '')?></th> 
-						    <th class="text3D no-sort"><?=$cur?></th>
+						    <th class="cin text3D no-sort"><?=$cur?></th>
 						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['SERVICE_CHARGE'], 2, '.', '')?></th> 
-						    <th class="text3D no-sort"><?=$cur?></th>
+						    <th class="cin text3D no-sort"><?=$cur?></th>
 						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['TOTAL_TAX'], 2, '.', '')?></th>  
-						    <th class="text3D no-sort"><?=$cur?></th>
+						    <th class="cin text3D no-sort"><?=$cur?></th>
 						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['DELIVERY_FEE'], 2, '.', '')?></th> 
-						    <th class="text3D no-sort"><?=$cur?></th>
+						    <th class="cin text3D no-sort"><?=$cur?></th>
 						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['TOTAL_ROUNDING'], 2, '.', '')?></th> 
-						    <th class="text3D no-sort info"><?=$cur?></th>
+						    <th class="cin text3D no-sort info"><?=$cur?></th>
 						    <th class="cin cur text3D no-sort info"><?=number_format((float)$total['PAID_AMOUNT'], 2, '.', '')?></th>
 						    <!--<th class="no-sort"></th>-->
 						  </tr>
 						  <tr> 
-                <td colspan="23">                                                
-                  <div class="pagination pagination-centered hide-if-no-paging row row-centered"></div>
+                <td colspan="23">                                                           
+                  <div class="pagination pagination-centered hide-if-no-paging"></div>
                 </td>
               </tr>
             </tfoot>
@@ -331,6 +225,7 @@
 <div id="ajaxurl" data-url="<?=base_url()?>"></div>
 <div id="cur" data-val="<?=$cur?>"></div>
 <div id="rest_id" data-val="<?=$rest_id?>"></div>
+
 
 <script type="text/javascript">      
   //datepickers    
@@ -355,11 +250,7 @@
   }); 
   */
   
-  var table1 = $('#sales').footable({
-    paginate: true,
-    pageSize: 50,
-    pageNavigationSize: 8
-  });
+  $('#sales').footable();
   
   //inititate datatable
   var table2 = $('#void').DataTable({
@@ -373,47 +264,120 @@
     "bAutoWidth": false
   }); 
   
-  /* temporary disabled  
-   $('#sales tbody').on('click', 'td.details-control', function () {
-   //$('td.details-control').click(function () {
-        var tr = $(this).closest('tr');           
-        //var td = $(this).closest('tr').next('td').find('inv');           
-        var td = $('td.inv');
-         console.log(tr);
-          console.log(td);
-        
-        if ( td.is(":visible") ) {
+  var gOrdDet = function gOrdDet(){
+       $(".modalTrigger").click(function () { 
+        var odnP = $(this).data('odn');   
+        $(".modal-title #ordnumb").html(odnP);
+        var varP = $(this).data('id');  
+        var dataP = "varP="+varP+"&rest_id="+rest_id;  
+        $.ajax({
+          type: "POST",
+          url: ajaxurl+"process/orders",
+          data: dataP,
+          cache: false,
+          success: function(result){
+            $(".modal-body #datarow").html(result); 
+            return false; 
+          }
+        }); 
+       });
+    }; 
+    
+  function format ( d ) {
+    // `d` is the original data object for the row
+    return '<div class="row" style="margin-left:10px">'+
+      '<div class="col-sm-1 tablehead">'+
+      '</div>'+ 
+      '<div class="col-sm-11">'+ 
+      '<table id="tbchild" cellpadding="5" cellspacing="0" border="0" style="padding-left:50px !important; width:100%;" class="table table-striped dt-right">'+
+        '<thead>'+
+        '<tr class="tablehead text3D">'+
+            '<th>asdfa</th>'+
+            '<th>dgfsdg</th>'+
+        '</tr>'+
+        '</thead>'+
+        '<tbody>'+
+        '<tr>'+
+            '<td class="tdclick">Full name:</td>'+
+            '<td>eek</td>'+
+        '</tr>'+
+        '<tr>'+       
+            '<td>Extension number:</td>'+
+            '<td>346</td>'+
+        '</tr>'+
+        '<tr>'+  
+            '<td>Extra info:</td>'+
+            '<td>And any further details here (images etc)...</td>'+
+        '</tr>'+
+        '</tbody>'+
+      '</table>'+
+    '</div>'+
+    '</div><script>clickshowchild("#tbchild tbody","td.tdclick");<\/script>';
+  }
+  
+  //tablechild('#sales tbody td.details-control');
+  function tablechild(ale) {
+        var tr = $(ale).closest('tr');
+        var row = table1.row( tr );
+ 
+            row.child( format(row.data()) ).show();
+            tr.addClass('shown');
+    }       
+    
+  //clickshowchild('#sales tbody','td.details-control'); 
+  function clickshowchild(tableale,tdclass){
+      // Add event listener for opening and closing details
+    $(tableale).on('click', tdclass, function () {
+        var tr = $(this).closest('tr'); 
+        var row = table1.row( tr );
+ 
+        if ( row.child.isShown() ) {
             // This row is already open - close it
-            td.hide();
-            td.removeClass('shown');
+            row.child.hide();
+            tr.removeClass('shown');
         }
         else {
             // Open this row
-            td.show();
-            td.addClass('shown');     
+            row.child( format(row.data()) ).show();
+            tr.addClass('shown');     
         }
     } );  
-  */
+  }
     
   $(document).ready(function(){
-    $('#sallb').click(function(){
-      $('td.inv').show();
-      $('td.odt').show();
-    });
-    $('#sinvb').click(function(){
-      $('td.inv').show();   
-      $('td.odt').hide();
-    });
-    $('#hallb').click(function(){
-      $('td.inv').hide();   
-      $('td.odt').hide();
+    
+    gOrdDet();  
+    $('#report').DataTable({      
+      columnDefs: [
+        { targets: 'no-sort', orderable: false }
+      ],
+      "order": [[ 0, "asc" ]],
+      url: ajaxurl+'reports/sales',
+      method: 'get',
+      onAll: function (name, args) {
+        if (typeof gOrdDet == 'function') {  
+          gOrdDet(); 
+          console.log('inside fired');
+        }
+      }
+    }).on('all.bs.table', function (e, name, args) { 
+        if (typeof gOrdDet == 'function') { 
+          gOrdDet();     
+          console.log('triggered');
+        }
+      console.log('Event:', name, ', data:', args);
     }); 
-    $('#sales table').css({
-      paddingLeft: '3px',
-      paddingRight: '3px'
-    }); 
+    
+    
   });
   
+  $('#modalTable').DataTable({
+    paging: false,    
+    searching: false,
+    ordering:  false,
+    bInfo : false
+  });
+
   //currency control
   jQuery(function($) {
     var cur = '<?=$cur?>';

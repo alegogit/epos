@@ -167,7 +167,8 @@ class Restaurant_model extends CI_Model {
   } 
   
 	function get_countries(){    
-    $this->db->where('LOOKUP_NAME','COUNTRY');
+    $this->db->where('LOOKUP_NAME','COUNTRY');   
+    $this->db->order_by("VALUE","ASC");
     $query = $this->db->get('REF_VALUES');
     return $query->result();
   }

@@ -52,7 +52,7 @@
 	   
     <div class="panel panel-default">
 		    <div class="panel-heading">
-          <b>cashflow Report</b>  
+          <b>Cashflow Report</b>  
         </div>
 	      <div class="panel-body table-responsive">   
 	        <table id="report" class="table table-striped dt-right compact">

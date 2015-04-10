@@ -96,7 +96,8 @@ class Cashflow_model extends CI_Model {
                                 ) CASH_FROM_INVOICES 
                                         ON CASH_FROM_INVOICES.ORDER_DATE = DATE(PH.DATE) AND CASH_FROM_INVOICES.TERMINAL_ID = T.ID
                                 WHERE T.REGISTERED = 1
-                                        AND PH.DATE BETWEEN '".$startdate."' AND DATE_ADD('".$enddate."', INTERVAL 1 DAY) 
+                                        AND PH.DATE BETWEEN '".$startdate."' AND DATE_ADD('".$enddate."', INTERVAL 1 DAY)
+                                        AND PH.DATE < DATE_ADD('".$enddate."', INTERVAL 1 DAY)
                                         AND R.ID = ".$rest_id."
                                 GROUP BY T.ID, DATE(PH.DATE);");
 		    return $query->result();

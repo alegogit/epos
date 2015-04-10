@@ -87,7 +87,7 @@ class Sales_model extends CI_Model {
                                INNER JOIN INVOICES_ORDERS OI ON OI.INVOICE_ID = I.ID
                                INNER JOIN ORDERS O ON OI.ORDER_ID = O.ID
                                   AND O.ENDED BETWEEN '".$start_date."' AND DATE_ADD('".$end_date."', INTERVAL 1 DAY)
-                                  AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 1
+                                  AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
                                 ORDER BY AMOUNT DESC;");
 		return $query->result();  
 	}
