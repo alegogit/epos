@@ -153,7 +153,7 @@ class Sales_model extends CI_Model {
   
   function remove_other_others($array){
     $key = array_keys($array); 
-    $i = $key[0];
+    $i = @$key[0];
     $n = count($array)+$i;
     foreach ($array as $row){    
       if($i<$n-1){  

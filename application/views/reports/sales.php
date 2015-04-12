@@ -11,7 +11,7 @@
     </div>   
     <div class="pull-right">
       <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
-        <a id="print" role="button" class="btn btn-primary" href="<?=base_url()?>reports/salesprint">&nbsp;<span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Print&nbsp;</a>
+        <a id="print" role="button" class="btn btn-primary" href="<?=base_url()?>reports/salesprint/<?=$hashvars?>" target="_blank">&nbsp;<span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Print&nbsp;</a>
       </div>
     </div>                                                                    
     <hr style="margin-bottom:10px;margin-top:10px" />         

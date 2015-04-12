@@ -28,7 +28,7 @@
         </div>
 	      <div class="panel-body table-responsive" style="font-size:80% !important;"> 
 	         <table id="sales" class="table table-striped dt-right table-hover table-condensed" data-filter="#sfilter" data-filter-text-only="true" data-sort="false">
-					   <thead>
+					   <thead class="repeat">
 						  <tr class="tablehead text3D">
 						    <th class="cin">Order Number</th>
 						    <th class="cin">Table Number</th>

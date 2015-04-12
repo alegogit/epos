@@ -36,6 +36,10 @@ class Sales_controller extends CI_Controller {
       $data['cur'] = $this->sales->get_currency($rest_id);
 			$data['sales_report'] = $this->sales->get_sales_report(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id); 
 			$data['void_items'] = $this->sales->get_void_items(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id); 
+			              
+			$passvars = $session_data['id'].",".$session_data['role'].",".$rest_id.",".$report_name.",".$start_date.",".$end_date;  
+      $this->load->library('hash');  
+			$data['hashvars'] = $this->hash->epos_encrypt($passvars,$this->config->item('encryption_key'));
 			
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);
@@ -113,19 +117,22 @@ class Sales_controller extends CI_Controller {
 			$this->load->view('shared/footer');		
 	}
   
-	public function view(){    
-		  $data['restaurants'] = $this->sales->get_user_rest(1,1); 
-      @$data['reslogo'] = ($this->sales->get_rest_logo()=="")?base_url()."assets/images/logo3d.png":$this->sales->get_rest_logo();    
-			$data['def_rest'] = 1;
-			$data['def_report_name'] = 'Sales';
-			$data['def_start_date'] = date('d M Y', time() - 7 * 60 * 60 * 24);
-			$data['def_end_date'] = date('d M Y', time());     
+	public function view(){  
+      $parshash = substr(strstr(uri_string(),'/'),11);       
+      $this->load->library('hash');  
+      $parsvars = $this->hash->epos_decrypt($parshash,$this->config->item('encryption_key'));
+      //echo $parshash."<br>".$parsvars;  //1,1,1,Sales,01 Mar 2015,10 Mar 2015 
+      $parsed = explode(",",$parsvars);  //var_dump($parsed);
+		  $data['restaurants'] = $this->sales->get_user_rest($parsed[0],$parsed[1]); //(userid,role)
+      @$data['reslogo'] = ($this->sales->get_user_rest_logo($parsed[0])=="")?base_url()."assets/images/logo3d.png":$this->sales->get_user_rest_logo($parsed[0]);  //(userid)  
+			$data['def_rest'] = $parsed[2];    //restid
+			$data['def_report_name'] = $parsed[3];     
 			$rest_id = (!($this->input->post('rest_id')))?$data['def_rest']:$this->input->post('rest_id');
 			$report_name = (!($this->input->get('report_name')))?$data['def_report_name']:$this->input->get('report_name'); 
 			//$start_date = (!($this->input->post('startdate')))?$data['def_start_date']:$this->input->post('startdate'); 
-			$start_date = "01 Jan 2015";
+			$start_date = $parsed[4];
       //$end_date = (!($this->input->post('startdate')))?$data['def_end_date']:$this->input->post('enddate');  
-			$end_date = "15 Mar 2015";
+			$end_date = $parsed[5];
 			$data['rest_id'] = $rest_id;
 			$data['report_name'] = $report_name;
 			$data['startdate'] = $start_date;
@@ -133,13 +140,13 @@ class Sales_controller extends CI_Controller {
       $data['cur'] = $this->sales->get_currency($rest_id);
 			$data['sales_report'] = $this->sales->get_sales_report(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id); 
 			$data['void_items'] = $this->sales->get_void_items(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id); 
-			
+						
 			$this->load->view('reports/salesview3',$data);
 	}
   
   
   
-	public function printing(){
+	public function printing0(){
 			$data['def_rest'] = 2;
 			$data['def_report_name'] = 'Sales';
 			$data['def_start_date'] = date('d M Y', time() - 7 * 60 * 60 * 24);
@@ -180,7 +187,26 @@ class Sales_controller extends CI_Controller {
  
       //redirect("/downloads/reports/$filename.pdf"); 
 	}
-	
+		
+  public function printing(){ 
+    $parshash = substr(strstr(uri_string(),'/'),12); 
+    $this->load->library('hash');  
+    $parsvars = $this->hash->epos_decrypt($parshash,$this->config->item('encryption_key'));
+    //echo $parshash."<br>".$parsvars;  //1,1,1,Sales,01 Mar 2015,10 Mar 2015   
+    $parsed = explode(",",$parsvars);  //var_dump($parsed);
+    $filename = $parsed[3]."report".$parsed[2].".pdf";
+    $config = $this->config->config;
+    $p = $config['phantomjs']." ";
+    $r = $config['html2pdf']." ";
+    $u2 = base_url()."reports/salesview/".$parshash." ";
+    $o2 = $config['outputpdf'].$filename." ";
+    $commando2 = $p.$r.$u2.$o2;
+    $getout2 = exec($commando2,$out2,$err2);
+    //var_dump($out2);
+    //echo '<br>'.$commando2;
+    redirect(base_url().'assets/img/'.$filename); 	 
+  }
+  	
 	public function profile()
 	{
 		$data['profile'] = $this->sales->get_profile();

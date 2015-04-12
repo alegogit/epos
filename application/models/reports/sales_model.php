@@ -57,7 +57,7 @@ class Sales_model extends CI_Model {
                       ->limit(1)
                       ->get('');
     return $query->row()->LOGO_URL;
-  }
+  }            
   
   function get_user_rest_logo($id){
 		$this->db->where('USERS_RESTAURANTS.USER_ID',$id); 

@@ -26,6 +26,11 @@
     max-height: 300px;
     overflow-y: scroll;
 }
+@media print{
+  thead.repeat{
+    display: table-header-group;
+  }
+}
 </style>
 <?php } ?>  
 <?php if ( ( isset($submenu) && $submenu == 'restaurant') || ($menu == 'profile') ) { ?>
@@ -33,14 +38,13 @@
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jasny-bootstrap.min.css"/> 
 <?php } ?>  
 
-<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap.css"/>
-<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/print.css" media="print"/>
+<link rel="stylesheet" type="text/css" media="all" href="<?php echo base_url(); ?>assets/css/bootstrap.css"/>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/datepicker.css"/>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.css"/>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery-ui.theme.css"/>
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/jquery.dataTables.css"/>
 
-<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/custom.css"/>    
+<link rel="stylesheet" type="text/css" media="all" href="<?php echo base_url(); ?>assets/css/custom.css"/>    
 <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/font-awesome.min.css"/>
 
 <!-- Chart -->
@@ -52,7 +56,7 @@
 <!-- Table -->
 <script src="<?=base_url()?>assets/js/jquery.dataTables.js"></script> 
 <script src="<?=base_url()?>assets/js/footable/footable.all.min.js"></script> 
-<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/footable/footable.core.min.css"/>
+<link rel="stylesheet" type="text/css" media="all" href="<?php echo base_url(); ?>assets/css/footable/footable.core.min.css"/>
 
 <!-- Currency -->
 <script src="<?=base_url()?>assets/js/autoNumeric.js"></script> 
