@@ -62,15 +62,30 @@ class Users_model extends CI_Model {
     	return $query->row();
   	}    
   
-	function get_users_data(){ 
+	function get_users_data0(){ 
 		$session_data = $this->session->userdata('logged_in');  
 		$role = $session_data['role'];   
 		if($role>1){
       		$query = $this->db->where('ROLE_ID > '.$role);
-    	}
+    	}    
     	$query = $this->db->get('USERS'); 
     	return $query->result();
   	} 
+    
+	function get_users_data($rest_id){ 
+		$session_data = $this->session->userdata('logged_in');  
+		$user_id = $session_data['id'];    
+		$role = $session_data['role'];   
+		if($role>1){
+      $query = $this->db->where('USERS.ROLE_ID > '.$role);
+    }     
+    $query = $this->db->select('USERS.*')
+                      ->from('USERS')
+                      ->join('USERS_RESTAURANTS', 'USERS.ID = USERS_RESTAURANTS.USER_ID')
+                      ->where('USERS_RESTAURANTS.REST_ID',$rest_id)
+                      ->get('');
+    return $query->result();
+  } 
     
   	function get_default_rest($user_id){                         
     	$query = $this->db->query('SELECT USERS_RESTAURANTS.*, RESTAURANTS.NAME AS REST_NAME
@@ -149,9 +164,9 @@ class Users_model extends CI_Model {
 		$PASSWD = sha1(md5($PASSWORD));
 		$id = $session_data['id'];
     	$query1 = $this->db->query('INSERT INTO USERS
-      		(NAME,EMAIL_ADDRESS,USERNAME,PASSWORD,ROLE_ID,TOTAL_HRS_WEEK,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
+      		(NAME,EMAIL_ADDRESS,USERNAME,PASSWORD,ACTIVE,ROLE_ID,TOTAL_HRS_WEEK,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
       		VALUES 
-      		("'.$NAME.'","'.$EMAIL.'","'.$USERNAME.'","'.$PASSWD.'",'.$ROLE.','.$TOTAL_HRS_WEEK.','.$id.',NOW(),'.$id.',NOW());');
+      		("'.$NAME.'","'.$EMAIL.'","'.$USERNAME.'","'.$PASSWD.'",1,'.$ROLE.','.$TOTAL_HRS_WEEK.','.$id.',NOW(),'.$id.',NOW());');
       $query2 = $this->setting->assign_rest($this->setting->get_mail_user($EMAIL)->ID,array_diff($AREST,[$DREST]));  
     	$query3 = $this->db->query('INSERT INTO USERS_RESTAURANTS
       		(USER_ID,REST_ID,DEFAULT_REST,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 

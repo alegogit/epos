@@ -20,11 +20,11 @@
           </div>
           <div class="col-md-6">    
             <!--<div style="display:inline-block;float:left" name="sales_tab" class="navdash navdash_first active">Sales</div>
-            <div style="display:inline-block" name="inventory_tab" class="navdash navdash_last">Inventory</div>-->
+            <div style="display:inline-block" name="inventory_tab" class="navdash navdash_last">Inventory</div>-->  
             <div class="pull-right">
-            <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
-              <a id="print" role="button" class="btn btn-primary" href="#">&nbsp;<span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Print&nbsp;</a>        
-            </div> 
+              <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
+                <a id="print" role="button" class="btn btn-primary" href="<?=base_url()?>dashboard/salesprint/<?=$hashvars?>" target="_blank">&nbsp;<span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Print&nbsp;</a>
+              </div>
             <!--<div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
               <a id="export" role="button" class="btn btn-primary" href="#"><span class="glyphicon glyphicon-export"></span>&nbsp;&nbsp;Export</a>        
             </div>--> 
@@ -103,7 +103,7 @@
           <div class="col-md-6">
   				  <div class="panel panel-default">
   				    <div class="panel-heading"><b>Top Category By Sales</b></div>
-  					  <div class="panel-body" style="height:245px;font-size:125%;">
+  					  <div class="panel-body" style="height:275px;font-size:125%;">
     					  <div class="row">
     						  <div class="canvas-donut" style="float:left;margin-left:8px">
     							  <canvas class="chart" id="topcats_donut" ></canvas>
@@ -113,12 +113,24 @@
                       <?php    
                         $i = 0;
                         $n = count($dtopcats);
+                        $ofound = 0;
                         $chart_legend = "<table style='width:100%'>";
                         $total = 0; 
                         foreach ($dtopcats as $tot){
                           $total = $total + $tot->AMOUNT; 
                         }
                         foreach ($dtopcats as $row){
+                          if(strtolower($row->CAT_NAME)=="others"){   
+                            $chart_legend .= "<tr><td colspan='5'>&nbsp;</td>"; 
+                            //$chart_legend .= "<tr><td colspan='5'><hr style='margin-top:5px;margin-bottom:5px'></td>"; 
+                            $chart_legend .= "<tr><td><span class='glyphicon glyphicon-tint' style='color:".$donut_color[$i+1]."'></span></td>";  
+                            $chart_legend .= " <td class='trunk1' style='padding-left:5px;padding-right:5px;'><b>".ucwords(strtolower($adjustcat->CAT_NAME))."</b></td>"; 
+                            $chart_legend .= "<td class='cin'><span style='padding-left:10px;'>&nbsp;</span>".$cur."&nbsp;</td>";
+                            $chart_legend .= " <td class='cin cur'><b>".$adjustcat->AMOUNT."</b></td>";       
+                            $chart_legend .= " <td class='cin'><span style='padding-left:5px;'>&nbsp;</span>".$adjustcat->TOTAL."</td>"; 
+                            $chart_legend .= "<tr><td colspan='5'><hr style='margin-top:5px;margin-bottom:5px'></td>"; 
+                            $ofound = $ofound + 1;
+                          }
                             $chart_legend .= "<tr><td><span class='glyphicon glyphicon-tint' style='color:".$donut_color[$i]."'></span></td>";  
                             $chart_legend .= " <td class='trunk1' style='padding-left:5px;padding-right:5px;'><b>".ucwords(strtolower($row->CAT_NAME))."</b></td>"; 
                             $chart_legend .= "<td class='cin'><span style='padding-left:10px;'>&nbsp;</span>".$cur."&nbsp;</td>";
@@ -126,8 +138,25 @@
                             $chart_legend .= " <td class='cin'><span style='padding-left:5px;'>&nbsp;</span>".$row->TOTAL."</td>";  
                             $chart_legend .= " <!--<td style='float:right;display:inline-block'><span style='padding-left:10px;'>&nbsp;</span>".round(($row->AMOUNT/$total)*100)."% </td>--></tr>
                             <tr><td colspan='5'><hr style='margin-top:5px;margin-bottom:5px'></tr>";
+                         
                           $i++;  
-                        }  
+                        } 
+                        if($ofound==0){
+                            $chart_legend .= "<tr><td colspan='5'>&nbsp;</td>"; 
+                            //$chart_legend .= "<tr><td colspan='5'><hr style='margin-top:5px;margin-bottom:5px'></td>"; 
+                            $chart_legend .= "<tr><td><span class='glyphicon glyphicon-tint' style='color:".$donut_color[$i+1]."'></span></td>";  
+                            $chart_legend .= " <td class='trunk1' style='padding-left:5px;padding-right:5px;'><b>".ucwords(strtolower($adjustcat->CAT_NAME))."</b></td>"; 
+                            $chart_legend .= "<td class='cin'><span style='padding-left:10px;'>&nbsp;</span>".$cur."&nbsp;</td>";
+                            $chart_legend .= " <td class='cin cur'><b>".$adjustcat->AMOUNT."</b></td>";       
+                            $chart_legend .= " <td class='cin'><span style='padding-left:5px;'>&nbsp;</span>".$adjustcat->TOTAL."</td>"; 
+                            $chart_legend .= "<tr><td colspan='5'><hr style='margin-top:5px;margin-bottom:5px'></td>";
+                            $chart_legend .= "<tr><td><span class='glyphicon glyphicon-tint' style='color:".$donut_color[$i+2]."'></span></td>";  
+                            $chart_legend .= " <td class='trunk1' style='padding-left:5px;padding-right:5px;'><b> Others </b></td>"; 
+                            $chart_legend .= "<td class='cin'><span style='padding-left:10px;'>&nbsp;</span>".$cur."&nbsp;</td>";
+                            $chart_legend .= " <td class='cin cur'><b>0</b></td>";       
+                            $chart_legend .= " <td class='cin'><span style='padding-left:5px;'>&nbsp;</span>0</td>"; 
+                            $chart_legend .= "<tr><td colspan='5'><hr style='margin-top:5px;margin-bottom:5px'></td>";
+                        } 
                         $chart_legend .= "</table>";
                         if($n!=0){    
                           echo $chart_legend;
@@ -146,7 +175,7 @@
           <div class="col-md-6">
   				  <div class="panel panel-default">
   				    <div class="panel-heading"><b>Top Menu Items By Sales</b></div>
-  					  <div class="panel-body" style="height:245px;font-size:125%;"> 
+  					  <div class="panel-body" style="height:275px;font-size:125%;"> 
                   <div class="fitin" style="display:inline-block;width:100%;">
       					     <?php 
                       $i = 0;
@@ -519,7 +548,7 @@ $(document).ready(function(){
      
      //print page
      $("#print").click(function(){      
-        window.print();
+        //window.print();
      });   
        
     //animating numbers 

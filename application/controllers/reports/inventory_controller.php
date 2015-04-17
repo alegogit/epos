@@ -34,7 +34,10 @@ class Inventory_controller extends CI_Controller {
 			
 			$data['deleteId'] = (!($this->input->post('invid')))?'invid':$this->input->post('invid');
       $data['deleteIdStr'] = (!($this->input->post('invid')))?'invidstr':implode(',', $deleteId);
-      		//$sql = "delete from usertable where userid in ($deleteIdStr)";
+      
+			$passvars = $session_data['id'].",".$session_data['role'].",".$rest_id;  
+      $this->load->library('hash');  
+			$data['hashvars'] = $this->hash->epos_encrypt($passvars,$this->config->item('encryption_key'));
 
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);
@@ -49,28 +52,41 @@ class Inventory_controller extends CI_Controller {
 		
 	}
 	
-	public function view()
-	{
-			$data['def_rest'] = 2;
-			$data['def_report_name'] = 'Inventory';
-			$data['def_start_date'] = date('d M Y', time() - 7 * 60 * 60 * 24);
-			$data['def_end_date'] = date('d M Y', time());     
-			$rest_id = (!($this->input->post('rest_id')))?$data['def_rest']:$this->input->post('rest_id');
-			$report_name = (!($this->input->get('report_name')))?$data['def_report_name']:$this->input->get('report_name'); 
-			//$start_date = (!($this->input->post('startdate')))?$data['def_start_date']:$this->input->post('startdate'); 
-			$start_date = "01 Jan 2015";
-      $end_date = (!($this->input->post('startdate')))?$data['def_end_date']:$this->input->post('enddate'); 
-			$data['rest_id'] = $rest_id;
-			$data['report_name'] = $report_name;
-			$data['startdate'] = $start_date;
-			$data['enddate'] = $end_date; 
+	public function view() {
+    $callpage = "inventoryview";
+    $parshash = substr(strstr(uri_string(),'/'),strlen($callpage)+2); //echo $parshash; 
+    $this->load->library('hash');  
+    $parsvars = $this->hash->epos_decrypt($parshash,$this->config->item('encryption_key'));
+    $parsed = explode(",",$parsvars);  //var_dump($parsed);
+		$data['restname'] = $this->inventory->get_restaurant_name($parsed[2]); //(restid)
+    @$data['reslogo'] = ($this->inventory->get_restid_logo($parsed[2])=="")?base_url()."assets/images/logo3d.png":$this->inventory->get_restid_logo($parsed[2]);  //(userid)  
+		$rest_id = $parsed[2];    //restid
+		$data['rest_id'] = $rest_id;
+		$data['nowadate'] = date('d F Y');
           
-			$data['inventory'] = $this->inventory->get_inventory($rest_id); 
-			
-			$this->load->view('shared/notopbar_header',$this->data);
-			$this->load->view('reports/inventoryview',$data);
-			$this->load->view('shared/footer');		
-	}
+		$data['inventory'] = $this->inventory->get_inventory($rest_id); 
+      
+		$this->load->view('reports/printview/'.$callpage,$data);
+	}    
+		
+  public function printing(){ 
+    $callpage = "inventoryview";
+    $parshash = substr(strstr(uri_string(),'/'),strlen($callpage)+3);
+    $this->load->library('hash');  
+    $parsvars = $this->hash->epos_decrypt($parshash,$this->config->item('encryption_key'));
+    $parsed = explode(",",$parsvars);  //var_dump($parsed);
+    $filename = "Inventoryreport".$parsed[2].".pdf";
+    $config = $this->config->config;
+    $p = $config['phantomjs']." ";
+    $r = $config['html2pdfp']." ";  //potrait
+    $u2 = base_url()."reports/".$callpage."/".$parshash." ";    
+    $o2 = $config['savedpdf'].$filename." ";
+    $commando2 = $p.$r.$u2.$o2;
+    $getout2 = exec($commando2,$out2,$err2);
+    //var_dump($out2);
+    //echo '<br>'.$commando2;
+    redirect(base_url().$config['outputpdf'].$filename); 	 
+  }
   
 	public function profile()
 	{

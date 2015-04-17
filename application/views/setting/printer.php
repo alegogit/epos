@@ -293,6 +293,8 @@
                         });";
 	  $edit_script .= "   $('#PRINTER_IP_ADDRESS-".$row->ID."').on('shown', function(e, editable) { 
 	                        	$('.ipv4').inputmask({
+                              placeholder: '0',
+                              greedy: false,
             									mask: 'i[i[i]].i[i[i]].i[i[i]].i[i[i]]',
                               autoUnmask: true,
                               onUnMask: function(maskedValue, unmaskedValue) {
@@ -456,6 +458,8 @@ $(document).ready(function(){
   	//masking
  	$("#MAC_address").inputmask({ "mask": "**:**:**:**:**:**" });
  	$(".ipv4").inputmask({
+    placeholder: '0',
+    greedy: false,
 		mask: "i[i[i]].i[i[i]].i[i[i]].i[i[i]]",
 		definitions: {
 			i: {
@@ -514,7 +518,16 @@ function isValidMacAddress(macAdd){
   } else {
    return true;
   }
-}                 
+}        
+
+function isValidIPv4(ip){
+  var RegExPattern = /^(([3-9]\d?|[01]\d{0,2}|2\d?|2[0-4]\d|25[0-5])\.){3}([3-9]\d?|[01]\d{0,2}|2\d?|2[0-4]\d|25[0-5])$/;
+  if (!(ip.match(RegExPattern)) || ip.length < 4){
+   return false;
+  } else {
+   return true;
+  }
+}                  
                      
 function isLimited(input,init,limit) {
   var regex = new RegExp("^.{" + init + "," + limit + "}$");

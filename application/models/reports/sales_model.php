@@ -59,12 +59,10 @@ class Sales_model extends CI_Model {
     return $query->row()->LOGO_URL;
   }            
   
-  function get_user_rest_logo($id){
-		$this->db->where('USERS_RESTAURANTS.USER_ID',$id); 
-		$this->db->where('USERS_RESTAURANTS.DEFAULT_REST',1);
+  function get_restid_logo($id){
+		$this->db->where('ID',$id); 
     $query = $this->db->select('LOGO_URL')
                       ->from('RESTAURANTS')
-                      ->join('USERS_RESTAURANTS', 'RESTAURANTS.ID = USERS_RESTAURANTS.REST_ID')
                       ->limit(1)
                       ->get('');
     return $query->row()->LOGO_URL;

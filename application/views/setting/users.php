@@ -13,7 +13,32 @@
       <a role="button" class="btn btn-default" href="<?=base_url()?>setting/terminal">Terminal</a>           
     </div>       
                                                                           
-    <hr style="margin-bottom:10px" />
+    <hr style="margin-bottom:10px" />    
+    
+    <div class="row" style="padding-left: 15px">  
+      <?php
+        $attributes = array('class' => 'form-inline', 'id' => 'filter', 'role' => 'form');
+        echo form_open('setting/users',$attributes)
+      ?>
+        <div class="form-group" style="margin-bottom:0px">
+          <div class="input-group">
+            <div class="input-group-addon"><span class="glyphicon glyphicon-cutlery"></span></div>
+            <select id = "myRestaurant" name="rest_id" title="Restaurant Name" class="form-control" style="display:inline">
+              <option value = "0">Select Restaurant</option>
+              <?php foreach($restaurants as $row){ ?>
+              <option value = "<?=$row->REST_ID?>" <?= ($row->REST_ID==$rest_id)?'selected':''?> ><?=$row->NAME?></option>
+              <?php } ?>
+            </select>   
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:0px">
+          <div class="input-group">
+            <input type="submit" class="btn btn-success" style="display:inline" value="Filter" name="filter">  
+          </div>
+        </div>
+      <?=form_close()?>     
+    </div>                                
+    <hr style="margin-bottom:10px" />     
     
     <div class="row">
 			<div class="col-lg-12">

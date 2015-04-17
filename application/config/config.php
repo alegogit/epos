@@ -28,7 +28,21 @@ $config['google_api_key']	= 'AIzaSyANKh_UVStCUvbL8QVq9x7YylJ0wSjNViU';
 $config['fileserver_upl']	= 'http://54.169.200.242/epos/upload/'; 
 $config['fileserver_url']	= 'http://54.169.200.242/epos/';
 $config['fileserver_img_dir']	= 'dev/img/';
-$config['fileserver_app_dir']	= 'dev/app/';
+$config['fileserver_app_dir']	= 'dev/app/';       
+
+/*
+|--------------------------------------------------------------------------
+| Phantomjs related Dir
+|--------------------------------------------------------------------------
+|
+| Path to Phantomjs and friends directories
+*/     
+$config['phantomjs'] = 'D:\\artileri\\phantomjs\\bin\\phantomjs.exe';
+$config['html2pdf'] = 'D:\\artileri\\phantomjs\\bin\\html2pdf.js';
+$config['html2pdfp'] = 'D:\\artileri\\phantomjs\\bin\\html2pdf-P.js';
+$config['rasterize'] = 'D:\\artileri\\phantomjs\\bin\\rasterize.js';
+$config['savedpdf'] = 'D:\\xampp\\htdocs\\epos\\assets\\pdf\\';
+$config['outputpdf'] = 'assets/pdf/';
 
 /*
 |--------------------------------------------------------------------------

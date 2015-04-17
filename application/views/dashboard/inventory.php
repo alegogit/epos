@@ -12,16 +12,16 @@
               <a role="button" class="btn btn-default" href="<?=base_url()?>dashboard/trends">&nbsp;&nbsp;Trends&nbsp;&nbsp;</a>
               <a role="button" class="btn btn-primary" href="<?=base_url()?>dashboard/inventory">Inventory</a>         
             </div> 
-          </div>
+          </div> 
           <div class="col-md-6">    
             <div class="pull-right">
-            <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
-              <a id="print" role="button" class="btn btn-primary" href="#">&nbsp;<span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Print&nbsp;</a>        
-            </div> 
+              <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
+                <a id="print" role="button" class="btn btn-primary" href="<?=base_url()?>dashboard/inventoryprint/<?=$hashvars?>" target="_blank">&nbsp;<span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Print&nbsp;</a>
+              </div>
+            </div>    
             <!--<div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
               <a id="export" role="button" class="btn btn-primary" href="#"><span class="glyphicon glyphicon-export"></span>&nbsp;&nbsp;Export</a>        
             </div>--> 
-            </div>
           </div> 
         </div>                          
         <hr style="margin-bottom:10px;margin-top:10px" />
@@ -192,7 +192,7 @@
      
   //print page
   $("#print").click(function(){      
-    window.print();
+    //window.print();
   });   
              
   //animating numbers 

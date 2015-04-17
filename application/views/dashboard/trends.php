@@ -20,15 +20,15 @@
           </div>
           <div class="col-md-6">    
             <!--<div style="display:inline-block;float:left" name="sales_tab" class="navdash navdash_first active">Sales</div>
-            <div style="display:inline-block" name="inventory_tab" class="navdash navdash_last">Inventory</div>-->
+            <div style="display:inline-block" name="inventory_tab" class="navdash navdash_last">Inventory</div>-->  
             <div class="pull-right">
-            <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
-              <a id="print" role="button" class="btn btn-primary" href="#">&nbsp;<span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Print&nbsp;</a>        
-            </div> 
+              <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
+                <a id="print" role="button" class="btn btn-primary" href="<?=base_url()?>dashboard/trendsprint/<?=$hashvars?>" target="_blank">&nbsp;<span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Print&nbsp;</a>
+              </div>
+            </div>    
             <!--<div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
               <a id="export" role="button" class="btn btn-primary" href="#"><span class="glyphicon glyphicon-export"></span>&nbsp;&nbsp;Export</a>        
             </div>--> 
-            </div>
             <!--<span class="pull-right">
               <div style="display:inline-block" name="print_tab" class="navdash navdash_alone">
                 <span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Print
@@ -384,7 +384,7 @@ $(document).ready(function(){
      
      //print page
      $("#print").click(function(){      
-        window.print();
+        //window.print();
      });   
        
     //animating numbers 

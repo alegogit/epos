@@ -29,7 +29,22 @@ class Cashflow_model extends CI_Model {
                         ->get('');
     }
     return $query->result();
-  }         
+  }      
+  
+  function get_user_rest($id,$role=0){
+		if($role!=1){   
+      $this->db->where('USERS_RESTAURANTS.USER_ID',$id);
+      $query = $this->db->select('*')
+                        ->from('RESTAURANTS')
+                        ->join('USERS_RESTAURANTS', 'RESTAURANTS.ID = USERS_RESTAURANTS.REST_ID')
+                        ->get('');
+    } else {  
+      $query = $this->db->select('*,ID AS REST_ID')
+                        ->from('RESTAURANTS')
+                        ->get('');
+    }
+    return $query->row();
+  }               
   
   function get_rest_logo(){
 		$session_data = $this->session->userdata('logged_in');
@@ -39,6 +54,15 @@ class Cashflow_model extends CI_Model {
     $query = $this->db->select('LOGO_URL')
                       ->from('RESTAURANTS')
                       ->join('USERS_RESTAURANTS', 'RESTAURANTS.ID = USERS_RESTAURANTS.REST_ID')
+                      ->limit(1)
+                      ->get('');
+    return $query->row()->LOGO_URL;
+  }              
+  
+  function get_restid_logo($id){
+		$this->db->where('ID',$id); 
+    $query = $this->db->select('LOGO_URL')
+                      ->from('RESTAURANTS')
                       ->limit(1)
                       ->get('');
     return $query->row()->LOGO_URL;

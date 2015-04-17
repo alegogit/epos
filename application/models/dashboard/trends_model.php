@@ -30,7 +30,38 @@ class Trends_model extends CI_Model {
                         ->get('');
     }
     return $query->result();                                                                                                                                      
-  }       
+  }               
+  
+  function get_user_rest($id,$role=0){
+		if($role!=1){   
+      $this->db->where('USERS_RESTAURANTS.USER_ID',$id);
+      $query = $this->db->select('*')
+                        ->from('RESTAURANTS')
+                        ->join('USERS_RESTAURANTS', 'RESTAURANTS.ID = USERS_RESTAURANTS.REST_ID')
+                        ->get('');
+    } else {  
+      $query = $this->db->select('*,ID AS REST_ID')
+                        ->from('RESTAURANTS')
+                        ->get('');
+    }
+    return $query->row();
+  }      
+    
+	function get_username($id){
+    $query = $this->db->select('USERNAME')
+                      ->from('USERS')
+                      ->where('ID',$id)
+                      ->get('');
+    return $query->row();
+  }
+  
+	function get_restaurant_name($id){
+    $query = $this->db->select('NAME AS REST_NAME')
+                      ->from('RESTAURANTS')
+                      ->where('ID',$id)
+                      ->get('');
+    return $query->row();
+  }
   
   function get_rest_logo(){
 		$session_data = $this->session->userdata('logged_in');

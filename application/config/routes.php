@@ -50,9 +50,15 @@ $route['loginauth'] = "Loginauth_controller";
 $route['logout'] = "dashboard/sales_controller/logout";
 
 $route['dashboard'] = "dashboard/sales_controller";
-$route['dashboard/sales'] = "dashboard/sales_controller";
-$route['dashboard/trends'] = "dashboard/trends_controller";
-$route['dashboard/inventory'] = "dashboard/inventory_controller";
+$route['dashboard/sales'] = "dashboard/sales_controller";  
+$route['dashboard/salesview/(:any)'] = "dashboard/sales_controller/view";
+$route['dashboard/salesprint/(:any)'] = "dashboard/sales_controller/printing";
+$route['dashboard/trends'] = "dashboard/trends_controller";  
+$route['dashboard/trendsview/(:any)'] = "dashboard/trends_controller/view";
+$route['dashboard/trendsprint/(:any)'] = "dashboard/trends_controller/printing";
+$route['dashboard/inventory'] = "dashboard/inventory_controller"; 
+$route['dashboard/inventoryview/(:any)'] = "dashboard/inventory_controller/view";
+$route['dashboard/inventoryprint/(:any)'] = "dashboard/inventory_controller/printing";
 $route['dashboard/test'] = "dashboard/test_controller";
 
 $route['profile'] = "profile_controller";
@@ -75,16 +81,21 @@ $route['setting/currency'] = "setting/currency_controller";
 
 $route['reports'] = "reports/sales_controller";
 $route['reports/sales'] = "reports/sales_controller";
-$route['reports/sales2'] = "reports/sales_controller/two";
-$route['reports/salesinv'] = "reports/sales_controller/inv";
 $route['reports/salesview/(:any)'] = "reports/sales_controller/view";
-$route['reports/salesprint'] = "reports/sales_controller/printing";
 $route['reports/salesprint/(:any)'] = "reports/sales_controller/printing";
 $route['reports/inventory'] = "reports/inventory_controller";
-$route['reports/inventoryview'] = "reports/inventory_controller/view";
+$route['reports/inventoryview/(:any)'] = "reports/inventory_controller/view";
+$route['reports/inventoryprint/(:any)'] = "reports/inventory_controller/printing";
 $route['reports/cashflow'] = "reports/cashflow_controller";   
+$route['reports/cashflowview/(:any)'] = "reports/cashflow_controller/view";
+$route['reports/cashflowprint/(:any)'] = "reports/cashflow_controller/printing";
 $route['reports/attendance'] = "reports/attendance_controller";  
-$route['reports/attendance/exec'] = "reports/attendance_controller/exec";   
+$route['reports/attendance/exec'] = "reports/attendance_controller/exec";  
+$route['reports/daily'] = "reports/daily_controller"; 
+$route['reports/salesdaily/(:any)'] = "reports/daily_controller/salesview";
+$route['reports/recondaily/(:any)'] = "reports/daily_controller/reconview";
+$route['reports/dailysalesprint/(:any)'] = "reports/daily_controller/salesprint";
+$route['reports/dailyreconprint/(:any)'] = "reports/daily_controller/reconprint"; 
 
 $route['extracts'] = "extracts/ordersdata_controller";
 $route['printpdf'] = "printpdf_controller";

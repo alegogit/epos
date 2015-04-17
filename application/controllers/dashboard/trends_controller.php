@@ -53,7 +53,11 @@ class Trends_controller extends CI_Controller {
       $data['dwkrevenue'] = $this->dash_trn->dash_weekly_revenue($rest_id);
 			$data['davrspcust'] = $this->dash_trn->dash_weekly_avslspcust($rest_id);
       $data['davrspinvo'] = $this->dash_trn->dash_weekly_avslspinv($rest_id);
-      $data['nostock'] = $this->dash_trn->no_stock($rest_id);
+      $data['nostock'] = $this->dash_trn->no_stock($rest_id);    
+      
+			$passvars = $session_data['id'].",".$session_data['role'].",".$rest_id;  
+      $this->load->library('hash');  
+			$data['hashvars'] = $this->hash->epos_encrypt($passvars,$this->config->item('encryption_key'));
 			
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);
@@ -66,7 +70,47 @@ class Trends_controller extends CI_Controller {
 			redirect('login', 'refresh');
 		}
 		
-	}
+	}         
+	
+	public function view() {
+    $callpage = "trendsview";
+    $parshash = substr(strstr(uri_string(),'/'),strlen($callpage)+2); //echo $parshash; 
+    $this->load->library('hash');  
+    $parsvars = $this->hash->epos_decrypt($parshash,$this->config->item('encryption_key'));
+    $parsed = explode(",",$parsvars);  //var_dump($parsed);
+		$data['restname'] = $this->dash_trn->get_restaurant_name($parsed[2]); //(restid)
+    @$data['reslogo'] = ($this->dash_trn->get_logo_rest($parsed[2])=="")?base_url()."assets/images/logo3d.png":$this->dash_trn->get_logo_rest($parsed[2]);  //(userid)  
+		$rest_id = $parsed[2];    //restid
+		$data['rest_id'] = $rest_id;
+		$data['nowadate'] = date('d F Y');  
+     
+    $data['cur'] = $this->dash_trn->get_currency($rest_id);
+		$data['dmorevenue'] = $this->dash_trn->dash_monthly_revenue($rest_id);
+    $data['dwkrevenue'] = $this->dash_trn->dash_weekly_revenue($rest_id);
+		$data['davrspcust'] = $this->dash_trn->dash_weekly_avslspcust($rest_id);
+    $data['davrspinvo'] = $this->dash_trn->dash_weekly_avslspinv($rest_id);  
+      
+		$this->load->view('dashboard/printview/'.$callpage,$data);   
+	}    
+		
+  public function printing(){ 
+    $callpage = "trendsview";
+    $parshash = substr(strstr(uri_string(),'/'),strlen($callpage)+3);
+    $this->load->library('hash');  
+    $parsvars = $this->hash->epos_decrypt($parshash,$this->config->item('encryption_key'));
+    $parsed = explode(",",$parsvars);  //var_dump($parsed);
+    $filename = "Trendsdashboard".$parsed[2].".pdf";
+    $config = $this->config->config;
+    $p = $config['phantomjs']." ";
+    $r = $config['html2pdf']." ";  //landscape
+    $u2 = base_url()."dashboard/".$callpage."/".$parshash." ";    
+    $o2 = $config['savedpdf'].$filename." ";
+    $commando2 = $p.$r.$u2.$o2;
+    $getout2 = exec($commando2,$out2,$err2);
+    //var_dump($out2);
+    //echo '<br>'.$commando2;
+    redirect(base_url().$config['outputpdf'].$filename); 	 
+  }
 	
 	public function profile()
 	{

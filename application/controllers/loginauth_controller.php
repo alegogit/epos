@@ -50,10 +50,11 @@ class Loginauth_controller extends CI_Controller {
 		    $this->session->set_userdata('logged_in', $sess_array);
 		    $this->login->update_logintime();
         $role = $row->ROLE_ID;
+        $stat = $row->ACTIVE;
       }
 		  //echo "<pre>" . var_dump($row) . "</pre>";
       $config = $this->config->config; 
-      if ($role>$config['max_role']){ 
+      if (($role>$config['max_role'])||($stat!=1)){ 
         $this->form_validation->set_error_delimiters('<div id="output" class="fade-in">', '</div>');
         $this->form_validation->set_message('check_database', 'You are not allowed to login to the system. Please contact Administrator.');
         return false;

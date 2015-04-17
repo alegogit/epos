@@ -194,6 +194,38 @@ class Restaurant_model extends CI_Model {
       (NAME,TELEPHONE,FAX,ADDRESS_LINE_1,ADDRESS_LINE_2,CITY,POSTAL_CODE,COUNTRY,GEOLOC,EMAIL_ADDRESS,CURRENCY,SERVICE_CHARGE,TAKEOUT_SERVICE_CHARGE,LOGO_URL,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
       VALUES 
       ("'.$NAME.'","'.$TELEPHONE.'","'.$FAX.'","'.$ADDRESS_LINE_1.'","'.$ADDRESS_LINE_2.'","'.$CITY.'","'.$POSTAL_CODE.'","'.$COUNTRY.'","'.$GEOLOC.'","'.$EMAIL_ADDRESS.'","'.$CURRENCY.'",'.$SERVICE_CHARGE.','.$TAKEOUT_SERVICE_CHARGE.',"'.$LOGO_URL.'",'.$id.',NOW(),'.$id.',NOW());');
+    $REST_ID = $this->setting->get_restid_bymail($EMAIL_ADDRESS);
+    $config = $this->config->config;
+    $admin_users = $this->setting->get_admin_users($config['admin_id']);
+    foreach($admin_users as $row){   
+      $this->setting->assigntoadmin($row->ID,$REST_ID);
+    }
+  } 
+  
+	function get_restid_bymail($imel){  
+    $query = $this->db->select('ID')
+                      ->from('RESTAURANTS')
+                      ->where('EMAIL_ADDRESS',$imel)
+                      ->limit(1)
+                      ->get('');
+    return $query->row()->ID;
+  }
+  
+	function get_admin_users($arole){  
+    $query = $this->db->select('ID')
+                      ->from('USERS')
+                      ->where('ROLE_ID',$arole)
+                      ->get('');
+    return $query->result();
+  }
+  
+  function assigntoadmin($USER_ID,$REST_ID){       
+		$session_data = $this->session->userdata('logged_in');
+		$id = $session_data['id'];
+    $query1 = $this->db->query('INSERT INTO USERS_RESTAURANTS
+      (USER_ID,REST_ID,DEFAULT_REST,CREATED_BY,CREATED_DATE,LAST_UPDATED_BY,LAST_UPDATED_DATE) 
+      VALUES 
+      ('.$USER_ID.','.$REST_ID.',0,'.$id.',NOW(),'.$id.',NOW());');
   }  
   
   

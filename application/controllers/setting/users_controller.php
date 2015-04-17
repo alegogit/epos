@@ -45,7 +45,7 @@ class Users_controller extends CI_Controller {
 				$this->setting->assign_rest($this->input->post('uid'),$this->input->post('asgrest'));
 		  } 
       
-		  $data['users'] = $this->setting->get_users_data();
+		  $data['users'] = $this->setting->get_users_data($rest_id);
 		  $data['roles'] = $this->setting->get_roles();		 		       
 		  $data['statuses'] = $this->setting->get_status(); 			                   
 			

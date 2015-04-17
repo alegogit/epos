@@ -34,7 +34,22 @@ class Sales_model extends CI_Model {
                         ->get('');
     }
     return $query->result();                                                                                                                                      
-  }       
+  }               
+  
+  function get_user_rest($id,$role=0){
+		if($role!=1){   
+      $this->db->where('USERS_RESTAURANTS.USER_ID',$id);
+      $query = $this->db->select('*')
+                        ->from('RESTAURANTS')
+                        ->join('USERS_RESTAURANTS', 'RESTAURANTS.ID = USERS_RESTAURANTS.REST_ID')
+                        ->get('');
+    } else {  
+      $query = $this->db->select('*,ID AS REST_ID')
+                        ->from('RESTAURANTS')
+                        ->get('');
+    }
+    return $query->row();
+  }     
   
   function get_rest_logo(){
 		$session_data = $this->session->userdata('logged_in');
@@ -56,8 +71,24 @@ class Sales_model extends CI_Model {
                       ->limit(1)
                       ->get('');
     return $query->row()->LOGO_URL;
-  }
+  }      
     
+	function get_username($id){
+    $query = $this->db->select('USERNAME')
+                      ->from('USERS')
+                      ->where('ID',$id)
+                      ->get('');
+    return $query->row();
+  }
+  
+	function get_restaurant_name($id){
+    $query = $this->db->select('NAME AS REST_NAME')
+                      ->from('RESTAURANTS')
+                      ->where('ID',$id)
+                      ->get('');
+    return $query->row();
+  }
+  
 	function get_currency($rest_id){
   		$query = $this->db->select('RESTAURANTS.CURRENCY, REF_VALUES.VALUE AS CUR')
                       ->from('RESTAURANTS')
@@ -69,7 +100,7 @@ class Sales_model extends CI_Model {
 		return $query->row()->CUR;
 	}
 	
-	function dash_top_categories($start_date,$end_date,$rest_id){  		
+	function dash_top_categories0($start_date,$end_date,$rest_id){  		
 		$query = $this->db->query("SELECT OD.CATEGORY_NAME CAT_NAME, IFNULL(SUM(OD.TOTAL),0)  AMOUNT, IFNULL(COUNT(OD.ID),0)  TOTAL 
 	                             FROM ORDER_DETAILS OD
                                LEFT JOIN PRICE_CHANGE PC ON PC.ORDER_DETAILS_ID = OD.ID AND PC.MENU_ID = NULL
@@ -90,6 +121,34 @@ class Sales_model extends CI_Model {
                                   AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
                                 ORDER BY AMOUNT DESC;");
 		return $query->result();  
+	}
+	
+	function dash_top_categories($start_date,$end_date,$rest_id){  		
+		$query = $this->db->query("SELECT OD.CATEGORY_NAME CAT_NAME, IFNULL(SUM(OD.TOTAL),0)  AMOUNT, IFNULL(COUNT(OD.ID),0)  TOTAL 
+	                             FROM ORDER_DETAILS OD
+                               LEFT JOIN PRICE_CHANGE PC ON PC.ORDER_DETAILS_ID = OD.ID AND PC.MENU_ID = NULL
+                               INNER JOIN INVOICES I ON OD.INVOICE_ID = I.ID
+                               INNER JOIN INVOICES_ORDERS OI ON OI.INVOICE_ID = I.ID
+                               INNER JOIN ORDERS O ON OI.ORDER_ID = O.ID
+                                  AND O.ENDED BETWEEN '".$start_date."' AND DATE_ADD('".$end_date."', INTERVAL 1 DAY)
+                                  AND O.ENDED < DATE_ADD('".$end_date."', INTERVAL 1 DAY)
+                                  AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
+                               GROUP BY OD.CATEGORY_NAME
+                               ORDER BY AMOUNT DESC;");
+		return $query->result();  
+	}
+  
+	function get_adjustment($start_date,$end_date,$rest_id){  		
+		$query = $this->db->query("SELECT 'ADJUSTMENTS' CAT_NAME, IFNULL(SUM(OD.TOTAL),0)  AMOUNT, IFNULL(COUNT(OD.ID),0)  TOTAL 
+                          	   FROM ORDER_DETAILS OD
+                               INNER JOIN PRICE_CHANGE PC ON PC.ORDER_DETAILS_ID = OD.ID
+                               INNER JOIN INVOICES I ON OD.INVOICE_ID = I.ID
+                               INNER JOIN INVOICES_ORDERS OI ON OI.INVOICE_ID = I.ID
+                               INNER JOIN ORDERS O ON OI.ORDER_ID = O.ID
+                                  AND O.ENDED BETWEEN '".$start_date."' AND DATE_ADD('".$end_date."', INTERVAL 1 DAY) 
+                                  AND O.ENDED < DATE_ADD('".$end_date."', INTERVAL 1 DAY)
+                                  AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0;");
+		return $query->row();  
 	}
   
   function remove_zero_values($array){
@@ -174,7 +233,7 @@ class Sales_model extends CI_Model {
                               		AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
                                 GROUP BY OD.MENU_NAME
                                 ORDER BY SUM(OD.TOTAL) DESC
-                                LIMIT 5;");
+                                LIMIT 8;");
 		return $query->result();  
 	}        
 

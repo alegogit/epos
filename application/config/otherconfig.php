@@ -11,12 +11,9 @@ $config['temp_dir'] = 'D:\\temp\\';
 
 /*
 |--------------------------------------------------------------------------
-| Phantomjs related Dir
+| Admin Role
 |--------------------------------------------------------------------------
 |
-| Path to Phantomjs and friends directories
-*/     
-$config['phantomjs'] = 'D:\\artileri\\phantomjs\\bin\\phantomjs.exe';
-$config['html2pdf'] = 'D:\\artileri\\phantomjs\\bin\\html2pdf.js';
-$config['rasterize'] = 'D:\\artileri\\phantomjs\\bin\\rasterize.js';
-$config['outputpdf'] = 'D:\\xampp\\htdocs\\\zakuna\\epos\\assets\\img\\';
+| Administrative Role ID
+*/  
+$config['admin_id'] = 1;   

@@ -54,142 +54,36 @@ class Sales_controller extends CI_Controller {
 		
 	}
   
-	public function two(){
-		if($this->session->userdata('logged_in'))
-		{
-			$data['menu'] = 'reports';         
-			$session_data = $this->session->userdata('logged_in');
-			$data['def_rest'] = $session_data['def_rest'];
-			$data['def_report_name'] = 'Sales';
-			$data['def_start_date'] = date('d M Y', time() - 7 * 60 * 60 * 24);
-			$data['def_end_date'] = date('d M Y', time());     
-			$rest_id = (!($this->input->post('rest_id')))?$data['def_rest']:$this->input->post('rest_id');
-			$report_name = (!($this->input->post('report_name')))?$data['def_report_name']:$this->input->post('report_name'); 
-			$start_date = (!($this->input->post('startdate')))?$data['def_start_date']:$this->input->post('startdate'); 
-			$end_date = (!($this->input->post('startdate')))?$data['def_end_date']:$this->input->post('enddate'); 
-			$data['rest_id'] = $rest_id;
-			$data['report_name'] = $report_name;
-			$data['startdate'] = $start_date;
-			$data['enddate'] = $end_date;
-      $data['cur'] = $this->sales->get_currency($rest_id);
-			$data['sales_report'] = $this->sales->get_sales_report(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id); 
-			$data['void_items'] = $this->sales->get_void_items(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id); 
-			
-			$this->load->view('shared/header',$this->data);
-			$this->load->view('shared/left_menu', $data);
-			$this->load->view('reports/sales2',$data);
-			$this->load->view('shared/footer');
-		}
-		else
-		{
-			//If no session, redirect to login page
-			redirect('login', 'refresh');
-		}
-		
-	}
-
-	public function inv(){     
-    if($this->input->post('ord_id')){ 
-			$this->load->view('reports/sales_invoice',$data);
-    }
-  }
-  
-	public function view0(){
-			$data['def_rest'] = 2;
-			$data['def_report_name'] = 'Sales';
-			$data['def_start_date'] = date('d M Y', time() - 7 * 60 * 60 * 24);
-			$data['def_end_date'] = date('d M Y', time());     
-			$rest_id = (!($this->input->post('rest_id')))?$data['def_rest']:$this->input->post('rest_id');
-			$report_name = (!($this->input->get('report_name')))?$data['def_report_name']:$this->input->get('report_name'); 
-			//$start_date = (!($this->input->post('startdate')))?$data['def_start_date']:$this->input->post('startdate'); 
-			$start_date = "01 Jan 2015";
-      $end_date = (!($this->input->post('startdate')))?$data['def_end_date']:$this->input->post('enddate'); 
-			$data['rest_id'] = $rest_id;
-			$data['report_name'] = $report_name;
-			$data['startdate'] = $start_date;
-			$data['enddate'] = $end_date;
-      $data['cur'] = $this->sales->get_currency($rest_id);
-			$data['sales_report'] = $this->sales->get_sales_report(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id); 
-			$data['void_items'] = $this->sales->get_void_items(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id); 
-			
-			$this->load->view('shared/notopbar_header',$this->data);
-			$this->load->view('reports/salesview',$data);
-			$this->load->view('shared/footer');		
-	}
-  
 	public function view(){  
-      $parshash = substr(strstr(uri_string(),'/'),11);       
-      $this->load->library('hash');  
-      $parsvars = $this->hash->epos_decrypt($parshash,$this->config->item('encryption_key'));
-      //echo $parshash."<br>".$parsvars;  //1,1,1,Sales,01 Mar 2015,10 Mar 2015 
-      $parsed = explode(",",$parsvars);  //var_dump($parsed);
-		  $data['restaurants'] = $this->sales->get_user_rest($parsed[0],$parsed[1]); //(userid,role)
-      @$data['reslogo'] = ($this->sales->get_user_rest_logo($parsed[0])=="")?base_url()."assets/images/logo3d.png":$this->sales->get_user_rest_logo($parsed[0]);  //(userid)  
-			$data['def_rest'] = $parsed[2];    //restid
-			$data['def_report_name'] = $parsed[3];     
-			$rest_id = (!($this->input->post('rest_id')))?$data['def_rest']:$this->input->post('rest_id');
-			$report_name = (!($this->input->get('report_name')))?$data['def_report_name']:$this->input->get('report_name'); 
-			//$start_date = (!($this->input->post('startdate')))?$data['def_start_date']:$this->input->post('startdate'); 
-			$start_date = $parsed[4];
-      //$end_date = (!($this->input->post('startdate')))?$data['def_end_date']:$this->input->post('enddate');  
-			$end_date = $parsed[5];
-			$data['rest_id'] = $rest_id;
-			$data['report_name'] = $report_name;
-			$data['startdate'] = $start_date;
-			$data['enddate'] = $end_date;
-      $data['cur'] = $this->sales->get_currency($rest_id);
-			$data['sales_report'] = $this->sales->get_sales_report(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id); 
-			$data['void_items'] = $this->sales->get_void_items(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id); 
+    $callpage = "salesview";
+    $parshash = substr(strstr(uri_string(),'/'),strlen($callpage)+2);       
+    $this->load->library('hash');  
+    $parsvars = $this->hash->epos_decrypt($parshash,$this->config->item('encryption_key'));
+    //echo $parshash."<br>".$parsvars;  //1,1,1,Sales,01 Mar 2015,10 Mar 2015 
+    $parsed = explode(",",$parsvars);  //var_dump($parsed);
+		$data['restname'] = $this->sales->get_restaurant_name($parsed[2]); //(restid)
+    @$data['reslogo'] = ($this->sales->get_restid_logo($parsed[2])=="")?base_url()."assets/images/logo3d.png":$this->sales->get_restid_logo($parsed[2]);  //(userid)  
+		$data['def_report_name'] = $parsed[3];     
+		$rest_id = $parsed[2];
+		$report_name = (!($this->input->get('report_name')))?$data['def_report_name']:$this->input->get('report_name'); 
+		//$start_date = (!($this->input->post('startdate')))?$data['def_start_date']:$this->input->post('startdate'); 
+		$start_date = $parsed[4];
+    //$end_date = (!($this->input->post('startdate')))?$data['def_end_date']:$this->input->post('enddate');  
+		$end_date = $parsed[5];
+		$data['rest_id'] = $rest_id;
+		$data['report_name'] = $report_name;
+		$data['startdate'] = $start_date;
+		$data['enddate'] = $end_date;
+    $data['cur'] = $this->sales->get_currency($rest_id);
+		$data['sales_report'] = $this->sales->get_sales_report(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id); 
+		$data['void_items'] = $this->sales->get_void_items(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id); 
 						
-			$this->load->view('reports/salesview3',$data);
-	}
-  
-  
-  
-	public function printing0(){
-			$data['def_rest'] = 2;
-			$data['def_report_name'] = 'Sales';
-			$data['def_start_date'] = date('d M Y', time() - 7 * 60 * 60 * 24);
-			$data['def_end_date'] = date('d M Y', time());     
-			$rest_id = (!($this->input->post('rest_id')))?$data['def_rest']:$this->input->post('rest_id');
-			$report_name = (!($this->input->get('report_name')))?$data['def_report_name']:$this->input->get('report_name'); 
-			//$start_date = (!($this->input->post('startdate')))?$data['def_start_date']:$this->input->post('startdate'); 
-			$start_date = "01 Jan 2015";
-      //$end_date = (!($this->input->post('startdate')))?$data['def_end_date']:$this->input->post('enddate');  
-			$end_date = "08 Jan 2015";
-			$data['rest_id'] = $rest_id;
-			$data['report_name'] = $report_name;
-			$data['startdate'] = $start_date;
-			$data['enddate'] = $end_date;
-      $data['cur'] = $this->sales->get_currency($rest_id);
-			$data['sales_report'] = $this->sales->get_sales_report(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id); 
-			$data['void_items'] = $this->sales->get_void_items(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id); 
-			
-      $filename = "test9";
-      $config = $this->config->config;
-      $pdfFilePath = $config['temp_dir'].$filename.".pdf";
-      
-      $data['page_title'] = 'Hello world'; // pass data to the view
-      if (file_exists($pdfFilePath) == FALSE){
-        ini_set('memory_limit','32M'); // boost the memory limit if it's low
-        //$html = $this->load->view('shared/notopbar_header',$this->data);
-        $html = $this->load->view('reports/salesview3',$data,true);
-        //$html .= $this->load->view('shared/footer');		
-       // $html = $this->load->view('pdf_report', $data, true); // render the view into HTML
-     
-        $this->load->library('topdf');
-        $pdf = $this->topdf->load('utf-8', 'A4-L');
-        $pdf->SetFooter($_SERVER['HTTP_HOST'].'|{PAGENO}|'.date(DATE_RFC822)); // Add a footer for good measure 
-        $pdf->AddPage('A4-L','','','','',10,10,10,10,5,5); 
-        $pdf->WriteHTML($html); // write the HTML into the PDF
-        $pdf->Output($pdfFilePath, 'F'); // save to file because we can
-      }
- 
-      //redirect("/downloads/reports/$filename.pdf"); 
+		$this->load->view('reports/printview/salesview',$data);
 	}
 		
   public function printing(){ 
-    $parshash = substr(strstr(uri_string(),'/'),12); 
+    $callpage = "salesview";
+    $parshash = substr(strstr(uri_string(),'/'),strlen($callpage)+3);    
     $this->load->library('hash');  
     $parsvars = $this->hash->epos_decrypt($parshash,$this->config->item('encryption_key'));
     //echo $parshash."<br>".$parsvars;  //1,1,1,Sales,01 Mar 2015,10 Mar 2015   
@@ -198,13 +92,13 @@ class Sales_controller extends CI_Controller {
     $config = $this->config->config;
     $p = $config['phantomjs']." ";
     $r = $config['html2pdf']." ";
-    $u2 = base_url()."reports/salesview/".$parshash." ";
-    $o2 = $config['outputpdf'].$filename." ";
+    $u2 = base_url()."reports/salesview/".$parshash." ";    
+    $o2 = $config['savedpdf'].$filename." ";
     $commando2 = $p.$r.$u2.$o2;
     $getout2 = exec($commando2,$out2,$err2);
     //var_dump($out2);
     //echo '<br>'.$commando2;
-    redirect(base_url().'assets/img/'.$filename); 	 
+    redirect(base_url().$config['outputpdf'].$filename); 	 
   }
   	
 	public function profile()
