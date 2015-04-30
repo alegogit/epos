@@ -1,83 +1,89 @@
 <?php
   $this->load->view('shared/notopbar_header',$this->data);   //var_dump($recon);
 ?>
-<div id="page-content-wrapper">
+<div id="page-content-wrapper" style="margin-top:-10px;">
 <!-- Page Content -->
-  <div class="container-fluid" style="font-size:50%;">  
-           
-    <div class="row" style="text-align:center;">  
-        <h4>
-          <img class="img-thumbnail" style="width:53px; height:53px; margin-top:-10px;" src="<?=$reslogo?>"/> <br><?=$restname->REST_NAME?> 
-        </h4>
+  <div class="container-fluid" style="font-size:72%;letter-spacing:1px;">  
+    <div class="row" style="vertical-align:bottom !important;">
+    <table width="100%">
+      <tr>
+        <td width="30%"> 
+          &nbsp;&nbsp;&nbsp;&nbsp;<img class="img-thumbnail" style="width:63px; height:63px;" src="<?=$reslogo?>"/>
+        </td>  
+        <td width="40%" style="text-align:center;">
+          <span style="font-weight:bold;font-size:200%;"> 
+            <b>DAILY<br>SALES REPORT</b>
+          </span>
+        </td>  
+        <td width="30%" style="text-align:right;">      
+          <span style="font-weight:bold;font-size:175%;"><b><?=$dayname.", ".$enddate?></b>&nbsp;&nbsp;&nbsp;</span><br>
+          <span style="font-weight:bold;font-size:125%;"><b><?=$restname->REST_NAME?></b>&nbsp;&nbsp;&nbsp;</span> 
+        </td>
+      </tr>
+    </table> 
     </div>
-    
-    <hr style="margin-bottom:10px;margin-top:10px" />
-        
-	  <div class="panel panel-default">
-		    <div class="panel-heading" style="font-size:110% !important;">
-          <div class="row" style="vertical-align:bottom !important;"> 
-          <table width="100%"><tr> 
-            <td>
-              <b>&nbsp;&nbsp;&nbsp;Daily Sales Report</b>
-            </td>
-            <td class="col-md-6" class="" style="text-align:right;">
-              <b><?=$enddate?></b>
-            </td>
-          </tr></table>
-          </div>  
-        </div>
-	      <div class="panel-body table-responsive"> 
-        
-          <div class="row">
-          <table width="100%">
-            <tr style="width:100%;vertical-align:top;">
-              <td>
+    <hr style="margin-bottom:10px;margin-top:10px;border-top:black 2px solid;" />
+    <div class="row">
+      <table width="100%">
+        <tr style="width:100%;vertical-align:top;">
+          <td style="border-right:#3071a9 2px solid;">
             <div class="col-sm-3">
-              <b>REVENUE</b>
+              <span style="font-weight:bold;font-size:150%;color:#3071a9;">REVENUE</span>
               
-              <table width="100%" class="table" style="border-bottom:black 3px solid;">
+              <table width="100%" class="table nb" style="border-bottom:#3071a9 3px solid;">
                 <tbody>
                   <tr>
                     <td class="text3D">Subtotal</td>
                     <td class="cin text3D"><?=$cur?></td>
-                    <td class="cin cur text3D"><?=$revenue->SUBTOTAL+0?></td> 
+                    <td class="cin cur text3D"><?=$revenue->SUBTOTAL+0?>&nbsp;&nbsp;</td> 
                   </tr>  
                   <tr class="text-danger">
                     <td class="text3D">Discount</td>
                     <td class="cin text3D"><?=$cur?></td>
                     <td class="cin cur text3D"><?=(($revenue->DISCOUNT+0)*-1)?></td> 
                   </tr>  
-                  <tr class="info" style="border-top:black 2px solid;">
-                    <th class="text3D">NET SALES</th>
-                    <th class="cin text3D"><?=$cur?></th>
-                    <th class="cin cur text3D"><?=$revenue->NET_SALES+0?></th>
+                  <tr class="info" style="font-weight:bold;border-top:black 2px solid;">
+                    <td class="text3D">NET SALES</td>
+                    <td class="cin text3D"><?=$cur?></td>
+                    <td class="cin cur text3D"><?=$revenue->NET_SALES+0?>&nbsp;&nbsp;</td>
                   </tr>  
+                  <tr>
+                    <td class="text3D"></td>
+                    <td class="cin text3D"></td>
+                    <td class="cin cur text3D"></td> 
+                  </tr>   
                   <tr>
                     <td class="text3D">Service Charge</td>
                     <td class="cin text3D"><?=$cur?></td>
-                    <td class="cin cur text3D"><?=$revenue->SERVICE_CHARGE+0?></td> 
+                    <td class="cin cur text3D"><?=$revenue->SERVICE_CHARGE+0?>&nbsp;&nbsp;</td> 
                   </tr>  
                   <tr class="">
                     <td class="text3D">Tax</td>
                     <td class="cin text3D"><?=$cur?></td>
-                    <td class="cin cur text3D"><?=$revenue->TOTAL_TAX+0?></td> 
+                    <td class="cin cur text3D"><?=$revenue->TOTAL_TAX+0?>&nbsp;&nbsp;</td> 
                   </tr>  
                   <tr class="">
                     <td class="text3D">Tip</td>
                     <td class="cin text3D"><?=$cur?></td>
-                    <td class="cin cur text3D"><?=$revenue->TIP+0?></td> 
+                    <td class="cin cur text3D"><?=$revenue->TIP+0?>&nbsp;&nbsp;</td> 
                   </tr>  
                   <tr class="">
                     <td class="text3D">Rounding</td>
                     <td class="cin text3D"><?=$cur?></td>
-                    <td class="cin cur text3D"><?=$revenue->ROUNDING+0?></td> 
+                    <td class="cin cur text3D"><?=$revenue->ROUNDING+0?>&nbsp;&nbsp;</td> 
                   </tr>  
-                  <tr class="info" style="border-top:black 2px solid;">
-                    <th class="text3D">TOTAL SALES</th>
-                    <th class="cin text3D"><?=$cur?></th>
-                    <th class="cin cur text3D"><?=$revenue->TOTAL_SALES?></th>
+                  <tr class="info" style="font-weight:bold;border-top:black 2px solid;">
+                    <td class="text3D">TOTAL SALES</td>
+                    <td class="cin text3D"><?=$cur?></td>
+                    <td class="cin cur text3D"><?=$revenue->TOTAL_SALES?>&nbsp;&nbsp;</td>
                   </tr>  
                 </tbody>
+                <tfoot> 
+                  <tr>
+                    <th class="text3D"></th>
+                    <th class="cin text3D"></th>
+                    <th class="cin cur text3D"></th>
+                  </tr>  
                 <tfoot> 
                   <tr>
                     <th class="text3D"></th>
@@ -87,16 +93,16 @@
                 </tfoot>
               </table> 
               
-              <b>SUMMARY</b>
+              <span style="font-weight:bold;font-size:150%;color:#3071a9;">SUMMARY</span>
               
-              <table width="100%" class="table">  
+              <table width="100%" class="table ah nb">  
                 <thead> 
                   <tr>
-                    <th class="text3D" colspan="2"><h4>Total Sales : <?=$cur?> <?=$this->currency->format($this->currency->my_number_format((float)$summary->TOTAL_SALES),$cur)?></h4></th>
+                    <th class="text3D" colspan="2" style="text-align:center;font-size:150% !important;"><b>Total Sales : <?=$cur?> <?=$this->currency->format($this->currency->my_number_format((float)$summary->TOTAL_SALES),$cur)?></b></th>
                   </tr> 
                   <tr>
-                    <th class="text3D">Total Customers</th>
-                    <th class="text3D">Average Amount Per Customer</th>
+                    <th class="text3D" style="text-align:center">Total<br>Customers</th>
+                    <th class="text3D" style="text-align:center">Average Amount<br>Per Customer</th>
                   </tr>   
                 </thead>
                 <tbody>
@@ -107,15 +113,15 @@
                 </tbody>
               </table>
               
-              <table width="100%" class="table">  
+              <table width="100%" class="table ah nb">  
                 <thead> 
                   <tr>
                     <th class="text3D"></th>
                     <th class="text3D"></th>
                   </tr>   
                   <tr>
-                    <th class="text3D">Total Invoices</th>
-                    <th class="text3D">Average Amount Per Invoice</th>
+                    <th class="text3D" style="text-align:center">Total<br>Invoices</th>
+                    <th class="text3D" style="text-align:center">Average Amount<br>Per Invoice</th>
                   </tr>   
                 </thead>
                 <tbody>
@@ -124,25 +130,19 @@
                     <td class="text3D" style="font-weight:bold;font-size:125%;text-align:center"><?=$cur?> <?=$this->currency->format($this->currency->my_number_format((float)$summary->AVG_SALES_PER_INVOICE+0),$cur)?></td>
                   </tr> 
                 </tbody>
-                <tfoot> 
-                  <tr>
-                    <th class="text3D"></th>
-                    <th class="cin text3D"></th>
-                  </tr>  
-                </tfoot>
               </table>
               
             </div> 
             
               </td>
-              <td>
+              <td style="border-right:#3071a9 2px solid;">
               
             <div class="col-sm-5">
-              <b>PAYMENT TYPE</b>   
+              <span style="font-weight:bold;font-size:150%;color:#3071a9;">PAYMENT TYPE</span>   
               
-              <table width="100%" class="table" style="border-bottom:black 3px solid;">
+              <table width="100%" class="table ah nb" style="border-bottom:#3071a9 3px solid;">
                 <tbody>
-                  <tr>
+                  <tr class="">
                     <td class="cin text3D" style="border-right:black 2px solid;"></td>
                     <td class="cin text3D">#</td>
                     <td class="cin text3D"><?=$cur?></td>
@@ -152,17 +152,18 @@
                     $i = 0;
                     $tot['TOTAL'] = 0;
                     $tot['AMOUNT'] = 0;
+                    $n = count($payment);
                     foreach($payment as $rowt){
                       $tot['TOTAL'] = $tot['TOTAL'] + $rowt->TOTAL;  
                       $tot['AMOUNT'] = $tot['AMOUNT'] + $rowt->AMOUNT;  
                     }
                     foreach($payment as $row){
                   ?>  
-                  <tr>
+                  <tr class="">
                     <td class="cin text3D" style="border-right:black 2px solid;"><?=$row->PAYMENT_METHOD?></td>
                     <td class="cin text3D"><?=$row->TOTAL+0?></td>
                     <td class="cin cur text3D"><?=$row->AMOUNT+0?></td>
-                    <td class="cin text3D"><?=$this->currency->my_number_format((float)(($row->AMOUNT+0)*100/$tot['AMOUNT']), 0, '.', '')?> %</td> 
+                    <td class="cin text3D"><?=($n!=0)?$this->currency->my_number_format((float)(($row->AMOUNT+0)*100/$tot['AMOUNT']), 0, '.', ''):0?> %</td> 
                   </tr> 
                   <?php
                       $i++;
@@ -170,13 +171,13 @@
                   ?> 
                 </tbody>
                 <tfoot> 
-                  <tr style="border-top:black 2px solid;">
+                  <tr class="" style="border-top:black 2px solid;">
                     <th class="cin text3D" style="border-right:black 2px solid;">TOTAL</th>
                     <th class="cin text3D info"><?=$tot['TOTAL']?></th>
                     <th class="cin cur text3D info"><?=$tot['AMOUNT']?></th>
-                    <th class="cin text3D info">100 %</th>
+                    <th class="cin text3D info"><?=($n!=0)?100:0?> %</th>
                   </tr>  
-                  <tr>
+                  <tr class="">
                     <th class="cin text3D"></th>
                     <th class="cin text3D"></th>
                     <th class="cin text3D"></th>
@@ -185,11 +186,11 @@
                 </tfoot>
               </table> 
               
-              <b>SALES TYPE</b>   
+              <span style="font-weight:bold;font-size:150%;color:#3071a9;">SALES TYPE</span>   
               
-              <table width="100%" class="table" style="border-bottom:black 3px solid;">
+              <table width="100%" class="table ah nb" style="border-bottom:#3071a9 3px solid;">
                 <tbody>
-                  <tr>
+                  <tr class="">
                     <td class="cin text3D" style="border-right:black 2px solid;"></td>
                     <td class="cin text3D">#</td>
                     <td class="cin text3D"><?=$cur?></td>
@@ -198,18 +199,18 @@
                   <?php
                     $i = 0;
                     $tot['TOTAL'] = 0;
-                    $tot['AMOUNT'] = 0;
+                    $tot['AMOUNT'] = 0; 
                     foreach($ordtype as $rowt){
                       $tot['TOTAL'] = $tot['TOTAL'] + $rowt->TOTAL;  
                       $tot['AMOUNT'] = $tot['AMOUNT'] + $rowt->AMOUNT;  
                     }
                     foreach($ordtype as $row){
                   ?>  
-                  <tr>
+                  <tr class="">
                     <td class="cin text3D" style="border-right:black 2px solid;"><?=$row->ORDER_TYPE?></td>
                     <td class="cin text3D"><?=$row->TOTAL+0?></td>
                     <td class="cin cur text3D"><?=$row->AMOUNT+0?></td>
-                    <td class="cin text3D"><?=$this->currency->my_number_format((float)(($row->AMOUNT+0)*100/$tot['AMOUNT']), 0, '.', '')?> %</td> 
+                    <td class="cin text3D"><?=($tot['AMOUNT']!=0)?$this->currency->my_number_format((float)(($row->AMOUNT+0)*100/$tot['AMOUNT']), 0, '.', ''):0?> %</td> 
                   </tr> 
                   <?php
                       $i++;
@@ -217,13 +218,13 @@
                   ?> 
                 </tbody>
                 <tfoot> 
-                  <tr style="border-top:black 2px solid;">
+                  <tr class="" style="border-top:black 2px solid;">
                     <th class="cin text3D" style="border-right:black 2px solid;">TOTAL</th>
                     <th class="cin text3D info"><?=$tot['TOTAL']?></th>
                     <th class="cin cur text3D info"><?=$tot['AMOUNT']?></th>
-                    <th class="cin text3D info">100 %</th>
+                    <th class="cin text3D info"><?=($tot['AMOUNT']!=0)?100:0?> %</th>
                   </tr>  
-                  <tr>
+                  <tr class="">
                     <th class="cin text3D"></th>
                     <th class="cin text3D"></th>
                     <th class="cin text3D"></th>
@@ -232,11 +233,11 @@
                 </tfoot>
               </table>  
               
-              <b>TOP CATEGORY BY SALES</b>   
+              <span style="font-weight:bold;font-size:150%;color:#3071a9;">TOP CATEGORY BY SALES</span>   
               
-              <table width="100%" class="table">
+              <table width="100%" class="table ah nb">
                 <tbody>
-                  <tr>
+                  <tr class="">
                     <td class="cin text3D" style="border-right:black 2px solid;"></td>
                     <td class="cin text3D">#</td>
                     <td class="cin text3D"><?=$cur?></td>
@@ -253,13 +254,13 @@
                     foreach($topcat as $row){
                       if($row->CAT_NAME=="others"){
                   ?> 
-                  <tr>
+                  <tr class="">
                     <td class="cin text3D" style="border-right:black 2px solid;"></td>
                     <td class="cin text3D"></td>
                     <td class="cin cur text3D"></td>
                     <td class="cin text3D"></td> 
                   </tr> 
-                  <tr>
+                  <tr class="">
                     <td class="text3D" style="border-right:black 2px solid;"><?=$adjust->CAT_NAME?></td>
                     <td class="cin text3D"><?=$adjust->TOTAL+0?></td>
                     <td class="cin cur text3D"><?=$adjust->AMOUNT+0?></td>
@@ -268,7 +269,7 @@
                   <?php
                       }
                   ?> 
-                  <tr>
+                  <tr class="">
                     <td class="text3D" style="border-right:black 2px solid;"><?=$row->CAT_NAME?></td>
                     <td class="cin text3D"><?=$row->TOTAL+0?></td>
                     <td class="cin cur text3D"><?=$row->AMOUNT+0?></td>
@@ -280,17 +281,11 @@
                   ?> 
                 </tbody>
                 <tfoot> 
-                  <tr style="border-top:black 2px solid;">
+                  <tr class="" style="border-top:black 2px solid;">
                     <th class="cin text3D" style="border-right:black 2px solid;">TOTAL</th>
                     <th class="cin text3D info"><?=$tot['TOTAL']?></th>
                     <th class="cin cur text3D info"><?=$tot['AMOUNT']?></th>
-                    <th class="cin text3D info">100 %</th>
-                  </tr>  
-                  <tr>
-                    <th class="cin text3D"></th>
-                    <th class="cin text3D"></th>
-                    <th class="cin text3D"></th>
-                    <th class="cin text3D"></th>
+                    <th class="cin text3D info"><?=($tot['AMOUNT']!=0)?100:0?> %</th>
                   </tr>  
                 </tfoot>
               </table> 
@@ -301,9 +296,13 @@
               <td>
               
             <div class="col-sm-4">
-              <b>VOID ITEM LIST</b>   
-              
-              <table width="100%" class="table"> 
+              <span style="font-weight:bold;font-size:150%;color:#3071a9;">VOID ITEM LIST</span>   
+            <?php 
+              if(count($voiditem)==0){
+                echo '<br><div class="alert alert-danger" style="font-weight:bold;font-size:125%;">NO DATA</div>'; 
+              } else { 
+            ?>
+              <table width="100%" class="table ah nb"> 
                 <thead> 
                   <tr>
                     <th class="text3D">Menu Item</th>
@@ -339,21 +338,17 @@
                     <th class="cin text3D info"><?=$tot['QUANTITY']?></th>
                   </tr>  
                 </tfoot>
-              </table> 
+              </table>
+             <?php } ?> 
             </div>  
              
               </td>
             </tr>
           </table>
           </div><!-- /.row -->
-			  
-        </div>
-			</div>
 		</div>
-  
   </div><!-- /.container-fluid -->
 </div><!-- /#page-content-wrapper -->
-
 <div id="ajaxurl" data-url="<?=base_url()?>"></div>
 <div id="cur" data-val="<?=$cur?>"></div>
 <div id="rest_id" data-val="<?=$rest_id?>"></div>

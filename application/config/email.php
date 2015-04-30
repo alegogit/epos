@@ -1,10 +1,15 @@
  <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
- $config['protocol'] = 'smtp';
+ $config['protocol'] = 'smtp';  
+ $config['smtp_host'] = 'ssl://smtp.gmail.com';
+ $config['smtp_port'] = '465';
+ $config['smtp_user'] = 'info@zakuna.co';
+ $config['smtp_pass'] = 'z@kuna88';
+ /*                
  $config['smtp_host'] = 'ssl://smtpout.asia.secureserver.net';
  $config['smtp_port'] = '465';
  $config['smtp_user'] = 'donotreply@zakuna.co';
  $config['smtp_pass'] = 'zakuna88';
- /*
+ 
  $config['smtp_host'] = 'ssl://smtp.gmail.com';
  $config['smtp_port'] = '465';
  $config['smtp_user'] = 'epos.zakuna@gmail.com';

@@ -285,7 +285,6 @@
                             $chart_legend .= "<td class='col-md-1 cin' style='padding-left:10px;padding-right:5px;'>".$cur."&nbsp;</td>";
                             $chart_legend .= " <td class='col-md-4 cin cur' style='padding-left:5px;padding-right:5px;'><b>".$row->AMOUNT."</b></td>";       
                             $chart_legend .= " <td class='col-md-2 cin' style='padding-left:5px;padding-right:5px;'><span style='padding-left:10px;'>&nbsp;</span>".$row->TOTAL."</td>";
-                            $chart_legend .= " <!--<td style='float:right;display:inline-block'><span style='padding-left:10px;'>&nbsp;</span>".round(($row->AMOUNT/$itotal)*100)."% </td>--></tr>";
                           $i++;  
                         }    
                         $chart_legend .= "<tr>
@@ -298,7 +297,7 @@
                             <td class='col-md-4 cur cin' style='padding-left:5px;padding-right:5px;font-weight:bold !important;'><b><span style='float:right;display:inline-block;'>".$itotal."</span></b></td>
                             <td class='col-md-2 cin' style='padding-left:5px;padding-right:5px;'><span style='float:right;display:inline-block'>".$itotalq."</span></td>";
                         $chart_legend .= "</tr></table>";
-                        if($n!=0){    
+                        if($itotal!=0){    
                           echo $chart_legend;
                         }else{
                           echo "<div id='nrtcbs' class='alert alert-danger' style='padding:10px;'>No Records</div>";
@@ -456,7 +455,7 @@
   }
   $chart_script = "<script>"; 
   $chart_script .= "var doughnutData = [";
-  if ($n!=0){
+  if ($total!=0){
     foreach ($dordtype as $row){
       $chart_script .= "{";  
       //$chart_script .= "value: ".$row->AMOUNT.",";

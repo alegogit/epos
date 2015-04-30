@@ -1,18 +1,18 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Daily_controller extends CI_Controller {
+class Weekly_controller extends CI_Controller {
 	
 	function __construct()
 	{
 		parent::__construct();	
-		$this->load->model('reports/daily_model','daily',TRUE);
+		$this->load->model('reports/weekly_model','weekly',TRUE);
     $this->load->helper(array('form', 'url','html'));
 		$session_data = $this->session->userdata('logged_in');
-		$this->data['user'] = $this->daily->get_profile();
-		$this->data['restaurants'] = $this->daily->get_restaurant(); 
+		$this->data['user'] = $this->weekly->get_profile();
+		$this->data['restaurants'] = $this->weekly->get_restaurant(); 
     $this->load->library('picture');     
 		$this->load->library('currency');         
-    @$this->data['reslogo'] = ($this->daily->get_rest_logo()=="")?base_url()."assets/images/logo3d.png":$this->daily->get_rest_logo();    
+    @$this->data['reslogo'] = ($this->weekly->get_rest_logo()=="")?base_url()."assets/images/logo3d.png":$this->weekly->get_rest_logo();    
     @$this->data['profpic'] = ($this->data['user']->IMAGE=="")?base_url()."assets/img/no-photo.jpg":base_url()."profile/pic/".$this->picture->gettyimg($session_data['id']).".jpg";
   }
 
@@ -34,8 +34,8 @@ class Daily_controller extends CI_Controller {
 			$data['report_name'] = $report_name;
 			$data['startdate'] = $start_date;
 			$data['enddate'] = $end_date;
-      $data['cur'] = $this->daily->get_currency($rest_id);
-			//$data['sales_report'] = $this->daily->get_revenue($rest_id); 
+      $data['cur'] = $this->weekly->get_currency($rest_id);
+			//$data['sales_report'] = $this->weekly->get_revenue($rest_id); 
 			              
 			$passvars = $session_data['id'].",".$session_data['role'].",".$rest_id.",".$report_name.",".$start_date.",".$end_date;  
       $this->load->library('hash');  
@@ -44,12 +44,12 @@ class Daily_controller extends CI_Controller {
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);
       if (!($this->input->post('report_name'))){                      
-        $this->load->view('reports/daily',$data);
+        $this->load->view('reports/weekly',$data);
       } else {  
         if($report_name=='Sales'){                        
-          $this->load->view('reports/daily/sales',$data);
+          $this->load->view('reports/weekly/sales',$data);
         } else { 
-          $this->load->view('reports/daily/recon',$data);
+          $this->load->view('reports/weekly/recon',$data);
         }
       }
 			$this->load->view('shared/footer');
@@ -63,14 +63,14 @@ class Daily_controller extends CI_Controller {
 	}
   
 	public function salesview(){  
-    $callpage = "dailysales";
+    $callpage = "weeklysales";
     $parshash = substr(strstr(uri_string(),'/'),strlen($callpage)+2);       
     $this->load->library('hash');  
     $parsvars = $this->hash->epos_decrypt($parshash,$this->config->item('encryption_key'));
     //echo $parshash."<br>".$parsvars;  //1,1,1,Sales,01 Mar 2015,10 Mar 2015 
     $parsed = explode(",",$parsvars);  //var_dump($parsed);
-		$data['restname'] = $this->daily->get_restaurant_name($parsed[2]); //(restid)
-    @$data['reslogo'] = ($this->daily->get_restid_logo($parsed[2])=="")?base_url()."assets/images/logo3d.png":$this->daily->get_restid_logo($parsed[2]);  //(userid)  
+		$data['restname'] = $this->weekly->get_restaurant_name($parsed[2]); //(restid)
+    @$data['reslogo'] = ($this->weekly->get_restid_logo($parsed[2])=="")?base_url()."assets/images/logo3d.png":$this->weekly->get_restid_logo($parsed[2]);  //(userid)  
 		$data['def_report_name'] = $parsed[3];     
 		$rest_id = $parsed[2];
 		$report_name = (!($this->input->get('report_name')))?$data['def_report_name']:$this->input->get('report_name'); 
@@ -83,42 +83,42 @@ class Daily_controller extends CI_Controller {
 		$data['startdate'] = $start_date;
 		$data['enddate'] = $end_date;
     $data['dayname'] = date('l', strtotime($end_date));
-    $data['cur'] = $this->daily->get_currency($rest_id);
-    $data['revenue'] = $this->daily->get_revenue($rest_id,date('Y-m-d', strtotime($end_date)));
-    $data['summary'] = $this->daily->get_summary($rest_id,date('Y-m-d', strtotime($end_date)));
-    $data['payment'] = $this->daily->get_payment($rest_id,date('Y-m-d', strtotime($end_date)));
-    $data['ordtype'] = $this->daily->get_ordtype($rest_id,date('Y-m-d', strtotime($end_date)));
-    $data['dtopcatsz'] = $this->daily->get_topcat($rest_id,date('Y-m-d', strtotime($end_date))); 
+    $data['cur'] = $this->weekly->get_currency($rest_id);
+    $data['revenue'] = $this->weekly->get_revenue($rest_id,date('Y-m-d', strtotime($end_date)));
+    $data['summary'] = $this->weekly->get_summary($rest_id,date('Y-m-d', strtotime($end_date)));
+    $data['payment'] = $this->weekly->get_payment($rest_id,date('Y-m-d', strtotime($end_date)));
+    $data['ordtype'] = $this->weekly->get_ordtype($rest_id,date('Y-m-d', strtotime($end_date)));
+    $data['dtopcatsz'] = $this->weekly->get_topcat($rest_id,date('Y-m-d', strtotime($end_date))); 
       if(count($data['dtopcatsz'])>5){   
-  			$data['dtopcatsx'] = $this->daily->get_topcat($rest_id,date('Y-m-d', strtotime($end_date))); 
+  			$data['dtopcatsx'] = $this->weekly->get_topcat($rest_id,date('Y-m-d', strtotime($end_date))); 
   			$array0 = $data['dtopcatsz'];
         $array1 = $data['dtopcatsx'];
-        $array2 = $this->daily->get_top_five($array0);
-        $array3 = $this->daily->remove_others($array0);
-        $array5 = $this->daily->set_as_others($array1);
-        $array6 = $this->daily->remove_other_others($array5);
+        $array2 = $this->weekly->get_top_five($array0);
+        $array3 = $this->weekly->remove_others($array0);
+        $array5 = $this->weekly->set_as_others($array1);
+        $array6 = $this->weekly->remove_other_others($array5);
         $array7 = array_merge($array2,$array3,$array6);
         $array8 = array_merge($array2,$array6,$array3);
-        $data['topcat'] = ($array7[5]->AMOUNT > $array8[5]->AMOUNT)?$array7:$array8;
+        $data['topcat'] = ($array7[5]->AMOUNT_THIS_WEEK > $array8[5]->AMOUNT_THIS_WEEK)?$array7:$array8;
       } else {   
-  			$array0 = $this->daily->remove_zero_values($data['dtopcatsz']);
+  			$array0 = $this->weekly->remove_zero_values($data['dtopcatsz']);
         $data['topcat'] = $array0;  
       }
-    $data['adjust'] = $this->daily->get_adjust($rest_id,date('Y-m-d', strtotime($end_date)));
-    $data['voiditem'] = $this->daily->get_voiditem($rest_id,date('Y-m-d', strtotime($end_date)));
+    $data['adjust'] = $this->weekly->get_adjust($rest_id,date('Y-m-d', strtotime($end_date)));
+    $data['voiditem'] = $this->weekly->get_voiditem($rest_id,date('Y-m-d', strtotime($end_date)));
 						
-		$this->load->view('reports/daily/sales',$data);
+		$this->load->view('reports/weekly/sales',$data);
 	}
   
 	public function reconview(){  
-    $callpage = "dailyrecon";
+    $callpage = "weeklyrecon";
     $parshash = substr(strstr(uri_string(),'/'),strlen($callpage)+2);       
     $this->load->library('hash');  
     $parsvars = $this->hash->epos_decrypt($parshash,$this->config->item('encryption_key'));
     //echo $parshash."<br>".$parsvars;  //1,1,1,Sales,01 Mar 2015,10 Mar 2015 
     $parsed = explode(",",$parsvars);  //var_dump($parsed);
-		$data['restname'] = $this->daily->get_restaurant_name($parsed[2]); //(restid)
-    @$data['reslogo'] = ($this->daily->get_restid_logo($parsed[2])=="")?base_url()."assets/images/logo3d.png":$this->daily->get_restid_logo($parsed[2]);  //(userid)  
+		$data['restname'] = $this->weekly->get_restaurant_name($parsed[2]); //(restid)
+    @$data['reslogo'] = ($this->weekly->get_restid_logo($parsed[2])=="")?base_url()."assets/images/logo3d.png":$this->weekly->get_restid_logo($parsed[2]);  //(userid)  
 		$data['def_report_name'] = $parsed[3];     
 		$rest_id = $parsed[2];
 		$report_name = (!($this->input->get('report_name')))?$data['def_report_name']:$this->input->get('report_name'); 
@@ -131,20 +131,20 @@ class Daily_controller extends CI_Controller {
 		$data['startdate'] = $start_date;
 		$data['enddate'] = $end_date;  
     $data['dayname'] = date('l', strtotime($end_date));
-    $data['cur'] = $this->daily->get_currency($rest_id);
-		$data['recon'] = $this->daily->get_recon($rest_id,date('Y-m-d', strtotime($end_date))); 
+    $data['cur'] = $this->weekly->get_currency($rest_id);
+		$data['recon'] = $this->weekly->get_recon($rest_id,date('Y-m-d', strtotime($end_date))); 
 						
-		$this->load->view('reports/daily/recon',$data);
+		$this->load->view('reports/weekly/recon',$data);
 	}
 		
   public function salesprint(){ 
-    $callpage = "salesdaily";
+    $callpage = "salesweekly";
     $parshash = substr(strstr(uri_string(),'/'),strlen($callpage)+7);    
     $this->load->library('hash');  
     $parsvars = $this->hash->epos_decrypt($parshash,$this->config->item('encryption_key'));
     //echo $parshash."<br>".$parsvars;  //1,1,1,Sales,01 Mar 2015,10 Mar 2015   
     $parsed = explode(",",$parsvars);  //var_dump($parsed);
-    $filename = "DailySalesReport".$parsed[2].".pdf";
+    $filename = "WeeklySalesReport".$parsed[2].".pdf";
     $config = $this->config->config;
     $p = $config['phantomjs']." ";
     $r = $config['html2pdfslp']." ";
@@ -158,13 +158,13 @@ class Daily_controller extends CI_Controller {
   }
   
   public function reconprint(){ 
-    $callpage = "recondaily";
+    $callpage = "reconweekly";
     $parshash = substr(strstr(uri_string(),'/'),strlen($callpage)+7);    
     $this->load->library('hash');  
     $parsvars = $this->hash->epos_decrypt($parshash,$this->config->item('encryption_key'));
     //echo $parshash."<br>".$parsvars;  //1,1,1,Sales,01 Mar 2015,10 Mar 2015   
     $parsed = explode(",",$parsvars);  //var_dump($parsed);
-    $filename = "DailyReconReport".$parsed[2].".pdf";
+    $filename = "WeeklyReconReport".$parsed[2].".pdf";
     $config = $this->config->config;
     $p = $config['phantomjs']." ";
     $r = $config['html2pdfslp']." ";
@@ -179,7 +179,7 @@ class Daily_controller extends CI_Controller {
   	
 	public function profile()
 	{
-		$data['profile'] = $this->daily->get_profile();
+		$data['profile'] = $this->weekly->get_profile();
 		
 		$this->load->view('shared/header',$this->data);
 		$this->load->view('shared/left_menu');

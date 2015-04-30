@@ -5,7 +5,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ePOS</title>
+<?php $config = $this->config->config; ?>
+<title><?=$config['title']?></title>
 
 <link rel="shortcut icon" href="<?php echo base_url(); ?>assets/images/icon.ico" />
 

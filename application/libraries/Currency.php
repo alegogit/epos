@@ -2,23 +2,23 @@
 	if ( ! defined('BASEPATH')) exit('No direct script access allowed');
   	class Currency { 
     	function format($num,$cur){ 
-			if(mb_strtolower($cur) == mb_strtolower("RP")){
-				$out = number_format($num, 0, '', '.');
-			} elseif (mb_strtolower($cur) == mb_strtolower("€")){
-				$out = number_format($num, 2, ',', '.');
-			} else {
-				$out = number_format($num, 2, '.', ',');
-			}
-			return $out;
+  			if(mb_strtolower($cur) == mb_strtolower("RP")){
+  				$out = number_format($num, 0, '', '.');
+  			} elseif (mb_strtolower($cur) == mb_strtolower("€")){
+  				$out = number_format($num, 2, ',', '.');
+  			} else {
+  				$out = number_format($num, 2, '.', ',');
+  			}
+  			return $out;
     	}
 		
     	function decimal($num,$cur){ 
-			if(mb_strtolower($cur) == mb_strtolower("RP")){
-				$out = number_format($num, 0, '', '');
-			} else {
-				$out = number_format($num, 2, '.', '');
-			}
-			return $out;
+  			if(mb_strtolower($cur) == mb_strtolower("RP")){
+  				$out = number_format($num, 0, '', '');
+  			} else {
+  				$out = number_format($num, 2, '.', '');
+  			}
+  			return $out;
     	}
 		
     	function jsformat($cur){ 
@@ -80,7 +80,16 @@
             $amount = '$'.$amount;  // Change this to use the organization's country's symbol in the future
         }
         return $amount;
-      } 
+      }    
+		
+    	function diffpercent($current,$last,$deci=0){
+        if($last==0){
+          $out = -100;
+        } else {
+          $out = (($current/$last)-1)*100;
+        } 
+  			return $this->my_number_format($out,$deci);
+    	}
 
   	}
 ?>

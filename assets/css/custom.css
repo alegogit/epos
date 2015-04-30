@@ -118,6 +118,9 @@
 .cin{
     text-align: right;
 }
+.mid{
+    text-align: center;
+}
 .text3D{
   text-shadow: 1px 4px 4px white, 0 0 0 #000;
 }
@@ -180,3 +183,22 @@ div.dataTables_filter {
     border: 1px solid #cacaca;
     color: #333333 !important;
 }  
+table.ah thead > tr > th{
+  padding: 4px !important;
+}
+table.ah tbody > tr > td{
+  padding: 4px !important;
+}
+table.ah tfoot > tr > th{
+  padding: 4px !important;
+}
+table.nb thead > tr > th{
+  border-top: none !important;
+}
+table.nb tbody > tr > td{
+  border-top: none !important;
+}
+table.nb tfoot > tr > th{
+  border-top: none !important;
+}
+

@@ -7,22 +7,22 @@
       <a role="button" class="btn btn-default" href="<?=base_url()?>reports/inventory">Inventory</a>              
       <a role="button" class="btn btn-default" href="<?=base_url()?>reports/cashflow">Cash Flow</a>         
       <a role="button" class="btn btn-default" href="<?=base_url()?>reports/attendance">Attendance</a>                   
-      <a role="button" class="btn btn-primary" href="<?=base_url()?>reports/daily">&nbsp;&nbsp;<i class="fa fa-th-list"></i> Daily&nbsp;&nbsp;</a>              
+      <a role="button" class="btn btn-default" href="<?=base_url()?>reports/daily">&nbsp;&nbsp;<i class="fa fa-th-list"></i> Daily&nbsp;&nbsp;</a>              
       <a role="button" class="btn btn-default" href="<?=base_url()?>reports/weekly">&nbsp;<i class="fa fa-th"></i> Weekly&nbsp;</a>              
-      <a role="button" class="btn btn-default" href="<?=base_url()?>reports/monthly">&nbsp;<i class="fa fa-th-large"></i> Monthly&nbsp;</a>  
-    </div>  
+      <a role="button" class="btn btn-primary" href="<?=base_url()?>reports/monthly">&nbsp;<i class="fa fa-th-large"></i> Monthly&nbsp;</a>  
+    </div>
     <!--   
     <div class="pull-right">
       <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
         <a id="print" role="button" class="btn btn-primary" href="<?=base_url()?>reports/salesprint/<?=$hashvars?>" target="_blank">&nbsp;<span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Print&nbsp;</a>
       </div>
     </div>
-    -->                                                                        
+    -->                                                                    
     <hr style="margin-bottom:10px;margin-top:10px" />
     <div class="row" style="padding-left: 15px">  
     <?php
       $attributes = array('class' => 'form-inline', 'id' => 'filter', 'role' => 'form');
-      echo form_open('reports/daily',$attributes)
+      echo form_open('reports/monthly',$attributes)
     ?>
       <div class="form-group" style="margin-bottom:0px">
         <div class="input-group">
@@ -38,7 +38,7 @@
         <div class="form-group" style="margin-bottom:0px">
           <div class="input-group">       
             <div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
-            <input id="enddate" name="enddate" type="text" value="<?=$enddate?>" class="form-control datepicker" style="display:inline;padding-left:10px;padding-right:-20px" title="End Date">
+            <input id="enddate" name="enddate" type="text" value="<?=$enddate?>" class="form-control datepicker" style="display:inline;padding-left:10px;padding-right:-20px" title="Select Month">
           </div>
         </div>
         <div class="form-group" style="margin-bottom:0px">
@@ -53,11 +53,11 @@
       <div class="col-sm-3">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <b>Daily Sales Report</b>
+            <b>Monthly Sales Report</b>
           </div>
           <div class="panel-body table-responsive"> 
             <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
-              <a id="print" role="button" class="btn btn-primary" href="<?=base_url()?>reports/dailysalesprint/<?=$hashvars?>" target="_blank">&nbsp;<span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Print&nbsp;</a>
+              <a id="print" role="button" class="btn btn-primary" href="<?=base_url()?>reports/salesmonthly/<?=$hashvars?>" target="_blank">&nbsp;<span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Print&nbsp;</a>
             </div>
           </div>
         </div>
@@ -65,11 +65,13 @@
       <div class="col-sm-3">
         <div class="panel panel-default">
           <div class="panel-heading">
-             <b>Daily Recon Report</b>
+             <b>Monthly Attendance Report</b>
           </div>
           <div class="panel-body table-responsive"> 
             <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
-              <a id="print" role="button" class="btn btn-primary" href="<?=base_url()?>reports/dailyreconprint/<?=$hashvars?>" target="_blank">&nbsp;<span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Print&nbsp;</a>
+              <a id="print" role="button" class="btn btn-primary" href="<?=base_url()?>reports/attndmonthly/<?=$hashvars?>" target="_blank">&nbsp;<span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Print&nbsp;</a>
+              <!--<a id="print" role="button" class="btn btn-primary" href="<?=base_url()?>reports/monthlyattndprint/<?=$hashvars?>" target="_blank">&nbsp;<span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Print&nbsp;</a>
+              -->
             </div>
 			    </div>
         </div>
@@ -86,9 +88,9 @@
 
 <script type="text/javascript">      
   //datepickers    
-  $("#startdate").datepicker({format: 'dd M yyyy'});
-  $("#enddate").datepicker({format: 'dd M yyyy'});
-
+  //$("#startdate").datepicker({format: 'dd M yyyy'});
+  $("#enddate").datepicker({format: 'M yyyy', viewMode: "months", minViewMode: "months" });
+  //$('#enddate').datepicker({daysOfWeekHighlighted: [0,6]});
    
   var ajaxurl = $("#ajaxurl").data('url');  
   var rest_id = $("#rest_id").data('val'); 

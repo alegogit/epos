@@ -6,13 +6,14 @@ class Reset_controller extends CI_Controller {
         parent::__construct();
         //load session and connect to database
         $this->load->model('reset_model','reset',TRUE);
-        $this->load->helper(array('form', 'url','html')); 
+        $this->load->helper(array('form', 'url','html'));   
+        $this->load->library('hash');  
     }
 	
 	function index() {                                  
         $resetcode = substr(strstr(uri_string(),'/'),1); 
-        $data['code'] = $resetcode;    
-	      $reset_parm = $this->reset->epos_decrypt($resetcode,$this->config->item('encryption_key'));
+        $data['code'] = $resetcode;   
+	      $reset_parm = $this->hash->epos_decrypt($resetcode,$this->config->item('encryption_key'));
 	      $reset_date = strstr($reset_parm,'@', true);
 	      $reset_user = substr(strstr($reset_parm,'@'),1);
         date_default_timezone_set('Asia/Jakarta');        

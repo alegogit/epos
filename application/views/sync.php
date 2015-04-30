@@ -39,6 +39,7 @@
 						<table id="sync" class="table table-striped dt-right compact">
 						    <thead>
 						    <tr class="tablehead text3D">
+						        <th class="no-sort"><input type="checkbox" id="checkall" value="Check All"></th>
 						        <th>Device</th>
 						        <th>Last Sync</th>  
                   <?php if ($role==1){ ?>
@@ -51,7 +52,10 @@
 						    </thead>  
 						    <tbody>                    
 						    <?php $i = 0;  foreach ($synchist as $row){ ?>
-                			<tr data-index="<?=$i?>" class="datarow" id="<?=$row->ID.'_'.$row->NAME?>">
+                			<tr data-index="<?=$i?>" class="datarow" id="<?=$row->ID.'_'.$row->PLAY_SERVICE_ID?>"> 
+          			        	<td class="">
+                            <input type="checkbox" class="case" tabindex="-1">
+          			          </td>
 			                  	<td class="">
 			                    	<a id="NAME-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->NAME?></a>
 			                  	</td>
@@ -95,10 +99,22 @@
 <script>   
 $(document).ready(function(){     
 	var baseurl = $("#baseurl").data('url'); 
-	var restid = $("#restid").data('id');
+	var restid = $("#restid").data('id');   
+  
+  //check all
+  $("#checkall").click(function(){
+    $('.case').prop('checked',this.checked);
+  });
+  $(".case").click(function(){
+    if($(".case").length==$(".case:checked").length){
+      $("#selectall").prop("checked","checked");
+    }else{
+      $("#selectall").removeAttr("checked");
+    }
+  }); 
   
   //sync
-  $("#syncer").click(function(){
+  $("#syncerly").click(function(){
     var dataP = "restid="+restid;
     $.ajax({
       type: "POST",
@@ -140,15 +156,17 @@ $(document).ready(function(){
   	}); 
   
   	//function to delete selected row
-  	$('.btn-danger').on("click", function(event){
+  	$('#syncer').on("click", function(event){
   		var sel = false;	
-  		var ch = $('#inventory').find('tbody input[type=checkbox]');
+  		var ch = $('#sync').find('tbody input[type=checkbox]');
     	var dt = '';	
   		ch.each(function(){  
       		if($(this).is(':checked')) { 
         		var idf = $(this).parents('tr').attr('id');
         		var idm = idf.substring(idf.indexOf('_')+1,idf.length);
-  		  		dt = dt+' '+idm+',';
+            if(idm!=""){    
+  		  		  dt = dt+' '+idm+',';
+            }
       		}    
     	}); 
     	if(dt==''){
@@ -162,10 +180,10 @@ $(document).ready(function(){
   				if($this.is(':checked')) {
   					sel = true;	//set to true if there is/are selected row
           			var idf = $(this).parents('tr').attr('id');
-          			var dataP = "idf="+idf;
+          			var dataP = "restid="+restid+"&idf="+idf;
   					$.ajax({
             			type: "POST",
-            			url: baseurl+"process/inventory?p=delete",
+            			url: baseurl+"sync/exec",
             			data: dataP,
             			cache: false,
             			success: function(result){ 

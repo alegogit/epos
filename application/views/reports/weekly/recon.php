@@ -12,11 +12,24 @@
         </td>  
         <td width="40%" style="text-align:center;">
           <span style="font-weight:bold;font-size:200%;"> 
-            <b>DAILY<br>RECON REPORT</b>
+            <b>WEEKLY<br>RECON REPORT</b>
           </span>
         </td>  
         <td width="30%" style="text-align:right;">      
-          <span style="font-weight:bold;font-size:175%;"><b><?=$dayname.", ".$enddate?></b>&nbsp;&nbsp;&nbsp;</span><br>
+          <span style="font-weight:bold;font-size:175%;">
+          <?php
+            $i = 0;
+            foreach ($recon as $row){
+              if($i==0){
+                $strdt = $row->TERMINAL_DATE;
+              } 
+              $enddt = $row->TERMINAL_DATE; 
+              $i++;
+            }
+          ?>
+            <b><?=date('d', strtotime($strdt))." - ".date('d F Y', strtotime($enddt))?></b>&nbsp;&nbsp;&nbsp;
+          </span>
+          <br>
           <span style="font-weight:bold;font-size:125%;"><b><?=$restname->REST_NAME?></b>&nbsp;&nbsp;&nbsp;</span> 
         </td>
       </tr>
@@ -27,22 +40,24 @@
 	        <table id="void" class="table table-striped" data-toggle="table" data-url="" data-show-refresh="false" data-show-toggle="false" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
 					  <thead>
 						  <tr class="tablehead text3D">
-						    <th class="cin" style="border-right:#ddd 1px solid !important;">A</th>
+						    <th class="" style="border-right:#ddd 1px solid !important;">A</th>
 						    <th style="border-right:#ddd 1px solid !important;">B</th>
 						    <th colspan="2" style="border-right:#ddd 1px solid !important;">C</th>
 						    <th colspan="2" style="border-right:#ddd 1px solid !important;">D</th>
 						    <th colspan="2" style="border-right:#ddd 1px solid !important;">E = D &#8211; C</th>
 						    <th colspan="2" style="border-right:#ddd 1px solid !important;">F</th>
-						    <th colspan="2" style="border-right:#ddd 1px solid !important;">G = E &#8211; F</th>
+						    <th colspan="2" style="border-right:#ddd 1px solid !important;">G = E &#8211; F</th> 
+						    <th colspan="2" style="border-right:#ddd 1px solid !important;">H</th>
 						  </tr>
 						  <tr class="" style="background-color:#3071a9; color: #fff">
-						    <th class="cin">No</th>
+						    <th class="">Day</th>
 						    <th style="border-right:black 2px dotted !important;">Terminal</th>
-						    <th colspan="2">Starting Day Cash Register</th>
-						    <th colspan="2" style="border-right:black 2px dotted !important;">Closing Day Cash Register</th>
-						    <th colspan="2">Cash From Register</th>
-						    <th colspan="2" style="border-right:black 2px dotted !important;">Cash From Orders</th>
-						    <th colspan="2">Differences</th>
+						    <th colspan="2">Starting Day<br>Cash Register</th>
+						    <th colspan="2" style="border-right:black 2px dotted !important;">Closing Day<br>Cash Register</th>
+						    <th colspan="2">Cash<br>From Register</th>
+						    <th colspan="2" style="border-right:black 2px dotted !important;">Cash<br>From Orders</th>
+						    <th colspan="2" style="border-right:black 2px solid !important;">Differences</th>
+						    <th colspan="2">Daily<br>Differences</th>
 						  </tr>
 						</thead>
 						<tbody>           
@@ -51,8 +66,8 @@
                 foreach ($recon as $row){ 
               ?>
 						  <tr>
-						    <td class="cin"><?=($row->DIFFERENCE!=NULL)?$i+1:''?></td>
-						    <td style="border-right:black 2px dotted !important;"><?=($row->DIFFERENCE!=NULL)?$row->TERMINAL_NAME:"&#8211;"?></td> 
+						    <td class=""><?=(count($recon)>0)?$row->TERMINAL_DATE:'&#8211;'?></td>
+						    <td style="border-right:black 2px dotted !important;"><?=(count($recon)>0)?$row->TERMINAL_NAME:"&#8211;"?></td> 
 						    <td class="text3D"><?=$cur?></td>
 						    <td class="cin cur text3D"><?=$row->CASH_OPENING+0?></td>  
 						    <td class="text3D"><?=$cur?></td>
@@ -61,6 +76,8 @@
 						    <td class="cin cur text3D"><?=$row->CASH_FROM_REGISTER+0?></td> 
 						    <td class="text3D"><?=$cur?></td>
 						    <td class="cin cur text3D" style="border-right:black 2px dotted !important;"><?=$row->CASH_FROM_INVOICES+0?></td> 
+						    <td class="text3D <?=(((float)$row->DIFFERENCE)<0)?'text-danger':''?>"><?=$cur?></td>
+						    <td class="cin cur text3D <?=(((float)$row->DIFFERENCE)<0)?'text-danger':''?>" style="border-right:black 2px solid !important;"><?=$this->currency->my_number_format((float)$row->DIFFERENCE+0.00, 2, '.', '')?></td> 
 						    <td class="text3D <?=(((float)$row->DIFFERENCE)<0)?'text-danger':''?>"><?=$cur?></td>
 						    <td class="cin cur text3D <?=(((float)$row->DIFFERENCE)<0)?'text-danger':''?>"><?=$this->currency->my_number_format((float)$row->DIFFERENCE+0.00, 2, '.', '')?></td>
 						  </tr>
@@ -85,6 +102,8 @@
 						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['CASH_FROM_REGISTER'], 2, '.', '')?></th>  
 						    <th class="text3D no-sort"><?=$cur?></td>
 						    <th class="cin cur text3D no-sort" style="border-right:black 2px dotted !important;"><?=number_format((float)$total['CASH_FROM_INVOICES'], 2, '.', '')?></th> 
+						    <th class="text3D no-sort <?=((float)$total['DIFFERENCE']<0)?'text-danger':''?>"><?=$cur?></td>
+						    <th class="cin cur text3D no-sort <?=((float)$total['DIFFERENCE']<0)?'text-danger':''?>" style="border-right:black 2px solid !important;"><?=$this->currency->my_number_format((float)$total['DIFFERENCE'],2,'.','')?></th> 
 						    <th class="text3D no-sort <?=((float)$total['DIFFERENCE']<0)?'text-danger':''?>"><?=$cur?></td>
 						    <th class="cin cur text3D no-sort <?=((float)$total['DIFFERENCE']<0)?'text-danger':''?>"><?=$this->currency->my_number_format((float)$total['DIFFERENCE'],2,'.','')?></th> 
 						  </tr>

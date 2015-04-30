@@ -135,7 +135,7 @@ class Daily_model extends CI_Model {
        FROM ORDERS O
       	INNER JOIN (
       		SELECT ORDER_ID, COUNT(INVOICE_ID) INVOICES FROM ORDERS INNER JOIN INVOICES_ORDERS ON ID = ORDER_ID 
-      				WHERE DATE(STARTED) = DATE(SYSDATE())
+      				WHERE DATE(STARTED) = '".$enddate."'
                       GROUP BY ORDER_ID
           ) INVOICE_BY_ORDERS
           ON O.ID = INVOICE_BY_ORDERS.ORDER_ID
@@ -284,7 +284,8 @@ class Daily_model extends CI_Model {
           INNER JOIN ORDER_DETAILS OD ON OD.INVOICE_ID = I.ID
        WHERE OD.VOID = 1
        AND DATE(STARTED) = '".$enddate."'
-       AND O.REST_ID = ".$rest_id.";");
+       AND O.REST_ID = ".$rest_id." 
+       ORDER BY OD.QUANTITY DESC;");
 		return $query->result();
 	}
 	

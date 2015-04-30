@@ -7,7 +7,8 @@ class Forgot_controller extends CI_Controller {
         //load session and connect to database
         $this->load->model('forgot_model','forgot',TRUE);
         $this->load->helper(array('form', 'url','html'));
-        $this->load->library(array('form_validation','session'));   
+        $this->load->library(array('form_validation','session'));  
+        $this->load->library('hash');   
 		    $this->data['user'] = '';  
 		    $this->data['username'] = '';
     }
@@ -22,7 +23,7 @@ class Forgot_controller extends CI_Controller {
         } else {      
 	        $email = $this->input->post('email');
           date_default_timezone_set('Asia/Jakarta');
-	        $reset_code = $this->forgot->epos_encrypt(date('Ymd')."@".$this->data['username'],$this->config->item('encryption_key'));
+	        $reset_code = $this->hash->epos_encrypt(date('Ymd')."@".$this->data['username'],$this->config->item('encryption_key'));
           $reset_url = $this->config->item('base_url')."reset/".$reset_code;   
 	        $message = "Hi ".$this->data['user'].",<br>&nbsp;<br>";
 	        $message .= "Reset Password Request was made.<br>&nbsp;<br>"; 
@@ -30,18 +31,18 @@ class Forgot_controller extends CI_Controller {
 	        $message .= "Please ignore this message.<br>&nbsp;<br>";
 	        $message .= "<b>If this was you</b><br>";
           $message .= "To initiate the process for resetting the password for your ";
-          $message .= $email." ePOS Account, visit the link below: <br>";
+          $message .= $email." NadiPOS Account, visit the link below: <br>";
           $message .= $reset_url." <br>";
           $message .= "If clicking the link above does not work, copy and paste the URL in a new browser window instead.
                        <br>&nbsp;<br> 
-                        Thank you for using ePOS.
+                        Thank you for using NadiPOS.
                         <br>&nbsp;<br>
                         This is a post-only mailing. Replies to this message are not monitored or answered.";     
           $this->load->library('email');
-          $this->email->from('donotreply@zakuna.co','ePOS');
+          $this->email->from($this->config->item('smtp_user'),'NadiPOS');
           $this->email->to($email);
           
-          $this->email->subject('ePOS Reset Password Request');
+          $this->email->subject('NadiPOS Reset Password Request');
           $this->email->message($message);
           
           $this->email->send();

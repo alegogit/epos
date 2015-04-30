@@ -5,13 +5,17 @@
     <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
       <a role="button" class="btn btn-default" href="<?=base_url()?>reports/sales">&nbsp;&nbsp;&nbsp;Sales&nbsp;&nbsp;&nbsp;</a>
       <a role="button" class="btn btn-default" href="<?=base_url()?>reports/inventory">Inventory</a>          
-      <a role="button" class="btn btn-default" href="<?=base_url()?>reports/cashflow">Cash Flow</a>            
-      <a role="button" class="btn btn-default" href="<?=base_url()?>reports/endofday">End of Day</a>              
+      <a role="button" class="btn btn-default" href="<?=base_url()?>reports/cashflow">Cash Flow</a>             
       <a role="button" class="btn btn-primary" href="<?=base_url()?>reports/attendance">Attendance</a>                  
       <a role="button" class="btn btn-default" href="<?=base_url()?>reports/daily">&nbsp;&nbsp;<i class="fa fa-th-list"></i> Daily&nbsp;&nbsp;</a>              
       <a role="button" class="btn btn-default" href="<?=base_url()?>reports/weekly">&nbsp;<i class="fa fa-th"></i> Weekly&nbsp;</a>              
       <a role="button" class="btn btn-default" href="<?=base_url()?>reports/monthly">&nbsp;<i class="fa fa-th-large"></i> Monthly&nbsp;</a>     
-    </div>    
+    </div>                         
+    <div class="pull-right">
+      <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
+        <a id="print" role="button" class="btn btn-primary" href="<?=base_url()?>reports/attendanceprint/<?=$hashvars?>" target="_blank">&nbsp;<span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Print&nbsp;</a>
+      </div>
+    </div>   
                                                                             
     <hr style="margin-bottom:10px;margin-top:10px" />         
     
@@ -23,8 +27,14 @@
         <div class="form-group" style="margin-bottom:0px">
           <div class="input-group">
             <div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
-            <input id="themonth" name="themonth" type="text" value="<?=$themonth?>" class="form-control datepicker" style="display:inline;padding-left:10px;padding-right:-20px" title="Selected Month">
+            <input id="startdate" name="startdate" type="text" value="<?=$startdate?>" class="form-control datepicker" style="display:inline;padding-left:10px;padding-right:-20px" title="Start Date">
           </div>                                                                                                                                                              
+        </div>
+        <div class="form-group" style="margin-bottom:0px">
+          <div class="input-group">       
+            <div class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></div>
+            <input id="enddate" name="enddate" type="text" value="<?=$enddate?>" class="form-control datepicker" style="display:inline;padding-left:10px;padding-right:-20px" title="End Date">
+          </div>
         </div>
         <div class="form-group" style="margin-bottom:0px">
           <div class="input-group">
@@ -49,70 +59,38 @@
 	   
     <div class="panel panel-default">
 		    <div class="panel-heading">
-          <b>attendance Report</b>  
+          <b>Attendance Report</b>  
         </div>
 	      <div class="panel-body table-responsive">   
 	        <table id="report" class="table table-striped dt-right compact">
 				<thead>
 						  <tr class="tablehead text3D">
 						    <th class="no-sort">Date</th>
-						    <!--<th>Restaurant</th>-->
-						    <th class="no-sort">Device</th>  
-						    <th class="cin"></th>
-						    <th class="cin no-sort">Cash From Register</th>     
-						    <th class="cin"></th>
-						    <th class="cin no-sort">Cash From Order</th>   
-						    <th class="cin"></th>
-						    <th class="cin no-sort">Debit From Order</th>   
-						    <th class="cin"></th>
-						    <th class="cin no-sort">Credit From Order</th>
+						    <th class="no-sort">Name</th>  
+						    <th class="no-sort">Check In</th>   
+						    <th class="no-sort">Check Out</th>   
+						    <th class="cin no-sort">Total Hours</th>  
+						    <th class="no-sort">Terminal</th>
 						  </tr>
 						</thead>
 						<tbody>           
 						  <?php 
-                $i = 0;
-                $total['CASH_FROM_REGISTER'] = 0;  
-                $total['CASH_FROM_ORDER'] = 0;  
-                $total['DEBIT_FROM_ORDERS'] = 0;  
-                $total['CREDIT_FROM_ORDERS'] = 0;  
+                $i = 0; 
                 foreach ($attendance as $row){ 
+                  $total['HOURS'] = (($row->CHECKIN!=NULL)&&($row->CHECKOUT!=NULL))?round((strtotime($row->CHECKOUT) - strtotime($row->CHECKIN))/(60*60))." hrs":"-";    
               ?>
 						  <tr class="<?=$this->attendance->inv_status_class($row->STATUS)?>" data-index="<?=$i?>">
-						    <td><?=$row->TERMINAL_DATE?></td>
-						    <!--<td><?=$row->REST_NAME?></td>-->
-						    <td><?=$row->DEVICE_NAME?></td>     
-						    <td class="cin text3D"><?=$cur?></td>
-						    <td class="cin cur text3D"><?=number_format((float)$row->CASH_FROM_REGISTER, 2, '.', '')?></td> 
-						    <td class="cin text3D"><?=$cur?></td>
-						    <td class="cin cur text3D"><?=number_format((float)$row->CASH_FROM_ORDER, 2, '.', '')?></td> 
-						    <td class="cin text3D"><?=$cur?></td>
-						    <td class="cin cur text3D"><?=number_format((float)$row->DEBIT_FROM_ORDERS, 2, '.', '')?></td> 
-						    <td class="cin text3D"><?=$cur?></td>
-						    <td class="cin cur text3D"><?=number_format((float)$row->CREDIT_FROM_ORDERS, 2, '.', '')?></td>
+						    <td><?=$row->SELECTED_DATED?></td> 
+						    <td><?=$row->EMPLOYEE_NAME?></td>
+						    <td><?=($row->CHECKIN==NULL)?"-":date('Y-m-d H:i', strtotime($row->CHECKIN))?></td> 
+						    <td><?=($row->CHECKOUT==NULL)?"-":date('Y-m-d H:i', strtotime($row->CHECKOUT))?></td>
+						    <td class="cin"><?=$total['HOURS']?></td> 
+						    <td><?=($row->TERMINAL_NAME==NULL)?"-":$row->TERMINAL_NAME?></td> 
 						  </tr>
-						  <?php 
-                $total['CASH_FROM_REGISTER'] = $total['CASH_FROM_REGISTER']+$row->CASH_FROM_REGISTER;  
-                $total['CASH_FROM_ORDER'] = $total['CASH_FROM_ORDER']+$row->CASH_FROM_ORDER;  
-                $total['DEBIT_FROM_ORDERS'] = $total['DEBIT_FROM_ORDERS']+$row->DEBIT_FROM_ORDERS;  
-                $total['CREDIT_FROM_ORDERS'] = $total['CREDIT_FROM_ORDERS']+$row->CREDIT_FROM_ORDERS;  
+						  <?php  
                 $i++; 
               } ?>
 						</tbody>
-						<tfoot>
-						  <tr class="tablefoot text3D">
-						    <th class="no-sort">Grand Total</th>
-						    <!--<th>Restaurant</th>-->
-						    <th class="no-sort"></th> 
-						    <th class="cin text3D no-sort"><?=$cur?></td>
-						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['CASH_FROM_REGISTER'], 2, '.', '')?></th>  
-						    <th class="cin text3D no-sort"><?=$cur?></td>
-						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['CASH_FROM_ORDER'], 2, '.', '')?></th> 
-						    <th class="cin text3D no-sort"><?=$cur?></td>
-						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['DEBIT_FROM_ORDERS'], 2, '.', '')?></th>  
-						    <th class="cin text3D no-sort"><?=$cur?></td>
-						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['CREDIT_FROM_ORDERS'], 2, '.', '')?></th>
-						  </tr>
-						</tfoot>
 					</table>      
 			  </div>
 			</div>
@@ -124,7 +102,8 @@
 
 <script>  
   //datepickers    
-  $("#themonth").datepicker({format: 'M yyyy', viewMode: "months", minViewMode: "months"});
+  $("#startdate").datepicker({format: 'dd M yyyy'});
+  $("#enddate").datepicker({format: 'dd M yyyy'});
     
   //inititate datatable
   var table = $('#report').DataTable({
@@ -140,20 +119,4 @@
     "bAutoWidth": false
   });
   
-  //currency control
-  jQuery(function($) {
-    var cur = $("#cur").data('val');
-    switch(cur) {
-      case "RS":                  
-        $('.cur').autoNumeric('init', { dGroup: 2 });
-        break;
-      case "RP":   
-        $('.cur').autoNumeric('init', { aSep: '.', dGroup: 3, aDec: ',', aPad: false });
-        break;
-      default: 
-        $('.cur').autoNumeric('init');
-        break;
-    }     
-  });
-
 </script>

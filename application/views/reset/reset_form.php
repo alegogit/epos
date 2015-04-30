@@ -2,11 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>ePOS</title>   
+<title><?=$this->config->item('title')?></title>   
 <link rel="shortcut icon" href="<?php echo base_url(); ?>assets/images/icon.ico" />
  
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.js"></script>
-<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap.js"></script>
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/bootstrap.js"></script> 
+<script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.validate.js"></script> 
 <script>
 </script>
  
@@ -138,19 +139,21 @@ html,body{
     <div id="output"></div>
     <?php 
 	   echo validation_errors(); 
-	   $attributes = array('class' => 'form-signin', 'id' => 'myform', 'role' => 'form');
+	   $attributes = array('class' => 'form-signin', 'id' => 'resetpass', 'role' => 'form');
 	   echo form_open('reset/'.$code, $attributes); 
 	  ?>    
       <div class="form-group">
+        <label for="password1">Fill In New Password</label><br>
         <div class="input-group">
           <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
-          <input name="password1" id="password1" class="form-control" type="password" placeholder="Fill In New Password" required>
+          <input name="password1" id="password1" class="form-control" type="password" pattern=".{5,}" placeholder="minimum 6 chars" autofocus required title="Please enter at least 6 characters">
         </div>
       </div>
-      <div class="form-group">
+      <div class="form-group">  
+        <label for="password2">Retype New Password</label><br>
         <div class="input-group">
           <div class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></div>
-          <input name="password2" id="password2" class="form-control" type="password" placeholder="Retype New Password" required>
+          <input name="password2" id="password2" class="form-control" type="password" pattern=".{5,}" placeholder="minimum 6 chars" autofocus required title="Please enter at least 6 characters">
         </div>
       </div>
       <input id="resetbutt" name="reset" type="submit" value="Reset Your Password" class="btn btn-lg btn-primary btn-block" />
@@ -162,6 +165,25 @@ html,body{
 <script>
  $(document).ready(function () {
    $("#password2").keyup(function(){checkPasswordMatch("#password1","#password2","#output","#resetbutt");});
+   
+   
+  $("#resetpassf").validate({ 
+    rules: {
+      password1: { 
+        minlength: 6 
+      }, 
+      password2: { 
+        equalTo: "#password1",
+        minlength: 6
+      }       
+    },
+    messages:{ 
+      password2: { 
+        equalTo:"The passwords don’t match"
+      }
+    }
+  });    
+  
 });
 
 function checkPasswordMatch(ale,ela,luv,vul) {
@@ -176,6 +198,7 @@ function checkPasswordMatch(ale,ela,luv,vul) {
         $(luv).html("Passwords match.").addClass("alert-success").removeClass("alert-danger");
     }
 }
+
 </script>
 </body>
 </html>
