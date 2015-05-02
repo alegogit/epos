@@ -52,12 +52,12 @@
 						    </thead>  
 						    <tbody>                    
 						    <?php $i = 0;  foreach ($synchist as $row){ ?>
-                			<tr data-index="<?=$i?>" class="datarow" id="<?=$row->ID.'_'.$row->PLAY_SERVICE_ID?>"> 
+                			<tr data-index="<?=$i?>" class="datarow <?=(($row->PLAY_SERVICE_ID=="")||($row->PLAY_SERVICE_ID=="NULL"))?"danger":""?>" id="<?=$row->ID.'_'.$row->PLAY_SERVICE_ID?>"> 
           			        	<td class="">
                             <input type="checkbox" class="case" tabindex="-1">
           			          </td>
 			                  	<td class="">
-			                    	<a id="NAME-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->NAME?></a>
+			                    	<a id="NAME-<?=$row->ID?>" class="edit" tabindex="0" <?=(($row->PLAY_SERVICE_ID=="")||($row->PLAY_SERVICE_ID=="NULL"))?"title='No Registration ID(s) yet..'":""?>><?=$row->NAME?></a>
 			                  	</td>
 			                  	<td class="">
 			                    	<a id="LAST_SYNC-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->LAST_SYNC?></a>
@@ -84,7 +84,7 @@
 		<a id="syncer" class="btn btn-lg btn-success" href="#syncer"><i class="fa fa-refresh"></i> Sync Now</a>
 	</div>
 	
-	<div id="gcmresp" class="alert alert-info alert-dismissable" style="margin-top:10px;display:none;"> 
+	<div id="gcmresp" class="alert alert-info alert-dismissable" style="margin-top:10px;display:none;overflow-x:scroll;"> 
     <a class="panel-close close" data-dismiss="alert">x</a>
     <span id="syncout"></span>
 	</div>
@@ -126,7 +126,7 @@ $(document).ready(function(){
         if(result.trim()!=''){    
           $("#syncout").html(startTyping(result,35, "syncout")); 
         } else {    
-          $("#syncout").html('eek');
+          $("#syncout").html('false');
         }   
       }
     });   
@@ -165,41 +165,52 @@ $(document).ready(function(){
         		var idf = $(this).parents('tr').attr('id');
         		var idm = idf.substring(idf.indexOf('_')+1,idf.length);
             if(idm!=""){    
-  		  		  dt = dt+' '+idm+',';
+  		  		  dt = dt+''+idm+',';
             }
-      		}    
+            sel = true;
+      		} else {
+      		  sel = false;
+          }    
     	}); 
     	if(dt==''){
       		var c = false;
     	} else {  	
-  	  		var c = confirm('Continue delete \n'+dt.substring(1,dt.length-1)+'?');
+  	  		//var c = confirm('Continue delete \n'+dt.substring(1,dt.length-1)+'?');
+  	  		var c = true;
     	}
+    	console.log(c);
   		if(c) {
-  	  		ch.each(function(){
+  	  	ch.each(function(){
   		 		var $this = $(this);
   				if($this.is(':checked')) {
   					sel = true;	//set to true if there is/are selected row
-          			var idf = $(this).parents('tr').attr('id');
-          			var dataP = "restid="+restid+"&idf="+idf;
-  					$.ajax({
-            			type: "POST",
-            			url: baseurl+"sync/exec",
-            			data: dataP,
-            			cache: false,
-            			success: function(result){ 
-              				if(result.trim()!='OK'){    
-                				alert(result); 
-              				} else {    
-        						$this.parents('tr').fadeOut(function(){
-        							$this.remove(); //remove row when animation is finished
-        						});     
-              				}   
-            			}
-          			});   
+          	var idf = $(this).parents('tr').attr('id');
+          	var dataP = "restid="+restid+"&idf="+dt;
+          	$.ajax({
+              type: "POST",
+              url: baseurl+"sync/exec",
+	            data: dataP,
+              cache: false,
+              success: function(result){
+                $("#gcmresp").show(); 
+                if(result.trim()!=''){    
+                  $("#syncout").html(startTyping(result,35, "syncout")); 
+                } else {    
+                  $("#syncout").html('false');
+                }   
+              }
+            });   
   				}
-  	  		});
-  		  	if(!sel) alert('No data selected');	
-  		}
+  	  	});
+  		  if(!sel) alert('No data selected');	
+  		} else {
+        if(!sel){
+          alert('No data selected');	 
+        } else {  
+          $("#gcmresp").show(); 
+          $("#syncout").html(startTyping("No Registration ID yet, please contact Administrator",35, "syncout"));
+        }         
+      }
   		return false;
   	}); 
 });      

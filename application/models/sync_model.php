@@ -57,7 +57,7 @@ class Sync_model extends CI_Model {
     	return $query->row();
   	}
     
-	function get_sync_history($rest_id){
+	function get_sync_history($rest_id){ 
     	$query = $this->db->select('*')
                       ->from('TERMINAL')
                       ->where('REST_ID',$rest_id)

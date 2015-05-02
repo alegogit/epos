@@ -70,7 +70,8 @@ class Restaurant_controller extends CI_Controller {
           curl_setopt($request, CURLOPT_POST, true); 
           //$filename = substr($_FILES['cphoto']['tmp_name'],0,-4).".jpg";   echo $filename;
           //$args['cphoto'] = new CurlFile($filename, 'image/jpg');
-          $args['cphoto'] = new CurlFile($_FILES['cphoto']['tmp_name'], 'image/jpg');
+          //$args['cphoto'] = new CurlFile($_FILES['cphoto']['tmp_name'], 'image/jpg');
+          $args['cphoto'] = class_exists('CurlFile', false) ? new CurlFile($_FILES['cphoto']['tmp_name'], 'image/jpg') : @$_FILES['cphoto']['tmp_name'];
           $args['rid'] = $this->input->post('rid');
           $args['key'] = md5( $this->setting->gettyimg( $this->input->post('rid') ) );
           $args['dir'] = $this->config->config['fileserver_img_dir'];

@@ -44,6 +44,8 @@ class Sync_controller extends CI_Controller {
 	
 	public function exec() { 
 		$restid = $this->input->post('restid');
+		$playid = array();
+    $playid = explode(",",trim($this->input->post('idf')));
 		$synchist = $this->sync->get_sync_history($restid);
     $REG_ID = array();
 		foreach ($synchist as $row){
@@ -94,7 +96,8 @@ class Sync_controller extends CI_Controller {
       if( (count($upd['MENU'])==0) && (count($upd['CATEGORY'])==0) && (count($upd['PRINTER'])==0) && (count($upd['USERS'])==0) && (count($upd['TABLES'])==0) && (count($upd['RESTAURANTS'])==0) && (count($upd['REF_VALUES'])==0) ){     
         echo "No New Updated Data to be synced..";
       } else {
-        $registatoin_ids = $REG_ID;
+        //$registatoin_ids = $REG_ID;
+        $registatoin_ids = array_filter($playid);   //var_dump($registatoin_ids);
 		    echo $this->sync->send_notification($registatoin_ids, $message);
       } 
     } else {
