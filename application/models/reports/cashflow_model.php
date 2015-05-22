@@ -98,7 +98,9 @@ class Cashflow_model extends CI_Model {
 	function get_cashflow($rest_id,$startdate,$enddate)
 	{
 	    $query = $this->db->query("SELECT R.ID REST_ID,	R.NAME REST_NAME,
-                                        T.ID TERMINAL_ID, T.NAME TERMINAL_NAME,
+                                        T.ID TERMINAL_ID, T.NAME TERMINAL_NAME, 
+                                        PH.CASH_OPENING	CASH_OPENING,
+                                		    PH.CASH_CLOSING	CASH_CLOSING,
                                         SUM(PH.CASH_CLOSING - PH.CASH_OPENING) CASH_FROM_REGISTER,
                                         CASH_FROM_INVOICES.TOTAL CASH_FROM_INVOICES, 
                                         SUM(PH.CASH_CLOSING - PH.CASH_OPENING) - CASH_FROM_INVOICES.TOTAL	DIFFERENCE,

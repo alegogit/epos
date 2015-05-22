@@ -47,7 +47,8 @@ class Printer_controller extends CI_Controller {
 			
       $data['printer_conf'] = $this->printer->get_printer($rest_id);
 		  $data['connectivity'] = $this->printer->get_all_connectivity(); 		       
-		  $data['statuses'] = $this->printer->get_status(); 		
+		  $data['statuses'] = $this->printer->get_status(); 		         
+      $data['maclist'] = $this->printer->get_mac();
      
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);

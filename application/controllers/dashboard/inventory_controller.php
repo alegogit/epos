@@ -31,22 +31,22 @@ class Inventory_controller extends CI_Controller {
 			$session_data = $this->session->userdata('logged_in');
 			$session_filt = $this->session->userdata('filtered');
 			$data['def_rest'] = ($session_filt['def_rest'])?$session_filt['def_rest']:$session_data['def_rest'];
-			//$data['def_start_date'] = ($session_filt['def_start_date'])?$session_filt['def_start_date']:date('d M Y', time() - 30 * 60 * 60 * 24);
-			//$data['def_end_date'] = ($session_filt['def_end_date'])?$session_filt['def_end_date']:date('d M Y', time());
+			@$data['def_start_date'] = ($session_filt['def_start_date'])?$session_filt['def_start_date']:date('d M Y', time() - 30 * 60 * 60 * 24);
+			@$data['def_end_date'] = ($session_filt['def_end_date'])?$session_filt['def_end_date']:date('d M Y', time());
 			$rest_id = (!($this->input->post('rest_id')))?$data['def_rest']:$this->input->post('rest_id'); 
-			//$start_date = (!($this->input->post('startdate')))?$data['def_start_date']:$this->input->post('startdate'); 
-			//$end_date = (!($this->input->post('startdate')))?$data['def_end_date']:$this->input->post('enddate'); 
+			$start_date = (!($this->input->post('startdate')))?$data['def_start_date']:$this->input->post('startdate'); 
+			$end_date = (!($this->input->post('enddate')))?$data['def_end_date']:$this->input->post('enddate'); 
 			$data['rest_id'] = $rest_id;
-			//$data['startdate'] = $start_date;
-			//$data['enddate'] = $end_date;          
+			$data['startdate'] = $start_date;
+			$data['enddate'] = $end_date;         
       $data['cur'] = $this->dash_inv->get_currency($rest_id);
       //==rpanel=======>       
-			$data['net_sales_today'] = $this->rpanel->net_sales_today($rest_id);
-			$data['tot_sales_today'] = $this->rpanel->total_sales_today($rest_id);
-			$data['avrsls_percust'] = $this->rpanel->average_sales_per_customer($rest_id);
-			$data['num_cust_today'] = $this->rpanel->number_customer_today($rest_id);
-			$data['avrsls_perinv'] = $this->rpanel->average_sales_per_invoice($rest_id);
-			$data['com_inv_today'] = $this->rpanel->completed_invoice_today($rest_id);
+			$data['net_sales'] = $this->rpanel->net_sales($rest_id,date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)));
+			$data['tot_sales'] = $this->rpanel->total_sales($rest_id,date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)));
+			$data['avrsls_percust'] = $this->rpanel->average_sales_per_customer($rest_id,date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)));
+			$data['num_cust'] = $this->rpanel->number_customer($rest_id,date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)));
+			$data['avrsls_perinv'] = $this->rpanel->average_sales_per_invoice($rest_id,date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)));
+			$data['com_inv'] = $this->rpanel->completed_invoice($rest_id,date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)));
       //<==rpanel=====
 			$data['nonmovitm'] = $this->dash_inv->non_moving_items($rest_id);
 			$data['lowinstck'] = $this->dash_inv->low_in_stock($rest_id);

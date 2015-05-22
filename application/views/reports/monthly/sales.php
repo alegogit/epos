@@ -3,7 +3,7 @@
 ?>
 <div id="page-content-wrapper" style="margin-top:-10px;">
 <!-- Page Content -->
-  <div class="container-fluid" style="font-size:69%;letter-spacing:1px;">  
+  <div class="container-fluid" style="font-size:67%;letter-spacing:1px;">  
     <div class="row" style="vertical-align:bottom !important;">
     <table width="100%">
       <tr>
@@ -223,7 +223,12 @@
                     $tot['TOTAL_LAST_MONTH'] = 0;
                     $tot['AMOUNT_THIS_MONTH'] = 0;
                     $tot['AMOUNT_LAST_MONTH'] = 0;
-                    $n = count($payment);
+                    $n = count($payment); 
+                    if($n!=0){
+                      $payment = $payment;
+                    } else {     
+                      $payment = $pmethod;
+                    }
                     foreach($payment as $rowt){
                       $tot['TOTAL_THIS_MONTH'] = $tot['TOTAL_THIS_MONTH'] + $rowt->TOTAL_THIS_MONTH;
                       $tot['TOTAL_LAST_MONTH'] = $tot['TOTAL_LAST_MONTH'] + $rowt->TOTAL_LAST_MONTH;  
@@ -364,36 +369,39 @@
                     $tot['TOTAL_THIS_MONTH'] = $adjust->TOTAL_THIS_MONTH+0;
                     $tot['TOTAL_LAST_MONTH'] = $adjust->TOTAL_LAST_MONTH+0; 
                     $tot['AMOUNT_THIS_MONTH'] = 0;
-                    $tot['AMOUNT_LAST_MONTH'] = 0;
-                    foreach($topcat as $rowt){
-                      $tot['TOTAL_THIS_MONTH'] = $tot['TOTAL_THIS_MONTH'] + $rowt->TOTAL_THIS_MONTH;
-                      $tot['TOTAL_LAST_MONTH'] = $tot['TOTAL_LAST_MONTH'] + $rowt->TOTAL_LAST_MONTH;    
-                      $tot['AMOUNT_THIS_MONTH'] = $tot['AMOUNT_THIS_MONTH'] + $rowt->AMOUNT_THIS_MONTH;  
-                      $tot['AMOUNT_LAST_MONTH'] = $tot['AMOUNT_LAST_MONTH'] + $rowt->AMOUNT_LAST_MONTH; 
-                    }
-                    foreach($topcat as $row){
-                      if(strtolower($row->CAT_NAME)=="others"){
-                        $row->CAT_NAME = strtoupper($row->CAT_NAME);
+                    $tot['AMOUNT_LAST_MONTH'] = 0;  
+                    if(count($topcat)!=0){
+                      foreach($topcat as $rowt){
+                        $tot['TOTAL_THIS_MONTH'] = $tot['TOTAL_THIS_MONTH'] + $rowt->TOTAL_THIS_MONTH;
+                        $tot['TOTAL_LAST_MONTH'] = $tot['TOTAL_LAST_MONTH'] + $rowt->TOTAL_LAST_MONTH;    
+                        $tot['AMOUNT_THIS_MONTH'] = $tot['AMOUNT_THIS_MONTH'] + $rowt->AMOUNT_THIS_MONTH;  
+                        $tot['AMOUNT_LAST_MONTH'] = $tot['AMOUNT_LAST_MONTH'] + $rowt->AMOUNT_LAST_MONTH; 
+                      }
+                      foreach($topcat as $row){
+                        if(strtolower($row->CAT_NAME)=="others"){
+                          $row->CAT_NAME = strtoupper($row->CAT_NAME);
                   ?> 
                   <tr class="">
                     <td class="cin text3D" style="border-right:black 2px solid;"></td>
-                    <td class="cin text3D" colspan="7"></td>
+                    <td class="cin text3D" colspan="10"></td>
                   </tr> 
                   <tr class="">
                     <td class="text3D" style="border-right:black 2px solid;"><?=strtoupper($adjust->CAT_NAME)?></td>
                     <td class="cin text3D" style="font-weight:bold;"><?=$adjust->TOTAL_THIS_MONTH+0?></td>
-                    <td class="cin cur text3D" style="font-weight:bold;"><?=$row->AMOUNT_THIS_MONTH+0?></td>
-                    <td class="cin cur text3D" style="font-weight:bold;"><?=($tot['AMOUNT_THIS_MONTH']!=0)?$this->currency->my_number_format((float)(($row->AMOUNT_THIS_MONTH+0)*100/$tot['AMOUNT_THIS_MONTH']), 0, '.', ''):0?></td> 
+                    <td class="cin cur text3D" style="font-weight:bold;"><?=$adjust->AMOUNT_THIS_MONTH+0?></td>
+                    <td class="cin cur text3D" style="font-weight:bold;"><?=($tot['AMOUNT_THIS_MONTH']!=0)?$this->currency->my_number_format((float)(($adjust->AMOUNT_THIS_MONTH+0)*100/$tot['AMOUNT_THIS_MONTH']), 0, '.', ''):0?></td> 
                     <td class="text3D" style="font-weight:bold;border-right:black 2px dotted !important;">%</td>  
-                    <td class="cin text3D"><?=$row->TOTAL_LAST_MONTH+0?></td>
-                    <td class="cin cur text3D"><?=$row->AMOUNT_LAST_MONTH+0?></td>
-                    <td class="cin cur text3D"><?=($tot['AMOUNT_LAST_MONTH']!=0)?$this->currency->my_number_format((float)(($row->AMOUNT_LAST_MONTH+0)*100/$tot['AMOUNT_LAST_MONTH']), 0, '.', ''):0?></td> 
+                    <td class="cin text3D"><?=$adjust->TOTAL_LAST_MONTH+0?></td>
+                    <td class="cin cur text3D"><?=$adjust->AMOUNT_LAST_MONTH+0?></td>
+                    <td class="cin cur text3D"><?=($tot['AMOUNT_LAST_MONTH']!=0)?$this->currency->my_number_format((float)(($adjust->AMOUNT_LAST_MONTH+0)*100/$tot['AMOUNT_LAST_MONTH']), 0, '.', ''):0?></td> 
                     <td class="text3D" style="border-right:black 2px dotted !important;">%</td>  
-                    <td class="cin cur text3D"><?=$this->currency->diffpercent(($tot['AMOUNT_THIS_MONTH']+0),($tot['AMOUNT_LAST_MONTH']+0))?></td>  
+                    <td class="cin cur text3D"><?=$this->currency->diffpercent(($adjust->AMOUNT_THIS_MONTH+0),($adjust->AMOUNT_LAST_MONTH+0))?></td>  
                     <td>%</td> 
                   </tr>                
                   <?php
-                      }
+                        } else {
+                        
+                        }
                   ?> 
                   <tr class="">
                     <td class="text3D" style="border-right:black 2px solid;"><?=$row->CAT_NAME?></td>
@@ -405,13 +413,77 @@
                     <td class="cin cur text3D"><?=$row->AMOUNT_LAST_MONTH+0?></td>
                     <td class="cin cur text3D"><?=($tot['AMOUNT_LAST_MONTH']!=0)?$this->currency->my_number_format((float)(($row->AMOUNT_LAST_MONTH+0)*100/$tot['AMOUNT_LAST_MONTH']), 0, '.', ''):0?></td> 
                     <td class="text3D" style="border-right:black 2px dotted !important;">%</td>  
-                    <td class="cin cur text3D"><?=$this->currency->diffpercent(($tot['AMOUNT_THIS_MONTH']+0),($tot['AMOUNT_LAST_MONTH']+0))?></td>    
+                    <td class="cin cur text3D"><?=$this->currency->diffpercent(($row->AMOUNT_THIS_MONTH+0),($row->AMOUNT_LAST_MONTH+0))?></td>    
                     <td>%</td> 
                   </tr> 
                   <?php
-                      $i++;
+                        $i++;
+                      }   
+                      if(count($topcat)<=5){
+                  ?>   
+                  <tr class="">
+                    <td class="cin text3D" style="border-right:black 2px solid;"></td>
+                    <td class="cin text3D" colspan="10"></td>
+                  </tr>  
+                  <tr class="">
+                    <td class="text3D" style="border-right:black 2px solid;">ADJUSTMENTS</td>
+                    <td class="cin text3D" style="font-weight:bold;">0</td>
+                    <td class="cin cur text3D" style="font-weight:bold;">0</td>
+                    <td class="cin cur text3D" style="font-weight:bold;">0</td>  
+                    <td class="text3D" style="font-weight:bold;border-right:black 2px dotted !important;">%</td>  
+                    <td class="cin text3D">0</td>
+                    <td class="cin cur text3D">0</td>
+                    <td class="cin cur text3D">0</td> 
+                    <td class="text3D" style="border-right:black 2px dotted !important;">%</td>  
+                    <td class="cin cur text3D"><?=$this->currency->diffpercent(0,0)?></td>    
+                    <td>%</td> 
+                  </tr> 
+                  <tr class="">
+                    <td class="text3D" style="border-right:black 2px solid;">OTHERS</td>
+                    <td class="cin text3D" style="font-weight:bold;">0</td>
+                    <td class="cin cur text3D" style="font-weight:bold;">0</td>
+                    <td class="cin cur text3D" style="font-weight:bold;">0</td>  
+                    <td class="text3D" style="font-weight:bold;border-right:black 2px dotted !important;">%</td>  
+                    <td class="cin text3D">0</td>
+                    <td class="cin cur text3D">0</td>
+                    <td class="cin cur text3D">0</td> 
+                    <td class="text3D" style="border-right:black 2px dotted !important;">%</td>  
+                    <td class="cin cur text3D"><?=$this->currency->diffpercent(0,0)?></td>    
+                    <td>%</td> 
+                  </tr> 
+                  <?php
+                      }
+                    } else {
+                  ?>     
+                  <tr class="">
+                    <td class="text3D" style="border-right:black 2px solid;">ADJUSTMENTS</td>
+                    <td class="cin text3D" style="font-weight:bold;">0</td>
+                    <td class="cin cur text3D" style="font-weight:bold;">0</td>
+                    <td class="cin cur text3D" style="font-weight:bold;">0</td>  
+                    <td class="text3D" style="font-weight:bold;border-right:black 2px dotted !important;">%</td>  
+                    <td class="cin text3D">0</td>
+                    <td class="cin cur text3D">0</td>
+                    <td class="cin cur text3D">0</td> 
+                    <td class="text3D" style="border-right:black 2px dotted !important;">%</td>  
+                    <td class="cin cur text3D"><?=$this->currency->diffpercent(0,0)?></td>    
+                    <td>%</td> 
+                  </tr> 
+                  <tr class="">
+                    <td class="text3D" style="border-right:black 2px solid;">OTHERS</td>
+                    <td class="cin text3D" style="font-weight:bold;">0</td>
+                    <td class="cin cur text3D" style="font-weight:bold;">0</td>
+                    <td class="cin cur text3D" style="font-weight:bold;">0</td>  
+                    <td class="text3D" style="font-weight:bold;border-right:black 2px dotted !important;">%</td>  
+                    <td class="cin text3D">0</td>
+                    <td class="cin cur text3D">0</td>
+                    <td class="cin cur text3D">0</td> 
+                    <td class="text3D" style="border-right:black 2px dotted !important;">%</td>  
+                    <td class="cin cur text3D"><?=$this->currency->diffpercent(0,0)?></td>    
+                    <td>%</td> 
+                  </tr> 
+                  <?php
                     }
-                  ?>  
+                  ?>
                   <tr class="" style="font-weight:bold;border-top:black 2px solid;">
                     <td class="cin text3D" style="border-right:black 2px solid;">TOTAL</td>
                     <td class="cin text3D info"><?=$tot['TOTAL_THIS_MONTH']?></td>

@@ -84,11 +84,14 @@
 		
     	function diffpercent($current,$last,$deci=0){
         if($last==0){
-          $out = -100;
+          $out = "&infin;";
+          //$out = 100;     
+          //$out = ($current-1)*100; 
+          return $out;
         } else {
-          $out = (($current/$last)-1)*100;
+          $out = (($current/$last)-1)*100;    
+          return $this->my_number_format($out,$deci);
         } 
-  			return $this->my_number_format($out,$deci);
     	}
 
   	}

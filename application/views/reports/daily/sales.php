@@ -152,7 +152,12 @@
                     $i = 0;
                     $tot['TOTAL'] = 0;
                     $tot['AMOUNT'] = 0;
-                    $n = count($payment);
+                    $n = count($payment); 
+                    if($n!=0){
+                      $payment = $payment;
+                    } else {     
+                      $payment = $pmethod;
+                    }
                     foreach($payment as $rowt){
                       $tot['TOTAL'] = $tot['TOTAL'] + $rowt->TOTAL;  
                       $tot['AMOUNT'] = $tot['AMOUNT'] + $rowt->AMOUNT;  
@@ -163,7 +168,7 @@
                     <td class="cin text3D" style="border-right:black 2px solid;"><?=$row->PAYMENT_METHOD?></td>
                     <td class="cin text3D"><?=$row->TOTAL+0?></td>
                     <td class="cin cur text3D"><?=$row->AMOUNT+0?></td>
-                    <td class="cin text3D"><?=($n!=0)?$this->currency->my_number_format((float)(($row->AMOUNT+0)*100/$tot['AMOUNT']), 0, '.', ''):0?> %</td> 
+                    <td class="cin text3D"><?=($tot['AMOUNT']!=0)?$this->currency->my_number_format((float)(($row->AMOUNT+0)*100/$tot['AMOUNT']), 0, '.', ''):0?> %</td> 
                   </tr> 
                   <?php
                       $i++;
@@ -175,7 +180,7 @@
                     <th class="cin text3D" style="border-right:black 2px solid;">TOTAL</th>
                     <th class="cin text3D info"><?=$tot['TOTAL']?></th>
                     <th class="cin cur text3D info"><?=$tot['AMOUNT']?></th>
-                    <th class="cin text3D info"><?=($n!=0)?100:0?> %</th>
+                    <th class="cin text3D info"><?=($tot['AMOUNT']!=0)?100:0?> %</th>
                   </tr>  
                   <tr class="">
                     <th class="cin text3D"></th>
@@ -246,13 +251,15 @@
                   <?php
                     $i = 0;
                     $tot['TOTAL'] = $adjust->TOTAL+0;
-                    $tot['AMOUNT'] = $adjust->AMOUNT+0;
-                    foreach($topcat as $rowt){
-                      $tot['TOTAL'] = $tot['TOTAL'] + $rowt->TOTAL;  
-                      $tot['AMOUNT'] = $tot['AMOUNT'] + $rowt->AMOUNT;  
-                    }
-                    foreach($topcat as $row){
-                      if($row->CAT_NAME=="others"){
+                    $tot['AMOUNT'] = $adjust->AMOUNT+0; 
+                    if(count($topcat)!=0){
+                      foreach($topcat as $rowt){
+                        $tot['TOTAL'] = $tot['TOTAL'] + $rowt->TOTAL;  
+                        $tot['AMOUNT'] = $tot['AMOUNT'] + $rowt->AMOUNT;  
+                      }
+                      foreach($topcat as $row){
+                        if(strtolower($row->CAT_NAME)=="others"){     
+                          $row->CAT_NAME = strtoupper($row->CAT_NAME);
                   ?> 
                   <tr class="">
                     <td class="cin text3D" style="border-right:black 2px solid;"></td>
@@ -261,24 +268,43 @@
                     <td class="cin text3D"></td> 
                   </tr> 
                   <tr class="">
-                    <td class="text3D" style="border-right:black 2px solid;"><?=$adjust->CAT_NAME?></td>
-                    <td class="cin text3D"><?=$adjust->TOTAL+0?></td>
-                    <td class="cin cur text3D"><?=$adjust->AMOUNT+0?></td>
-                    <td class="cin text3D"><?=$this->currency->my_number_format((float)(($adjust->AMOUNT+0)*100/$tot['AMOUNT']), 0, '.', '')?> %</td> 
-                  </tr>                
+                    <td class="text3D" style="border-right:black 2px solid;"><?=$row->CAT_NAME?></td>
+                    <td class="cin text3D"><?=$row->TOTAL+0?></td>
+                    <td class="cin cur text3D"><?=$row->AMOUNT+0?></td>
+                    <td class="cin text3D"><?=($tot['AMOUNT']!=0)?$this->currency->my_number_format((float)(($row->AMOUNT+0)*100/$tot['AMOUNT']), 0, '.', ''):0?> %</td> 
+                  </tr> 
                   <?php
-                      }
+                        } else {
                   ?> 
                   <tr class="">
                     <td class="text3D" style="border-right:black 2px solid;"><?=$row->CAT_NAME?></td>
                     <td class="cin text3D"><?=$row->TOTAL+0?></td>
                     <td class="cin cur text3D"><?=$row->AMOUNT+0?></td>
-                    <td class="cin text3D"><?=$this->currency->my_number_format((float)(($row->AMOUNT+0)*100/$tot['AMOUNT']), 0, '.', '')?> %</td> 
+                    <td class="cin text3D"><?=($tot['AMOUNT']!=0)?$this->currency->my_number_format((float)(($row->AMOUNT+0)*100/$tot['AMOUNT']), 0, '.', ''):0?> %</td> 
                   </tr> 
                   <?php
-                      $i++;
-                    }
+                        }
+                        $i++;
+                      } 
+                  ?>   
+                  <?php
+                    } else {
                   ?> 
+                  <tr class="">
+                    <td class="text3D" style="border-right:black 2px solid;">ADJUSTMENTS</td>
+                    <td class="cin text3D"><?=$row->TOTAL+0?></td>
+                    <td class="cin cur text3D"><?=$row->AMOUNT+0?></td>
+                    <td class="cin text3D"><?=($tot['AMOUNT']!=0)?$this->currency->my_number_format((float)(($row->AMOUNT+0)*100/$tot['AMOUNT']), 0, '.', ''):0?> %</td> 
+                  </tr> 
+                  <tr class="">
+                    <td class="text3D" style="border-right:black 2px solid;">OTHERS</td>
+                    <td class="cin text3D"><?=$row->TOTAL+0?></td>
+                    <td class="cin cur text3D"><?=$row->AMOUNT+0?></td>
+                    <td class="cin text3D"><?=($tot['AMOUNT']!=0)?$this->currency->my_number_format((float)(($row->AMOUNT+0)*100/$tot['AMOUNT']), 0, '.', ''):0?> %</td> 
+                  </tr>   
+                  <?php
+                    }
+                  ?>
                 </tbody>
                 <tfoot> 
                   <tr class="" style="border-top:black 2px solid;">

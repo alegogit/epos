@@ -234,7 +234,8 @@
 		                        pk: ".$row->ID.", 
 		                        validate: function(v) {
 		                          if (!v) return 'don\'t leave it blank!';
-		                          if (isValidMacAddress(v)==false) return 'please fill in a correct MAC Address format!';
+		                          if (isValidMacAddress(v)==false) return 'please fill in a correct MAC Address format!';  
+                              if (isTakenM(v.toUpperCase())) return 'MAC ADDRESS already exists!'; 
 		                        },
 		                        success: function(result){  
 		                          var data = result.split(',');
@@ -245,6 +246,7 @@
                         $('#PRINTER_MAC_ADDRESS-".$row->ID."').on('save', function(e) {  
                           return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
                         });";
+      /*
 	  	$edit_script .= "  $('#REST_ID-".$row->ID."').editable({
 		                        type: 'select',  
 		                        value: ".$row->REST_ID.", 
@@ -268,6 +270,7 @@
                         $('#REST_ID-".$row->ID."').on('save', function(e) {  
                           return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
                         });";
+      */
 	  	$edit_script .= "  $('#PRINTER_CONNECTION-".$row->ID."').editable({
 		                        type: 'select',  
 		                        value: '".addslashes($row->PRINTER_CONNECTION)."', 
@@ -475,16 +478,31 @@ $(document).ready(function(){
   
 });
   
-$(function(){
+$(function(){     
+	var baseurl = $("#baseurl").data('url');
   	$("#newprinter").validate({ 
     	rules: {
       		Port: { 
         		number: true 
       		},
       		MAC_address: { 
-        		macadd: true 
+        		macadd: true,
+            remote: { 
+              url: baseurl+"process/printer?p=takenm",
+              type: "post",
+              data: {
+                mac: function() {
+                  return $( "#MAC_address" ).val();
+                }
+              }
+            }  
       		}
-		}
+		  },
+      messages:{ 
+        MAC_address: { 
+          remote: "MAC ADDRESS already exists"
+	     }
+      }
   	});
 });         
 
@@ -532,5 +550,11 @@ function isValidIPv4(ip){
 function isLimited(input,init,limit) {
   var regex = new RegExp("^.{" + init + "," + limit + "}$");
   return regex.test(input);
-} 
+}    
+      
+function isTakenM(mac) {  
+  var regex = /^(<?php $l = 1; $n = count($maclist); $macnum = ""; foreach ($maclist as $row){ $macnum .= strtoupper($row->PRINTER_MAC_ADDRESS); $macnum .= ($l<$n)?"|":""; $l++; } echo $macnum; ?>)$/;
+  return regex.test(mac);
+}  
+
 </script>

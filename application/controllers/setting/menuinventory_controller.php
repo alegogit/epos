@@ -50,7 +50,8 @@ class Menuinventory_controller extends CI_Controller {
       $data['menuinventory'] = $this->setting->get_rest_menuinventory($rest_id);
 		  $data['menus'] = $this->setting->get_rest_menus($rest_id);
 		  $data['inventories'] = $this->setting->get_rest_inventories($rest_id);  		       
-		  $data['statuses'] = $this->setting->get_status(); 		
+		  $data['statuses'] = $this->setting->get_status(); 		         
+      $data['miclist'] = $this->setting->get_mic();				  		
 			
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);

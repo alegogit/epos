@@ -3,7 +3,7 @@
 ?>
 <div id="page-content-wrapper">
 <!-- Page Content -->
-  <div class="container-fluid" style="font-size:90%;">  
+  <div class="container-fluid" style="font-size:70%;">  
     <div class="row" style="vertical-align:bottom !important;">
     <table width="100%">
       <tr>
@@ -23,79 +23,43 @@
     </table> 
     </div>
     <hr style="margin-bottom:10px;margin-top:10px;border-top:black 2px solid;" />
-        
-	        <table id="void" class="table table-striped" data-toggle="table" data-url="" data-show-refresh="false" data-show-toggle="false" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+    
+	        <table id="attnd" class="table table-striped" data-toggle="table" data-url="" data-show-refresh="false" data-show-toggle="false" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
 					  <thead>
-						  <tr class="tablehead text3D">
-						    <th class="" style="border-right:#ddd 1px solid !important;">A</th>
-						    <th style="border-right:#ddd 1px solid !important;">B</th>
-						    <th colspan="2" style="border-right:#ddd 1px solid !important;">C</th>
-						    <th colspan="2" style="border-right:#ddd 1px solid !important;">D</th>
-						    <th colspan="2" style="border-right:#ddd 1px solid !important;">E = D &#8211; C</th>
-						    <th colspan="2" style="border-right:#ddd 1px solid !important;">F</th>
-						    <th colspan="2" style="border-right:#ddd 1px solid !important;">G = E &#8211; F</th> 
-						    <th colspan="2" style="border-right:#ddd 1px solid !important;">H</th>
-						  </tr>
 						  <tr class="" style="background-color:#3071a9; color: #fff">
-						    <th class="">Day</th>
-						    <th style="border-right:black 2px dotted !important;">Terminal</th>
-						    <th colspan="2">Starting Day<br>Cash Register</th>
-						    <th colspan="2" style="border-right:black 2px dotted !important;">Closing Day<br>Cash Register</th>
-						    <th colspan="2">Cash<br>From Register</th>
-						    <th colspan="2" style="border-right:black 2px dotted !important;">Cash<br>From Orders</th>
-						    <th colspan="2" style="border-right:black 2px solid !important;">Differences</th>
-						    <th colspan="2">Daily<br>Differences</th>
+						    <th>Week</th>
+						    <th>Name</th>
+						    <th class="cin">Total Hours<br>Expected</th>
+						    <th class="cin">Total Hours<br>Worked</th>
+						    <th class="cin">Difference</th>
+						    <th class="cin">Total<br>Days</th>
+						    <th class="cin">Days<br>Worked</th>
+						    <th class="cin">Missed<br>Days</th>
 						  </tr>
 						</thead>
 						<tbody>           
 						  <?php 
-                $i = 0;  //echo count($recon);
-                foreach ($recon as $row){ 
+                $i = 1;  //echo count($recon);
+                $prev[0] = 1;
+                foreach ($attnd as $row){
+                  $prev[$i] = $row->WEEK_NUMBER; 
               ?>
-						  <tr>
-						    <td class=""><?=(count($recon)>0)?$row->TERMINAL_DATE:'&#8211;'?></td>
-						    <td style="border-right:black 2px dotted !important;"><?=(count($recon)>0)?$row->TERMINAL_NAME:"&#8211;"?></td> 
-						    <td class="text3D"><?=$cur?></td>
-						    <td class="cin cur text3D"><?=$row->CASH_OPENING+0?></td>  
-						    <td class="text3D"><?=$cur?></td>
-						    <td class="cin cur text3D" style="border-right:black 2px dotted !important;"><?=$row->CASH_CLOSING+0?></td>  
-						    <td class="text3D"><?=$cur?></td>
-						    <td class="cin cur text3D"><?=$row->CASH_FROM_REGISTER+0?></td> 
-						    <td class="text3D"><?=$cur?></td>
-						    <td class="cin cur text3D" style="border-right:black 2px dotted !important;"><?=$row->CASH_FROM_INVOICES+0?></td> 
-						    <td class="text3D <?=(((float)$row->DIFFERENCE)<0)?'text-danger':''?>"><?=$cur?></td>
-						    <td class="cin cur text3D <?=(((float)$row->DIFFERENCE)<0)?'text-danger':''?>" style="border-right:black 2px solid !important;"><?=$this->currency->my_number_format((float)$row->DIFFERENCE+0.00, 2, '.', '')?></td> 
-						    <td class="text3D <?=(((float)$row->DIFFERENCE)<0)?'text-danger':''?>"><?=$cur?></td>
-						    <td class="cin cur text3D <?=(((float)$row->DIFFERENCE)<0)?'text-danger':''?>"><?=$this->currency->my_number_format((float)$row->DIFFERENCE+0.00, 2, '.', '')?></td>
+              <tr <?=($row->WEEK_NUMBER!=$prev[$i-1])?'style="border-top:black 2px dotted !important;"':''?>>
+						    <td class="wknum" style="border-right:black 1px solid !important;"><?=(count($attnd)>0)?$row->WEEK_NUMBER:'&#8211;'?></td>
+						    <td style="border-right:black 1px solid !important;"><?=(count($attnd)>0)?$row->USER_NAME:"&#8211;"?></td> 
+						    <td class="cin"><?=$row->TOTAL_HRS_EXPECTED+0?></td>
+						    <td class="cin"><?=$row->TOTAL_HRS_WORKED+0?></td>
+						    <td class="cin" style="border-right:black 1px solid !important;"><?=$row->DIFFERENCE+0?></td>
+						    <td class="cin"><?=$row->TOTAL_DAYS+0?></td>
+						    <td class="cin"><?=$row->DAYS_WORKED+0?></td>
+						    <td class="cin"><?=$row->MISSED_DAYS+0?></td>
 						  </tr>
 						  <?php 
-                $total['CASH_OPENING'] = $total['CASH_OPENING']+$row->CASH_OPENING;  
-                $total['CASH_CLOSING'] = $total['CASH_CLOSING']+$row->CASH_CLOSING;  
-                $total['CASH_FROM_REGISTER'] = $total['CASH_FROM_REGISTER']+$row->CASH_FROM_REGISTER;  
-                $total['CASH_FROM_INVOICES'] = $total['CASH_FROM_INVOICES']+$row->CASH_FROM_INVOICES;  
-                $total['DIFFERENCE'] = $total['DIFFERENCE']+((float)$row->DIFFERENCE); 
                 $i++; 
               } ?>
 						</tbody>
-						<tfoot>
-						  <tr class="tablefoot text3D info" style="border-top:black 3px solid !important;">  
-						    <th class="cin"></th>
-						    <th class="cin text3D no-sort" style="border-right:black 2px dotted !important;">Grand Total</th>
-						    <th class="text3D no-sort"><?=$cur?></td>
-						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['CASH_OPENING'], 2, '.', '')?></th>  
-						    <th class="text3D no-sort"><?=$cur?></td>
-						    <th class="cin cur text3D no-sort" style="border-right:black 2px dotted !important;"><?=number_format((float)$total['CASH_CLOSING'], 2, '.', '')?></th>
-						    <th class="text3D no-sort"><?=$cur?></td>
-						    <th class="cin cur text3D no-sort"><?=number_format((float)$total['CASH_FROM_REGISTER'], 2, '.', '')?></th>  
-						    <th class="text3D no-sort"><?=$cur?></td>
-						    <th class="cin cur text3D no-sort" style="border-right:black 2px dotted !important;"><?=number_format((float)$total['CASH_FROM_INVOICES'], 2, '.', '')?></th> 
-						    <th class="text3D no-sort <?=((float)$total['DIFFERENCE']<0)?'text-danger':''?>"><?=$cur?></td>
-						    <th class="cin cur text3D no-sort <?=((float)$total['DIFFERENCE']<0)?'text-danger':''?>" style="border-right:black 2px solid !important;"><?=$this->currency->my_number_format((float)$total['DIFFERENCE'],2,'.','')?></th> 
-						    <th class="text3D no-sort <?=((float)$total['DIFFERENCE']<0)?'text-danger':''?>"><?=$cur?></td>
-						    <th class="cin cur text3D no-sort <?=((float)$total['DIFFERENCE']<0)?'text-danger':''?>"><?=$this->currency->my_number_format((float)$total['DIFFERENCE'],2,'.','')?></th> 
-						  </tr>
-						</tfoot>
-					</table>
+					</table> 
+          
 		</div>
   
   </div><!-- /.container-fluid -->
@@ -118,8 +82,8 @@
     paginate: true,
     pageSize: 50,
     pageNavigationSize: 8
-  });
-  
+  });   
+      
   //currency control
   jQuery(function($) {
     var cur = $("#cur").data('val');
@@ -145,6 +109,36 @@
       }
     });
   });
+  
+  $( window ).load(function() {
+    MergeCommonRows($('#attnd'),'.wknum');
+  });
+  
+  function MergeCommonRows(table,tdclass="") {
+    var firstColumnBrakes = [];
+    // iterate through the columns instead of passing each column as function parameter:
+    for(var i=1; i<=table.find('th').length; i++){
+        var previous = null, cellToExtend = null, rowspan = 1;
+        table.find("td"+tdclass+":nth-child(" + i + ")").each(function(index, e){
+            var jthis = $(this), content = jthis.text();
+            // check if current row "break" exist in the array. If not, then extend rowspan:
+            if (previous == content && content !== "" && $.inArray(index, firstColumnBrakes) === -1) {
+                // hide the row instead of remove(), so the DOM index won't "move" inside loop.
+                jthis.addClass('hidden');
+                cellToExtend.attr("rowspan", (rowspan = rowspan+1));
+            }else{
+                // store row breaks only for the first column:
+                if(i === 1) firstColumnBrakes.push(index);
+                rowspan = 1;
+                previous = content;
+                cellToExtend = jthis;
+            }
+        });
+    }
+    // now remove hidden td's (or leave them hidden if you wish):
+    $('td.hidden').remove();
+  }
+
 </script>         
 
 <?php

@@ -18,7 +18,12 @@ class Terminalsetting_controller extends CI_Controller {
 			$session_data = $this->session->userdata('logged_in'); 
       $data['p'] = $this->input->get('p');  
       if (isset($data['p'])) {   
-        switch ($data['p']){
+        switch ($data['p']){ 
+          case 'takenm':      
+            $data['col'] = 'MAC_ADDRESS'; 
+            $data['inp'] = $this->input->post('mac');  
+            $this->load->view('process/taken_terminal',$data); 
+          break;
           case 'update':      
             $data['varP'] = $this->input->post('pk').','.$this->input->post('value').','.$this->input->post('name');  
             $this->load->view('process/update_terminal',$data); 

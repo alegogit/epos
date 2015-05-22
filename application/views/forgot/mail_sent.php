@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="refresh" content="5;url=<?php echo base_url(); ?>">
-<title>ePOS</title>   
+<title><?=$this->config->item('title')?></title>   
 <link rel="shortcut icon" href="<?php echo base_url(); ?>assets/images/icon.ico" />
  
 <script type="text/javascript" src="<?php echo base_url(); ?>assets/js/jquery.js"></script>
@@ -95,7 +95,24 @@ html,body{
 {
     margin-top: 10px;
 }
-</style>
+</style> 
+
+<?php
+  if($this->config->item('env')=="prod"){
+    //$this->load->library('cookies');  
+    //$this->cookies->clearAll(); 
+?>
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+ga('create', 'UA-62705312-4', 'auto');
+ga('send', 'pageview');
+</script>
+<?php
+  }
+?>
   
 </head>
  

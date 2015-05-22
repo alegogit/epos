@@ -95,10 +95,11 @@ class Sales_controller extends CI_Controller {
     $u2 = base_url()."reports/salesview/".$parshash." ";    
     $o2 = $config['savedpdf'].$filename." ";
     $commando2 = $p.$r.$u2.$o2;
-    $getout2 = exec($commando2,$out2,$err2);
+    $getout2 = exec($commando2,$out2,$err2); 
+    $remove_cache = "?".md5(date('Ymdhis'));
     //var_dump($out2);
     //echo '<br>'.$commando2;
-    redirect(base_url().$config['outputpdf'].$filename); 	 
+    redirect(base_url().$config['outputpdf'].$filename.$remove_cache); 	 
   }
   	
 	public function profile()

@@ -83,6 +83,19 @@ class Printersetting_model extends CI_Model {
                       ->where('CODE',$code)
                       ->get('');
     	return $query->row()->VALUE;
-  	}
+  	} 
+            
+	function get_taken_item($col,$inp){ 
+    $query = $this->db->select('ID')
+                      ->from('PRINTER')
+                      ->where($col,$inp)
+                      ->get('');   
+    if ($query->num_rows() > 0){
+      $out = 'false';
+    } else {
+    	$out = 'true';   
+    }                  
+    return $out;
+  }  
   
 }

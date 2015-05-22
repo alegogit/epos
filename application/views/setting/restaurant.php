@@ -42,14 +42,16 @@
 						    <th>Address 1</th>
 						    <th>Address 2</th>
 						    <th>City</th>
-						    <th>Postal Code</th>
+						    <th>Postal<br>Code</th>
 						    <th>Country</th>
 						    <!--<th>Geo Location</th>-->
 						    <th>Currency</th>
-						    <th class="cin">Service Charge</th>  
+						    <th>NPWP</th>
+						    <th class="cin">Service<br>Charge</th>  
                 <th class="no-sort" style="text-align:left !important;"></th> 
-						    <th class="cin">Takeout Service Charge</th>
+						    <th class="cin">Takeout<br>Service<br>Charge</th>
                 <th class="no-sort" style="text-align:left !important;"></th> 
+						    <th class="cin">Cutoff<br>Time</th>
 						    <!--<th>Order No. Start</th>-->
               <?php if ($role==1){ ?> 
 						    <th>Status</th> 
@@ -111,6 +113,9 @@
 		                  	<td style="">
 		                    	<a id="CURRENCY__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->CURRENCY_NAME?></a>
 		                  	</td>
+		                  	<td style="">
+		                    	<a id="NPWP__<?=$row->ID?>" data-inputclass="npwp" class="edit" tabindex="0"><?=$row->NPWP?></a>
+		                  	</td>
 		                  	<td style="" class="cin">
                           <a id="SERVICE_CHARGE__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->SERVICE_CHARGE?></a>
 		                  	</td>               
@@ -121,7 +126,10 @@
                         <td style="text-align:left !important;">%&nbsp;&nbsp;</td>
 		                  	<!--<td style="">
 		                    	<a id="ORDER_NUMBER_START__<?=$row->ID?>" class="edit" tabindex="0"><?=$row->ORDER_NUMBER_START?></a>
-		                  	</td>-->    
+		                  	</td>-->         
+                        <td style="">
+                          <a id="CUTOFF_TIME__<?=$row->ID?>" data-inputclass="cutm" class="edit" tabindex="0"><?=$row->CUTOFF_TIME?></a>
+                        </td>   
                       <?php if ($role==1){ ?>     
                         <td style="">
                           <a id="ACTIVE__<?=$row->ID?>" class="edit" tabindex="0"><?=$this->setting->set_status($row->ACTIVE)?><i></i></a>
@@ -147,7 +155,7 @@
 <?php if ($role == 1) { ?>
 <!-- Modal -->
 <div class="modal fade" id="bookModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog" style="width: 720px !important;">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -161,19 +169,62 @@
 	  <div class="row">
       	<div class="col-md-4">                   		
         	<div class="form-group" style="margin-bottom:10px">                                         
-          		<label for="name"></label><br>
-          		<div class="input-group">       
-            		<div class="input-group-addon"><span class="glyphicon glyphicon-cutlery"></span></div>
-            		<input type="text" class="form-control" id="name" placeholder="Restaurant Name" name="name" required>    
-          		</div>  
+            <label for="name"></label><br>
+          	<div class="input-group">       
+              <div class="input-group-addon"><span class="glyphicon glyphicon-cutlery"></span></div>
+            	<input type="text" class="form-control" id="name" placeholder="Restaurant Name" name="name" required>    
+          	</div>  
         	</div><br /> 
         	<div class="form-group" style="margin-bottom:10px"> 
-          		<label for="email"></label><br>                   
-          		<div class="input-group">                                              
-            		<div class="input-group-addon"><span class="fa fa-envelope-o"></span></div>
-            		<input type="text" class="form-control" id="email" placeholder="E-mail Address" pattern="__([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$" name="email" required>
-          		</div>
-        	</div><br />          
+          	<label for="email"></label><br>                   
+          	<div class="input-group">                                              
+          		<div class="input-group-addon"><span class="fa fa-envelope-o"></span></div>
+          		<input type="text" class="form-control" id="email" placeholder="E-mail Address" pattern="__([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$" name="email" required>
+          	</div>
+        	</div><br />    
+        	<div class="form-group" style="margin-bottom:10px;"> 
+          	<label for="currency">Default Currency</label><br>                                     
+            <div class="input-group">                                        
+              <div class="input-group-addon"><span class="fa fa-money"></span></div>
+              <select name="currency" id="currency" class="form-control" title="Default Currency">
+              <?php foreach($currencies as $rowc){ ?>
+              	<option value="<?=$rowc->CODE?>"><?=$rowc->VALUE?></option>
+              <?php } ?>
+              </select>
+            </div>
+          </div><br />         
+        	<div class="form-group" style="margin-bottom:10px">
+          	<label for="NPWP"></label><br> 
+          	<div class="input-group">              
+          		<div class="input-group-addon"><span class="fa fa-credit-card"></span></div>
+          		<input type="text" class="form-control" id="NPWP" placeholder="NPWP" name="NPWP">
+          	</div>
+        	</div><br /> 		         	
+          <div class="form-group" style="margin-bottom:10px"> 
+            <label for="service">Service Charge</label><br>
+          	<div class="input-group" style="width:150px">                            
+            	<div class="input-group-addon"><span class="fa fa-star"></span></div>
+            	<input type="text" class="form-control" id="service" placeholder="" name="service" required>                          
+            	<div class="input-group-addon"><span class="fa fa-percent">%</span></div>
+          	</div>
+          </div><br />      		
+          <div class="form-group" style="margin-bottom:10px"> 
+            <label for="toservice">Takeout Service Charge</label><br>
+          	<div class="input-group" style="width:150px">                            
+            	<div class="input-group-addon"><span class="fa fa-star"></span></div>
+            	<input type="text" class="form-control" id="toservice" placeholder="" name="toservice" required>                          
+            	<div class="input-group-addon"><span class="fa fa-percent">%</span></div>
+          	</div>
+          </div><br />       
+        	<div class="form-group" style="margin-bottom:10px">
+          	<label for="cutoff_time"></label><br> 
+          	<div class="input-group">              
+          		<div class="input-group-addon"><span class="fa fa-clock-o"></span></div>
+          		<input type="text" class="form-control" id="cutoff_time" placeholder="Cutoff Time" name="cutoff_time" required>
+          	</div>
+        	</div><br /> 		  
+      	</div><!-- /.col-md-4 -->
+      	<div class="col-md-4">   
         	<div class="form-group" style="margin-bottom:10px">
           		<label for="telephone"></label><br> 
           		<div class="input-group">              
@@ -187,42 +238,13 @@
             		<div class="input-group-addon"><span class="fa fa-fax"></span></div>
             		<input type="text" class="form-control" id="FAX" placeholder="FAX" name="FAX">
           		</div>
-        	</div><br />   		
-        <div class="form-group" style="margin-bottom:10px"> 
-        	<label for="service">Service Charge</label><br>
-          	<div class="input-group" style="width:150px">                            
-            	<div class="input-group-addon"><span class="fa fa-star"></span></div>
-            	<input type="text" class="form-control" id="service" placeholder="" name="service" required>                          
-            	<div class="input-group-addon"><span class="fa fa-percent">%</span></div>
-          	</div>
-        </div><br />      		
-        <div class="form-group" style="margin-bottom:10px"> 
-        	<label for="toservice">Takeout Service Charge</label><br>
-          	<div class="input-group" style="width:150px">                            
-            	<div class="input-group-addon"><span class="fa fa-star"></span></div>
-            	<input type="text" class="form-control" id="toservice" placeholder="" name="toservice" required>                          
-            	<div class="input-group-addon"><span class="fa fa-percent">%</span></div>
-          	</div>
-        </div><br />
-      	</div><!-- /.col-md-4 -->
-      	<div class="col-md-4">    		
-      	<div class="form-group" style="margin-bottom:10px;"> 
-        	<label for="currency">Default Currency</label><br>                                     
-          	<div class="input-group">                                        
-            	<div class="input-group-addon"><span class="fa fa-money"></span></div>
-            	<select name="currency" id="currency" class="form-control" title="Default Currency">
-            	<?php foreach($currencies as $rowc){ ?>
-              		<option value="<?=$rowc->CODE?>"><?=$rowc->VALUE?></option>
-            	<?php } ?>
-            	</select>
-          	</div>
-        </div><br/>       
+        	</div><br />   	   
 	        <div class="form-group" style="margin-bottom:10px"> 
-				<label for="address1"></label><br>
+				    <label for="address1"></label><br>
 		        <div class="input-group">                                                                                                
 		        	<div class="input-group-addon"><span class="glyphicon glyphicon-home"></span></div>
 		            <input type="text" class="form-control" id="address1" placeholder="Address Line 1" name="address1" required>
-				</div>
+				    </div>
 	        </div><br />
 	        <div class="form-group" style="margin-bottom:10px"> 
 	          	<label for="address2"></label><br>
@@ -600,6 +622,24 @@
                         $('#CURRENCY__".$row->ID."').on('save', function(e) {  
                           return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
                         });";   
+  $edit_script .= "   $('#NPWP__".$row->ID."').on('shown', function(e, editable) { 
+                        		$('.npwp').inputmask({ placeholder: '9', 'mask': '99.999.999.9-999.999' });
+                      });";        
+  $edit_script .= "  $('#NPWP__".$row->ID."').editable({
+                        url: updateurl,
+                        pk: ".$row->ID.", 
+                        validate: function(v) {
+                          if (!v) return 'don\'t leave it blank!';
+                        },
+                        success: function(result){  
+                          var data = result.split(',');
+                          $('#upby".$row->ID."').html(data[0]);
+                          $('#updt".$row->ID."').html(data[1]); 
+                      } 
+                    });
+                        $('#NPWP__".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";         
   $edit_script .= "  $('#SERVICE_CHARGE__".$row->ID."').editable({
                         url: updateurl,
                         pk: ".$row->ID.", 
@@ -630,6 +670,25 @@
                       } 
                     });
                         $('#TAKEOUT_SERVICE_CHARGE__".$row->ID."').on('save', function(e) {  
+                          return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
+                        });";   
+  $edit_script .= "   $('#CUTOFF_TIME__".$row->ID."').on('shown', function(e, editable) { 
+                        		$('.cutm').inputmask({ placeholder: '0', 'mask': '99:99' });
+                      });";           
+  $edit_script .= "  $('#CUTOFF_TIME__".$row->ID."').editable({
+                        url: updateurl,
+                        pk: ".$row->ID.", 
+                        validate: function(v) {
+                          if (!v) return 'don\'t leave it blank!';  
+                          if (!isHrsMin(v)) return 'Please fill in a Hours:Minute format!';
+                        },                                                
+                        success: function(result){  
+                          var data = result.split(',');
+                          $('#upby".$row->ID."').html(data[0]);
+                          $('#updt".$row->ID."').html(data[1]); 
+                      } 
+                    });
+                        $('#CUTOFF_TIME__".$row->ID."').on('save', function(e) {  
                           return $(this).parents().nextAll(':has(.editable:visible):first').find('.editable:first').focus();
                         });";        
   $edit_script .= "  $('#ACTIVE__".$row->ID."').editable({    
@@ -787,9 +846,16 @@ $(document).ready(function()
   	}
   	return false;
   }); 
-});
+});   
+  	//masking
+ 	$("#NPWP").inputmask({ placeholder: '9', "mask": "99.999.999.9-999.999" });
+ 	$("#cutoff_time").inputmask({
+            mask: "99:99",
+            placeholder: "0"
+  });     
   
 $(function(){
+    
 	var baseurl = $("#baseurl").data('url');
   //pass validation
   $("#newresto").validate({ 
@@ -812,6 +878,9 @@ $(function(){
       service: {       
         number: true,   
         percent: true
+      },       
+      cutoff_time: {    
+        hrsmin: true
       },       
       toservice: {       
         number: true,   
@@ -858,7 +927,11 @@ jQuery.validator.addMethod("phone", function(value, element) {
 
 jQuery.validator.addMethod("percent", function(value, element) {
   return this.optional(element) || /^[0-9]\d{0,1}(\.\d{1,3})?%?$|^100$/.test(value);
-}, "Please fill in up to 100 %");
+}, "Please fill in up to 100 %");  
+
+jQuery.validator.addMethod("hrsmin", function(value, element) {
+  return this.optional(element) || /^(([0-9])|([0-1][0-9])|([2][0-3]))(:(([0-9])|([0-5][0-9])))?$/.test(value);
+}, "Please fill in a Hours:Minute format");
   
 function isEmail(email) {
   var regex = /([a-zA-Z0-9_.+-])+\@(([a-zA-Z0-9-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -878,6 +951,11 @@ function isPercent(percent) {
 function isGeoLoc(geoloc) {
   var regex = /^(-?\d{1,2}\.\d{6}),(-?\d{1,3}\.\d{6})$/;
   return regex.test(geoloc);
+} 
+
+function isHrsMin(hrsmin) {
+  var regex = /^(([0-9])|([0-1][0-9])|([2][0-3]))(:(([0-9])|([0-5][0-9])))?$/;
+  return regex.test(hrsmin);
 } 
                                 
 function isLimited(input,init,limit) {

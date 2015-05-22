@@ -135,7 +135,7 @@ class Weekly_model extends CI_Model {
       		SUM(PAID_AMOUNT)						TOTAL_SALES_THIS_WEEK,
       		0										TOTAL_SALES_LAST_WEEK
       	 FROM ORDERS
-      	 WHERE REST_ID = ".$rest_id." 
+      	 WHERE REST_ID = ".$rest_id." AND VOID = 0 
       		AND STARTED BETWEEN 
       			DATE_SUB( '".$enddate."', INTERVAL WEEKDAY('".$enddate."') DAY) AND 
       			DATE('".$enddate."' + INTERVAL (6 - WEEKDAY('".$enddate."')) DAY)
@@ -159,7 +159,7 @@ class Weekly_model extends CI_Model {
       		0										TOTAL_SALES_THIS_WEEK,
       		SUM(PAID_AMOUNT)						TOTAL_SALES_LAST_WEEK
       	 FROM ORDERS
-      	 WHERE REST_ID = ".$rest_id." 
+      	 WHERE REST_ID = ".$rest_id." AND VOID = 0 
            AND STARTED BETWEEN
       		DATE_SUB( '".$enddate."', INTERVAL WEEKDAY('".$enddate."') + 7 DAY) AND
       		DATE_SUB( '".$enddate."', INTERVAL WEEKDAY('".$enddate."') + 1 DAY) 
@@ -197,14 +197,14 @@ class Weekly_model extends CI_Model {
     			0											AVG_SALES_PER_INVOICE_LAST_WEEK
     		 FROM ORDERS O
     			INNER JOIN (
-    				SELECT ORDER_ID, COUNT(INVOICE_ID) INVOICES FROM ORDERS INNER JOIN INVOICES_ORDERS ON ID = ORDER_ID 
-    						 WHERE STARTED BETWEEN 
+    				SELECT ORDER_ID, COUNT(INVOICE_ID) INVOICES FROM ORDERS INNER JOIN INVOICES_ORDERS ON ORDERS.ID = INVOICES_ORDERS.ORDER_ID 
+    						 WHERE ORDERS.STARTED BETWEEN 
     								DATE_SUB( '".$enddate."', INTERVAL WEEKDAY('".$enddate."') DAY) AND 
     								DATE('".$enddate."' + INTERVAL (6 - WEEKDAY('".$enddate."')) DAY)
-    						GROUP BY ORDER_ID
+    						GROUP BY INVOICES_ORDERS.ORDER_ID
     			) INVOICE_BY_ORDERS
     			ON O.ID = INVOICE_BY_ORDERS.ORDER_ID
-    		 WHERE REST_ID = ".$rest_id." 
+    		 WHERE REST_ID = ".$rest_id." AND VOID = 0 
     		 AND STARTED BETWEEN
     				DATE_SUB( '".$enddate."', INTERVAL WEEKDAY('".$enddate."') DAY) AND 
     				DATE('".$enddate."' + INTERVAL (6 - WEEKDAY('".$enddate."')) DAY)
@@ -224,14 +224,14 @@ class Weekly_model extends CI_Model {
     				/ SUM(INVOICE_BY_ORDERS.INVOICES), 0)	AVG_SALES_PER_INVOICE_LAST_WEEK
     		 FROM ORDERS O
     			INNER JOIN (
-    				SELECT ORDER_ID, COUNT(INVOICE_ID) INVOICES FROM ORDERS INNER JOIN INVOICES_ORDERS ON ID = ORDER_ID 
-    						 WHERE STARTED BETWEEN 
+    				SELECT ORDER_ID, COUNT(INVOICE_ID) INVOICES FROM ORDERS INNER JOIN INVOICES_ORDERS ON ORDERS.ID = INVOICES_ORDERS.ORDER_ID 
+    						 WHERE ORDERS.STARTED BETWEEN 
     							DATE_SUB( '".$enddate."', INTERVAL WEEKDAY('".$enddate."') + 7 DAY) AND
     							DATE_SUB( '".$enddate."', INTERVAL WEEKDAY('".$enddate."') + 1 DAY) 
-    						GROUP BY ORDER_ID
+    						GROUP BY INVOICES_ORDERS.ORDER_ID
     			) INVOICE_BY_ORDERS
     			ON O.ID = INVOICE_BY_ORDERS.ORDER_ID
-    		 WHERE REST_ID = ".$rest_id." 
+    		 WHERE REST_ID = ".$rest_id." AND VOID = 0 
     		 AND STARTED BETWEEN
     				DATE_SUB( '".$enddate."', INTERVAL WEEKDAY('".$enddate."') + 7 DAY) AND
     				DATE_SUB( '".$enddate."', INTERVAL WEEKDAY('".$enddate."') + 1 DAY) 
@@ -239,7 +239,7 @@ class Weekly_model extends CI_Model {
 		return $query->row();
 	}
   
-  function get_payment($rest_id,$enddate){
+  function get_payment0($rest_id,$enddate){
 	  $query = $this->db->query("-- Column 2: Top :Payment Type
     SELECT 
     	PAYMENT_METHOD							PAYMENT_METHOD,
@@ -282,9 +282,73 @@ class Weekly_model extends CI_Model {
     			AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
     		GROUP BY R.VALUE
             ) PAYMENT_TYPE
-    	GROUP BY PAYMENT_METHOD;");
+    	GROUP BY PAYMENT_METHOD
+    ORDER BY AMOUNT_THIS_WEEK DESC;");
 		return $query->result();
-	}
+	}  
+  
+  function get_payment($rest_id,$enddate){
+	  $query = $this->db->query("-- Column 2: Top :Payment Type
+       SELECT 
+      	PAYMENT_METHOD							PAYMENT_METHOD,
+      	IFNULL(SUM(AMOUNT_THIS_WEEK),0)		AMOUNT_THIS_WEEK,
+          IFNULL(SUM(AMOUNT_LAST_WEEK),0)		AMOUNT_LAST_WEEK,
+          IFNULL(SUM(TOTAL_THIS_WEEK),0)			TOTAL_THIS_WEEK,
+          IFNULL(SUM(TOTAL_LAST_WEEK),0)			TOTAL_LAST_WEEK
+      	FROM (
+      		SELECT  R.VALUE 											PAYMENT_METHOD,
+      		  IFNULL(PAYMENTS_GROUPED.AMOUNT, 0) 						AMOUNT_THIS_WEEK,
+                0															AMOUNT_LAST_WEEK,
+                IFNULL(PAYMENTS_GROUPED.TOTAL,0)  						TOTAL_THIS_WEEK,
+                0															TOTAL_LAST_WEEK
+      		FROM REF_VALUES R
+      		LEFT OUTER JOIN (
+      			SELECT I.PAYMENT_METHOD, IFNULL(SUM(O.PAID_AMOUNT), 0) AMOUNT , IFNULL(COUNT(I.ID),0)  TOTAL 
+      				FROM INVOICES I
+      					INNER JOIN INVOICES_ORDERS OI ON OI.INVOICE_ID = I.ID
+      					INNER JOIN ORDERS O ON OI.ORDER_ID = O.ID
+                      WHERE O.STARTED BETWEEN 
+      					DATE_SUB( '".$enddate."', INTERVAL WEEKDAY('".$enddate."') DAY) AND 
+      					DATE('".$enddate."' + INTERVAL (6 - WEEKDAY('".$enddate."')) DAY) 
+      				AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0 AND O.VOID = 0
+      			GROUP BY I.PAYMENT_METHOD
+      			)PAYMENTS_GROUPED
+      			ON PAYMENTS_GROUPED.PAYMENT_METHOD = R.CODE  
+      		WHERE R.LOOKUP_NAME = 'PAYMENT_METHOD' AND R.IS_ACTIVE = 1
+      		UNION
+      		SELECT  R.VALUE 											PAYMENT_METHOD,
+      		  0 														AMOUNT_THIS_WEEK,
+      		  IFNULL(PAYMENTS_GROUPED.AMOUNT, 0)  						AMOUNT_LAST_WEEK, 
+                0															TOTAL_THIS_WEEK,
+                IFNULL(PAYMENTS_GROUPED.TOTAL,0)  	 					TOTAL_LAST_WEEK
+              FROM REF_VALUES R
+      			LEFT OUTER JOIN (
+      			SELECT I.PAYMENT_METHOD, IFNULL(SUM(O.PAID_AMOUNT), 0) AMOUNT , IFNULL(COUNT(I.ID),0)  TOTAL 
+      				FROM INVOICES I
+      					INNER JOIN INVOICES_ORDERS OI ON OI.INVOICE_ID = I.ID
+      					INNER JOIN ORDERS O ON OI.ORDER_ID = O.ID
+                      WHERE O.STARTED BETWEEN 
+      					DATE_SUB( '".$enddate."', INTERVAL WEEKDAY('".$enddate."') + 7 DAY) AND
+      					DATE_SUB( '".$enddate."', INTERVAL WEEKDAY('".$enddate."') + 1 DAY) 
+      				AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0 AND O.VOID = 0
+      			GROUP BY I.PAYMENT_METHOD
+      			)PAYMENTS_GROUPED
+      			ON PAYMENTS_GROUPED.PAYMENT_METHOD = R.CODE  
+      		WHERE R.LOOKUP_NAME = 'PAYMENT_METHOD' AND R.IS_ACTIVE = 1
+              ) PAYMENT_TYPE
+      	GROUP BY PAYMENT_METHOD
+        ORDER BY AMOUNT_THIS_WEEK DESC;");
+		return $query->result();
+	}  
+  
+  function get_paymethods(){ 
+    $query = $this->db->select('VALUE AS PAYMENT_METHOD')
+                      ->from('REF_VALUES')
+                      ->where('LOOKUP_NAME','PAYMENT_METHOD')
+                      ->where('IS_ACTIVE',1)
+                      ->get('');
+    return $query->result();
+  }
   
   function get_ordtype($rest_id,$enddate){
     $query = $this->db->query("-- Coloumn 2 Middle: Sales Type - DINEIN, TakeOUT, Delivery  - display number, percent, dollar, sales
@@ -309,7 +373,7 @@ class Weekly_model extends CI_Model {
                     WHERE STARTED BETWEEN
     					DATE_SUB( '".$enddate."', INTERVAL WEEKDAY('".$enddate."') DAY) AND 
     					DATE('".$enddate."' + INTERVAL (6 - WEEKDAY('".$enddate."')) DAY)
-    				AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
+    				AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0 AND O.VOID = 0
     			GROUP BY O.ORDER_TYPE
             )ORDERS_GROUPED
             ON ORDERS_GROUPED.ORDER_TYPE = R.CODE
@@ -328,17 +392,221 @@ class Weekly_model extends CI_Model {
                     WHERE STARTED BETWEEN
     					DATE_SUB( '".$enddate."', INTERVAL WEEKDAY('".$enddate."') + 7 DAY) AND
     					DATE_SUB( '".$enddate."', INTERVAL WEEKDAY('".$enddate."') + 1 DAY) 
-    				AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
+    				AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0 AND O.VOID = 0
     			GROUP BY O.ORDER_TYPE
             )ORDERS_GROUPED
             ON ORDERS_GROUPED.ORDER_TYPE = R.CODE
         WHERE R.LOOKUP_NAME = 'ORDER_TYPE' AND R.IS_ACTIVE = 1
         )SALES_TYPE
-    GROUP BY ORDER_TYPE;");
+    GROUP BY ORDER_TYPE
+    ORDER BY AMOUNT_THIS_WEEK DESC;");
     		return $query->result();
-    	}
+    	}     
+	
+	function get_topcat($rest_id,$enddate,$top=5){  
+    $array1 = $this->dash_top_cat2_tops($rest_id,$enddate,$top=5);
+    $array2 = $this->dash_top_cat3_others($rest_id,$enddate,$top=5);
+    $array3 = $this->dash_top_cat5_adjust($rest_id,$enddate);       
+    $array5 = array_merge($array1,$array2,$array3);
+		return $array5;  
+	}
+	
+	function dash_top_cat1_total($rest_id,$enddate){  		
+		$query = $this->db->query("-- Coloumn 2 Bottom: Top Category By Sales
+                 SELECT
+                	CAT_NAME					CAT_NAME,
+                	SUM(AMOUNT_THIS_MONTH)		AMOUNT_THIS_WEEK,
+                	SUM(AMOUNT_LAST_WEEK)		AMOUNT_LAST_WEEK,
+                	SUM(TOTAL_THIS_WEEK)		TOTAL_THIS_WEEK,
+                	SUM(TOTAL_LAST_WEEK)		TOTAL_LAST_WEEK
+                 FROM
+                	(
+                		SELECT 
+                			CAT_NAME		CAT_NAME,
+                            SUM(AMOUNT)		AMOUNT_THIS_WEEK,
+                            0				AMOUNT_LAST_WEEK,
+                            SUM(TOTAL)		TOTAL_THIS_WEEK,
+                            0				TOTAL_LAST_WEEK
+                		FROM(
+                			 SELECT OD.CATEGORY_NAME CAT_NAME, 
+                					IFNULL(SUM(OD.TOTAL),0)  AMOUNT, 
+                					IFNULL(COUNT(OD.ID),0)  TOTAL 
+                				FROM ORDER_DETAILS OD
+                				LEFT JOIN PRICE_CHANGE PC ON PC.ORDER_DETAILS_ID = OD.ID AND PC.MENU_ID = NULL
+                				INNER JOIN INVOICES I ON OD.INVOICE_ID = I.ID
+                				INNER JOIN INVOICES_ORDERS OI ON OI.INVOICE_ID = I.ID
+                				INNER JOIN ORDERS O ON OI.ORDER_ID = O.ID
+                					AND STARTED BETWEEN
+                						DATE_SUB( '".$enddate."', INTERVAL WEEKDAY('".$enddate."') DAY) AND 
+                						DATE('".$enddate."' + INTERVAL (6 - WEEKDAY('".$enddate."')) DAY)
+                					AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0 AND O.VOID = 0 AND OD.VOID = 0
+                			GROUP BY OD.CATEGORY_NAME
+                            -- LIMIT 5
+                		) THIS_WEEK
+                        GROUP BY CAT_NAME
+                        UNION ALL
+                		SELECT 
+                			CAT_NAME		CAT_NAME,
+                			0				AMOUNT_THIS_WEEK,
+                			SUM(AMOUNT)		AMOUNT_LAST_WEEK,
+                            0				TOTAL_THIS_WEEK,
+                            SUM(TOTAL)		TOTAL_LAST_WEEK
+                		FROM(
+                			 SELECT OD.CATEGORY_NAME CAT_NAME, 
+                					IFNULL(SUM(OD.TOTAL),0)  AMOUNT, 
+                					IFNULL(COUNT(OD.ID),0)  TOTAL 
+                				FROM ORDER_DETAILS OD
+                				LEFT JOIN PRICE_CHANGE PC ON PC.ORDER_DETAILS_ID = OD.ID AND PC.MENU_ID = NULL
+                				INNER JOIN INVOICES I ON OD.INVOICE_ID = I.ID
+                				INNER JOIN INVOICES_ORDERS OI ON OI.INVOICE_ID = I.ID
+                				INNER JOIN ORDERS O ON OI.ORDER_ID = O.ID
+                					AND STARTED BETWEEN
+                						DATE_SUB( '".$enddate."', INTERVAL WEEKDAY('".$enddate."') + 7 DAY) AND
+                						DATE_SUB( '".$enddate."', INTERVAL WEEKDAY('".$enddate."') + 1 DAY) 
+                					AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0 AND O.VOID = 0 AND OD.VOID = 0
+                			GROUP BY OD.CATEGORY_NAME
+                            -- LIMIT 5
+                			            
+                		) LAST_WEEK
+                        GROUP BY CAT_NAME
+                	) CAT_VALUES
+                    GROUP BY CAT_NAME
+                    ORDER BY AMOUNT_THIS_WEEK DESC;");
+		return $query->num_rows();  
+	}
+    
+	function dash_top_cat2_tops($rest_id,$enddate,$top=5){  		
+		$query = $this->db->query("SELECT
+                	CAT_NAME					CAT_NAME,
+                	SUM(AMOUNT_THIS_MONTH)		AMOUNT_THIS_WEEK,
+                	SUM(AMOUNT_LAST_WEEK)		AMOUNT_LAST_WEEK,
+                	SUM(TOTAL_THIS_WEEK)		TOTAL_THIS_WEEK,
+                	SUM(TOTAL_LAST_WEEK)		TOTAL_LAST_WEEK
+                 FROM
+                	(
+                		SELECT 
+                			CAT_NAME		CAT_NAME,
+                            SUM(AMOUNT)		AMOUNT_THIS_WEEK,
+                            0				AMOUNT_LAST_WEEK,
+                            SUM(TOTAL)		TOTAL_THIS_WEEK,
+                            0				TOTAL_LAST_WEEK
+                		FROM(
+                			 SELECT OD.CATEGORY_NAME CAT_NAME, 
+                					IFNULL(SUM(OD.TOTAL),0)  AMOUNT, 
+                					IFNULL(COUNT(OD.ID),0)  TOTAL 
+                				FROM ORDER_DETAILS OD
+                				LEFT JOIN PRICE_CHANGE PC ON PC.ORDER_DETAILS_ID = OD.ID AND PC.MENU_ID = NULL
+                				INNER JOIN INVOICES I ON OD.INVOICE_ID = I.ID
+                				INNER JOIN INVOICES_ORDERS OI ON OI.INVOICE_ID = I.ID
+                				INNER JOIN ORDERS O ON OI.ORDER_ID = O.ID
+                					AND STARTED BETWEEN
+                						DATE_SUB( '".$enddate."', INTERVAL WEEKDAY('".$enddate."') DAY) AND 
+                						DATE('".$enddate."' + INTERVAL (6 - WEEKDAY('".$enddate."')) DAY)
+                					AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0 AND O.VOID = 0 AND OD.VOID = 0
+                			GROUP BY OD.CATEGORY_NAME
+                            LIMIT ".$top."
+                		) THIS_WEEK
+                        GROUP BY CAT_NAME
+                        UNION ALL
+                		SELECT 
+                			CAT_NAME		CAT_NAME,
+                			0				AMOUNT_THIS_WEEK,
+                			SUM(AMOUNT)		AMOUNT_LAST_WEEK,
+                            0				TOTAL_THIS_WEEK,
+                            SUM(TOTAL)		TOTAL_LAST_WEEK
+                		FROM(
+                			 SELECT OD.CATEGORY_NAME CAT_NAME, 
+                					IFNULL(SUM(OD.TOTAL),0)  AMOUNT, 
+                					IFNULL(COUNT(OD.ID),0)  TOTAL 
+                				FROM ORDER_DETAILS OD
+                				LEFT JOIN PRICE_CHANGE PC ON PC.ORDER_DETAILS_ID = OD.ID AND PC.MENU_ID = NULL
+                				INNER JOIN INVOICES I ON OD.INVOICE_ID = I.ID
+                				INNER JOIN INVOICES_ORDERS OI ON OI.INVOICE_ID = I.ID
+                				INNER JOIN ORDERS O ON OI.ORDER_ID = O.ID
+                					AND STARTED BETWEEN
+                						DATE_SUB( '".$enddate."', INTERVAL WEEKDAY('".$enddate."') + 7 DAY) AND
+                						DATE_SUB( '".$enddate."', INTERVAL WEEKDAY('".$enddate."') + 1 DAY) 
+                					AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0 AND O.VOID = 0 AND OD.VOID = 0
+                			GROUP BY OD.CATEGORY_NAME
+                            LIMIT ".$top."
+                			            
+                		) LAST_WEEK
+                        GROUP BY CAT_NAME
+                	) CAT_VALUES
+                    GROUP BY CAT_NAME
+                    ORDER BY AMOUNT_THIS_WEEK DESC;");
+		return $query->result();  
+	}           
+	
+	function dash_top_cat3_others($rest_id,$enddate,$top=5){ 
+    //$tot = $this->dash_top_cat1_total($enddate,$rest_id); 	
+    $tot = 100; 		
+		$query = $this->db->query("SELECT
+                	CAT_NAME					CAT_NAME,
+                	SUM(AMOUNT_THIS_MONTH)		AMOUNT_THIS_WEEK,
+                	SUM(AMOUNT_LAST_WEEK)		AMOUNT_LAST_WEEK,
+                	SUM(TOTAL_THIS_WEEK)		TOTAL_THIS_WEEK,
+                	SUM(TOTAL_LAST_WEEK)		TOTAL_LAST_WEEK
+                 FROM
+                	(
+                		SELECT 'OTHERS' CAT_NAME, 
+            					IFNULL(SUM(AMOUNT), 0) AMOUNT, 
+            					IFNULL(SUM(TOTAL) ,0) TOTAL FROM(
+            				    SELECT OD.CATEGORY_NAME CAT_NAME, IFNULL(SUM(OD.TOTAL),0)  AMOUNT, IFNULL(COUNT(OD.ID),0)  TOTAL 
+              					FROM ORDER_DETAILS OD
+              					LEFT JOIN PRICE_CHANGE PC ON PC.ORDER_DETAILS_ID = OD.ID AND PC.MENU_ID = NULL
+              					INNER JOIN INVOICES I ON OD.INVOICE_ID = I.ID
+              					INNER JOIN INVOICES_ORDERS OI ON OI.INVOICE_ID = I.ID
+              					INNER JOIN ORDERS O ON OI.ORDER_ID = O.ID
+              						AND O.STARTED BETWEEN
+                						DATE_SUB( '".$enddate."', INTERVAL WEEKDAY('".$enddate."') DAY) AND 
+                						DATE('".$enddate."' + INTERVAL (6 - WEEKDAY('".$enddate."')) DAY)
+              						AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0 AND O.VOID = 0
+              						AND OD.VOID = 0
+              				  GROUP BY OD.CATEGORY_NAME
+              				  LIMIT ".$top.", ".$tot."
+            			   ) OTHER_CAT
+                	) THIS_WEEK
+                  GROUP BY CAT_NAME
+                  UNION ALL
+                	SELECT 'OTHERS' CAT_NAME, 
+            					IFNULL(SUM(AMOUNT), 0) AMOUNT, 
+            					IFNULL(SUM(TOTAL) ,0) TOTAL FROM(
+            				    SELECT OD.CATEGORY_NAME CAT_NAME, IFNULL(SUM(OD.TOTAL),0)  AMOUNT, IFNULL(COUNT(OD.ID),0)  TOTAL 
+              					FROM ORDER_DETAILS OD
+              					LEFT JOIN PRICE_CHANGE PC ON PC.ORDER_DETAILS_ID = OD.ID AND PC.MENU_ID = NULL
+              					INNER JOIN INVOICES I ON OD.INVOICE_ID = I.ID
+              					INNER JOIN INVOICES_ORDERS OI ON OI.INVOICE_ID = I.ID
+              					INNER JOIN ORDERS O ON OI.ORDER_ID = O.ID
+              						AND O.STARTED BETWEEN
+                						DATE_SUB( '".$enddate."', INTERVAL WEEKDAY('".$enddate."') + 7 DAY) AND
+                						DATE_SUB( '".$enddate."', INTERVAL WEEKDAY('".$enddate."') + 1 DAY)
+              						AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0 AND O.VOID = 0
+              						AND OD.VOID = 0
+              				  GROUP BY OD.CATEGORY_NAME
+              				  LIMIT ".$top.", ".$tot."
+            			   ) OTHER_CAT
+                	 ) LAST_WEEK
+                  GROUP BY CAT_NAME
+                	) CAT_VALUES
+                    GROUP BY CAT_NAME
+                    ORDER BY AMOUNT_THIS_WEEK DESC;");
+		return $query->result();  
+	}   
+  
+	function dash_top_cat5_adjust($rest_id,$enddate){  		
+		$query = $this->db->query("SELECT 'ADJUSTMENTS' CAT_NAME, IFNULL(SUM(OD.TOTAL),0)  AMOUNT, IFNULL(COUNT(OD.ID),0)  TOTAL 
+                              	FROM ORDER_DETAILS OD
+                                  INNER JOIN PRICE_CHANGE PC ON PC.ORDER_DETAILS_ID = OD.ID
+                              	INNER JOIN INVOICES I ON OD.INVOICE_ID = I.ID
+                                  INNER JOIN INVOICES_ORDERS OI ON OI.INVOICE_ID = I.ID
+                              	INNER JOIN ORDERS O ON OI.ORDER_ID = O.ID
+      		                        AND DATE(O.STARTED) = '".$enddate."'
+                                  AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0 AND O.VOID = 0 AND OD.VOID = 0;");
+		return $query->result();  
+	}
     	
-	function get_topcat($rest_id,$enddate){
+	function get_topcat0($rest_id,$enddate){
     $query = $this->db->query("-- Coloumn 2 Bottom: Top Category By Sales
       SELECT
 	     CAT_NAME					CAT_NAME,
@@ -366,7 +634,7 @@ class Weekly_model extends CI_Model {
 					AND STARTED BETWEEN
 						DATE_SUB( '".$enddate."', INTERVAL WEEKDAY('".$enddate."') DAY) AND 
 						DATE('".$enddate."' + INTERVAL (6 - WEEKDAY('".$enddate."')) DAY)
-					AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
+					AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0 AND O.VOID = 0 AND OD.VOID = 0
           GROUP BY OD.CATEGORY_NAME
 			) THIS_WEEK
       GROUP BY CAT_NAME
@@ -389,12 +657,13 @@ class Weekly_model extends CI_Model {
 					AND STARTED BETWEEN
 						DATE_SUB( '".$enddate."', INTERVAL WEEKDAY('".$enddate."') + 7 DAY) AND
 						DATE_SUB( '".$enddate."', INTERVAL WEEKDAY('".$enddate."') + 1 DAY) 
-					AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
+					AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0 AND O.VOID = 0 AND OD.VOID = 0
         GROUP BY OD.CATEGORY_NAME
       ) LAST_WEEK
       GROUP BY CAT_NAME
     ) CAT_VALUES
-    GROUP BY CAT_NAME;");
+    GROUP BY CAT_NAME
+    ORDER BY AMOUNT_THIS_WEEK DESC;");
 		return $query->result();
 	}          
   
@@ -524,7 +793,7 @@ class Weekly_model extends CI_Model {
 					AND STARTED BETWEEN
 						DATE_SUB( '".$enddate."', INTERVAL WEEKDAY('".$enddate."') DAY) AND 
 						DATE('".$enddate."' + INTERVAL (6 - WEEKDAY('".$enddate."')) DAY) 
-					AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
+					AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0 AND O.VOID = 0 AND OD.VOID = 0
 			) THIS_WEEK
       GROUP BY CAT_NAME
       UNION ALL
@@ -546,7 +815,7 @@ class Weekly_model extends CI_Model {
 					AND STARTED BETWEEN
 						DATE_SUB( '".$enddate."', INTERVAL WEEKDAY('".$enddate."') + 7 DAY) AND
 						DATE_SUB( '".$enddate."', INTERVAL WEEKDAY('".$enddate."') + 1 DAY) 
-					AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
+					AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0 AND O.VOID = 0 AND OD.VOID = 0
 			) LAST_WEEK
       GROUP BY CAT_NAME
 	) CAT_VALUES
@@ -572,15 +841,14 @@ class Weekly_model extends CI_Model {
 	
 	function get_recon($rest_id,$enddate){
     $query = $this->db->query("-- weekly Recon
-      SELECT 	
+      SELECT ALL_DATES.SELECTED_DATE TERMINAL_DATE,	
 		T.NAME 										TERMINAL_NAME,
         PH.CASH_OPENING								CASH_OPENING,
 		PH.CASH_CLOSING								CASH_CLOSING,
 		SUM(PH.CASH_CLOSING - PH.CASH_OPENING) 		CASH_FROM_REGISTER, 
 		CASH_FROM_INVOICES.TOTAL 					CASH_FROM_INVOICES, 
         SUM(PH.CASH_CLOSING - PH.CASH_OPENING) - 	
-			CASH_FROM_INVOICES.TOTAL 				DIFFERENCE,
-        DATE(ALL_DATES.SELECTED_DATE) 				TERMINAL_DATE
+			CASH_FROM_INVOICES.TOTAL 				DIFFERENCE
 	FROM TERMINAL T
 	INNER JOIN RESTAURANTS R 
 		ON T.REST_ID = R.ID
@@ -596,7 +864,8 @@ class Weekly_model extends CI_Model {
 	ON	WEEK(ALL_DATES.SELECTED_DATE) = WEEK('".$enddate."')
 		AND YEAR(ALL_DATES.SELECTED_DATE) = YEAR('".$enddate."')
 	LEFT OUTER JOIN PAYMENT_HISTORY PH
-		ON PH.TERMINAL_ID = T.ID
+		ON PH.TERMINAL_ID = T.ID   
+        AND DATE(PH.DATE) = DATE(ALL_DATES.SELECTED_DATE)
 	LEFT OUTER JOIN (
 		SELECT DATE(O.STARTED) ORDER_DATE, SUM(I.PAID_AMOUNT) TOTAL,  I.TERMINAL_ID 
 			FROM INVOICES I
@@ -607,11 +876,11 @@ class Weekly_model extends CI_Model {
 		WHERE I.PAYMENT_METHOD = 'CASH'
 		GROUP BY I.TERMINAL_ID, DATE(O.STARTED)
 	) CASH_FROM_INVOICES
-	ON CASH_FROM_INVOICES.ORDER_DATE = DATE(PH.DATE) 
+	ON CASH_FROM_INVOICES.ORDER_DATE = DATE(ALL_DATES.SELECTED_DATE)  
 	AND CASH_FROM_INVOICES.TERMINAL_ID = T.ID
-WHERE T.REGISTERED = 1
-	AND R.ID = ".$rest_id." 
-  GROUP BY DATE(ALL_DATES.SELECTED_DATE);");
+  WHERE T.REGISTERED = 1
+	AND R.ID = ".$rest_id."
+  GROUP BY TERMINAL_DATE, TERMINAL_NAME;");
 		return $query->result();
 	}
 	

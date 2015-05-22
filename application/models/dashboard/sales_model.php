@@ -100,6 +100,78 @@ class Sales_model extends CI_Model {
 		return $query->row()->CUR;
 	}
 	
+	function dash_top_categories($start_date,$end_date,$rest_id,$top=5){  
+    $array1 = $this->dash_top_cat2_tops($start_date,$end_date,$rest_id,$top=5);
+    $array2 = $this->dash_top_cat3_others($start_date,$end_date,$rest_id,$top=5);
+    $array3 = $this->dash_top_cat5_adjust($start_date,$end_date,$rest_id);       
+    $array5 = array_merge($array1,$array2,$array3);
+		return $array5;  
+	}
+	
+	function dash_top_cat1_total($start_date,$end_date,$rest_id){  		
+		$query = $this->db->query("SELECT OD.CATEGORY_NAME CAT_NAME, IFNULL(SUM(OD.TOTAL),0)  AMOUNT, IFNULL(COUNT(OD.ID),0)  TOTAL 
+                              	FROM ORDER_DETAILS OD
+                                  LEFT JOIN PRICE_CHANGE PC ON PC.ORDER_DETAILS_ID = OD.ID AND PC.MENU_ID = NULL
+                              	INNER JOIN INVOICES I ON OD.INVOICE_ID = I.ID
+                                  INNER JOIN INVOICES_ORDERS OI ON OI.INVOICE_ID = I.ID
+                              	INNER JOIN ORDERS O ON OI.ORDER_ID = O.ID
+                                  AND O.ENDED BETWEEN '".$start_date."' AND DATE_ADD('".$end_date."', INTERVAL 1 DAY)
+                                  AND O.ENDED < DATE_ADD('".$end_date."', INTERVAL 1 DAY)
+                                  AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0 AND O.VOID = 0 AND OD.VOID = 0
+                                GROUP BY OD.CATEGORY_NAME
+                                ORDER BY AMOUNT DESC;");
+		return $query->num_rows();  
+	}
+    
+	function dash_top_cat2_tops($start_date,$end_date,$rest_id,$top=5){  		
+		$query = $this->db->query("SELECT OD.CATEGORY_NAME CAT_NAME, IFNULL(SUM(OD.TOTAL),0)  AMOUNT, IFNULL(COUNT(OD.ID),0)  TOTAL 
+                              	FROM ORDER_DETAILS OD
+                                  LEFT JOIN PRICE_CHANGE PC ON PC.ORDER_DETAILS_ID = OD.ID AND PC.MENU_ID = NULL
+                              	INNER JOIN INVOICES I ON OD.INVOICE_ID = I.ID
+                                  INNER JOIN INVOICES_ORDERS OI ON OI.INVOICE_ID = I.ID
+                              	INNER JOIN ORDERS O ON OI.ORDER_ID = O.ID
+                                  AND O.ENDED BETWEEN '".$start_date."' AND DATE_ADD('".$end_date."', INTERVAL 1 DAY)
+                                  AND O.ENDED < DATE_ADD('".$end_date."', INTERVAL 1 DAY)
+                                  AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0 AND O.VOID = 0 AND OD.VOID = 0
+                                GROUP BY OD.CATEGORY_NAME 
+                                ORDER BY AMOUNT DESC
+                                LIMIT ".$top.";");
+		return $query->result();  
+	}           
+	
+	function dash_top_cat3_others($start_date,$end_date,$rest_id,$top=5){ 
+    //$tot = $this->dash_top_cat1_total($enddate,$rest_id); 	
+    $tot = 100; 		
+		$query = $this->db->query("SELECT 'OTHERS' CAT_NAME, IFNULL(SUM(AMOUNT), 0) AMOUNT, IFNULL(SUM(TOTAL) ,0) TOTAL FROM(
+                              	SELECT OD.CATEGORY_NAME CAT_NAME, IFNULL(SUM(OD.TOTAL),0)  AMOUNT, IFNULL(COUNT(OD.ID),0)  TOTAL 
+                              		FROM ORDER_DETAILS OD
+                              		LEFT JOIN PRICE_CHANGE PC ON PC.ORDER_DETAILS_ID = OD.ID AND PC.MENU_ID = NULL
+                              		INNER JOIN INVOICES I ON OD.INVOICE_ID = I.ID
+                              		INNER JOIN INVOICES_ORDERS OI ON OI.INVOICE_ID = I.ID
+                              		INNER JOIN ORDERS O ON OI.ORDER_ID = O.ID
+                                  AND O.ENDED BETWEEN '".$start_date."' AND DATE_ADD('".$end_date."', INTERVAL 1 DAY)
+                                  AND O.ENDED < DATE_ADD('".$end_date."', INTERVAL 1 DAY)
+                                  AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0 AND O.VOID = 0 AND OD.VOID = 0
+                              	GROUP BY OD.CATEGORY_NAME  
+                                ORDER BY AMOUNT DESC
+                              	LIMIT ".$top.", ".$tot."
+                                ) OTHER_CAT;");
+		return $query->result();  
+	}   
+  
+	function dash_top_cat5_adjust($start_date,$end_date,$rest_id){  		
+		$query = $this->db->query("SELECT 'ADJUSTMENTS' CAT_NAME, IFNULL(SUM(OD.TOTAL),0)  AMOUNT, IFNULL(COUNT(OD.ID),0)  TOTAL 
+                              	FROM ORDER_DETAILS OD
+                                  INNER JOIN PRICE_CHANGE PC ON PC.ORDER_DETAILS_ID = OD.ID
+                              	INNER JOIN INVOICES I ON OD.INVOICE_ID = I.ID
+                                  INNER JOIN INVOICES_ORDERS OI ON OI.INVOICE_ID = I.ID
+                              	INNER JOIN ORDERS O ON OI.ORDER_ID = O.ID
+                                  AND O.ENDED BETWEEN '".$start_date."' AND DATE_ADD('".$end_date."', INTERVAL 1 DAY)
+                                  AND O.ENDED < DATE_ADD('".$end_date."', INTERVAL 1 DAY)
+                                  AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0 AND O.VOID = 0 AND OD.VOID = 0;");
+		return $query->result();  
+	}
+	
 	function dash_top_categories0($start_date,$end_date,$rest_id){  		
 		$query = $this->db->query("SELECT OD.CATEGORY_NAME CAT_NAME, IFNULL(SUM(OD.TOTAL),0)  AMOUNT, IFNULL(COUNT(OD.ID),0)  TOTAL 
 	                             FROM ORDER_DETAILS OD
@@ -108,31 +180,8 @@ class Sales_model extends CI_Model {
                                INNER JOIN INVOICES_ORDERS OI ON OI.INVOICE_ID = I.ID
                                INNER JOIN ORDERS O ON OI.ORDER_ID = O.ID
                                   AND O.ENDED BETWEEN '".$start_date."' AND DATE_ADD('".$end_date."', INTERVAL 1 DAY)
-                                  AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
-                               GROUP BY OD.CATEGORY_NAME
-                               UNION  
-                               SELECT 'ADJUSTMENTS' CAT_NAME, IFNULL(SUM(OD.TOTAL),0)  AMOUNT, IFNULL(COUNT(OD.ID),0)  TOTAL 
-                          	   FROM ORDER_DETAILS OD
-                               INNER JOIN PRICE_CHANGE PC ON PC.ORDER_DETAILS_ID = OD.ID
-                               INNER JOIN INVOICES I ON OD.INVOICE_ID = I.ID
-                               INNER JOIN INVOICES_ORDERS OI ON OI.INVOICE_ID = I.ID
-                               INNER JOIN ORDERS O ON OI.ORDER_ID = O.ID
-                                  AND O.ENDED BETWEEN '".$start_date."' AND DATE_ADD('".$end_date."', INTERVAL 1 DAY)
-                                  AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
-                                ORDER BY AMOUNT DESC;");
-		return $query->result();  
-	}
-	
-	function dash_top_categories($start_date,$end_date,$rest_id){  		
-		$query = $this->db->query("SELECT OD.CATEGORY_NAME CAT_NAME, IFNULL(SUM(OD.TOTAL),0)  AMOUNT, IFNULL(COUNT(OD.ID),0)  TOTAL 
-	                             FROM ORDER_DETAILS OD
-                               LEFT JOIN PRICE_CHANGE PC ON PC.ORDER_DETAILS_ID = OD.ID AND PC.MENU_ID = NULL
-                               INNER JOIN INVOICES I ON OD.INVOICE_ID = I.ID
-                               INNER JOIN INVOICES_ORDERS OI ON OI.INVOICE_ID = I.ID
-                               INNER JOIN ORDERS O ON OI.ORDER_ID = O.ID
-                                  AND O.ENDED BETWEEN '".$start_date."' AND DATE_ADD('".$end_date."', INTERVAL 1 DAY)
                                   AND O.ENDED < DATE_ADD('".$end_date."', INTERVAL 1 DAY)
-                                  AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
+                                  AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0 AND O.VOID = 0 AND OD.VOID = 0
                                GROUP BY OD.CATEGORY_NAME
                                ORDER BY AMOUNT DESC;");
 		return $query->result();  
@@ -147,7 +196,7 @@ class Sales_model extends CI_Model {
                                INNER JOIN ORDERS O ON OI.ORDER_ID = O.ID
                                   AND O.ENDED BETWEEN '".$start_date."' AND DATE_ADD('".$end_date."', INTERVAL 1 DAY) 
                                   AND O.ENDED < DATE_ADD('".$end_date."', INTERVAL 1 DAY)
-                                  AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0;");
+                                  AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0 AND O.VOID = 0 AND OD.VOID = 0;");
 		return $query->row();  
 	}
   
@@ -230,15 +279,16 @@ class Sales_model extends CI_Model {
                                   INNER JOIN INVOICES_ORDERS OI ON OI.INVOICE_ID = I.ID
                               	INNER JOIN ORDERS O ON OI.ORDER_ID = O.ID
                               		AND O.ENDED BETWEEN '".$start_date."' AND DATE_ADD('".$end_date."', INTERVAL 1 DAY)
-                              		AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
+                                  AND O.ENDED < DATE_ADD('".$end_date."', INTERVAL 1 DAY)
+                              		AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0 AND O.VOID = 0 AND OD.VOID = 0
                                 GROUP BY OD.MENU_NAME
                                 ORDER BY SUM(OD.TOTAL) DESC
                                 LIMIT 8;");
 		return $query->result();  
 	}        
 
-	function dash_payment_method($start_date,$end_date,$rest_id){  		
-		$query = $this->db->query("SELECT  R.VALUE AS PAYMENT_METHOD, IFNULL(SUM(O.TOTAL), 0) AMOUNT , IFNULL(COUNT(I.ID),0)  TOTAL 
+	function dash_payment_method0($start_date,$end_date,$rest_id){  		
+		$query = $this->db->query("SELECT  R.VALUE AS PAYMENT_METHOD, IFNULL(SUM(O.PAID_AMOUNT), 0) AMOUNT , IFNULL(COUNT(I.ID),0)  TOTAL 
                               	FROM INVOICES I
                               	INNER JOIN REF_VALUES R ON I.PAYMENT_METHOD = R.CODE
                               		AND R.LOOKUP_NAME = 'PAYMENT_METHOD' AND R.IS_ACTIVE = 1
@@ -246,7 +296,26 @@ class Sales_model extends CI_Model {
                               	INNER JOIN ORDERS O ON OI.ORDER_ID = O.ID
                               	WHERE O.ENDED BETWEEN '".$start_date."' AND DATE_ADD('".$end_date."', INTERVAL 1 DAY)
                               		AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
-                              	GROUP BY R.VALUE;");
+                              	GROUP BY R.VALUE
+                                ORDER BY AMOUNT DESC;");
+		return $query->result();  
+	}
+  
+	function dash_payment_method($start_date,$end_date,$rest_id){  		
+		$query = $this->db->query("SELECT R.VALUE AS PAYMENT_METHOD, IFNULL(PAYMENTS_GROUPED.AMOUNT, 0) AMOUNT , IFNULL(PAYMENTS_GROUPED.TOTAL, 0) TOTAL
+                                FROM REF_VALUES R
+                                LEFT OUTER JOIN (
+                                  SELECT I.PAYMENT_METHOD, IFNULL(SUM(O.PAID_AMOUNT), 0) AMOUNT , IFNULL(COUNT(O.ID),0) TOTAL
+                                  FROM INVOICES I
+                                  INNER JOIN INVOICES_ORDERS OI ON OI.INVOICE_ID = I.ID
+                                  INNER JOIN ORDERS O ON OI.ORDER_ID = O.ID
+                                  WHERE O.ENDED BETWEEN '".$start_date."' AND DATE_ADD('".$end_date."', INTERVAL 1 DAY) 
+                                  AND O.ENDED < DATE_ADD('".$end_date."', INTERVAL 1 DAY)
+                                  AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0 AND O.VOID = 0
+                                  GROUP BY I.PAYMENT_METHOD
+                                )PAYMENTS_GROUPED
+                                ON PAYMENTS_GROUPED.PAYMENT_METHOD = R.CODE
+                                WHERE R.LOOKUP_NAME = 'PAYMENT_METHOD' AND R.IS_ACTIVE = 1;");
 		return $query->result();  
 	}
   
@@ -254,10 +323,11 @@ class Sales_model extends CI_Model {
 		$query = $this->db->query("SELECT R.VALUE AS ORDER_TYPE, IFNULL(ORDERS_GROUPED.AMOUNT, 0) AMOUNT, IFNULL(ORDERS_GROUPED.TOTAL, 0) TOTAL
                                 FROM REF_VALUES R 
                                 LEFT OUTER JOIN 
-                                  (	SELECT O.ORDER_TYPE, IFNULL(SUM(O.TOTAL), 0) AMOUNT, IFNULL(COUNT(O.ID),0)  TOTAL 
+                                  (	SELECT O.ORDER_TYPE, IFNULL(SUM(O.PAID_AMOUNT), 0) AMOUNT, IFNULL(COUNT(O.ID),0)  TOTAL 
                                       FROM ORDERS O
                                       WHERE O.ENDED BETWEEN '".$start_date."' AND DATE_ADD('".$end_date."', INTERVAL 1 DAY)
-                                      AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
+                                      AND O.ENDED < DATE_ADD('".$end_date."', INTERVAL 1 DAY)
+                                      AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0 AND O.VOID = 0
                                       GROUP BY O.ORDER_TYPE
                                   ) ORDERS_GROUPED
                                 ON ORDERS_GROUPED.ORDER_TYPE = R.CODE

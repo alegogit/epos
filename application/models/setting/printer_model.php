@@ -119,6 +119,13 @@ class Printer_model extends CI_Model {
     } else {
       $output = "<span style='color:#dd1144 !important;'>Inactive</span>";
     }
+  }       
+   
+	function get_mac(){    
+    $query = $this->db->select('PRINTER_MAC_ADDRESS')
+                      ->from('PRINTER')
+                      ->get('');
+    return $query->result();
   } 
     
 	function new_printer($NAME,$PRINTER_MAC_ADDRESS,$REST_ID,$PRINTER_CONNECTION,$PRINTER_IP_ADDRESS,$PRINTER_PORT){       

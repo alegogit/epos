@@ -4,13 +4,14 @@
   
     <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
       <a role="button" class="btn btn-default" href="<?=base_url()?>reports/sales">&nbsp;&nbsp;&nbsp;Sales&nbsp;&nbsp;&nbsp;</a>
-      <a role="button" class="btn btn-default" href="<?=base_url()?>reports/inventory">Inventory</a>              
-      <a role="button" class="btn btn-default" href="<?=base_url()?>reports/cashflow">Cash Flow</a>         
-      <a role="button" class="btn btn-default" href="<?=base_url()?>reports/attendance">Attendance</a>                   
+      <a role="button" class="btn btn-default" href="<?=base_url()?>reports/inventory">Inventory</a>          
+      <a role="button" class="btn btn-default" href="<?=base_url()?>reports/cashflow">Cash Flow</a>           
+      <a role="button" class="btn btn-default" href="<?=base_url()?>reports/payment">Payment Type</a>           
+      <a role="button" class="btn btn-default" href="<?=base_url()?>reports/attendance">Attendance</a>                
       <a role="button" class="btn btn-default" href="<?=base_url()?>reports/daily">&nbsp;&nbsp;<i class="fa fa-th-list"></i> Daily&nbsp;&nbsp;</a>              
       <a role="button" class="btn btn-default" href="<?=base_url()?>reports/weekly">&nbsp;<i class="fa fa-th"></i> Weekly&nbsp;</a>              
-      <a role="button" class="btn btn-primary" href="<?=base_url()?>reports/monthly">&nbsp;<i class="fa fa-th-large"></i> Monthly&nbsp;</a>  
-    </div>
+      <a role="button" class="btn btn-primary" href="<?=base_url()?>reports/monthly">&nbsp;<i class="fa fa-th-large"></i> Monthly&nbsp;</a>       
+    </div>      
     <!--   
     <div class="pull-right">
       <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
@@ -57,11 +58,13 @@
           </div>
           <div class="panel-body table-responsive"> 
             <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
-              <a id="print" role="button" class="btn btn-primary" href="<?=base_url()?>reports/salesmonthly/<?=$hashvars?>" target="_blank">&nbsp;<span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Print&nbsp;</a>
+              <a id="print" role="button" class="btn btn-primary" href="<?=base_url()?>reports/monthlysalesprint/<?=$hashvars?>" target="_blank">&nbsp;<span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Print&nbsp;</a>
             </div>
           </div>
         </div>
       </div><!-- /.col-sm-6 -->
+    </div><!-- /.row --> 
+    <div class="row">
       <div class="col-sm-3">
         <div class="panel panel-default">
           <div class="panel-heading">
@@ -69,14 +72,14 @@
           </div>
           <div class="panel-body table-responsive"> 
             <div class="btn-group" role="group" aria-label="..." style="margin-top:10px;">
-              <a id="print" role="button" class="btn btn-primary" href="<?=base_url()?>reports/attndmonthly/<?=$hashvars?>" target="_blank">&nbsp;<span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Print&nbsp;</a>
-              <!--<a id="print" role="button" class="btn btn-primary" href="<?=base_url()?>reports/monthlyattndprint/<?=$hashvars?>" target="_blank">&nbsp;<span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Print&nbsp;</a>
-              -->
+              <!--<a id="print" role="button" class="btn btn-primary" href="<?=base_url()?>reports/attndmonthly/<?=$hashvars?>" target="_blank">&nbsp;<span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Print&nbsp;</a> 
+              -->  
+              <a id="print" role="button" class="btn btn-primary" href="<?=base_url()?>reports/monthlyattndprint/<?=$hashvars?>" target="_blank">&nbsp;<span class="glyphicon glyphicon-print"></span>&nbsp;&nbsp;Print&nbsp;</a>
             </div>
 			    </div>
         </div>
-      </div><!-- /.col-sm-6 -->
-    </div><!-- /.row -->
+      </div><!-- /.col-sm-6 -->  
+    </div><!-- /.row --> 
 		
   
   </div><!-- /.container-fluid -->

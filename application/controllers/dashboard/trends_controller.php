@@ -42,12 +42,12 @@ class Trends_controller extends CI_Controller {
 			$data['enddate'] = $end_date;
       $data['cur'] = $this->dash_trn->get_currency($rest_id);
       //==rpanel=======>       
-			$data['net_sales_today'] = $this->rpanel->net_sales_today($rest_id);
-			$data['tot_sales_today'] = $this->rpanel->total_sales_today($rest_id);
-			$data['avrsls_percust'] = $this->rpanel->average_sales_per_customer($rest_id);
-			$data['num_cust_today'] = $this->rpanel->number_customer_today($rest_id);
-			$data['avrsls_perinv'] = $this->rpanel->average_sales_per_invoice($rest_id);
-			$data['com_inv_today'] = $this->rpanel->completed_invoice_today($rest_id);
+			$data['net_sales'] = $this->rpanel->net_sales($rest_id,date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)));
+			$data['tot_sales'] = $this->rpanel->total_sales($rest_id,date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)));
+			$data['avrsls_percust'] = $this->rpanel->average_sales_per_customer($rest_id,date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)));
+			$data['num_cust'] = $this->rpanel->number_customer($rest_id,date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)));
+			$data['avrsls_perinv'] = $this->rpanel->average_sales_per_invoice($rest_id,date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)));
+			$data['com_inv'] = $this->rpanel->completed_invoice($rest_id,date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)));
       //<==rpanel=====
 			$data['dmorevenue'] = $this->dash_trn->dash_monthly_revenue($rest_id);
       $data['dwkrevenue'] = $this->dash_trn->dash_weekly_revenue($rest_id);

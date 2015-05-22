@@ -61,6 +61,7 @@ class Restaurant_controller extends CI_Controller {
           $this->input->post('address1'),$this->input->post('address2'),$this->input->post('city'),
           $this->input->post('postalcode'),$this->input->post('country'),$this->input->post('geoloc'),
           $this->input->post('email'),$this->input->post('currency'),
+          $this->input->post('NPWP'),$this->input->post('cutoff_time'),
           $this->input->post('service'),$this->input->post('toservice'),$photo_url
         );
       } else {    

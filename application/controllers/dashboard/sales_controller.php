@@ -42,32 +42,14 @@ class Sales_controller extends CI_Controller {
 			$data['enddate'] = $end_date;
       $data['cur'] = $this->dash_sls->get_currency($rest_id);
       //==rpanel=======>       
-			$data['net_sales_today'] = $this->rpanel->net_sales_today($rest_id);
-			$data['tot_sales_today'] = $this->rpanel->total_sales_today($rest_id);
-			$data['avrsls_percust'] = $this->rpanel->average_sales_per_customer($rest_id);
-			$data['num_cust_today'] = $this->rpanel->number_customer_today($rest_id);
-			$data['avrsls_perinv'] = $this->rpanel->average_sales_per_invoice($rest_id);
-			$data['com_inv_today'] = $this->rpanel->completed_invoice_today($rest_id);
+			$data['net_sales'] = $this->rpanel->net_sales($rest_id,date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)));
+			$data['tot_sales'] = $this->rpanel->total_sales($rest_id,date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)));
+			$data['avrsls_percust'] = $this->rpanel->average_sales_per_customer($rest_id,date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)));
+			$data['num_cust'] = $this->rpanel->number_customer($rest_id,date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)));
+			$data['avrsls_perinv'] = $this->rpanel->average_sales_per_invoice($rest_id,date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)));
+			$data['com_inv'] = $this->rpanel->completed_invoice($rest_id,date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)));
       //<==rpanel=====
-			$data['dtopcatsz'] = $this->dash_sls->dash_top_categories(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id);
-      if(count($data['dtopcatsz'])>5){   
-  			$data['dtopcatsx'] = $this->dash_sls->dash_top_categories(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id);
-  			//$array0 = $this->dash_sls->remove_zero_values($data['dtopcatsz']);
-        //$array1 = $this->dash_sls->remove_zero_values($data['dtopcatsx']);
-  			$array0 = $data['dtopcatsz'];
-        $array1 = $data['dtopcatsx'];
-        $array2 = $this->dash_sls->get_top_five($array0);
-        $array3 = $this->dash_sls->remove_others($array0);
-        $array5 = $this->dash_sls->set_as_others($array1);
-        $array6 = $this->dash_sls->remove_other_others($array5);
-        $array7 = array_merge($array2,$array3,$array6);
-        $array8 = array_merge($array2,$array6,$array3);
-        $data['dtopcats'] = ($array7[5]->AMOUNT > $array8[5]->AMOUNT)?$array7:$array8;
-      } else {   
-  			$array0 = $this->dash_sls->remove_zero_values($data['dtopcatsz']);
-        $data['dtopcats'] = $array0;  
-      }
-      $data['adjustcat'] = $this->dash_sls->get_adjustment(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id);
+			$data['dtopcats'] = $this->dash_sls->dash_top_categories(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id);
       $data['dbestsells'] = $this->dash_sls->dash_best_sellers(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id);  
 			$data['dpayment'] = $this->dash_sls->dash_payment_method(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id);    
 			$data['dordtype'] = $this->dash_sls->dash_order_type(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id);
@@ -115,12 +97,12 @@ class Sales_controller extends CI_Controller {
 		$data['enddate'] = $end_date;
     $data['cur'] = $this->dash_sls->get_currency($rest_id);
       //==rpanel=======>       
-			$data['net_sales_today'] = $this->rpanel->net_sales_today($rest_id);
-			$data['tot_sales_today'] = $this->rpanel->total_sales_today($rest_id);
-			$data['avrsls_percust'] = $this->rpanel->average_sales_per_customer($rest_id);
-			$data['num_cust_today'] = $this->rpanel->number_customer_today($rest_id);
-			$data['avrsls_perinv'] = $this->rpanel->average_sales_per_invoice($rest_id);
-			$data['com_inv_today'] = $this->rpanel->completed_invoice_today($rest_id);
+			$data['net_sales'] = $this->rpanel->net_sales($rest_id,date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)));
+			$data['tot_sales'] = $this->rpanel->total_sales($rest_id,date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)));
+			$data['avrsls_percust'] = $this->rpanel->average_sales_per_customer($rest_id,date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)));
+			$data['num_cust'] = $this->rpanel->number_customer($rest_id,date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)));
+			$data['avrsls_perinv'] = $this->rpanel->average_sales_per_invoice($rest_id,date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)));
+			$data['com_inv'] = $this->rpanel->completed_invoice($rest_id,date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)));
       //<==rpanel=====
 			$data['dtopcatsz'] = $this->dash_sls->dash_top_categories(date('Y-m-d', strtotime($start_date)),date('Y-m-d', strtotime($end_date)),$rest_id);
       if(count($data['dtopcatsz'])>5){   

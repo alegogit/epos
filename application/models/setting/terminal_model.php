@@ -86,7 +86,14 @@ class Terminal_model extends CI_Model {
     $this->db->where('LOOKUP_NAME','CONN_TYPE');
     $query = $this->db->get('REF_VALUES');
     return $query->result();
-  }
+  }        
+   
+	function get_mac(){    
+    $query = $this->db->select('MAC_ADDRESS')
+                      ->from('TERMINAL')
+                      ->get('');
+    return $query->result();
+  } 
   
 	function new_terminal($NAME,$MAC,$TYPE,$MAKE,$MODEL,$CONN_TYPE,$REST_ID){       
 		$session_data = $this->session->userdata('logged_in');

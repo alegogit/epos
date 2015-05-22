@@ -12,7 +12,7 @@
         </td>  
         <td width="40%" style="text-align:center;">
           <span style="font-weight:bold;font-size:200%;"> 
-            <b>WEEKLY<br>RECON REPORT</b>
+            <b>WEEKLY<br>CASH FLOW REPORT</b>
           </span>
         </td>  
         <td width="30%" style="text-align:right;">      

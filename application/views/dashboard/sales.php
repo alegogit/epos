@@ -120,45 +120,34 @@
                           $total = $total + $tot->AMOUNT; 
                         }
                         foreach ($dtopcats as $row){
-                          if(strtolower($row->CAT_NAME)=="others"){   
-                            $chart_legend .= "<tr><td colspan='5'>&nbsp;</td>"; 
-                            //$chart_legend .= "<tr><td colspan='5'><hr style='margin-top:5px;margin-bottom:5px'></td>"; 
-                            $chart_legend .= "<tr><td><span class='glyphicon glyphicon-tint' style='color:".$donut_color[$i+1]."'></span></td>";  
-                            $chart_legend .= " <td class='trunk1' style='padding-left:5px;padding-right:5px;'><b>".ucwords(strtolower($adjustcat->CAT_NAME))."</b></td>"; 
-                            $chart_legend .= "<td class='cin'><span style='padding-left:10px;'>&nbsp;</span>".$cur."&nbsp;</td>";
-                            $chart_legend .= " <td class='cin cur'><b>".$adjustcat->AMOUNT."</b></td>";       
-                            $chart_legend .= " <td class='cin'><span style='padding-left:5px;'>&nbsp;</span>".$adjustcat->TOTAL."</td>"; 
-                            $chart_legend .= "<tr><td colspan='5'><hr style='margin-top:5px;margin-bottom:5px'></td>"; 
-                            $ofound = $ofound + 1;
-                          }
+                          if(strtolower($row->CAT_NAME)=="others"){ 
+                            $chart_legend .= "<tr><td></td>";  
+                            $chart_legend .= " <td class='trunk1' style='padding-left:5px;padding-right:5px;'></td>"; 
+                            $chart_legend .= "<td class='cin'><span style='padding-left:10px;'></td>";
+                            $chart_legend .= " <td class='cin'</td>";       
+                            $chart_legend .= " <td class='cin'></td>";  
+                            $chart_legend .= "</tr>
+                            <tr><td colspan='5'><hr style='margin-top:5px;margin-bottom:5px'></tr>";
                             $chart_legend .= "<tr><td><span class='glyphicon glyphicon-tint' style='color:".$donut_color[$i]."'></span></td>";  
                             $chart_legend .= " <td class='trunk1' style='padding-left:5px;padding-right:5px;'><b>".ucwords(strtolower($row->CAT_NAME))."</b></td>"; 
                             $chart_legend .= "<td class='cin'><span style='padding-left:10px;'>&nbsp;</span>".$cur."&nbsp;</td>";
                             $chart_legend .= " <td class='cin cur'><b>".$row->AMOUNT."</b></td>";       
                             $chart_legend .= " <td class='cin'><span style='padding-left:5px;'>&nbsp;</span>".$row->TOTAL."</td>";  
-                            $chart_legend .= " <!--<td style='float:right;display:inline-block'><span style='padding-left:10px;'>&nbsp;</span>".round(($row->AMOUNT/$total)*100)."% </td>--></tr>
+                            $chart_legend .= "</tr>
                             <tr><td colspan='5'><hr style='margin-top:5px;margin-bottom:5px'></tr>";
-                         
+                          } else {  
+                            $chart_legend .= "<tr><td><span class='glyphicon glyphicon-tint' style='color:".$donut_color[$i]."'></span></td>";  
+                            $chart_legend .= " <td class='trunk1' style='padding-left:5px;padding-right:5px;'><b>".ucwords(strtolower($row->CAT_NAME))."</b></td>"; 
+                            $chart_legend .= "<td class='cin'><span style='padding-left:10px;'>&nbsp;</span>".$cur."&nbsp;</td>";
+                            $chart_legend .= " <td class='cin cur'><b>".$row->AMOUNT."</b></td>";       
+                            $chart_legend .= " <td class='cin'><span style='padding-left:5px;'>&nbsp;</span>".$row->TOTAL."</td>";  
+                            $chart_legend .= "</tr>
+                            <tr><td colspan='5'><hr style='margin-top:5px;margin-bottom:5px'></tr>";
+                          } 
                           $i++;  
                         } 
-                        if($ofound==0){
-                            $chart_legend .= "<tr><td colspan='5'>&nbsp;</td>"; 
-                            //$chart_legend .= "<tr><td colspan='5'><hr style='margin-top:5px;margin-bottom:5px'></td>"; 
-                            $chart_legend .= "<tr><td><span class='glyphicon glyphicon-tint' style='color:".$donut_color[$i+1]."'></span></td>";  
-                            $chart_legend .= " <td class='trunk1' style='padding-left:5px;padding-right:5px;'><b>".ucwords(strtolower($adjustcat->CAT_NAME))."</b></td>"; 
-                            $chart_legend .= "<td class='cin'><span style='padding-left:10px;'>&nbsp;</span>".$cur."&nbsp;</td>";
-                            $chart_legend .= " <td class='cin cur'><b>".$adjustcat->AMOUNT."</b></td>";       
-                            $chart_legend .= " <td class='cin'><span style='padding-left:5px;'>&nbsp;</span>".$adjustcat->TOTAL."</td>"; 
-                            $chart_legend .= "<tr><td colspan='5'><hr style='margin-top:5px;margin-bottom:5px'></td>";
-                            $chart_legend .= "<tr><td><span class='glyphicon glyphicon-tint' style='color:".$donut_color[$i+2]."'></span></td>";  
-                            $chart_legend .= " <td class='trunk1' style='padding-left:5px;padding-right:5px;'><b> Others </b></td>"; 
-                            $chart_legend .= "<td class='cin'><span style='padding-left:10px;'>&nbsp;</span>".$cur."&nbsp;</td>";
-                            $chart_legend .= " <td class='cin cur'><b>0</b></td>";       
-                            $chart_legend .= " <td class='cin'><span style='padding-left:5px;'>&nbsp;</span>0</td>"; 
-                            $chart_legend .= "<tr><td colspan='5'><hr style='margin-top:5px;margin-bottom:5px'></td>";
-                        } 
                         $chart_legend .= "</table>";
-                        if($n!=0){    
+                        if($total!=0){    
                           echo $chart_legend;
                         }else{
                           echo "<div id='nrtcbs' class='alert alert-danger' style='padding:10px;'>No Records</div>";
@@ -210,7 +199,7 @@
 				  
 				  <div class="col-md-6">
   				  <div class="panel panel-default">
-  				    <div class="panel-heading"><b>Payment Methods</b></div>
+  				    <div class="panel-heading"><b>Payment Type</b></div>
   					  <div class="panel-body" style="height:155px;font-size:125%;">
   					  <div class="row">
   						  <div class="canvas-donut" style="float:left;margin-left:8px">
@@ -317,41 +306,46 @@
 
       <div class="col-sm-2" style="padding:0;">
         
-        <div class="list-group rightdash" style="margin-top:10px;">      
-          <div class="rdtitle">Sales Today</div>
+        <div class="list-group rightdash" style="margin-top:10px;"> 
+          <div class="rdinfo">
+            <?=$startdate." - ".$enddate?> 
+          </div>    
+        </div>    
+        
+        <div class="list-group rightdash">      
+          <div class="rdtitle">Sales</div>
           <!--<a href="#" class="pull-right">See all</a>-->
           <span class="list-group-item noborder pad30" style="background-color:#e4843f;">
-            <span class="text270"><?=$cur?> <span id="nsales" value="<?=$this->currency->decimal($net_sales_today->NET_SALES,$cur)?>" data-cur="<?=$cur?>"></span></span><br>  
-            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;<span style="font-size:105%;"><b>Net Sales Today</b></span><br>
+            <span class="text270"><?=$cur?> <span id="nsales" value="<?=$this->currency->decimal($net_sales->NET_SALES,$cur)?>" data-cur="<?=$cur?>"></span></span><br>  
+            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;<span style="font-size:105%;"><b>Net Sales</b></span><br>
           </span>   
           <div class="rdinfo"></div>   
           <span class="list-group-item orgbg noborder pad30"> 
-            <span class="text270"><?=$cur?> <span id="tsales" value="<?=$this->currency->decimal($tot_sales_today->TOTAL_SALES,$cur)?>" data-cur="<?=$cur?>"></span></span><br>     
-            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;<span style="font-size:105%;"><b>Total Sales Today</b></span><br>
+            <span class="text270"><?=$cur?> <span id="tsales" value="<?=$this->currency->decimal($tot_sales->TOTAL_SALES,$cur)?>" data-cur="<?=$cur?>"></span></span><br>     
+            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;<span style="font-size:105%;"><b>Total Sales</b></span><br>
           </span> 
           <div class="rdinfo"></div> 
         </div>    
         
         <div class="list-group rightdash">            
-          <div class="rdtitle">Customer Today</div>
+          <div class="rdtitle">Customer</div>
           <!--<a href="#" class="pull-right">See all</a>-->
           <span class="list-group-item teabg noborder pad30">   
             <span class="text270"><?=$cur?> <span id="csales" value="<?=$this->currency->decimal($avrsls_percust->AVG_SALES_CUST,$cur)?>" data-cur="<?=$cur?>"></span></span> <br>  
             <span class="glyphicon glyphicon-info-sign"></span>&nbsp;<span style="font-size:105%;"><b>Average Sales/Customer</b></span>
           </span>   
-          <div class="rdinfo"><?=$num_cust_today->TOTAL_CUST?> Customer(s) Today</div>
+          <div class="rdinfo"><?=$num_cust->TOTAL_CUST?> Customer(s)</div>
         </div>        
                   
         <div class="list-group rightdash">    
-          <div class="rdtitle">Invoice Today</div>   
+          <div class="rdtitle">Invoice</div>   
           <!--<a href="#" class="pull-right">See all</a>-->
           <span class="list-group-item redbg noborder pad30">
             <span class="text270"><?=$cur?> <span id="isales" value="<?=$this->currency->decimal($avrsls_perinv->AVG_SALES_INV,$cur)?>" data-cur="<?=$cur?>"></span></span> <br>  
             <span class="glyphicon glyphicon-info-sign"></span>&nbsp;<span style="font-size:105%;"><b>Average Sales/Invoice</b></span>
           </span>  
-          <div class="rdinfo"><?=$com_inv_today->TOTAL_INV?> Invoice(s) Today</div> 
+          <div class="rdinfo"><?=$com_inv->TOTAL_INV?> Invoice(s)</div> 
         </div>    
-       
         
       </div><!-- /.col-sm-3 -->
       
@@ -372,7 +366,7 @@
   }
   $chart_script = "<script>"; 
   $chart_script .= "var doughnutData = [";
-  if ($n!=0){
+  if ($total!=0){
     foreach ($dtopcats as $row){
       $chart_script .= "{";  
       //$chart_script .= "value: ".$row->AMOUNT.",";
@@ -398,7 +392,7 @@
     tooltipFontSize : 12, 
     maintainAspectRatio: false,
     showInLegend: true,";
-  $chart_script .= ($n!=0)?"   
+  $chart_script .= ($total!=0)?"   
     tooltipTemplate: '<%if (label){%><%=label%>: <%}%><%= value %>%'":"tooltipTemplate: '<%if (label){%><%=label%> <%}%>'";
   $chart_script .= "  });";  
 	$chart_script .= '</script>';
@@ -408,7 +402,8 @@
 <?php 
   //donut chart script
   $i = 0;
-  $n = count($dpayment);          
+  $n = count($dpayment);  
+  $total = 0;         
   foreach ($dpayment as $tot){
     $total = $total + $tot->AMOUNT;
   }
@@ -417,7 +412,8 @@
   if ($total!=0){
     foreach ($dpayment as $row){
       $chart_script .= "{";  
-      $chart_script .= "value: ".$row->AMOUNT.",";
+      //$chart_script .= "value: ".$row->AMOUNT.",";
+      $chart_script .= "value: ".round(($row->AMOUNT/$total)*100).",";
       $chart_script .= "color: '".$donut_color[$i]."',";
       $chart_script .= "highlight: '".$donut_highl[$i]."',";
       $chart_script .= "label: '".ucwords(strtolower($row->PAYMENT_METHOD))."',";
@@ -438,8 +434,9 @@
     responsive : true, 
     tooltipFontSize : 12,
     maintainAspectRatio: false,";
-  $chart_script .= ($total!=0)?" 
-    tooltipTemplate: '<%if (label){%><%=label%>: ".$cur." <%}%><%= ".$this->currency->jsformat($cur)." %>'":"tooltipTemplate: '<%if (label){%><%=label%> <%}%>'";
+  //$chart_script .= ($total!=0)?"tooltipTemplate: '<%if (label){%><%=label%>: ".$cur." <%}%><%= ".$this->currency->jsformat($cur)." %>'":"tooltipTemplate: '<%if (label){%><%=label%> <%}%>'";
+  $chart_script .= ($total!=0)?"   
+    tooltipTemplate: '<%if (label){%><%=label%>: <%}%><%= value %>%'":"tooltipTemplate: '<%if (label){%><%=label%> <%}%>'";
   $chart_script .= "  });"; 
 	$chart_script .= '</script>';                       
   echo $chart_script;
@@ -481,7 +478,7 @@
     tooltipFontSize : 12, 
     maintainAspectRatio: false,
     showInLegend: true,";
-  $chart_script .= ($n!=0)?"   
+  $chart_script .= ($total!=0)?"   
     tooltipTemplate: '<%if (label){%><%=label%>: <%}%><%= value %>%'":"tooltipTemplate: '<%if (label){%><%=label%> <%}%>'";
   $chart_script .= "  });";  
 	$chart_script .= '</script>';

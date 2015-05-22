@@ -4,6 +4,19 @@ date_default_timezone_set('Asia/Jakarta');
 
 /*
 |--------------------------------------------------------------------------
+| Environment
+|--------------------------------------------------------------------------
+|
+| Environment run on (please use lowercase)
+| : dev
+| : test
+|	: uat
+| : prod
+| : demo
+*/    
+$config['env']	= 'dev';
+/*
+|--------------------------------------------------------------------------
 | Base Site URL
 |--------------------------------------------------------------------------
 |
@@ -18,7 +31,7 @@ date_default_timezone_set('Asia/Jakarta');
 */
 //$config['base_url']	= 'http://192.168.1.8/epos/';
 $config['base_url']	= 'http://localhost/epos/';
-$config['title']	= 'NadiPOS :: DEV 1.0';
+$config['title']	= 'NadiPOS :: '.strtoupper($config['env']).' 1.0';
 
 $config['notif_url']	= 'https://android.googleapis.com/gcm/send';
 $config['google_api_key']	= 'AIzaSyANKh_UVStCUvbL8QVq9x7YylJ0wSjNViU';
@@ -28,8 +41,8 @@ $config['google_api_key']	= 'AIzaSyANKh_UVStCUvbL8QVq9x7YylJ0wSjNViU';
 //$config['fileserver_url']	= 'http://localhost/upload/';
 $config['fileserver_upl']	= 'http://52.74.140.12/upl/'; 
 $config['fileserver_url']	= 'http://52.74.140.12/show/';
-$config['fileserver_img_dir']	= 'img/dev/';
-$config['fileserver_app_dir']	= 'app/dev/';       
+$config['fileserver_img_dir']	= 'img/'.$config['env'].'/';
+$config['fileserver_app_dir']	= 'app/'.$config['env'].'/';       
 
 /*
 |--------------------------------------------------------------------------

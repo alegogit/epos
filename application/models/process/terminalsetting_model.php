@@ -70,5 +70,18 @@ class Terminalsetting_model extends CI_Model {
                       ->limit(1)
                       ->get('');
     return $query->row();
-  }
+  }    
+     
+	function get_taken_item($col,$inp){ 
+    $query = $this->db->select('ID')
+                      ->from('TERMINAL')
+                      ->where($col,$inp)
+                      ->get('');   
+    if ($query->num_rows() > 0){
+      $out = 'false';
+    } else {
+    	$out = 'true';   
+    }                  
+    return $out;
+  }  
 }

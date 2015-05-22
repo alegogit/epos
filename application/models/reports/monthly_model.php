@@ -135,7 +135,7 @@ class Monthly_model extends CI_Model {
       		SUM(PAID_AMOUNT)						TOTAL_SALES_THIS_MONTH,
       		0										TOTAL_SALES_LAST_MONTH
       	 FROM ORDERS
-      	 WHERE REST_ID = ".$rest_id." 
+      	 WHERE REST_ID = ".$rest_id." AND VOID = 0
       		AND STARTED BETWEEN DATE_FORMAT('".$enddate."' ,'%Y-%m-01') AND 
       					DATE_SUB(DATE_ADD(DATE_FORMAT('".$enddate."' ,'%Y-%m-01'), INTERVAL 1 MONTH), INTERVAL 1 DAY)
       	 UNION
@@ -158,7 +158,7 @@ class Monthly_model extends CI_Model {
       		0										TOTAL_SALES_THIS_MONTH,
       		SUM(PAID_AMOUNT)						TOTAL_SALES_LAST_MONTH
       	 FROM ORDERS
-      	 WHERE REST_ID = ".$rest_id." 
+      	 WHERE REST_ID = ".$rest_id." AND VOID = 0
            AND STARTED BETWEEN
       		DATE_SUB(DATE_FORMAT('".$enddate."' ,'%Y-%m-01'), INTERVAL 1 MONTH) AND
       		DATE_SUB(DATE_FORMAT('".$enddate."' ,'%Y-%m-01'), INTERVAL 1 DAY) 
@@ -196,14 +196,14 @@ class Monthly_model extends CI_Model {
       			0											AVG_SALES_PER_INVOICE_LAST_MONTH
       		 FROM ORDERS O
       			INNER JOIN (
-      				SELECT ORDER_ID, COUNT(INVOICE_ID) INVOICES FROM ORDERS INNER JOIN INVOICES_ORDERS ON ID = ORDER_ID 
-      						 WHERE STARTED BETWEEN 
+      				SELECT ORDER_ID, COUNT(INVOICE_ID) INVOICES FROM ORDERS INNER JOIN INVOICES_ORDERS ON ORDERS.ID = INVOICES_ORDERS.ORDER_ID 
+      						 WHERE ORDERS.STARTED BETWEEN 
       							DATE_FORMAT('".$enddate."' ,'%Y-%m-01') AND 
       							DATE_SUB(DATE_ADD(DATE_FORMAT('".$enddate."' ,'%Y-%m-01'), INTERVAL 1 MONTH), INTERVAL 1 DAY)
-      						GROUP BY ORDER_ID
+      						GROUP BY INVOICES_ORDERS.ORDER_ID
       			) INVOICE_BY_ORDERS
       			ON O.ID = INVOICE_BY_ORDERS.ORDER_ID
-      		 WHERE REST_ID = ".$rest_id." 
+      		 WHERE REST_ID = ".$rest_id." AND VOID = 0 
       		 AND STARTED BETWEEN
       				DATE_FORMAT('".$enddate."' ,'%Y-%m-01') AND 
       				DATE_SUB(DATE_ADD(DATE_FORMAT('".$enddate."' ,'%Y-%m-01'), INTERVAL 1 MONTH), INTERVAL 1 DAY) 
@@ -223,14 +223,14 @@ class Monthly_model extends CI_Model {
       				/ SUM(INVOICE_BY_ORDERS.INVOICES), 0)	AVG_SALES_PER_INVOICE_LAST_MONTH
       		 FROM ORDERS O
       			INNER JOIN (
-      				SELECT ORDER_ID, COUNT(INVOICE_ID) INVOICES FROM ORDERS INNER JOIN INVOICES_ORDERS ON ID = ORDER_ID 
-      						 WHERE STARTED BETWEEN 
+      				SELECT ORDER_ID, COUNT(INVOICE_ID) INVOICES FROM ORDERS INNER JOIN INVOICES_ORDERS ON ORDERS.ID = INVOICES_ORDERS.ORDER_ID 
+      						 WHERE ORDERS.STARTED BETWEEN 
       							DATE_SUB(DATE_FORMAT('".$enddate."' ,'%Y-%m-01'), INTERVAL 1 MONTH) AND
       							DATE_SUB(DATE_FORMAT('".$enddate."' ,'%Y-%m-01'), INTERVAL 1 DAY) 
-      						GROUP BY ORDER_ID
+      						GROUP BY INVOICES_ORDERS.ORDER_ID
       			) INVOICE_BY_ORDERS
       			ON O.ID = INVOICE_BY_ORDERS.ORDER_ID
-      		 WHERE REST_ID = ".$rest_id." 
+      		 WHERE REST_ID = ".$rest_id." AND VOID = 0 
       		 AND STARTED BETWEEN
       				DATE_SUB(DATE_FORMAT('".$enddate."' ,'%Y-%m-01'), INTERVAL 1 MONTH) AND
       				DATE_SUB(DATE_FORMAT('".$enddate."' ,'%Y-%m-01'), INTERVAL 1 DAY) 
@@ -238,7 +238,7 @@ class Monthly_model extends CI_Model {
 		return $query->row();
 	}
   
-  function get_payment($rest_id,$enddate){
+  function get_payment0($rest_id,$enddate){
 	  $query = $this->db->query("-- Column 2: Top :Payment Type
       SELECT 
       	PAYMENT_METHOD							PAYMENT_METHOD,
@@ -281,9 +281,73 @@ class Monthly_model extends CI_Model {
       			AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
       		GROUP BY R.VALUE
               ) PAYMENT_TYPE
-      	GROUP BY PAYMENT_METHOD;");
+      	GROUP BY PAYMENT_METHOD
+    ORDER BY AMOUNT_THIS_MONTH DESC;");
 		return $query->result();
-	}
+	}   
+          
+  function get_payment($rest_id,$enddate){
+	  $query = $this->db->query("-- Column 2: Top :Payment Type
+        SELECT 
+        	PAYMENT_METHOD							PAYMENT_METHOD,
+        	IFNULL(SUM(AMOUNT_THIS_MONTH),0)		AMOUNT_THIS_MONTH,
+            IFNULL(SUM(AMOUNT_LAST_MONTH),0)		AMOUNT_LAST_MONTH,
+            IFNULL(SUM(TOTAL_THIS_MONTH),0)			TOTAL_THIS_MONTH,
+            IFNULL(SUM(TOTAL_LAST_MONTH),0)			TOTAL_LAST_MONTH
+        	FROM (
+        		SELECT  R.VALUE 											PAYMENT_METHOD,
+        		  IFNULL(PAYMENTS_GROUPED.AMOUNT, 0) 						AMOUNT_THIS_MONTH,
+                  0															AMOUNT_LAST_MONTH,
+                  IFNULL(PAYMENTS_GROUPED.TOTAL,0)  						TOTAL_THIS_MONTH,
+                  0															TOTAL_LAST_MONTH
+        		FROM REF_VALUES R
+        		LEFT OUTER JOIN (
+        			SELECT I.PAYMENT_METHOD, IFNULL(SUM(O.PAID_AMOUNT), 0) AMOUNT , IFNULL(COUNT(I.ID),0)  TOTAL 
+        				FROM INVOICES I
+        					INNER JOIN INVOICES_ORDERS OI ON OI.INVOICE_ID = I.ID
+        					INNER JOIN ORDERS O ON OI.ORDER_ID = O.ID
+                        WHERE O.ENDED BETWEEN 
+        					DATE_FORMAT('".$enddate."' ,'%Y-%m-01') AND 
+        					DATE_SUB(DATE_ADD(DATE_FORMAT('".$enddate."' ,'%Y-%m-01'), INTERVAL 1 MONTH), INTERVAL 1 DAY) 
+        				AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0 AND O.VOID = 0
+        			GROUP BY I.PAYMENT_METHOD
+        			)PAYMENTS_GROUPED
+        			ON PAYMENTS_GROUPED.PAYMENT_METHOD = R.CODE  
+        		WHERE R.LOOKUP_NAME = 'PAYMENT_METHOD' AND R.IS_ACTIVE = 1
+        		UNION
+        		SELECT  R.VALUE 											PAYMENT_METHOD,
+        		  0 														AMOUNT_THIS_MONTH,
+        		  IFNULL(PAYMENTS_GROUPED.AMOUNT, 0)  						AMOUNT_LAST_MONTH, 
+                  0															TOTAL_THIS_MONTH,
+                  IFNULL(PAYMENTS_GROUPED.TOTAL,0)  	 					TOTAL_LAST_MONTH
+                FROM REF_VALUES R
+        			LEFT OUTER JOIN (
+        			SELECT I.PAYMENT_METHOD, IFNULL(SUM(O.PAID_AMOUNT), 0) AMOUNT , IFNULL(COUNT(I.ID),0)  TOTAL 
+        				FROM INVOICES I
+        					INNER JOIN INVOICES_ORDERS OI ON OI.INVOICE_ID = I.ID
+        					INNER JOIN ORDERS O ON OI.ORDER_ID = O.ID
+                        WHERE O.ENDED BETWEEN 
+        					DATE_SUB(DATE_FORMAT('".$enddate."' ,'%Y-%m-01'), INTERVAL 1 MONTH) AND
+        					DATE_SUB(DATE_FORMAT('".$enddate."' ,'%Y-%m-01'), INTERVAL 1 DAY) 
+        				AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0 AND O.VOID = 0
+        			GROUP BY I.PAYMENT_METHOD
+        			)PAYMENTS_GROUPED
+        			ON PAYMENTS_GROUPED.PAYMENT_METHOD = R.CODE  
+        		WHERE R.LOOKUP_NAME = 'PAYMENT_METHOD' AND R.IS_ACTIVE = 1
+                ) PAYMENT_TYPE
+        	GROUP BY PAYMENT_METHOD
+          ORDER BY AMOUNT_THIS_MONTH DESC;");
+		return $query->result();
+	}           
+  
+  function get_paymethods(){ 
+    $query = $this->db->select('VALUE AS PAYMENT_METHOD')
+                      ->from('REF_VALUES')
+                      ->where('LOOKUP_NAME','PAYMENT_METHOD')
+                      ->where('IS_ACTIVE',1)
+                      ->get('');
+    return $query->result();
+  }
   
   function get_ordtype($rest_id,$enddate){
     $query = $this->db->query("-- Coloumn 2 Middle: Sales Type - DINEIN, TakeOUT, Delivery  - display number, percent, dollar, sales
@@ -308,7 +372,7 @@ class Monthly_model extends CI_Model {
                       WHERE STARTED BETWEEN
       					DATE_FORMAT('".$enddate."' ,'%Y-%m-01') AND 
       					DATE_SUB(DATE_ADD(DATE_FORMAT('".$enddate."' ,'%Y-%m-01'), INTERVAL 1 MONTH), INTERVAL 1 DAY) 
-      				AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
+      				AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0 AND O.VOID = 0
       			GROUP BY O.ORDER_TYPE
               )ORDERS_GROUPED
               ON ORDERS_GROUPED.ORDER_TYPE = R.CODE
@@ -327,13 +391,14 @@ class Monthly_model extends CI_Model {
                       WHERE STARTED BETWEEN
       					DATE_SUB(DATE_FORMAT('".$enddate."' ,'%Y-%m-01'), INTERVAL 1 MONTH) AND
       					DATE_SUB(DATE_FORMAT('".$enddate."' ,'%Y-%m-01'), INTERVAL 1 DAY) 
-      				AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
+      				AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0 AND O.VOID = 0
       			GROUP BY O.ORDER_TYPE
               )ORDERS_GROUPED
               ON ORDERS_GROUPED.ORDER_TYPE = R.CODE
           WHERE R.LOOKUP_NAME = 'ORDER_TYPE' AND R.IS_ACTIVE = 1
           )SALES_TYPE
-      GROUP BY ORDER_TYPE;");
+      GROUP BY ORDER_TYPE
+    ORDER BY AMOUNT_THIS_MONTH DESC;");
     		return $query->result();
     	}
     	
@@ -365,7 +430,7 @@ class Monthly_model extends CI_Model {
       					AND STARTED BETWEEN
       						DATE_FORMAT('".$enddate."' ,'%Y-%m-01') AND 
       						DATE_SUB(DATE_ADD(DATE_FORMAT('".$enddate."' ,'%Y-%m-01'), INTERVAL 1 MONTH), INTERVAL 1 DAY) 
-      					AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
+      					AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0 AND O.VOID = 0 AND OD.VOID = 0
       			GROUP BY OD.CATEGORY_NAME
       			) THIS_MONTH
                   GROUP BY CAT_NAME
@@ -388,12 +453,13 @@ class Monthly_model extends CI_Model {
       					AND STARTED BETWEEN
       						DATE_SUB(DATE_FORMAT('".$enddate."' ,'%Y-%m-01'), INTERVAL 1 MONTH) AND
       						DATE_SUB(DATE_FORMAT('".$enddate."' ,'%Y-%m-01'), INTERVAL 1 DAY) 
-      					AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
+      					AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0 AND O.VOID = 0 AND OD.VOID = 0
       			GROUP BY OD.CATEGORY_NAME
       			) LAST_MONTH
                    GROUP BY CAT_NAME
       	) CAT_VALUES
-          GROUP BY CAT_NAME;");
+          GROUP BY CAT_NAME
+    ORDER BY AMOUNT_THIS_MONTH DESC;");
 		return $query->result();
 	}          
   
@@ -497,120 +563,239 @@ class Monthly_model extends CI_Model {
 	
 	function get_adjust($rest_id,$enddate){
     $query = $this->db->query("-- Coloumn 2 Bottom: Top Category By Sales
- SELECT
-	CAT_NAME					CAT_NAME,
-	SUM(AMOUNT_THIS_MONTH)		AMOUNT_THIS_MONTH,
-	SUM(AMOUNT_LAST_MONTH)		AMOUNT_LAST_MONTH,
-	SUM(TOTAL_THIS_MONTH)		TOTAL_THIS_MONTH,
-	SUM(TOTAL_LAST_MONTH)		TOTAL_LAST_MONTH
- FROM
-	(
-		SELECT 
-			CAT_NAME		CAT_NAME,
-            SUM(AMOUNT)		AMOUNT_THIS_MONTH,
-            0				AMOUNT_LAST_MONTH,
-            SUM(TOTAL)		TOTAL_THIS_MONTH,
-            0				TOTAL_LAST_MONTH
-		FROM(
-				SELECT 'ADJUSTMENTS' CAT_NAME, 
-					IFNULL(SUM(OD.TOTAL),0)  AMOUNT, 
-					IFNULL(COUNT(OD.ID),0)  TOTAL 
-				FROM ORDER_DETAILS OD
-				INNER JOIN PRICE_CHANGE PC ON PC.ORDER_DETAILS_ID = OD.ID
-				INNER JOIN INVOICES I ON OD.INVOICE_ID = I.ID
-				INNER JOIN INVOICES_ORDERS OI ON OI.INVOICE_ID = I.ID
-				INNER JOIN ORDERS O ON OI.ORDER_ID = O.ID
-					AND STARTED BETWEEN
-						DATE_FORMAT('".$enddate."' ,'%Y-%m-01') AND 
-						DATE_SUB(DATE_ADD(DATE_FORMAT('".$enddate."' ,'%Y-%m-01'), INTERVAL 1 MONTH), INTERVAL 1 DAY) 
-					AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
-			) THIS_MONTH
-            GROUP BY CAT_NAME
-        UNION ALL
-		SELECT 
-			CAT_NAME		CAT_NAME,
-			0				AMOUNT_THIS_MONTH,
-			SUM(AMOUNT)		AMOUNT_LAST_MONTH,
-            0				TOTAL_THIS_MONTH,
-            SUM(TOTAL)		TOTAL_LAST_MONTH
-		FROM(
-    		SELECT 'ADJUSTMENTS' CAT_NAME, 
-					IFNULL(SUM(OD.TOTAL),0)  AMOUNT, 
-					IFNULL(COUNT(OD.ID),0)  TOTAL 
-				FROM ORDER_DETAILS OD
-				INNER JOIN PRICE_CHANGE PC ON PC.ORDER_DETAILS_ID = OD.ID
-				INNER JOIN INVOICES I ON OD.INVOICE_ID = I.ID
-				INNER JOIN INVOICES_ORDERS OI ON OI.INVOICE_ID = I.ID
-				INNER JOIN ORDERS O ON OI.ORDER_ID = O.ID
-					AND STARTED BETWEEN
-						DATE_SUB(DATE_FORMAT('".$enddate."' ,'%Y-%m-01'), INTERVAL 1 MONTH) AND
-						DATE_SUB(DATE_FORMAT('".$enddate."' ,'%Y-%m-01'), INTERVAL 1 DAY) 
-					AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0
-			) LAST_MONTH
-             GROUP BY CAT_NAME
-	) CAT_VALUES
-    GROUP BY CAT_NAME;");
-		return $query->row();
-	}
-	
-	function get_voiditem($rest_id,$enddate){
+       SELECT
+      	CAT_NAME					CAT_NAME,
+      	SUM(AMOUNT_THIS_MONTH)		AMOUNT_THIS_MONTH,
+      	SUM(AMOUNT_LAST_MONTH)		AMOUNT_LAST_MONTH,
+      	SUM(TOTAL_THIS_MONTH)		TOTAL_THIS_MONTH,
+      	SUM(TOTAL_LAST_MONTH)		TOTAL_LAST_MONTH
+       FROM
+      	(
+      		SELECT 
+      			CAT_NAME		CAT_NAME,
+                  SUM(AMOUNT)		AMOUNT_THIS_MONTH,
+                  0				AMOUNT_LAST_MONTH,
+                  SUM(TOTAL)		TOTAL_THIS_MONTH,
+                  0				TOTAL_LAST_MONTH
+      		FROM(
+      				SELECT 'ADJUSTMENTS' CAT_NAME, 
+      					IFNULL(SUM(OD.TOTAL),0)  AMOUNT, 
+      					IFNULL(COUNT(OD.ID),0)  TOTAL 
+      				FROM ORDER_DETAILS OD
+      				INNER JOIN PRICE_CHANGE PC ON PC.ORDER_DETAILS_ID = OD.ID
+      				INNER JOIN INVOICES I ON OD.INVOICE_ID = I.ID
+      				INNER JOIN INVOICES_ORDERS OI ON OI.INVOICE_ID = I.ID
+      				INNER JOIN ORDERS O ON OI.ORDER_ID = O.ID
+      					AND STARTED BETWEEN
+      						DATE_FORMAT('".$enddate."' ,'%Y-%m-01') AND 
+      						DATE_SUB(DATE_ADD(DATE_FORMAT('".$enddate."' ,'%Y-%m-01'), INTERVAL 1 MONTH), INTERVAL 1 DAY) 
+      					AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0 AND O.VOID = 0 AND OD.VOID = 0
+      			) THIS_MONTH
+                  GROUP BY CAT_NAME
+              UNION ALL
+      		SELECT 
+      			CAT_NAME		CAT_NAME,
+      			0				AMOUNT_THIS_MONTH,
+      			SUM(AMOUNT)		AMOUNT_LAST_MONTH,
+                  0				TOTAL_THIS_MONTH,
+                  SUM(TOTAL)		TOTAL_LAST_MONTH
+      		FROM(
+          		SELECT 'ADJUSTMENTS' CAT_NAME, 
+      					IFNULL(SUM(OD.TOTAL),0)  AMOUNT, 
+      					IFNULL(COUNT(OD.ID),0)  TOTAL 
+      				FROM ORDER_DETAILS OD
+      				INNER JOIN PRICE_CHANGE PC ON PC.ORDER_DETAILS_ID = OD.ID
+      				INNER JOIN INVOICES I ON OD.INVOICE_ID = I.ID
+      				INNER JOIN INVOICES_ORDERS OI ON OI.INVOICE_ID = I.ID
+      				INNER JOIN ORDERS O ON OI.ORDER_ID = O.ID
+      					AND STARTED BETWEEN
+      						DATE_SUB(DATE_FORMAT('".$enddate."' ,'%Y-%m-01'), INTERVAL 1 MONTH) AND
+      						DATE_SUB(DATE_FORMAT('".$enddate."' ,'%Y-%m-01'), INTERVAL 1 DAY) 
+      					AND O.REST_ID = ".$rest_id." AND O.ACTIVE = 0 AND O.VOID = 0 AND OD.VOID = 0
+      			) LAST_MONTH
+                   GROUP BY CAT_NAME
+      	) CAT_VALUES
+          GROUP BY CAT_NAME;");
+    return $query->row();
+  }
+      	
+  function get_voiditem($rest_id,$enddate){
     $query = $this->db->query("
-       SELECT OD.MENU_NAME,
-      		OD.PRICE,
-              OD.QUANTITY
-       FROM ORDERS O 
-      	INNER JOIN INVOICES_ORDERS OI ON OI.ORDER_ID = O.ID
-      	INNER JOIN INVOICES I ON I.ID = OI.INVOICE_ID
-          INNER JOIN ORDER_DETAILS OD ON OD.INVOICE_ID = I.ID
-       WHERE OD.VOID = 1
-       AND DATE(STARTED) = '".$enddate."'
-       AND O.REST_ID = ".$rest_id." 
-       ORDER BY OD.QUANTITY DESC;");
-		return $query->result();
-	}
-	
-	function get_attnd($rest_id,$enddate){
-    $query = $this->db->query("-- weekly Recon
-      SELECT 	
-		T.NAME 										TERMINAL_NAME,
-        PH.CASH_OPENING								CASH_OPENING,
-		PH.CASH_CLOSING								CASH_CLOSING,
-		SUM(PH.CASH_CLOSING - PH.CASH_OPENING) 		CASH_FROM_REGISTER, 
-		CASH_FROM_INVOICES.TOTAL 					CASH_FROM_INVOICES, 
-        SUM(PH.CASH_CLOSING - PH.CASH_OPENING) - 	
-			CASH_FROM_INVOICES.TOTAL 				DIFFERENCE,
-        DATE(ALL_DATES.SELECTED_DATE) 				TERMINAL_DATE
-	FROM TERMINAL T
-	INNER JOIN RESTAURANTS R 
-		ON T.REST_ID = R.ID
-	INNER JOIN 
-		(select selected_date from 
-			(select adddate('1970-01-01',t4*10000 + t3*1000 + t2*100 + t1*10 + t0) selected_date from
-			(select 0 t0 union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t0,
-			(select 0 t1 union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t1,
-			(select 0 t2 union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t2,
-			(select 0 t3 union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t3,
-			(select 0 t4 union select 1 union select 2 union select 3 union select 4 union select 5 union select 6 union select 7 union select 8 union select 9) t4) v
-		) ALL_DATES
-	ON	WEEK(ALL_DATES.SELECTED_DATE) = WEEK('".$enddate."')
-		AND YEAR(ALL_DATES.SELECTED_DATE) = YEAR('".$enddate."')
-	LEFT OUTER JOIN PAYMENT_HISTORY PH
-		ON PH.TERMINAL_ID = T.ID
-	LEFT OUTER JOIN (
-		SELECT DATE(O.STARTED) ORDER_DATE, SUM(I.PAID_AMOUNT) TOTAL,  I.TERMINAL_ID 
-			FROM INVOICES I
-			INNER JOIN INVOICES_ORDERS OI
-				ON OI.INVOICE_ID = I.ID
-			INNER JOIN ORDERS O 
-				ON O.ID = OI.ORDER_ID
-		WHERE I.PAYMENT_METHOD = 'CASH'
-		GROUP BY I.TERMINAL_ID, DATE(O.STARTED)
-	) CASH_FROM_INVOICES
-	ON CASH_FROM_INVOICES.ORDER_DATE = DATE(PH.DATE) 
-	AND CASH_FROM_INVOICES.TERMINAL_ID = T.ID
-WHERE T.REGISTERED = 1
-	AND R.ID = ".$rest_id." 
-  GROUP BY DATE(ALL_DATES.SELECTED_DATE);");
+             SELECT OD.MENU_NAME,
+            		OD.PRICE,
+                    OD.QUANTITY
+             FROM ORDERS O 
+            	INNER JOIN INVOICES_ORDERS OI ON OI.ORDER_ID = O.ID
+            	INNER JOIN INVOICES I ON I.ID = OI.INVOICE_ID
+                INNER JOIN ORDER_DETAILS OD ON OD.INVOICE_ID = I.ID
+             WHERE OD.VOID = 1
+             AND DATE(STARTED) = '".$enddate."'
+             AND O.REST_ID = ".$rest_id." 
+             ORDER BY OD.QUANTITY DESC;");
+    return $query->result();
+  }
+      	
+  function get_attnd($rest_id,$enddate){
+    $first = date("Y-m-01",strtotime($enddate));  
+    $year = date("Y",strtotime($enddate));
+    $query = $this->db->query("
+      -- Replace '2015-04-01' with the first date of the month 
+      -- Replace '2015' with the year.
+      
+      SELECT 
+      	U.NAME														USER_NAME,
+      	1															WEEK_NUMBER,
+      	U.TOTAL_HRS_WEEK 											TOTAL_HRS_EXPECTED,
+      	IFNULL(A_CALC.TIME_DIFF,0)						 			TOTAL_HRS_WORKED,
+      	IFNULL(A_CALC.TIME_DIFF,0) - U.TOTAL_HRS_WEEK 				DIFFERENCE,
+      	T_DAYS.TOTAL_DAYS											TOTAL_DAYS,
+      	IFNULL(A_CALC.DAYS_WORKED,0)								DAYS_WORKED,
+      	T_DAYS.TOTAL_DAYS - IFNULL(A_CALC.DAYS_WORKED,0)			MISSED_DAYS
+      FROM USERS U 
+      	INNER JOIN ROLES R 
+      		ON R.ID = U.ROLE_ID
+      	INNER JOIN USERS_RESTAURANTS UR 
+      		ON UR.USER_ID = U.ID
+      	LEFT OUTER JOIN 
+      		( SELECT SUM(TIMESTAMPDIFF(HOUR, A.CHECKIN,  A.CHECKOUT)) TIME_DIFF, A.USER_ID, COUNT(A.ID) AS DAYS_WORKED
+      		    FROM ATTENDANCE A WHERE
+      			CAST(A.CHECKIN AS DATE)  BETWEEN '".$first."'
+      			AND STR_TO_DATE(CONCAT('".$year."',WEEK('".$first."')+1,' Sunday'), '%X%V %W')
+                  GROUP BY A.USER_ID 
+      		) A_CALC
+      		ON U.ID = A_CALC.USER_ID
+      	LEFT OUTER JOIN 
+          (
+      		SELECT DATEDIFF(STR_TO_DATE(CONCAT('".$year."',WEEK('".$first."')+1,' Sunday'), '%X%V %W'), '".$first."') +1 AS TOTAL_DAYS
+          ) T_DAYS ON 1 = 1
+      WHERE REST_ID = ".$rest_id." AND R.ID NOT IN (1,2)
+      	AND U.ACTIVE = 1
+      UNION 
+      SELECT 
+      	U.NAME														USER_NAME,
+      	2															WEEK_NUMBER,
+      	U.TOTAL_HRS_WEEK 											TOTAL_HRS_EXPECTED,
+      	IFNULL(A_CALC.TIME_DIFF,0)						 			TOTAL_HRS_WORKED,
+      	IFNULL(A_CALC.TIME_DIFF,0) - U.TOTAL_HRS_WEEK 				DIFFERENCE,
+      	T_DAYS.TOTAL_DAYS											TOTAL_DAYS,
+      	IFNULL(A_CALC.DAYS_WORKED,0)								DAYS_WORKED,
+      	T_DAYS.TOTAL_DAYS - IFNULL(A_CALC.DAYS_WORKED,0)			MISSED_DAYS
+      FROM USERS U 
+      	INNER JOIN ROLES R 
+      		ON R.ID = U.ROLE_ID
+      	INNER JOIN USERS_RESTAURANTS UR 
+      		ON UR.USER_ID = U.ID
+      	LEFT OUTER JOIN 
+      		( SELECT SUM(TIMESTAMPDIFF(HOUR, A.CHECKIN,  A.CHECKOUT)) TIME_DIFF, A.USER_ID, COUNT(A.ID) AS DAYS_WORKED
+      			FROM ATTENDANCE A WHERE
+      			CAST(A.CHECKIN AS DATE)  BETWEEN STR_TO_DATE(CONCAT('".$year."',WEEK('".$first."')+1,' Monday'), '%X%V %W')
+      			AND STR_TO_DATE(CONCAT('".$year."',WEEK('".$first."')+2,' Sunday'), '%X%V %W')
+                  GROUP BY A.USER_ID 
+      		) A_CALC 
+      		ON U.ID = A_CALC.USER_ID
+      	LEFT OUTER JOIN 
+          (
+          SELECT 	DATEDIFF(STR_TO_DATE(CONCAT('".$year."',WEEK('".$first."')+2,' Sunday'), '%X%V %W'), 
+      				STR_TO_DATE(CONCAT('".$year."',WEEK('".$first."')+1,' Monday'), '%X%V %W')) +1 AS TOTAL_DAYS
+          ) T_DAYS ON 1 = 1
+      WHERE REST_ID = ".$rest_id." AND R.ID NOT IN (1,2)
+      	AND U.ACTIVE = 1
+      UNION 
+      SELECT 
+      	U.NAME														USER_NAME,
+      	3															WEEK_NUMBER,
+      	U.TOTAL_HRS_WEEK 											TOTAL_HRS_EXPECTED,
+      	IFNULL(A_CALC.TIME_DIFF,0)						 			TOTAL_HRS_WORKED,
+      	IFNULL(A_CALC.TIME_DIFF,0) - U.TOTAL_HRS_WEEK 				DIFFERENCE,
+      	T_DAYS.TOTAL_DAYS											TOTAL_DAYS,
+      	IFNULL(A_CALC.DAYS_WORKED,0)								DAYS_WORKED,
+      	T_DAYS.TOTAL_DAYS - IFNULL(A_CALC.DAYS_WORKED,0)			MISSED_DAYS
+      FROM USERS U 
+      	INNER JOIN ROLES R 
+      		ON R.ID = U.ROLE_ID
+      	INNER JOIN USERS_RESTAURANTS UR 
+      		ON UR.USER_ID = U.ID
+      	LEFT OUTER JOIN 
+      		( SELECT SUM(TIMESTAMPDIFF(HOUR, A.CHECKIN,  A.CHECKOUT)) TIME_DIFF, A.USER_ID, COUNT(A.ID) AS DAYS_WORKED
+      		    FROM ATTENDANCE A WHERE
+      			CAST(A.CHECKIN AS DATE) BETWEEN STR_TO_DATE(CONCAT('".$year."',WEEK('".$first."')+2,' Monday'), '%X%V %W')
+      			AND STR_TO_DATE(CONCAT('".$year."',WEEK('".$first."')+3,' Sunday'), '%X%V %W')
+                  GROUP BY A.USER_ID 
+      		) A_CALC
+      		ON U.ID = A_CALC.USER_ID
+      	LEFT OUTER JOIN 
+      		(
+              SELECT 	DATEDIFF(STR_TO_DATE(CONCAT('".$year."',WEEK('".$first."')+3,' Sunday'), '%X%V %W'), 
+      				STR_TO_DATE(CONCAT('".$year."',WEEK('".$first."')+2,' Monday'), '%X%V %W')) +1 AS TOTAL_DAYS
+              ) T_DAYS ON 1 = 1
+      WHERE REST_ID = ".$rest_id." AND R.ID NOT IN (1,2)
+      	AND U.ACTIVE = 1
+      UNION 
+      SELECT 
+      	U.NAME														USER_NAME,
+      	4															WEEK_NUMBER,
+      	U.TOTAL_HRS_WEEK 											TOTAL_HRS_EXPECTED,
+      	IFNULL(A_CALC.TIME_DIFF,0)						 			TOTAL_HRS_WORKED,
+      	IFNULL(A_CALC.TIME_DIFF,0) - U.TOTAL_HRS_WEEK 				DIFFERENCE,
+      	T_DAYS.TOTAL_DAYS											TOTAL_DAYS,
+      	IFNULL(A_CALC.DAYS_WORKED,0)								DAYS_WORKED,
+      	T_DAYS.TOTAL_DAYS - IFNULL(A_CALC.DAYS_WORKED,0)			MISSED_DAYS
+      FROM USERS U 
+      	INNER JOIN ROLES R 
+      		ON R.ID = U.ROLE_ID
+      	INNER JOIN USERS_RESTAURANTS UR 
+      		ON UR.USER_ID = U.ID
+      	LEFT OUTER JOIN 
+      		( SELECT SUM(TIMESTAMPDIFF(HOUR, A.CHECKIN,  A.CHECKOUT)) TIME_DIFF, A.USER_ID, COUNT(A.ID) AS DAYS_WORKED
+      			FROM ATTENDANCE A WHERE
+      			CAST(A.CHECKIN AS DATE)  BETWEEN 
+      				IF(STR_TO_DATE(CONCAT('".$year."',WEEK('".$first."')+3,' Monday'), '%X%V %W')> LAST_DAY('".$first."'), NULL, 
+      					STR_TO_DATE(CONCAT('".$year."',WEEK('".$first."')+3,' Monday'), '%X%V %W'))
+      			AND IF(STR_TO_DATE(CONCAT('".$year."',WEEK('".$first."')+4,' Sunday'), '%X%V %W')> LAST_DAY('".$first."'), LAST_DAY('".$first."'), 
+      					STR_TO_DATE(CONCAT('".$year."',WEEK('".$first."')+4,' Sunday'), '%X%V %W'))
+                  GROUP BY A.USER_ID 
+      		) A_CALC 
+      		ON U.ID = A_CALC.USER_ID
+      	LEFT OUTER JOIN (
+          SELECT DATEDIFF(IF(STR_TO_DATE(CONCAT('".$year."',WEEK('".$first."')+4,' Sunday'), '%X%V %W')> LAST_DAY('".$first."'), LAST_DAY('".$first."'), 
+      					STR_TO_DATE(CONCAT('".$year."',WEEK('".$first."')+4,' Sunday'), '%X%V %W')), 
+      				IF(STR_TO_DATE(CONCAT('".$year."',WEEK('".$first."')+3,' Monday'), '%X%V %W')> LAST_DAY('".$first."'), NULL, 
+      					STR_TO_DATE(CONCAT('".$year."',WEEK('".$first."')+3,' Monday'), '%X%V %W'))) +1 AS TOTAL_DAYS
+          ) T_DAYS ON 1 = 1
+      WHERE REST_ID = ".$rest_id." AND R.ID NOT IN (1,2)
+      	AND U.ACTIVE = 1
+      UNION 
+      SELECT 
+      	U.NAME														USER_NAME,
+      	5															WEEK_NUMBER,
+      	U.TOTAL_HRS_WEEK 											TOTAL_HRS_EXPECTED,
+      	IFNULL(A_CALC.TIME_DIFF,0)						 			TOTAL_HRS_WORKED,
+      	IFNULL(A_CALC.TIME_DIFF,0) - U.TOTAL_HRS_WEEK 				DIFFERENCE,
+      	T_DAYS.TOTAL_DAYS											TOTAL_DAYS,
+      	IFNULL(A_CALC.DAYS_WORKED,0)								DAYS_WORKED,
+      	T_DAYS.TOTAL_DAYS - IFNULL(A_CALC.DAYS_WORKED,0)			MISSED_DAYS
+      FROM USERS U 
+      	INNER JOIN ROLES R 
+      		ON R.ID = U.ROLE_ID
+      	INNER JOIN USERS_RESTAURANTS UR 
+      		ON UR.USER_ID = U.ID
+      	LEFT OUTER JOIN 
+      		( SELECT SUM(TIMESTAMPDIFF(HOUR, A.CHECKIN,  A.CHECKOUT)) TIME_DIFF, A.USER_ID, COUNT(A.ID) AS DAYS_WORKED 
+      			FROM ATTENDANCE A WHERE
+      			CAST(A.CHECKIN AS DATE) BETWEEN 
+      				IF(STR_TO_DATE(CONCAT('".$year."',WEEK('".$first."')+4,' Monday'), '%X%V %W')> LAST_DAY('".$first."'), NULL, 
+      					STR_TO_DATE(CONCAT('".$year."',WEEK('".$first."')+4,' Monday'), '%X%V %W'))
+      			AND LAST_DAY('".$first."')
+                  GROUP BY A.USER_ID 
+      		) A_CALC
+      		ON U.ID = A_CALC.USER_ID
+      	LEFT OUTER JOIN (
+      		SELECT DATEDIFF(LAST_DAY('".$first."'), 
+      				IF(STR_TO_DATE(CONCAT('".$year."',WEEK('".$first."')+4,' Monday'), '%X%V %W')> LAST_DAY('".$first."'), NULL, 
+      					STR_TO_DATE(CONCAT('".$year."',WEEK('".$first."')+4,' Monday'), '%X%V %W'))) +1 AS TOTAL_DAYS
+          ) T_DAYS ON 1 = 1
+      WHERE REST_ID = ".$rest_id." AND R.ID NOT IN (1,2)
+      	AND U.ACTIVE = 1;");
 		return $query->result();
 	}
 	

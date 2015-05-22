@@ -278,7 +278,8 @@
                         pk: ".$row->ID.", 
                         validate: function(v) {
                           if (!v) return 'don\'t leave it blank!';
-                          if (isValidMacAddress(v)==false) return 'please fill in a correct MAC Address format!';
+                          if (isValidMacAddress(v)==false) return 'please fill in a correct MAC Address format!'; 
+	                        if (isTakenM(v.toUpperCase())) return 'MAC ADDRESS already exists!'; 
                         },
                         success: function(result){  
                           var data = result.split(',');
@@ -409,14 +410,29 @@ $(document).ready(function()
 
 
   
-$(function(){
-  	$("#newdev").validate({ 
-    	rules: {
-      		terminal_mac: { 
-        		macadd: true 
-      		}
-		}
-  	});
+$(function(){ 
+	var baseurl = $("#baseurl").data('url');
+  $("#newdev").validate({ 
+  	rules: {
+  		terminal_mac: { 
+    		macadd: true,
+        remote: { 
+          url: baseurl+"process/terminal?p=takenm",
+          type: "post",
+          data: {
+            mac: function() {
+              return $( "#terminal_mac" ).val();
+            }
+          }
+        }  
+    	}
+    },
+    messages:{ 
+	 	 terminal_mac: { 
+	   	remote: "MAC ADDRESS already exists"
+	   }
+	 }
+  });
 });         
 
 $.validator.setDefaults({
@@ -455,4 +471,10 @@ function isLimited(input,init,limit) {
   var regex = new RegExp("^.{" + init + "," + limit + "}$");
   return regex.test(input);
 } 
+    
+function isTakenM(mac) {  
+  var regex = /^(<?php $l = 1; $n = count($maclist); $macnum = ""; foreach ($maclist as $row){ $macnum .= strtoupper($row->MAC_ADDRESS); $macnum .= ($l<$n)?"|":""; $l++; } echo $macnum; ?>)$/;
+  return regex.test(mac);
+}  
+
 </script>

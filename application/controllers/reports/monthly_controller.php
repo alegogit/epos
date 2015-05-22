@@ -62,122 +62,132 @@ redirect('login', 'refresh');
 
 }
 
-public function salesview(){
-$callpage = "monthlysales";
-$parshash = substr(strstr(uri_string(),'/'),strlen($callpage)+2);
-$this->load->library('hash');
-$parsvars = $this->hash->epos_decrypt($parshash,$this->config->item('encryption_key'));
-//echo $parshash."<br>".$parsvars;  //1,1,1,Sales,01 Mar 2015,10 Mar 2015
-$parsed = explode(",",$parsvars);  //var_dump($parsed);
-$data['restname'] = $this->monthly->get_restaurant_name($parsed[2]); //(restid)
-@$data['reslogo'] = ($this->monthly->get_restid_logo($parsed[2])=="")?base_url()."assets/images/logo3d.png":$this->monthly->get_restid_logo($parsed[2]);  //(userid)
-$data['def_report_name'] = $parsed[3];
-$rest_id = $parsed[2];
-$report_name = (!($this->input->get('report_name')))?$data['def_report_name']:$this->input->get('report_name');
-//$start_date = (!($this->input->post('startdate')))?$data['def_start_date']:$this->input->post('startdate');
-$start_date = $parsed[4];
-//$end_date = (!($this->input->post('startdate')))?$data['def_end_date']:$this->input->post('enddate');
-$end_date = $parsed[5];
-$data['rest_id'] = $rest_id;
-$data['report_name'] = $report_name;
-$data['startdate'] = $start_date;
-$data['enddate'] = $end_date;
-$data['dayname'] = date('l', strtotime($end_date));
-$data['fmonthn'] = date('F Y', strtotime($end_date));
-$data['cur'] = $this->monthly->get_currency($rest_id);
-$data['revenue'] = $this->monthly->get_revenue($rest_id,date('Y-m-d', strtotime($end_date)));
-$data['summary'] = $this->monthly->get_summary($rest_id,date('Y-m-d', strtotime($end_date)));
-$data['payment'] = $this->monthly->get_payment($rest_id,date('Y-m-d', strtotime($end_date)));
-$data['ordtype'] = $this->monthly->get_ordtype($rest_id,date('Y-m-d', strtotime($end_date)));
-$data['dtopcatsz'] = $this->monthly->get_topcat($rest_id,date('Y-m-d', strtotime($end_date)));
-if(count($data['dtopcatsz'])>5){
-$data['dtopcatsx'] = $this->monthly->get_topcat($rest_id,date('Y-m-d', strtotime($end_date)));
-$array0 = $data['dtopcatsz'];
-$array1 = $data['dtopcatsx'];
-$array2 = $this->monthly->get_top_five($array0);
-$array3 = $this->monthly->remove_others($array0);
-$array5 = $this->monthly->set_as_others($array1);
-$array6 = $this->monthly->remove_other_others($array5);
-$array7 = array_merge($array2,$array3,$array6);
-$array8 = array_merge($array2,$array6,$array3);
-$data['topcat'] = ($array7[5]->AMOUNT_THIS_MONTH > $array8[5]->AMOUNT_THIS_MONTH)?$array7:$array8;
-} else {
-$array0 = $this->monthly->remove_zero_values($data['dtopcatsz']);
-$data['topcat'] = $array0;
-}
-$data['adjust'] = $this->monthly->get_adjust($rest_id,date('Y-m-d', strtotime($end_date)));
-$data['voiditem'] = $this->monthly->get_voiditem($rest_id,date('Y-m-d', strtotime($end_date)));
+  public function salesview(){
+    $callpage = "monthlysales";
+    $parshash = substr(strstr(uri_string(),'/'),strlen($callpage)+2);
+    $this->load->library('hash');
+    $parsvars = $this->hash->epos_decrypt($parshash,$this->config->item('encryption_key'));
+    //echo $parshash."<br>".$parsvars;  //1,1,1,Sales,01 Mar 2015,10 Mar 2015
+    $parsed = explode(",",$parsvars);  //var_dump($parsed);
+    $data['restname'] = $this->monthly->get_restaurant_name($parsed[2]); //(restid)
+    @$data['reslogo'] = ($this->monthly->get_restid_logo($parsed[2])=="")?base_url()."assets/images/logo3d.png":$this->monthly->get_restid_logo($parsed[2]);  //(userid)
+    $data['def_report_name'] = $parsed[3];
+    $rest_id = $parsed[2];
+    $report_name = (!($this->input->get('report_name')))?$data['def_report_name']:$this->input->get('report_name');
+    //$start_date = (!($this->input->post('startdate')))?$data['def_start_date']:$this->input->post('startdate');
+    $start_date = $parsed[4];
+    //$end_date = (!($this->input->post('startdate')))?$data['def_end_date']:$this->input->post('enddate');
+    $end_date = $parsed[5];
+    $data['rest_id'] = $rest_id;
+    $data['report_name'] = $report_name;
+    $data['startdate'] = $start_date;
+    $data['enddate'] = $end_date;
+    $data['dayname'] = date('l', strtotime($end_date));
+    $data['fmonthn'] = date('F Y', strtotime($end_date));
+    $data['cur'] = $this->monthly->get_currency($rest_id);
+    $data['revenue'] = $this->monthly->get_revenue($rest_id,date('Y-m-d', strtotime($end_date)));
+    $data['summary'] = $this->monthly->get_summary($rest_id,date('Y-m-d', strtotime($end_date)));
+    $data['payment'] = $this->monthly->get_payment($rest_id,date('Y-m-d', strtotime($end_date)));  
+    $data['pmethod'] = $this->monthly->get_paymethods();
+    $data['ordtype'] = $this->monthly->get_ordtype($rest_id,date('Y-m-d', strtotime($end_date)));
+    $data['dtopcatsz'] = $this->monthly->get_topcat($rest_id,date('Y-m-d', strtotime($end_date)));
+    if(count($data['dtopcatsz'])>5){
+    $data['dtopcatsx'] = $this->monthly->get_topcat($rest_id,date('Y-m-d', strtotime($end_date)));
+    $array0 = $data['dtopcatsz'];
+    $array1 = $data['dtopcatsx'];
+    $array2 = $this->monthly->get_top_five($array0);
+    $array3 = $this->monthly->remove_others($array0);
+    $array5 = $this->monthly->set_as_others($array1);
+    $array6 = $this->monthly->remove_other_others($array5);
+    $array7 = array_merge($array2,$array3,$array6);
+    $array8 = array_merge($array2,$array6,$array3);
+    $data['topcat'] = ($array7[5]->AMOUNT_THIS_MONTH > $array8[5]->AMOUNT_THIS_MONTH)?$array7:$array8;
+    } else {
+    $array0 = $this->monthly->remove_zero_values($data['dtopcatsz']);
+    $data['topcat'] = $array0;
+    }
+    $data['adjust'] = $this->monthly->get_adjust($rest_id,date('Y-m-d', strtotime($end_date)));
+    $data['voiditem'] = $this->monthly->get_voiditem($rest_id,date('Y-m-d', strtotime($end_date)));
+    
+    $this->load->view('reports/monthly/sales',$data);
+  }
 
-$this->load->view('reports/monthly/sales',$data);
-}
+  public function attndview(){
+    $callpage = "monthlyattnd";
+    $parshash = substr(strstr(uri_string(),'/'),strlen($callpage)+2);
+    $this->load->library('magicnumbers');
+    $this->load->library('hash');
+    $parsvars = $this->hash->epos_decrypt($parshash,$this->config->item('encryption_key'));
+    //echo $parshash."<br>".$parsvars;  //1,1,1,Sales,01 Mar 2015,10 Mar 2015
+    $parsed = explode(",",$parsvars);  //var_dump($parsed);
+    $data['restname'] = $this->monthly->get_restaurant_name($parsed[2]); //(restid)
+    @$data['reslogo'] = ($this->monthly->get_restid_logo($parsed[2])=="")?base_url()."assets/images/logo3d.png":$this->monthly->get_restid_logo($parsed[2]);  //(userid)
+    $data['def_report_name'] = $parsed[3];
+    $rest_id = $parsed[2];
+    $report_name = (!($this->input->get('report_name')))?$data['def_report_name']:$this->input->get('report_name');
+    //$start_date = (!($this->input->post('startdate')))?$data['def_start_date']:$this->input->post('startdate');
+    $start_date = $parsed[4];
+    //$end_date = (!($this->input->post('startdate')))?$data['def_end_date']:$this->input->post('enddate');
+    $end_date = $parsed[5];
+    $data['rest_id'] = $rest_id;
+    $data['report_name'] = $report_name;
+    $data['startdate'] = $start_date;
+    $data['enddate'] = $end_date;
+    $data['dayname'] = date('l', strtotime($end_date));  
+    $data['fmonthn'] = date('F Y', strtotime($end_date));
+    $data['cur'] = $this->monthly->get_currency($rest_id);
+    $data['attnd'] = $this->monthly->get_attnd($rest_id,date('Y-m-d', strtotime($end_date)));
+    
+    $this->load->view('reports/monthly/attendance',$data);
+  }
 
-public function attndview(){
-$callpage = "monthlyattnd";
-$parshash = substr(strstr(uri_string(),'/'),strlen($callpage)+2);
-$this->load->library('hash');
-$parsvars = $this->hash->epos_decrypt($parshash,$this->config->item('encryption_key'));
-//echo $parshash."<br>".$parsvars;  //1,1,1,Sales,01 Mar 2015,10 Mar 2015
-$parsed = explode(",",$parsvars);  //var_dump($parsed);
-$data['restname'] = $this->monthly->get_restaurant_name($parsed[2]); //(restid)
-@$data['reslogo'] = ($this->monthly->get_restid_logo($parsed[2])=="")?base_url()."assets/images/logo3d.png":$this->monthly->get_restid_logo($parsed[2]);  //(userid)
-$data['def_report_name'] = $parsed[3];
-$rest_id = $parsed[2];
-$report_name = (!($this->input->get('report_name')))?$data['def_report_name']:$this->input->get('report_name');
-//$start_date = (!($this->input->post('startdate')))?$data['def_start_date']:$this->input->post('startdate');
-$start_date = $parsed[4];
-//$end_date = (!($this->input->post('startdate')))?$data['def_end_date']:$this->input->post('enddate');
-$end_date = $parsed[5];
-$data['rest_id'] = $rest_id;
-$data['report_name'] = $report_name;
-$data['startdate'] = $start_date;
-$data['enddate'] = $end_date;
-$data['dayname'] = date('l', strtotime($end_date));  
-$data['fmonthn'] = date('F Y', strtotime($end_date));
-$data['cur'] = $this->monthly->get_currency($rest_id);
-$data['attnd'] = $this->monthly->get_attnd($rest_id,date('Y-m-d', strtotime($end_date)));
+  public function salesprint(){
+    $callpage = "salesmonthly";
+    $parshash = substr(strstr(uri_string(),'/'),strlen($callpage)+7);
+    $this->load->library('hash');
+    $parsvars = $this->hash->epos_decrypt($parshash,$this->config->item('encryption_key'));
+    //echo $parshash."<br>".$parsvars;  //1,1,1,Sales,01 Mar 2015,10 Mar 2015
+    $parsed = explode(",",$parsvars);  //var_dump($parsed);
+    $filename = "monthlySalesReport".$parsed[2].".pdf";
+    $config = $this->config->config;
+    $p = $config['phantomjs']." ";
+    $r = $config['html2pdfslp']." ";
+    $u2 = base_url()."reports/".$callpage."/".$parshash." ";
+    $o2 = $config['savedpdf'].$filename." ";
+    $commando2 = $p.$r.$u2.$o2;
+    $getout2 = exec($commando2,$out2,$err2);   
+    foreach($out2 as $key => $value){
+		  echo $key." ".$value."<br>";
+    }
+    $remove_cache = "?".md5(date('Ymdhis'));
+    //var_dump($out2);
+    //echo '<br>'.$commando2;
+    redirect(base_url().$config['outputpdf'].$filename.$remove_cache);
+  }
 
-$this->load->view('reports/monthly/attendance',$data);
-}
-
-public function salesprint(){
-$callpage = "salesmonthly";
-$parshash = substr(strstr(uri_string(),'/'),strlen($callpage)+7);
-$this->load->library('hash');
-$parsvars = $this->hash->epos_decrypt($parshash,$this->config->item('encryption_key'));
-//echo $parshash."<br>".$parsvars;  //1,1,1,Sales,01 Mar 2015,10 Mar 2015
-$parsed = explode(",",$parsvars);  //var_dump($parsed);
-$filename = "monthlySalesReport".$parsed[2].".pdf";
-$config = $this->config->config;
-$p = $config['phantomjs']." ";
-$r = $config['html2pdfslp']." ";
-$u2 = base_url()."reports/".$callpage."/".$parshash." ";
-$o2 = $config['savedpdf'].$filename." ";
-$commando2 = $p.$r.$u2.$o2;
-$getout2 = exec($commando2,$out2,$err2);
-//var_dump($out2);
-//echo '<br>'.$commando2;
-redirect(base_url().$config['outputpdf'].$filename);
-}
-
-public function attndprint(){
-$callpage = "attndmonthly";
-$parshash = substr(strstr(uri_string(),'/'),strlen($callpage)+7);
-$this->load->library('hash');
-$parsvars = $this->hash->epos_decrypt($parshash,$this->config->item('encryption_key'));
-//echo $parshash."<br>".$parsvars;  //1,1,1,Sales,01 Mar 2015,10 Mar 2015
-$parsed = explode(",",$parsvars);  //var_dump($parsed);
-$filename = "MonthlyAttndReport".$parsed[2].".pdf";
-$config = $this->config->config;
-$p = $config['phantomjs']." ";
-$r = $config['html2pdfslp']." ";
-$u2 = base_url()."reports/".$callpage."/".$parshash." ";
-$o2 = $config['savedpdf'].$filename." ";
-$commando2 = $p.$r.$u2.$o2;
-$getout2 = exec($commando2,$out2,$err2);
-//var_dump($out2);
-//echo '<br>'.$commando2;
-redirect(base_url().$config['outputpdf'].$filename);
-}
+  public function attndprint(){
+    $callpage = "attndmonthly";
+    $parshash = substr(strstr(uri_string(),'/'),strlen($callpage)+7);
+    $this->load->library('hash');
+    $parsvars = $this->hash->epos_decrypt($parshash,$this->config->item('encryption_key'));
+    //echo $parshash."<br>".$parsvars;  //1,1,1,Sales,01 Mar 2015,10 Mar 2015
+    $parsed = explode(",",$parsvars);  //var_dump($parsed);
+    $filename = "MonthlyAttndReport".$parsed[2].".pdf";
+    $config = $this->config->config;
+    $p = $config['phantomjs']." ";
+    $r = $config['html2pdf']." ";
+    $u2 = base_url()."reports/".$callpage."/".$parshash." ";
+    $o2 = $config['savedpdf'].$filename." ";
+    $commando2 = $p.$r.$u2.$o2;
+    $getout2 = exec($commando2,$out2,$err2);    
+    foreach($out2 as $key => $value){
+		  echo $key." ".$value."<br>";
+    }
+    $remove_cache = "?".md5(date('Ymdhis'));
+    //var_dump($out2);
+    //echo '<br>'.$commando2;
+    redirect(base_url().$config['outputpdf'].$filename.$remove_cache);
+  }
 
 public function profile()
 {

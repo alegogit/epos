@@ -16,7 +16,7 @@
           </span>
         </td>  
         <td width="30%" style="text-align:right;">      
-          <span style="font-weight:bold;font-size:175%;"><b><?=$dayname.", ".$enddate?></b>&nbsp;&nbsp;&nbsp;</span><br>
+          <span style="font-weight:bold;font-size:175%;"><b><?=$daterange?></b>&nbsp;&nbsp;&nbsp;</span><br>
           <span style="font-weight:bold;font-size:125%;"><b><?=$restname->REST_NAME?></b>&nbsp;&nbsp;&nbsp;</span> 
         </td>
       </tr>
@@ -224,6 +224,11 @@
                     $tot['AMOUNT_THIS_WEEK'] = 0;
                     $tot['AMOUNT_LAST_WEEK'] = 0;
                     $n = count($payment);
+                    if($n!=0){
+                      $payment = $payment;
+                    } else {     
+                      $payment = $pmethod;
+                    }
                     foreach($payment as $rowt){
                       $tot['TOTAL_THIS_WEEK'] = $tot['TOTAL_THIS_WEEK'] + $rowt->TOTAL_THIS_WEEK;
                       $tot['TOTAL_LAST_WEEK'] = $tot['TOTAL_LAST_WEEK'] + $rowt->TOTAL_LAST_WEEK;  
@@ -365,35 +370,36 @@
                     $tot['TOTAL_LAST_WEEK'] = $adjust->TOTAL_LAST_WEEK+0; 
                     $tot['AMOUNT_THIS_WEEK'] = 0;
                     $tot['AMOUNT_LAST_WEEK'] = 0;
-                    foreach($topcat as $rowt){
-                      $tot['TOTAL_THIS_WEEK'] = $tot['TOTAL_THIS_WEEK'] + $rowt->TOTAL_THIS_WEEK;
-                      $tot['TOTAL_LAST_WEEK'] = $tot['TOTAL_LAST_WEEK'] + $rowt->TOTAL_LAST_WEEK;    
-                      $tot['AMOUNT_THIS_WEEK'] = $tot['AMOUNT_THIS_WEEK'] + $rowt->AMOUNT_THIS_WEEK;  
-                      $tot['AMOUNT_LAST_WEEK'] = $tot['AMOUNT_LAST_WEEK'] + $rowt->AMOUNT_LAST_WEEK; 
-                    }
-                    foreach($topcat as $row){
-                      if(strtolower($row->CAT_NAME)=="others"){
-                        $row->CAT_NAME = strtoupper($row->CAT_NAME);
+                    if(count($topcat)!=0){
+                      foreach($topcat as $rowt){
+                        $tot['TOTAL_THIS_WEEK'] = $tot['TOTAL_THIS_WEEK'] + $rowt->TOTAL_THIS_WEEK;
+                        $tot['TOTAL_LAST_WEEK'] = $tot['TOTAL_LAST_WEEK'] + $rowt->TOTAL_LAST_WEEK;    
+                        $tot['AMOUNT_THIS_WEEK'] = $tot['AMOUNT_THIS_WEEK'] + $rowt->AMOUNT_THIS_WEEK;  
+                        $tot['AMOUNT_LAST_WEEK'] = $tot['AMOUNT_LAST_WEEK'] + $rowt->AMOUNT_LAST_WEEK; 
+                      }
+                      foreach($topcat as $row){  
+                        if(strtolower($row->CAT_NAME)=="others"){
+                          $row->CAT_NAME = strtoupper($row->CAT_NAME);
                   ?> 
                   <tr class="">
                     <td class="cin text3D" style="border-right:black 2px solid;"></td>
-                    <td class="cin text3D" colspan="7"></td>
+                    <td class="cin text3D" colspan="10"></td>
                   </tr> 
                   <tr class="">
                     <td class="text3D" style="border-right:black 2px solid;"><?=strtoupper($adjust->CAT_NAME)?></td>
                     <td class="cin text3D" style="font-weight:bold;"><?=$adjust->TOTAL_THIS_WEEK+0?></td>
-                    <td class="cin cur text3D" style="font-weight:bold;"><?=$row->AMOUNT_THIS_WEEK+0?></td>
-                    <td class="cin cur text3D" style="font-weight:bold;"><?=($tot['AMOUNT_THIS_WEEK']!=0)?$this->currency->my_number_format((float)(($row->AMOUNT_THIS_WEEK+0)*100/$tot['AMOUNT_THIS_WEEK']), 0, '.', ''):0?></td> 
+                    <td class="cin cur text3D" style="font-weight:bold;"><?=$adjust->AMOUNT_THIS_WEEK+0?></td>
+                    <td class="cin cur text3D" style="font-weight:bold;"><?=($tot['AMOUNT_THIS_WEEK']!=0)?$this->currency->my_number_format((float)(($adjust->AMOUNT_THIS_WEEK+0)*100/$tot['AMOUNT_THIS_WEEK']), 0, '.', ''):0?></td> 
                     <td class="text3D" style="font-weight:bold;border-right:black 2px dotted !important;">%</td>  
-                    <td class="cin text3D"><?=$row->TOTAL_LAST_WEEK+0?></td>
-                    <td class="cin cur text3D"><?=$row->AMOUNT_LAST_WEEK+0?></td>
-                    <td class="cin cur text3D"><?=($tot['AMOUNT_LAST_WEEK']!=0)?$this->currency->my_number_format((float)(($row->AMOUNT_LAST_WEEK+0)*100/$tot['AMOUNT_LAST_WEEK']), 0, '.', ''):0?></td> 
+                    <td class="cin text3D"><?=$adjust->TOTAL_LAST_WEEK+0?></td>
+                    <td class="cin cur text3D"><?=$adjust->AMOUNT_LAST_WEEK+0?></td>
+                    <td class="cin cur text3D"><?=($tot['AMOUNT_LAST_WEEK']!=0)?$this->currency->my_number_format((float)(($adjust->AMOUNT_LAST_WEEK+0)*100/$tot['AMOUNT_LAST_WEEK']), 0, '.', ''):0?></td> 
                     <td class="text3D" style="border-right:black 2px dotted !important;">%</td>  
-                    <td class="cin cur text3D"><?=$this->currency->diffpercent(($tot['AMOUNT_THIS_WEEK']+0),($tot['AMOUNT_LAST_WEEK']+0))?></td>  
+                    <td class="cin cur text3D"><?=$this->currency->diffpercent(($adjust->AMOUNT_THIS_WEEK+0),($adjust->AMOUNT_LAST_WEEK+0))?></td>  
                     <td>%</td> 
                   </tr>                
                   <?php
-                      }
+                        }
                   ?> 
                   <tr class="">
                     <td class="text3D" style="border-right:black 2px solid;"><?=$row->CAT_NAME?></td>
@@ -405,13 +411,77 @@
                     <td class="cin cur text3D"><?=$row->AMOUNT_LAST_WEEK+0?></td>
                     <td class="cin cur text3D"><?=($tot['AMOUNT_LAST_WEEK']!=0)?$this->currency->my_number_format((float)(($row->AMOUNT_LAST_WEEK+0)*100/$tot['AMOUNT_LAST_WEEK']), 0, '.', ''):0?></td> 
                     <td class="text3D" style="border-right:black 2px dotted !important;">%</td>  
-                    <td class="cin cur text3D"><?=$this->currency->diffpercent(($tot['AMOUNT_THIS_WEEK']+0),($tot['AMOUNT_LAST_WEEK']+0))?></td>    
+                    <td class="cin cur text3D"><?=$this->currency->diffpercent(($row->AMOUNT_THIS_WEEK+0),($row->AMOUNT_LAST_WEEK+0))?></td>    
                     <td>%</td> 
                   </tr> 
                   <?php
-                      $i++;
+                        $i++;
+                      }     
+                      if(count($topcat)<=5){
+                  ?>   
+                  <tr class="">
+                    <td class="cin text3D" style="border-right:black 2px solid;"></td>
+                    <td class="cin text3D" colspan="10"></td>
+                  </tr>  
+                  <tr class="">
+                    <td class="text3D" style="border-right:black 2px solid;">ADJUSTMENTS</td>
+                    <td class="cin text3D" style="font-weight:bold;">0</td>
+                    <td class="cin cur text3D" style="font-weight:bold;">0</td>
+                    <td class="cin cur text3D" style="font-weight:bold;">0</td>  
+                    <td class="text3D" style="font-weight:bold;border-right:black 2px dotted !important;">%</td>  
+                    <td class="cin text3D">0</td>
+                    <td class="cin cur text3D">0</td>
+                    <td class="cin cur text3D">0</td> 
+                    <td class="text3D" style="border-right:black 2px dotted !important;">%</td>  
+                    <td class="cin cur text3D"><?=$this->currency->diffpercent(0,0)?></td>    
+                    <td>%</td> 
+                  </tr> 
+                  <tr class="">
+                    <td class="text3D" style="border-right:black 2px solid;">OTHERS</td>
+                    <td class="cin text3D" style="font-weight:bold;">0</td>
+                    <td class="cin cur text3D" style="font-weight:bold;">0</td>
+                    <td class="cin cur text3D" style="font-weight:bold;">0</td>  
+                    <td class="text3D" style="font-weight:bold;border-right:black 2px dotted !important;">%</td>  
+                    <td class="cin text3D">0</td>
+                    <td class="cin cur text3D">0</td>
+                    <td class="cin cur text3D">0</td> 
+                    <td class="text3D" style="border-right:black 2px dotted !important;">%</td>  
+                    <td class="cin cur text3D"><?=$this->currency->diffpercent(0,0)?></td>    
+                    <td>%</td> 
+                  </tr> 
+                  <?php
+                      }
+                    } else {
+                  ?>     
+                  <tr class="">
+                    <td class="text3D" style="border-right:black 2px solid;">ADJUSTMENTS</td>
+                    <td class="cin text3D" style="font-weight:bold;">0</td>
+                    <td class="cin cur text3D" style="font-weight:bold;">0</td>
+                    <td class="cin cur text3D" style="font-weight:bold;">0</td>  
+                    <td class="text3D" style="font-weight:bold;border-right:black 2px dotted !important;">%</td>  
+                    <td class="cin text3D">0</td>
+                    <td class="cin cur text3D">0</td>
+                    <td class="cin cur text3D">0</td> 
+                    <td class="text3D" style="border-right:black 2px dotted !important;">%</td>  
+                    <td class="cin cur text3D"><?=$this->currency->diffpercent(0,0)?></td>    
+                    <td>%</td> 
+                  </tr> 
+                  <tr class="">
+                    <td class="text3D" style="border-right:black 2px solid;">OTHERS</td>
+                    <td class="cin text3D" style="font-weight:bold;">0</td>
+                    <td class="cin cur text3D" style="font-weight:bold;">0</td>
+                    <td class="cin cur text3D" style="font-weight:bold;">0</td>  
+                    <td class="text3D" style="font-weight:bold;border-right:black 2px dotted !important;">%</td>  
+                    <td class="cin text3D">0</td>
+                    <td class="cin cur text3D">0</td>
+                    <td class="cin cur text3D">0</td> 
+                    <td class="text3D" style="border-right:black 2px dotted !important;">%</td>  
+                    <td class="cin cur text3D"><?=$this->currency->diffpercent(0,0)?></td>    
+                    <td>%</td> 
+                  </tr> 
+                  <?php
                     }
-                  ?>  
+                  ?>
                   <tr class="" style="font-weight:bold;border-top:black 2px solid;">
                     <td class="cin text3D" style="border-right:black 2px solid;">TOTAL</td>
                     <td class="cin text3D info"><?=$tot['TOTAL_THIS_WEEK']?></td>

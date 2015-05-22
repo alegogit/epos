@@ -239,7 +239,7 @@ class Trends_model extends CI_Model {
 			
   function dash_weekly_avslspcust($rest_id){   
 	     $query = $this->db->query("SELECT IFNULL(SUM(O.PAID_AMOUNT),0)/ IFNULL(SUM(O.NO_OF_GUEST),1) AS AVG_SALES_CUST,  
-          		DATE_FORMAT(NOW() ,'%Y-%m-01') REC_WEEK
+          		DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d')  REC_WEEK
           		FROM ORDERS O 
           			WHERE O.ENDED BETWEEN DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d') 
           				AND NOW()
@@ -340,7 +340,7 @@ class Trends_model extends CI_Model {
   
   function dash_weekly_avslspinv($rest_id){   
 	     $query = $this->db->query("SELECT IFNULL(SUM(O.PAID_AMOUNT),0)/ IFNULL(COUNT(O.ID),1) AS AVG_SALES_INV,  
-          		DATE_FORMAT(NOW() ,'%Y-%m-01') REC_WEEK
+          		DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d')  REC_WEEK
           		FROM ORDERS O 
           			WHERE O.ENDED BETWEEN DATE_FORMAT(SUBDATE(SYSDATE(), WEEKDAY(SYSDATE())), '%Y-%m-%d') 
           				AND NOW()

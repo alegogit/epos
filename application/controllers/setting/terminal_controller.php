@@ -47,7 +47,8 @@ class Terminal_controller extends CI_Controller {
       
       $data['terminal'] = $this->setting->get_rest_terminal($rest_id);    		       
 		  $data['statuses'] = $this->setting->get_status(); 					        		       
-		  $data['conn_type'] = $this->setting->get_conn_type(); 					                   
+		  $data['conn_type'] = $this->setting->get_conn_type(); 		         
+      $data['maclist'] = $this->setting->get_mac();				                   
 			
 			$this->load->view('shared/header',$this->data);
 			$this->load->view('shared/left_menu', $data);

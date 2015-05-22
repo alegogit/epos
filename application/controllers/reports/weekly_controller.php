@@ -65,7 +65,7 @@ class Weekly_controller extends CI_Controller {
 	public function salesview(){  
     $callpage = "weeklysales";
     $parshash = substr(strstr(uri_string(),'/'),strlen($callpage)+2);       
-    $this->load->library('hash');  
+    $this->load->library('hash');    
     $parsvars = $this->hash->epos_decrypt($parshash,$this->config->item('encryption_key'));
     //echo $parshash."<br>".$parsvars;  //1,1,1,Sales,01 Mar 2015,10 Mar 2015 
     $parsed = explode(",",$parsvars);  //var_dump($parsed);
@@ -82,11 +82,14 @@ class Weekly_controller extends CI_Controller {
 		$data['report_name'] = $report_name;
 		$data['startdate'] = $start_date;
 		$data['enddate'] = $end_date;
-    $data['dayname'] = date('l', strtotime($end_date));
+    $data['dayname'] = date('l', strtotime($end_date));     
+    $this->load->library('timemachine');     
+		$data['daterange'] = $this->timemachine->daterange_ofweek($end_date,"d M Y");
     $data['cur'] = $this->weekly->get_currency($rest_id);
     $data['revenue'] = $this->weekly->get_revenue($rest_id,date('Y-m-d', strtotime($end_date)));
     $data['summary'] = $this->weekly->get_summary($rest_id,date('Y-m-d', strtotime($end_date)));
     $data['payment'] = $this->weekly->get_payment($rest_id,date('Y-m-d', strtotime($end_date)));
+    $data['pmethod'] = $this->weekly->get_paymethods();
     $data['ordtype'] = $this->weekly->get_ordtype($rest_id,date('Y-m-d', strtotime($end_date)));
     $data['dtopcatsz'] = $this->weekly->get_topcat($rest_id,date('Y-m-d', strtotime($end_date))); 
       if(count($data['dtopcatsz'])>5){   
@@ -151,10 +154,14 @@ class Weekly_controller extends CI_Controller {
     $u2 = base_url()."reports/".$callpage."/".$parshash." ";    
     $o2 = $config['savedpdf'].$filename." ";
     $commando2 = $p.$r.$u2.$o2;
-    $getout2 = exec($commando2,$out2,$err2);
+    $getout2 = exec($commando2,$out2,$err2);   
+    foreach($out2 as $key => $value){
+		  echo $key." ".$value."<br>";
+    }
+    $remove_cache = "?".md5(date('Ymdhis'));
     //var_dump($out2);
     //echo '<br>'.$commando2;
-    redirect(base_url().$config['outputpdf'].$filename); 	 
+    redirect(base_url().$config['outputpdf'].$filename.$remove_cache); 	 
   }
   
   public function reconprint(){ 
@@ -164,17 +171,21 @@ class Weekly_controller extends CI_Controller {
     $parsvars = $this->hash->epos_decrypt($parshash,$this->config->item('encryption_key'));
     //echo $parshash."<br>".$parsvars;  //1,1,1,Sales,01 Mar 2015,10 Mar 2015   
     $parsed = explode(",",$parsvars);  //var_dump($parsed);
-    $filename = "WeeklyReconReport".$parsed[2].".pdf";
+    $filename = "WeeklyCashflowReport".$parsed[2].".pdf";
     $config = $this->config->config;
     $p = $config['phantomjs']." ";
     $r = $config['html2pdfslp']." ";
     $u2 = base_url()."reports/".$callpage."/".$parshash." ";    
     $o2 = $config['savedpdf'].$filename." ";
     $commando2 = $p.$r.$u2.$o2;
-    $getout2 = exec($commando2,$out2,$err2);
+    $getout2 = exec($commando2,$out2,$err2); 
+    foreach($out2 as $key => $value){
+		  echo $key." ".$value."<br>";
+    }
+    $remove_cache = "?".md5(date('Ymdhis'));
     //var_dump($out2);
     //echo '<br>'.$commando2;
-    redirect(base_url().$config['outputpdf'].$filename); 	 
+    redirect(base_url().$config['outputpdf'].$filename.$remove_cache); 	 
   }
   	
 	public function profile()

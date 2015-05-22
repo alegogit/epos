@@ -42,7 +42,7 @@
 						  <?php 
                 $i = 0; 
                 foreach ($attendance as $row){ 
-                  $total['HOURS'] = (($row->CHECKIN!=NULL)&&($row->CHECKOUT!=NULL))?date_diff($row->CHECKOUT,$row->CHECKIN):"-";    
+                  $total['HOURS'] = (($row->CHECKIN!=NULL)&&($row->CHECKOUT!=NULL))?round((strtotime($row->CHECKOUT) - strtotime($row->CHECKIN))/(60*60))." hrs":"-";    
               ?>
 						  <tr class="<?=$this->attendance->inv_status_class($row->STATUS)?>" data-index="<?=$i?>">
 						    <td><?=$row->SELECTED_DATED?></td> 

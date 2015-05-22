@@ -93,7 +93,7 @@ class Menuinventory_model extends CI_Model {
   }    
   
   function get_rest_menus($rest_id){                    
-  	$query = $this->db->select('MENU.ID,MENU.NAME')
+  	$query = $this->db->select('MENU.ID,MENU.NAME,CATEGORY.ID AS CAT_ID,CATEGORY.NAME AS CAT_NAME')
                       ->from('MENU')
                       ->join('CATEGORY', 'CATEGORY.ID = MENU.CATEGORY_ID')
                       ->where('CATEGORY.REST_ID',$rest_id)
@@ -107,13 +107,23 @@ class Menuinventory_model extends CI_Model {
   	return $query->result();
   }
 	
+  function get_rest_category($menu_id){
+  	$query = $this->db->select('CATEGORY.ID AS CAT_ID,CATEGORY.NAME AS CAT_NAME')
+                      ->from('CATEGORY')
+                      ->join('MENU', 'MENU.CATEGORY_ID = CATEGORY.ID')
+                      ->where('MENU.ID',$menu_id)
+                      ->limit(1)
+                      ->get('');
+  	return $query->row();
+  } 
+  
   function get_rest_categories($rest_id){
   	$query = $this->db->select('ID,NAME')
                       ->from('CATEGORY')
                       ->where('REST_ID',$rest_id)
                       ->get('');
   	return $query->result();
-  }        
+  } 
   
 	function get_status(){  
     $this->db->where('LOOKUP_NAME','STATUS');
@@ -127,6 +137,13 @@ class Menuinventory_model extends CI_Model {
     } else {
       $output = "<span style='color:#dd1144 !important;'>Inactive</span>";
     }
+  }             
+   
+	function get_mic(){    
+    $query = $this->db->select('MENU_ID,INVENTORY_ID')
+                      ->from('MENU_INVENTORY')
+                      ->get('');
+    return $query->result();
   } 
 	
 	function new_menuinventory($MENU_ID,$INVENTORY_ID,$QUANTITY){       

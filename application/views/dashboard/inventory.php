@@ -140,41 +140,46 @@
 
       <div class="col-sm-2" style="padding:0;">
         
-        <div class="list-group rightdash" style="margin-top:10px;">      
-          <div class="rdtitle">Sales Today</div>
+        <div class="list-group rightdash" style="margin-top:10px;"> 
+          <div class="rdinfo">
+            <?=$startdate." - ".$enddate?>
+          </div>    
+        </div>    
+        
+        <div class="list-group rightdash">      
+          <div class="rdtitle">Sales</div>
           <!--<a href="#" class="pull-right">See all</a>-->
           <span class="list-group-item noborder pad30" style="background-color:#e4843f;">
-            <span class="text270"><?=$cur?> <span id="nsales" value="<?=$this->currency->decimal($net_sales_today->NET_SALES,$cur)?>" data-cur="<?=$cur?>"></span></span><br>  
-            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;<span style="font-size:105%;"><b>Net Sales Today</b></span><br>
+            <span class="text270"><?=$cur?> <span id="nsales" value="<?=$this->currency->decimal($net_sales->NET_SALES,$cur)?>" data-cur="<?=$cur?>"></span></span><br>  
+            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;<span style="font-size:105%;"><b>Net Sales</b></span><br>
           </span>   
           <div class="rdinfo"></div>   
           <span class="list-group-item orgbg noborder pad30"> 
-            <span class="text270"><?=$cur?> <span id="tsales" value="<?=$this->currency->decimal($tot_sales_today->TOTAL_SALES,$cur)?>" data-cur="<?=$cur?>"></span></span><br>     
-            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;<span style="font-size:105%;"><b>Total Sales Today</b></span><br>
+            <span class="text270"><?=$cur?> <span id="tsales" value="<?=$this->currency->decimal($tot_sales->TOTAL_SALES,$cur)?>" data-cur="<?=$cur?>"></span></span><br>     
+            <span class="glyphicon glyphicon-info-sign"></span>&nbsp;<span style="font-size:105%;"><b>Total Sales</b></span><br>
           </span> 
           <div class="rdinfo"></div> 
         </div>    
         
         <div class="list-group rightdash">            
-          <div class="rdtitle">Customer Today</div>
+          <div class="rdtitle">Customer</div>
           <!--<a href="#" class="pull-right">See all</a>-->
           <span class="list-group-item teabg noborder pad30">   
             <span class="text270"><?=$cur?> <span id="csales" value="<?=$this->currency->decimal($avrsls_percust->AVG_SALES_CUST,$cur)?>" data-cur="<?=$cur?>"></span></span> <br>  
             <span class="glyphicon glyphicon-info-sign"></span>&nbsp;<span style="font-size:105%;"><b>Average Sales/Customer</b></span>
           </span>   
-          <div class="rdinfo"><?=$num_cust_today->TOTAL_CUST?> Customer(s) Today</div>
+          <div class="rdinfo"><?=$num_cust->TOTAL_CUST?> Customer(s)</div>
         </div>        
                   
         <div class="list-group rightdash">    
-          <div class="rdtitle">Invoice Today</div>   
+          <div class="rdtitle">Invoice</div>   
           <!--<a href="#" class="pull-right">See all</a>-->
           <span class="list-group-item redbg noborder pad30">
             <span class="text270"><?=$cur?> <span id="isales" value="<?=$this->currency->decimal($avrsls_perinv->AVG_SALES_INV,$cur)?>" data-cur="<?=$cur?>"></span></span> <br>  
             <span class="glyphicon glyphicon-info-sign"></span>&nbsp;<span style="font-size:105%;"><b>Average Sales/Invoice</b></span>
           </span>  
-          <div class="rdinfo"><?=$com_inv_today->TOTAL_INV?> Invoice(s) Today</div> 
+          <div class="rdinfo"><?=$com_inv->TOTAL_INV?> Invoice(s)</div> 
         </div>    
-       
         
       </div><!-- /.col-sm-3 -->
       

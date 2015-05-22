@@ -87,24 +87,9 @@ class Daily_controller extends CI_Controller {
     $data['revenue'] = $this->daily->get_revenue($rest_id,date('Y-m-d', strtotime($end_date)));
     $data['summary'] = $this->daily->get_summary($rest_id,date('Y-m-d', strtotime($end_date)));
     $data['payment'] = $this->daily->get_payment($rest_id,date('Y-m-d', strtotime($end_date)));
+    $data['pmethod'] = $this->daily->get_paymethods();
     $data['ordtype'] = $this->daily->get_ordtype($rest_id,date('Y-m-d', strtotime($end_date)));
-    $data['dtopcatsz'] = $this->daily->get_topcat($rest_id,date('Y-m-d', strtotime($end_date))); 
-      if(count($data['dtopcatsz'])>5){   
-  			$data['dtopcatsx'] = $this->daily->get_topcat($rest_id,date('Y-m-d', strtotime($end_date))); 
-  			$array0 = $data['dtopcatsz'];
-        $array1 = $data['dtopcatsx'];
-        $array2 = $this->daily->get_top_five($array0);
-        $array3 = $this->daily->remove_others($array0);
-        $array5 = $this->daily->set_as_others($array1);
-        $array6 = $this->daily->remove_other_others($array5);
-        $array7 = array_merge($array2,$array3,$array6);
-        $array8 = array_merge($array2,$array6,$array3);
-        $data['topcat'] = ($array7[5]->AMOUNT > $array8[5]->AMOUNT)?$array7:$array8;
-      } else {   
-  			$array0 = $this->daily->remove_zero_values($data['dtopcatsz']);
-        $data['topcat'] = $array0;  
-      }
-    $data['adjust'] = $this->daily->get_adjust($rest_id,date('Y-m-d', strtotime($end_date)));
+    $data['topcat'] = $this->daily->get_topcat($rest_id,date('Y-m-d', strtotime($end_date)));
     $data['voiditem'] = $this->daily->get_voiditem($rest_id,date('Y-m-d', strtotime($end_date)));
 						
 		$this->load->view('reports/daily/sales',$data);
@@ -151,10 +136,14 @@ class Daily_controller extends CI_Controller {
     $u2 = base_url()."reports/".$callpage."/".$parshash." ";    
     $o2 = $config['savedpdf'].$filename." ";
     $commando2 = $p.$r.$u2.$o2;
-    $getout2 = exec($commando2,$out2,$err2);
+    $getout2 = exec($commando2,$out2,$err2); 
+    foreach($out2 as $key => $value){
+		  echo $key." ".$value."<br>";
+    }
+    $remove_cache = "?".md5(date('Ymdhis'));
     //var_dump($out2);
     //echo '<br>'.$commando2;
-    redirect(base_url().$config['outputpdf'].$filename); 	 
+    redirect(base_url().$config['outputpdf'].$filename.$remove_cache); 	 
   }
   
   public function reconprint(){ 
@@ -164,17 +153,21 @@ class Daily_controller extends CI_Controller {
     $parsvars = $this->hash->epos_decrypt($parshash,$this->config->item('encryption_key'));
     //echo $parshash."<br>".$parsvars;  //1,1,1,Sales,01 Mar 2015,10 Mar 2015   
     $parsed = explode(",",$parsvars);  //var_dump($parsed);
-    $filename = "DailyReconReport".$parsed[2].".pdf";
+    $filename = "DailyCashflowReport".$parsed[2].".pdf";
     $config = $this->config->config;
     $p = $config['phantomjs']." ";
     $r = $config['html2pdfslp']." ";
     $u2 = base_url()."reports/".$callpage."/".$parshash." ";    
     $o2 = $config['savedpdf'].$filename." ";
     $commando2 = $p.$r.$u2.$o2;
-    $getout2 = exec($commando2,$out2,$err2);
+    $getout2 = exec($commando2,$out2,$err2);  
+    foreach($out2 as $key => $value){
+		  echo $key." ".$value."<br>";
+    }
+    $remove_cache = "?".md5(date('Ymdhis'));
     //var_dump($out2);
     //echo '<br>'.$commando2;
-    redirect(base_url().$config['outputpdf'].$filename); 	 
+    redirect(base_url().$config['outputpdf'].$filename.$remove_cache); 	 
   }
   	
 	public function profile()

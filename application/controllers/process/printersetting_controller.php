@@ -18,7 +18,12 @@ class Printersetting_controller extends CI_Controller {
 			$session_data = $this->session->userdata('logged_in'); 
       $data['p'] = $this->input->get('p');  
       if (isset($data['p'])) {   
-        switch ($data['p']){
+        switch ($data['p']){ 
+          case 'takenm':      
+            $data['col'] = 'PRINTER_MAC_ADDRESS'; 
+            $data['inp'] = $this->input->post('mac');  
+            $this->load->view('process/taken_printer',$data); 
+          break;
           case 'update':      
             $data['varP'] = $this->input->post('pk').','.$this->input->post('value').','.$this->input->post('name');  
             $this->load->view('process/update_printer',$data); 

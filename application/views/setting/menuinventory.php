@@ -59,14 +59,14 @@
 						    	<tr class="tablehead text3D">
 						        	<th class="no-sort"><input type="checkbox" id="checkall" value="Check All"></th>
 						        	<th>Menu</th>
-						        	<th class="no-sort">Inventory</th>
-						        	<th class="no-sort cin">Quantity</th>
-						        	<th class="no-sort"></th>  
+						        	<th>Inventory</th>
+						        	<th class="cin">Quantity</th>
+						        	<th></th>  
                     <?php if ($role==1){ ?>
-						        	<th class="no-sort">Created By</th>
-						        	<th class="no-sort">Created Date</th>
-						        	<th class="no-sort">Updated By</th>
-						        	<th class="no-sort">Updated Date</th> 
+						        	<th>Created By</th>
+						        	<th>Created Date</th>
+						        	<th>Updated By</th>
+						        	<th>Updated Date</th> 
                     <?php } ?>
 						    	</tr>
 						    </thead>  
@@ -77,7 +77,7 @@
 				              <input type="checkbox" class="case" tabindex="-1">
 				            </td>
 				            <td style="">
-				              <a id="MENU_ID-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->MENU_NAME?></a>
+				              <a id="MENU_ID-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->MENU_NAME." <span style='font-size:75%'>[".$this->setting->get_rest_category($row->MENU_ID)->CAT_NAME."]</span>"?></a>
 				            </td>
                   	<td style="">
                       <a id="INVENTORY_ID-<?=$row->ID?>" class="edit" tabindex="0"><?=$row->INVENTORY_NAME?></a>
@@ -109,66 +109,103 @@
 
 <!-- Modal -->
 <div class="modal fade" id="bookModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog" style="width:900px;">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
         <h4 class="modal-title" id="myModalLabel">Add New Menu - Inventory Item</h4>
       </div><!-- /.modal-header -->
-      <div class="modal-body">
-      <?php
-        $attributes = array('class' => 'form-inline', 'id' => 'newmeninv', 'role' => 'form');
-        echo form_open('setting/menuinventory',$attributes)
-      ?>       
-        <div class="form-group" style="margin-bottom:10px">   
-          <label for="menu">Menu</label><br />  
-          <div class="input-group">   
-            <div class="input-group-addon"><span class="fa fa-coffee"></span></div> 
-            <select id="menu" name="menu" class="form-control" required>
-            <?php foreach($menus as $rowm){ ?>
-              <option value="<?=$rowm->ID?>"><?=$rowm->NAME?></option>
-            <?php } ?>
-            </select>
-          </div>
-        </div><br />      
-        <div class="form-group" style="margin-bottom:10px">   
-          <label for="inv">Inventory</label><br />  
-          <div class="input-group">   
-            <div class="input-group-addon"><span class="fa fa-cubes"></span></div> 
-            <select id="inv" name="inv" class="form-control" required>
-            <?php foreach($inventories as $rowi){ ?>
-              <option value="<?=$rowi->ID?>" data-mtr="<?=$this->setting->get_metric($rowi->METRIC)?>"><?=$rowi->NAME?></option>
-            <?php } ?>
-            </select>
-          </div>
-        </div><br />    
-        <div class="form-group" style="margin-bottom:10px">      
-          <label for="qty"></label>     
-          <div class="input-group" style="width:200px;"> 
-            <div class="input-group-addon"><span class="fa fa-cube"></span></div>
-            <input type="text" class="form-control" style="text-align:right;" id="qty" placeholder="Quantity" name="qty" required>
-            <div class="input-group-addon"><span id="metric">metric</span></div>
-          </div>
-        </div><br />    
-        <div class="form-group" style="margin-bottom:10px;">      
-          <label for="resto">Restaurant</label><br />     
-          <div class="input-group"> 
-            <div class="input-group-addon"><span class="fa fa-cutlery"></span></div>
-            <input type="text" class="form-control" id="resto" placeholder="" name="resto" value="<?=$def_rest_name?>" disabled>
-          </div>
-        </div><br />
-        <div class="form-group text-right" style="margin-bottom:10px">
-          <div class="input-group">       
-            <button type="submit" class="btn btn-success">Submit</button>&nbsp;
-            <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
-          </div>
-        </div><br /> 
+      <div class="modal-body"> 
+        <div id="combresp" class="alert alert-danger alert-dismissable" style="margin-top:10px;display:none;"> 
+          <a class="panel-close close" data-dismiss="alert">x</a>
+          <span id="combout"></span>
+        </div>
+        <?php
+          $attributes = array('class' => 'form-inline', 'id' => 'newmeninv', 'role' => 'form');
+          echo form_open('setting/menuinventory',$attributes)
+        ?>
+        <div class="row"> 
+          <div class="col-md-6">       
+            <div class="form-group" style="margin-bottom:10px">   
+              <label for="menu">Menu</label><br />  
+              <div class="input-group" style="z-index:10001;">   
+                <div class="input-group-addon"><span class="fa fa-coffee"></span></div> 
+                <select id="menu" name="menu" class="form-control selectpicker show-tick" data-size="25" data-width="auto" data-live-search="false" required>
+                <?php
+                  $i=0;
+                  $catwoman = ""; 
+                  $n = count($menus);
+                  foreach($menus as $rowm){ 
+                    if($i==0){
+                ?>  
+                    <optgroup label="<?=$rowm->CAT_NAME?>">
+                <?php
+                    } 
+                ?>
+                  <option value="<?=$rowm->ID?>"><?=$rowm->NAME?></option> 
+                <?php
+                    if(($rowm->CAT_NAME!=$catwoman)&&($i!=0)){
+                ?>
+                  </optgroup> 
+                  <optgroup label="<?=$rowm->CAT_NAME?>">
+                <?php
+                    } else {
+                      if($i==$n){
+                ?>   
+                  </optgroup>
+                <?php
+                      }
+                    } 
+                    $catwoman = $rowm->CAT_NAME;
+                    $i++;
+                  } 
+                ?>
+                </select>
+              </div>
+            </div><br />  
+            <div class="form-group" style="margin-bottom:10px;">      
+              <label for="resto">Restaurant</label><br />     
+              <div class="input-group"> 
+                <div class="input-group-addon"><span class="fa fa-cutlery"></span></div>
+                <input type="text" class="form-control" id="resto" placeholder="" name="resto" value="<?=$def_rest_name?>" disabled>
+              </div>
+            </div><br />
+            <div class="form-group text-right" style="margin-bottom:10px">
+              <div class="input-group">       
+                <button type="submit" class="btn btn-success">Submit</button>&nbsp;
+                <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+              </div>
+            </div><br />  
+          </div><!-- class="col-md-6" -->
+          <div class="col-md-6">     
+            <div class="form-group" style="margin-bottom:10px;">   
+              <label for="inv">Inventory</label><br />  
+              <div class="input-group" style="z-index:10000;">   
+                <div class="input-group-addon"><span class="fa fa-cubes"></span></div> 
+                <select id="inv" name="inv" class="form-control selectpicker show-tick" data-size="25" data-width="auto" data-live-search="false" required>  
+                <?php foreach($inventories as $rowi){ ?>
+                  <option value="<?=$rowi->ID?>" data-mtr="<?=$this->setting->get_metric($rowi->METRIC)?>"><?=$rowi->NAME?></option>
+                <?php } ?>  
+                </select>
+              </div>
+            </div><br />    
+            <div class="form-group" style="margin-bottom:10px">      
+              <label for="qty"></label>     
+              <div class="input-group" style="width:200px;"> 
+                <div class="input-group-addon"><span class="fa fa-cube"></span></div>
+                <input type="text" class="form-control" style="text-align:right;" id="qty" placeholder="Quantity" name="qty" required>
+                <div class="input-group-addon"><span id="metric">metric</span></div>
+              </div>
+            </div><br />    
+          </div><!-- class="col-md-6" --> 
+        </div><!-- class="row" -->  
         <?=form_close()?>
       </div><!-- /.modal-body -->
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal fade -->
 <div id="baseurl" data-url="<?=base_url()?>"></div>
+<div id="combo" data-stat=""></div>
 <?php  
   //editable script
   $i = 0;
@@ -176,23 +213,28 @@
   $edit_script .= "$(document).ready(function(){";
 	$edit_script .= "  $.fn.editable.defaults.mode = 'inline';";
 	$edit_script .= "  $.fn.editable.defaults.showbuttons = false;";
+	//$edit_script .= "  $.fn.editable.defaults.onblur = 'ignore';";
   $edit_script .= "  var updateurl = '".base_url()."process/menuinventory?p=update';";
   
   foreach ($menuinventory as $row){
-  		$edit_script .= "  $('#MENU_ID-".$row->ID."').editable({
+    $edit_script .= "  $('#MENU_ID-".$row->ID."').editable({
 		                        type: 'select',  
 		                        value: ".$row->MENU_ID.", 
 		                        source: [ ";
 		$k = 1;
 		$q = count($menus);
 		foreach($menus as $rowc){
-			$edit_script .= "  {value: ".$rowc->ID.", text: '".addslashes($rowc->NAME)."'}";
+			$edit_script .= "  {value: ".$rowc->ID.", text: '".addslashes($rowc->NAME)." [".addslashes($rowc->CAT_NAME)."]'}";
 		    $edit_script .= ($k<$q)?", ":"";
 		    $k++;
 		}
 		$edit_script .= "    ],
 		                        url: updateurl,
-		                        pk: ".$row->ID.",
+		                        pk: ".$row->ID.", 
+		                        validate: function(v) {
+                              var c = ".$row->INVENTORY_ID."; 
+                              if (isTakenC(v,c)) return 'The combination already exists!';
+		                        },
 		                        success: function(result){  
 		                          var data = result.split(',');
 		                          $('#upby".$row->ID."').html(data[0]);
@@ -215,7 +257,11 @@
 		}
 		$edit_script .= "    ],
 		                        url: updateurl,
-		                        pk: ".$row->ID.",
+		                        pk: ".$row->ID.", 
+		                        validate: function(v) {
+                              var m = ".$row->MENU_ID.";    
+                              if (isTakenC(m,v)) return 'The combination already exists!';
+		                        },
 		                        success: function(result){  
 		                          var data = result.split(',');
 		                          $('#upby".$row->ID."').html(data[0]);
@@ -250,6 +296,11 @@
 $(document).ready(function(){ 
 	var baseurl = $("#baseurl").data('url');
 	
+  //$('.dropdown-menu li').css('font-size','8px'); 
+  $('.dropdown-menu li').blur(function(){
+    alert('eek');
+  });
+  
 	//autoresizing inputs
   $('#newmeninv input').autoResize(); 
     
@@ -346,9 +397,70 @@ $(function(){
     	rules: {
       		qty: { 
         		number: true 
+      		},
+      		menus: { 
+        		remote: { 
+              url: baseurl+"process/menuinventory?p=takene",
+              type: "post",
+              data: {
+                menu: function() {
+                  return $( "#menu" ).val();
+                },   
+                inv: function() {
+                  return $( "#inv" ).val(); 
+                }
+              }
+            } 
+      		},
+      		invs: { 
+        		remote: { 
+              url: baseurl+"process/menuinventory?p=takene",
+              type: "post",
+              data: {
+                menu: function() {
+                  return $( "#menu" ).val();
+                },   
+                inv: function() {
+                  return $( "#inv" ).val();
+                }
+              }
+            } 
       		}
-	    }    
-  	});
+	    },
+	    messages:{ 
+	      	qty: "Please enter a valid number.",
+	      	menu: { 
+	        	remote: "The combination already exists"
+	      	},
+	      	inv: {
+	        	remote: "The combination already exists"
+	      	}
+	    },
+      submitHandler: function(form) {
+        $.ajax({ 
+            url: baseurl+"process/menuinventory?p=takene",
+            type: "post",
+            data: {
+              menu: function() {
+                return $( "#menu" ).val();
+              },   
+              inv: function() {
+                return $( "#inv" ).val();
+              }
+            },
+            success: function(response) {
+              if(response.trim()!="true"){  
+                $("#combresp").show(); 
+                $('#combout').html("The combination already exists"); 
+              } else {  
+                form.submit();   
+                //console.log("fgd");
+              } 
+              //console.log(response);
+            }            
+        });
+      }    
+  });
 });
 
 $.validator.setDefaults({
@@ -367,6 +479,16 @@ $.validator.setDefaults({
             error.insertAfter(element);
         }
     }
-});              
+}); 
+ 
+function isCombo(){
+  return $('#combo').data('stat');
+};
+  
+function isTakenC(mnu,inv) {
+  var mic = mnu+","+inv;  
+  var regex = /^(<?php $l = 1; $n = count($miclist); $micnum = ""; foreach ($miclist as $row){ $micnum .= $row->MENU_ID.",".$row->INVENTORY_ID; $micnum .= ($l<$n)?"|":""; $l++; } echo $micnum; ?>)$/;
+  return regex.test(mic);
+}        
   
 </script>

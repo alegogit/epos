@@ -93,5 +93,20 @@ class Menuinventorysetting_model extends CI_Model {
                       ->where('ID',$id)
                       ->get('');
     return $query->row()->NAME;
-  }
+  }         
+  
+	function get_taken_menuinv($menu,$inv){ 
+    $query = $this->db->select('ID')
+                      ->from('MENU_INVENTORY')
+                      ->where('MENU_ID',$menu)
+                      ->where('INVENTORY_ID',$inv)
+                      ->get('');   
+    if ($query->num_rows() > 0){
+      $out = 'false';
+    } else {
+    	$out = 'true';   
+    }                  
+    return $out;
+  }  
+    
 }
